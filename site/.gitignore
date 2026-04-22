@@ -3,3 +3,8 @@ dist
 .astro
 .DS_Store
 npm-debug.log*
+*.log
+preview.out.log
+preview.err.log
+http.out.log
+http.err.log

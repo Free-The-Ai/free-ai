@@ -35,9 +35,7 @@ body::before {
 	content: "";
 	position: fixed;
 	inset: 0;
-	background:
-		radial-gradient(circle at 70% 14%, rgba(0, 112, 243, 0.12), transparent 22%),
-		radial-gradient(circle at 15% 20%, rgba(0, 112, 243, 0.08), transparent 18%);
+	background: none;
 	pointer-events: none;
 }
 
@@ -249,7 +247,7 @@ h3 {
 	height: 40px;
 	align-items: center;
 	justify-content: center;
-	background: rgba(0, 112, 243, 0.14);
+	background: #101010;
 	border: 1px solid var(--border-strong);
 	color: var(--blue-soft);
 }
@@ -388,7 +386,7 @@ h3 {
 	height: 44px;
 	align-items: center;
 	justify-content: center;
-	background: rgba(0, 112, 243, 0.14);
+	background: #101010;
 	border: 1px solid var(--border-strong);
 	color: var(--blue-soft);
 	margin-bottom: 18px;

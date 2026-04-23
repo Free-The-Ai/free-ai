@@ -9,11 +9,42 @@ const requestSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "glm/glm-5.1",
+    "model": "wsf/kimi-k2.6",
     "messages": [
       {
         "role": "user",
         "content": "Write a Python hello world"
+      }
+    ]
+  }'`;
+
+const toolSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "wsf/swe-1.6",
+    "tool_choice": "required",
+    "messages": [
+      {
+        "role": "user",
+        "content": "Use the get_weather tool for Boston and do not answer directly."
+      }
+    ],
+    "tools": [
+      {
+        "type": "function",
+        "function": {
+          "name": "get_weather",
+          "description": "Get the weather for a city.",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "city": { "type": "string" }
+            },
+            "required": ["city"],
+            "additionalProperties": false
+          }
+        }
       }
     ]
   }'`;
@@ -26,13 +57,32 @@ client = OpenAI(
 )
 
 completion = client.chat.completions.create(
-    model="glm/glm-5.1",
+    model="wsf/swe-1.6",
+    tool_choice="required",
     messages=[
-        {"role": "user", "content": "Explain recursion in one paragraph."}
+        {
+            "role": "user",
+            "content": "Use the get_weather tool for Boston and do not answer directly."
+        }
+    ],
+    tools=[
+        {
+            "type": "function",
+            "function": {
+                "name": "get_weather",
+                "description": "Get the weather for a city.",
+                "parameters": {
+                    "type": "object",
+                    "properties": {"city": {"type": "string"}},
+                    "required": ["city"],
+                    "additionalProperties": False,
+                },
+            },
+        }
     ],
 )
 
-print(completion.choices[0].message.content)`;
+print(completion.choices[0].message.tool_calls)`;
 
 const jsSnippet = `import OpenAI from "openai";
 
@@ -42,7 +92,7 @@ const client = new OpenAI({
 });
 
 const completion = await client.chat.completions.create({
-  model: "glm/glm-5.1",
+  model: "wsf/kimi-k2.6",
   messages: [
     { role: "user", content: "Say hello in one sentence." }
   ]
@@ -71,6 +121,11 @@ const modelFamilies = [
 		slug: 'or/*',
 		items: ['gpt-oss-20b:free', 'openrouter/free', 'gemma-4-31b-it:free', 'qwen3-coder:free'],
 	},
+	{
+		label: 'WSF',
+		slug: 'wsf/*',
+		items: ['swe-1.5', 'swe-1.6', 'kimi-k2.5', 'kimi-k2.6'],
+	},
 ];
 ---
 
@@ -79,7 +134,7 @@ const modelFamilies = [
 	<head>
 		<BaseHead
 			title="FreeTheAi - Making AI free and accessible"
-			description="FreeTheAi gives builders free AI access with Discord key signup, live models, no daily limit, and no prompt storage."
+			description="FreeTheAi gives builders free AI access with Discord key signup, live models, streaming, tool calling, no daily limit, and no prompt storage."
 			jsonLd={jsonLd}
 		/>
 	</head>
@@ -107,8 +162,8 @@ const modelFamilies = [
 						<div class="eyebrow">FREE AI FOR BUILDERS</div>
 						<h1>Making AI free and accessible.</h1>
 						<p class="hero-text">
-							Get a key in Discord, hit a real API, and build with live models without the usual friction
-							of billing, tiny credits, or daily caps.
+							Get a key in Discord, hit a real API, and build with live free models, streaming, and
+							tool calling without the usual friction of billing, tiny credits, or daily caps.
 						</p>
 						<div class="hero-actions">
 							<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
@@ -145,8 +200,8 @@ const modelFamilies = [
 							<div class="signal-box">
 								<span class="material-symbols-outlined">integration_instructions</span>
 								<div>
-									<strong>SDK ready</strong>
-									<p>Use normal clients.</p>
+									<strong>Tool calling works</strong>
+									<p>Use normal OpenAI tool calls.</p>
 								</div>
 							</div>
 						</div>
@@ -177,7 +232,7 @@ const modelFamilies = [
 									<span class="material-symbols-outlined">deployed_code</span>
 									<div>
 										<strong>Families</strong>
-										<code>glm, kai, opc, or</code>
+										<code>glm, kai, opc, or, wsf</code>
 									</div>
 								</div>
 								<div class="mini-stat">
@@ -227,6 +282,7 @@ const modelFamilies = [
 					<div class="section-head">
 						<div class="eyebrow">USAGE</div>
 						<h2>Clean routes. Familiar clients.</h2>
+						<p>Use the normal OpenAI SDK shape, or send tool definitions directly to `chat/completions`.</p>
 					</div>
 					<div class="usage-grid">
 						<div class="panel">
@@ -249,6 +305,10 @@ const modelFamilies = [
 					<div class="panel wide-panel">
 						<h3>JavaScript</h3>
 						<pre><code>{jsSnippet}</code></pre>
+					</div>
+					<div class="panel wide-panel">
+						<h3>Tool Calling</h3>
+						<pre><code>{toolSnippet}</code></pre>
 					</div>
 				</section>
 
@@ -292,11 +352,12 @@ const modelFamilies = [
 						</ul>
 					</div>
 					<div class="panel">
-						<div class="eyebrow">DOCS / REPO</div>
+						<div class="eyebrow">LIVE NOW</div>
 						<h2>Public docs. Private backend.</h2>
 						<p>
-							The public repo and site show how to use the API.
-							The private backend implementation is not exposed here.
+							The public repo and site document the live API, including the current free
+							<code>wsf/*</code> models and tool-calling support. The private backend implementation
+							is not exposed here.
 						</p>
 						<a class="inline-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
 							<span class="material-symbols-outlined">open_in_new</span>

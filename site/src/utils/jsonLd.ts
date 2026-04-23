@@ -5,7 +5,7 @@ export function buildWebsiteJsonLd() {
 		name: 'FreeTheAi',
 		url: 'https://freetheai.xyz',
 		description:
-			'Free OpenAI-compatible AI API with Discord key signup, free models, no daily limit, and no prompt storage.',
+			'Free AI API with Discord key signup, live free models, OpenAI-compatible chat completions, streaming, and tool calling.',
 		potentialAction: {
 			'@type': 'SearchAction',
 			target: 'https://github.com/vibheksoni/free-ai',
@@ -36,7 +36,7 @@ export function buildSoftwareJsonLd() {
 		applicationCategory: 'DeveloperApplication',
 		operatingSystem: 'Web',
 		description:
-			'Free OpenAI-compatible AI API for builders with Discord key signup, free models, no daily limit, and no prompt storage.',
+			'Free AI API for builders with Discord key signup, live free models, OpenAI-compatible chat completions, streaming, and tool calling.',
 		url: 'https://freetheai.xyz',
 		offers: {
 			'@type': 'Offer',

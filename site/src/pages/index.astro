@@ -9,7 +9,7 @@ const requestSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "wsf/kimi-k2.6",
+    "model": "glm/glm-5.1",
     "messages": [
       {
         "role": "user",
@@ -22,7 +22,7 @@ const toolSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "wsf/swe-1.6",
+    "model": "bbl/gpt-4.1",
     "tool_choice": "required",
     "messages": [
       {
@@ -57,7 +57,7 @@ client = OpenAI(
 )
 
 completion = client.chat.completions.create(
-    model="wsf/swe-1.6",
+    model="bbl/gpt-4.1",
     tool_choice="required",
     messages=[
         {
@@ -92,7 +92,7 @@ const client = new OpenAI({
 });
 
 const completion = await client.chat.completions.create({
-  model: "wsf/kimi-k2.6",
+  model: "glm/glm-5.1",
   messages: [
     { role: "user", content: "Say hello in one sentence." }
   ]
@@ -109,24 +109,137 @@ const modelFamilies = [
 	{
 		label: 'KAI',
 		slug: 'kai/*',
-		items: ['kilo-auto/free', 'kilo/auto-free', 'ling-2.6-flash:free', 'lyria-3-pro-preview'],
+		items: [
+			'baidu/qianfan-ocr-fast:free',
+			'google/lyria-3-clip-preview',
+			'google/lyria-3-pro-preview',
+			'inclusionai/ling-2.6-1t:free',
+			'inclusionai/ling-2.6-flash:free',
+			'kilo-auto/free',
+			'kilo/auto-free',
+			'nvidia/nemotron-3-super-120b-a12b:free',
+			'openrouter/free',
+			'stepfun/step-3.5-flash:free',
+			'tencent/hy3-preview:free',
+			'x-ai/grok-code-fast-1:optimized:free',
+		],
 	},
 	{
 		label: 'OPC',
 		slug: 'opc/*',
-		items: ['big-pickle', 'gpt-5-nano', 'minimax-m2.5-free', 'trinity-large-preview-free'],
+		items: [
+			'big-pickle',
+			'gpt-5-nano',
+			'hy3-preview-free',
+			'ling-2.6-flash-free',
+			'minimax-m2.5-free',
+			'nemotron-3-super-free',
+			'trinity-large-preview-free',
+		],
 	},
 	{
 		label: 'OR',
 		slug: 'or/*',
-		items: ['gpt-oss-20b:free', 'openrouter/free', 'gemma-4-31b-it:free', 'qwen3-coder:free'],
+		items: [
+			'baidu/qianfan-ocr-fast:free',
+			'cognitivecomputations/dolphin-mistral-24b-venice-edition:free',
+			'google/gemma-3-12b-it:free',
+			'google/gemma-3-27b-it:free',
+			'google/gemma-3-4b-it:free',
+			'google/gemma-3n-e2b-it:free',
+			'google/gemma-3n-e4b-it:free',
+			'google/gemma-4-26b-a4b-it:free',
+			'google/gemma-4-31b-it:free',
+			'google/lyria-3-clip-preview',
+			'google/lyria-3-pro-preview',
+			'inclusionai/ling-2.6-1t:free',
+			'inclusionai/ling-2.6-flash:free',
+			'liquid/lfm-2.5-1.2b-instruct:free',
+			'liquid/lfm-2.5-1.2b-thinking:free',
+			'meta-llama/llama-3.2-3b-instruct:free',
+			'meta-llama/llama-3.3-70b-instruct:free',
+			'minimax/minimax-m2.5:free',
+			'nousresearch/hermes-3-llama-3.1-405b:free',
+			'nvidia/nemotron-3-nano-30b-a3b:free',
+			'nvidia/nemotron-3-super-120b-a12b:free',
+			'nvidia/nemotron-nano-12b-v2-vl:free',
+			'nvidia/nemotron-nano-9b-v2:free',
+			'openai/gpt-oss-120b:free',
+			'openai/gpt-oss-20b:free',
+			'openrouter/free',
+			'qwen/qwen3-coder:free',
+			'qwen/qwen3-next-80b-a3b-instruct:free',
+			'tencent/hy3-preview:free',
+			'z-ai/glm-4.5-air:free',
+		],
 	},
 	{
 		label: 'WSF',
 		slug: 'wsf/*',
 		items: ['swe-1.5', 'swe-1.6', 'kimi-k2.5', 'kimi-k2.6'],
 	},
+	{
+		label: 'BBL',
+		slug: 'bbl/*',
+		items: [
+			'gpt-4.1',
+			'gpt-4o',
+			'gpt-5-mini',
+			'gpt-5',
+			'gpt-5-chat',
+			'gpt-5.1',
+			'gpt-5.2',
+			'gpt-5.4-mini',
+			'gpt-5.4',
+			'gpt-5-max',
+			'o3-mini',
+			'o3',
+			'claude-3.7-sonnet',
+			'claude-4-sonnet',
+			'claude-4.5-sonnet',
+			'claude-4.6-sonnet',
+			'claude-4.5-haiku',
+			'claude-4.5-opus',
+			'claude-4.6-opus',
+			'claude-4.7-opus',
+			'deepseek-r1',
+			'deepseek-v3',
+			'gemini-2.5-flash',
+			'gemini-2.5-flash-lite',
+			'gemini-2.5-pro',
+			'gemini-3.0-flash',
+			'gemini-3.0-pro',
+			'gemini-3.1-pro',
+			'grok-3',
+			'grok-4',
+			'grok-4.1-fast-non-reasoning',
+		],
+	},
+	{
+		label: 'CAT',
+		slug: 'cat/*',
+		items: [
+			'agent-1',
+			'gpt-4.1',
+			'gpt-4.1-mini',
+			'gpt-5-mini',
+			'gpt-5',
+			'gpt-5.1',
+			'gpt-5.2',
+			'gpt-5.4-mini',
+			'gpt-5.4',
+			'claude-4-5-haiku',
+			'claude-4-5-sonnet',
+			'claude-4-6-sonnet',
+			'gemini-2-5-flash',
+			'gemini-3-flash',
+			'gemini-3-1-pro',
+		],
+	},
 ];
+
+const familyCount = modelFamilies.length;
+const modelCount = modelFamilies.reduce((total, family) => total + family.items.length, 0);
 ---
 
 <!doctype html>
@@ -162,8 +275,8 @@ const modelFamilies = [
 						<div class="eyebrow">FREE AI FOR BUILDERS</div>
 						<h1>Making AI free and accessible.</h1>
 						<p class="hero-text">
-							Get a key in Discord, hit a real API, and build with live free models, streaming, and
-							tool calling without the usual friction of billing, tiny credits, or daily caps.
+							Get a key in Discord, hit a real API, and build with live models, streaming, and
+							tool calling without the usual friction of billing, micro credits, or daily caps.
 						</p>
 						<div class="hero-actions">
 							<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
@@ -231,8 +344,8 @@ const modelFamilies = [
 								<div class="mini-stat">
 									<span class="material-symbols-outlined">deployed_code</span>
 									<div>
-										<strong>Families</strong>
-										<code>glm, kai, opc, or, wsf</code>
+										<strong>Catalog</strong>
+										<code>{modelCount} models / {familyCount} families</code>
 									</div>
 								</div>
 								<div class="mini-stat">
@@ -316,7 +429,17 @@ const modelFamilies = [
 					<div class="section-head">
 						<div class="eyebrow">MODELS</div>
 						<h2>Live model families available now.</h2>
-						<p>The source of truth is always <code>GET /v1/models</code>.</p>
+						<p>
+							The source of truth is always <code>GET /v1/models</code>. This section mirrors the full
+							deployed catalog; your key still only sees the models your current access tier can use.
+						</p>
+						<p>
+							The repo and docs stay live at
+							<a class="inline-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
+								<span class="material-symbols-outlined">open_in_new</span>
+								<span>github.com/vibheksoni/free-ai</span>
+							</a>
+						</p>
 					</div>
 					<div class="family-grid">
 						{modelFamilies.map((family) => (
@@ -355,9 +478,10 @@ const modelFamilies = [
 						<div class="eyebrow">LIVE NOW</div>
 						<h2>Public docs. Private backend.</h2>
 						<p>
-							The public repo and site document the live API, including the current free
-							<code>wsf/*</code> models and tool-calling support. The private backend implementation
-							is not exposed here.
+							The public repo and site document the live deployed catalog across
+							<code>bbl/*</code>, <code>cat/*</code>, <code>glm/*</code>, <code>kai/*</code>,
+							<code>opc/*</code>, <code>or/*</code>, and <code>wsf/*</code>. The private backend
+							implementation is not exposed here.
 						</p>
 						<a class="inline-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
 							<span class="material-symbols-outlined">open_in_new</span>

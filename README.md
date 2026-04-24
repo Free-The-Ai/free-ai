@@ -50,6 +50,8 @@ Useful Discord commands:
 - `/models`
 - `/stats`
 - `/leaderboard`
+- `/modelleaderboard`
+- `/modelstats`
 
 ## Limits
 
@@ -225,6 +227,8 @@ console.log(completion.choices[0].message.content);
 
 Use the exact ids returned by `GET /v1/models`.
 
+- `bbl/*`
+- `cat/*`
 - `glm/*`
 - `kai/*`
 - `opc/*`
@@ -240,6 +244,58 @@ GET /v1/models
 ```
 
 Current notable families from the deployed API:
+
+### `bbl/*`
+
+- `bbl/gpt-4.1`
+- `bbl/gpt-4o`
+- `bbl/gpt-5-mini`
+- `bbl/gpt-5`
+- `bbl/gpt-5-chat`
+- `bbl/gpt-5.1`
+- `bbl/gpt-5.2`
+- `bbl/gpt-5.4-mini`
+- `bbl/gpt-5.4`
+- `bbl/gpt-5-max`
+- `bbl/o3-mini`
+- `bbl/o3`
+- `bbl/claude-3.7-sonnet`
+- `bbl/claude-4-sonnet`
+- `bbl/claude-4.5-sonnet`
+- `bbl/claude-4.6-sonnet`
+- `bbl/claude-4.5-haiku`
+- `bbl/claude-4.5-opus`
+- `bbl/claude-4.6-opus`
+- `bbl/claude-4.7-opus`
+- `bbl/deepseek-r1`
+- `bbl/deepseek-v3`
+- `bbl/gemini-2.5-flash`
+- `bbl/gemini-2.5-flash-lite`
+- `bbl/gemini-2.5-pro`
+- `bbl/gemini-3.0-flash`
+- `bbl/gemini-3.0-pro`
+- `bbl/gemini-3.1-pro`
+- `bbl/grok-3`
+- `bbl/grok-4`
+- `bbl/grok-4.1-fast-non-reasoning`
+
+### `cat/*`
+
+- `cat/agent-1`
+- `cat/gpt-4.1`
+- `cat/gpt-4.1-mini`
+- `cat/gpt-5-mini`
+- `cat/gpt-5`
+- `cat/gpt-5.1`
+- `cat/gpt-5.2`
+- `cat/gpt-5.4-mini`
+- `cat/gpt-5.4`
+- `cat/claude-4-5-haiku`
+- `cat/claude-4-5-sonnet`
+- `cat/claude-4-6-sonnet`
+- `cat/gemini-2-5-flash`
+- `cat/gemini-3-flash`
+- `cat/gemini-3-1-pro`
 
 ### `wsf/*`
 
@@ -261,19 +317,64 @@ Current notable families from the deployed API:
 
 - `opc/big-pickle`
 - `opc/gpt-5-nano`
+- `opc/hy3-preview-free`
 - `opc/ling-2.6-flash-free`
 - `opc/minimax-m2.5-free`
 - `opc/nemotron-3-super-free`
 - `opc/trinity-large-preview-free`
 
-### `or/*` and `kai/*`
+### `kai/*`
 
-The broader free catalog is live under both `or/*` and `kai/*`, including free OSS, Gemma, Nemotron, GLM Air, Ling, and other rotating entries.
+- `kai/baidu/qianfan-ocr-fast:free`
+- `kai/google/lyria-3-clip-preview`
+- `kai/google/lyria-3-pro-preview`
+- `kai/inclusionai/ling-2.6-1t:free`
+- `kai/inclusionai/ling-2.6-flash:free`
+- `kai/kilo-auto/free`
+- `kai/kilo/auto-free`
+- `kai/nvidia/nemotron-3-super-120b-a12b:free`
+- `kai/openrouter/free`
+- `kai/stepfun/step-3.5-flash:free`
+- `kai/tencent/hy3-preview:free`
+- `kai/x-ai/grok-code-fast-1:optimized:free`
+
+### `or/*`
+
+- `or/baidu/qianfan-ocr-fast:free`
+- `or/cognitivecomputations/dolphin-mistral-24b-venice-edition:free`
+- `or/google/gemma-3-12b-it:free`
+- `or/google/gemma-3-27b-it:free`
+- `or/google/gemma-3-4b-it:free`
+- `or/google/gemma-3n-e2b-it:free`
+- `or/google/gemma-3n-e4b-it:free`
+- `or/google/gemma-4-26b-a4b-it:free`
+- `or/google/gemma-4-31b-it:free`
+- `or/google/lyria-3-clip-preview`
+- `or/google/lyria-3-pro-preview`
+- `or/inclusionai/ling-2.6-1t:free`
+- `or/inclusionai/ling-2.6-flash:free`
+- `or/liquid/lfm-2.5-1.2b-instruct:free`
+- `or/liquid/lfm-2.5-1.2b-thinking:free`
+- `or/meta-llama/llama-3.2-3b-instruct:free`
+- `or/meta-llama/llama-3.3-70b-instruct:free`
+- `or/minimax/minimax-m2.5:free`
+- `or/nousresearch/hermes-3-llama-3.1-405b:free`
+- `or/nvidia/nemotron-3-nano-30b-a3b:free`
+- `or/nvidia/nemotron-3-super-120b-a12b:free`
+- `or/nvidia/nemotron-nano-12b-v2-vl:free`
+- `or/nvidia/nemotron-nano-9b-v2:free`
+- `or/openai/gpt-oss-120b:free`
+- `or/openai/gpt-oss-20b:free`
+- `or/openrouter/free`
+- `or/qwen/qwen3-coder:free`
+- `or/qwen/qwen3-next-80b-a3b-instruct:free`
+- `or/tencent/hy3-preview:free`
+- `or/z-ai/glm-4.5-air:free`
 
 ## Notes
 
 - The public API is OpenAI-compatible.
-- Tool calling now works on the public `wsf/*` path.
+- Tool calling now works on the public API.
 - Prompt text is not stored.
 - The backend implementation is private.
 - Model availability can change as the live upstream catalog changes.

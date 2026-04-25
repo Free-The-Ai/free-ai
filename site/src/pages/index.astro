@@ -5,6 +5,10 @@ import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd } from
 
 const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd()];
 
+type FeatherlessSearchItem = {
+	id: string;
+};
+
 const requestSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
@@ -100,146 +104,96 @@ const completion = await client.chat.completions.create({
 
 console.log(completion.choices[0].message.content);`;
 
-const modelFamilies = [
-	{
-		label: 'GLM',
-		slug: 'glm/*',
-		items: ['glm-5.1', 'glm-5', 'glm-4.7', 'glm-4.6', 'glm-4.5', 'glm-4.5-air'],
-	},
-	{
-		label: 'KAI',
-		slug: 'kai/*',
-		items: [
-			'baidu/qianfan-ocr-fast:free',
-			'google/lyria-3-clip-preview',
-			'google/lyria-3-pro-preview',
-			'inclusionai/ling-2.6-1t:free',
-			'inclusionai/ling-2.6-flash:free',
-			'kilo-auto/free',
-			'kilo/auto-free',
-			'nvidia/nemotron-3-super-120b-a12b:free',
-			'openrouter/free',
-			'stepfun/step-3.5-flash:free',
-			'tencent/hy3-preview:free',
-			'x-ai/grok-code-fast-1:optimized:free',
-		],
-	},
-	{
-		label: 'OPC',
-		slug: 'opc/*',
-		items: [
-			'big-pickle',
-			'gpt-5-nano',
-			'hy3-preview-free',
-			'ling-2.6-flash-free',
-			'minimax-m2.5-free',
-			'nemotron-3-super-free',
-			'trinity-large-preview-free',
-		],
-	},
-	{
-		label: 'OR',
-		slug: 'or/*',
-		items: [
-			'baidu/qianfan-ocr-fast:free',
-			'cognitivecomputations/dolphin-mistral-24b-venice-edition:free',
-			'google/gemma-3-12b-it:free',
-			'google/gemma-3-27b-it:free',
-			'google/gemma-3-4b-it:free',
-			'google/gemma-3n-e2b-it:free',
-			'google/gemma-3n-e4b-it:free',
-			'google/gemma-4-26b-a4b-it:free',
-			'google/gemma-4-31b-it:free',
-			'google/lyria-3-clip-preview',
-			'google/lyria-3-pro-preview',
-			'inclusionai/ling-2.6-1t:free',
-			'inclusionai/ling-2.6-flash:free',
-			'liquid/lfm-2.5-1.2b-instruct:free',
-			'liquid/lfm-2.5-1.2b-thinking:free',
-			'meta-llama/llama-3.2-3b-instruct:free',
-			'meta-llama/llama-3.3-70b-instruct:free',
-			'minimax/minimax-m2.5:free',
-			'nousresearch/hermes-3-llama-3.1-405b:free',
-			'nvidia/nemotron-3-nano-30b-a3b:free',
-			'nvidia/nemotron-3-super-120b-a12b:free',
-			'nvidia/nemotron-nano-12b-v2-vl:free',
-			'nvidia/nemotron-nano-9b-v2:free',
-			'openai/gpt-oss-120b:free',
-			'openai/gpt-oss-20b:free',
-			'openrouter/free',
-			'qwen/qwen3-coder:free',
-			'qwen/qwen3-next-80b-a3b-instruct:free',
-			'tencent/hy3-preview:free',
-			'z-ai/glm-4.5-air:free',
-		],
-	},
-	{
-		label: 'WSF',
-		slug: 'wsf/*',
-		items: ['swe-1.5', 'swe-1.6', 'kimi-k2.5', 'kimi-k2.6'],
-	},
+const featherlessPreviewEndpoint =
+	'https://featherless.ai/api/feather/search/models?page=1&perPage=20&prioritize_warm=true';
+
+const featherlessFallbackItems: FeatherlessSearchItem[] = [
+	{ id: 'Qwen/Qwen3-0.6B' },
+	{ id: 'Qwen/Qwen2.5-7B-Instruct' },
+	{ id: 'Qwen/Qwen3-4B-Instruct-2507' },
+	{ id: 'meta-llama/Meta-Llama-3.1-8B-Instruct' },
+	{ id: 'meta-llama/Llama-3.3-70B-Instruct' },
+	{ id: 'deepseek-ai/DeepSeek-R1-Distill-Llama-8B' },
+	{ id: 'google/gemma-3-27b-it' },
+	{ id: 'mistralai/Mistral-Nemo-Instruct-2407' },
+];
+
+async function loadFeatherlessPreview(): Promise<FeatherlessSearchItem[]> {
+	try {
+		const response = await fetch(featherlessPreviewEndpoint, {
+			headers: {
+				Accept: 'application/json',
+			},
+		});
+		if (!response.ok) {
+			throw new Error(`Feather preview request failed with status ${response.status}`);
+		}
+
+		const payload = await response.json();
+		if (!payload || !Array.isArray(payload.items)) {
+			throw new Error('Feather preview payload did not contain an items array');
+		}
+
+		const items = payload.items
+			.filter((item: FeatherlessSearchItem) => typeof item?.id === 'string' && item.id.trim() !== '')
+			.slice(0, 20)
+			.map((item: FeatherlessSearchItem) => ({
+				id: item.id.trim(),
+			}));
+
+		return items.length > 0 ? items : featherlessFallbackItems;
+	} catch {
+		return featherlessFallbackItems;
+	}
+}
+
+const featherlessPreviewItems = await loadFeatherlessPreview();
+
+const aliasFamilies = [
 	{
 		label: 'BBL',
 		slug: 'bbl/*',
-		items: [
-			'gpt-4.1',
-			'gpt-4o',
-			'gpt-5-mini',
-			'gpt-5',
-			'gpt-5-chat',
-			'gpt-5.1',
-			'gpt-5.2',
-			'gpt-5.4-mini',
-			'gpt-5.4',
-			'gpt-5-max',
-			'o3-mini',
-			'o3',
-			'claude-3.7-sonnet',
-			'claude-4-sonnet',
-			'claude-4.5-sonnet',
-			'claude-4.6-sonnet',
-			'claude-4.5-haiku',
-			'claude-4.5-opus',
-			'claude-4.6-opus',
-			'claude-4.7-opus',
-			'deepseek-r1',
-			'deepseek-v3',
-			'gemini-2.5-flash',
-			'gemini-2.5-flash-lite',
-			'gemini-2.5-pro',
-			'gemini-3.0-flash',
-			'gemini-3.0-pro',
-			'gemini-3.1-pro',
-			'grok-3',
-			'grok-4',
-			'grok-4.1-fast-non-reasoning',
-		],
+		note: 'Curated chat, reasoning, and premium aliases.',
 	},
 	{
 		label: 'CAT',
 		slug: 'cat/*',
-		items: [
-			'agent-1',
-			'gpt-4.1',
-			'gpt-4.1-mini',
-			'gpt-5-mini',
-			'gpt-5',
-			'gpt-5.1',
-			'gpt-5.2',
-			'gpt-5.4-mini',
-			'gpt-5.4',
-			'claude-4-5-haiku',
-			'claude-4-5-sonnet',
-			'claude-4-6-sonnet',
-			'gemini-2-5-flash',
-			'gemini-3-flash',
-			'gemini-3-1-pro',
-		],
+		note: 'Alias set for chat and coding.',
+	},
+	{
+		label: 'FTH',
+		slug: 'fth/*',
+		note: 'Expanded open-model catalog. Full listing stays API-only.',
+	},
+	{
+		label: 'GLM',
+		slug: 'glm/*',
+		note: 'Direct GLM aliases for the current exposed versions.',
+	},
+	{
+		label: 'KAI',
+		slug: 'kai/*',
+		note: 'Free/open routing aliases and utility models.',
+	},
+	{
+		label: 'OPC',
+		slug: 'opc/*',
+		note: 'Curated OpenCode-facing public aliases.',
+	},
+	{
+		label: 'OR',
+		slug: 'or/*',
+		note: 'Free OpenRouter aliases exposed through the gateway.',
+	},
+	{
+		label: 'WSF',
+		slug: 'wsf/*',
+		note: 'Selected Windsurf aliases only.',
 	},
 ];
 
-const familyCount = modelFamilies.length;
-const modelCount = modelFamilies.reduce((total, family) => total + family.items.length, 0);
+const familyCount = aliasFamilies.length;
+const modelCountLabel = '15k+ models';
 ---
 
 <!doctype html>
@@ -345,7 +299,7 @@ const modelCount = modelFamilies.reduce((total, family) => total + family.items.
 									<span class="material-symbols-outlined">deployed_code</span>
 									<div>
 										<strong>Catalog</strong>
-										<code>{modelCount} models / {familyCount} families</code>
+										<code>{modelCountLabel} / {familyCount} alias families</code>
 									</div>
 								</div>
 								<div class="mini-stat">
@@ -428,10 +382,11 @@ const modelCount = modelFamilies.reduce((total, family) => total + family.items.
 				<section class="section" id="models">
 					<div class="section-head">
 						<div class="eyebrow">MODELS</div>
-						<h2>Live model families available now.</h2>
+						<h2>Alias families and a compact live catalog preview.</h2>
 						<p>
-							The source of truth is always <code>GET /v1/models</code>. This section mirrors the full
-							deployed catalog; your key still only sees the models your current access tier can use.
+							The source of truth is always <code>GET /v1/models</code>. The site only previews the
+							alias families plus a compact slice of the large <code>fth/*</code> catalog so we do
+							not dump 15k+ models into the page.
 						</p>
 						<p>
 							The repo and docs stay live at
@@ -442,7 +397,7 @@ const modelCount = modelFamilies.reduce((total, family) => total + family.items.
 						</p>
 					</div>
 					<div class="family-grid">
-						{modelFamilies.map((family) => (
+						{aliasFamilies.map((family) => (
 							<div class="family-card">
 								<div class="family-top">
 									<div class="family-title">
@@ -451,18 +406,36 @@ const modelCount = modelFamilies.reduce((total, family) => total + family.items.
 									</div>
 									<div class="family-meta">
 										<code>{family.slug}</code>
-										<span class="family-count">{family.items.length} models</span>
+										<span class="family-count">Gateway alias</span>
 									</div>
 								</div>
-								<div class="family-scroll">
-									<ul>
-										{family.items.map((item) => (
-											<li><code>{item}</code></li>
-										))}
-									</ul>
-								</div>
+								<p class="family-note">{family.note}</p>
 							</div>
 						))}
+					</div>
+					<div class="family-card catalog-preview">
+						<div class="family-top">
+							<div class="family-title">
+								<span class="material-symbols-outlined">deployed_code_history</span>
+								<strong>FTH Preview</strong>
+							</div>
+							<div class="family-meta">
+								<code>fth/*</code>
+								<span class="family-count">{modelCountLabel}</span>
+							</div>
+						</div>
+						<p class="family-note">
+							Current warm picks from the expanded open catalog. The API returns the full list; the
+							site only shows this compact preview.
+						</p>
+						<div class="family-scroll">
+							<ul>
+								{featherlessPreviewItems.map((item) => (
+									<li><code>fth/{item.id}</code></li>
+								))}
+								<li class="more-marker"><code>... More</code></li>
+							</ul>
+						</div>
 					</div>
 				</section>
 
@@ -484,8 +457,9 @@ const modelCount = modelFamilies.reduce((total, family) => total + family.items.
 						<h2>Public docs. Private backend.</h2>
 						<p>
 							The public repo and site document the live deployed catalog across
-							<code>bbl/*</code>, <code>cat/*</code>, <code>glm/*</code>, <code>kai/*</code>,
-							<code>opc/*</code>, <code>or/*</code>, and <code>wsf/*</code>. The private backend
+							<code>bbl/*</code>, <code>cat/*</code>, <code>fth/*</code>, <code>glm/*</code>,
+							<code>kai/*</code>, <code>opc/*</code>, <code>or/*</code>, and <code>wsf/*</code>.
+							The private backend
 							implementation is not exposed here.
 						</p>
 						<a class="inline-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">

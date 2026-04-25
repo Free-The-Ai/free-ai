@@ -1,7 +1,7 @@
 export const siteConfig = {
 	title: 'FreeTheAi',
 	description:
-		'FreeTheAi is a free AI API with Discord key signup, a live 105-model catalog, OpenAI-compatible chat completions, streaming, and tool calling.',
+		'FreeTheAi is a free AI API with Discord key signup, OpenAI-compatible chat completions, streaming, tool calling, and an expanded 15k+ model catalog previewed on the site.',
 	site: 'https://freetheai.xyz',
 	author: {
 		name: 'FreeTheAi',
@@ -37,6 +37,8 @@ export const siteConfig = {
 			'chat completions api',
 			'discord api key signup',
 			'free models api',
+			'15k models api',
+			'open model catalog api',
 			'ai api without daily limit',
 			'developer ai tools',
 		],

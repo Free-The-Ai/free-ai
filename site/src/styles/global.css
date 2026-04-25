@@ -504,6 +504,21 @@ h3 {
 	word-break: break-word;
 }
 
+.family-note {
+	margin: 0;
+	color: var(--muted);
+	line-height: 1.65;
+}
+
+.catalog-preview ul {
+	columns: 2;
+}
+
+.more-marker {
+	color: var(--blue-soft);
+	font-weight: 700;
+}
+
 .inline-link {
 	display: inline-flex;
 	align-items: center;
@@ -531,6 +546,10 @@ h3 {
 
 	.family-card ul {
 		columns: 2;
+	}
+
+	.catalog-preview ul {
+		columns: 1;
 	}
 
 	h1 {

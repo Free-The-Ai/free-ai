@@ -53,6 +53,31 @@ const toolSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
     ]
   }'`;
 
+const imageSnippet = `curl https://api.freetheai.xyz/v1/images/generations \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "xai/grok-imagine-image",
+    "prompt": "A neon sports car parked under rainy city lights",
+    "n": 1,
+    "aspect_ratio": "auto",
+    "resolution": "1k"
+  }'`;
+
+const videoSnippet = `curl https://api.freetheai.xyz/v1/videos/generations \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "xai/grok-imagine-video",
+    "prompt": "A neon sports car slowly driving through rainy city lights",
+    "duration": 5,
+    "resolution": "480p",
+    "aspect_ratio": "16:9"
+  }'`;
+
+const videoStatusSnippet = `curl https://api.freetheai.xyz/v1/videos/REQUEST_ID \\
+  -H "Authorization: Bearer $FREETHEAI_API_KEY"`;
+
 const pythonSnippet = `from openai import OpenAI
 
 client = OpenAI(
@@ -190,6 +215,11 @@ const aliasFamilies = [
 		slug: 'wsf/*',
 		note: 'Selected Windsurf aliases only.',
 	},
+	{
+		label: 'XAI',
+		slug: 'xai/*',
+		note: 'Site-backed image and deferred video generation aliases.',
+	},
 ];
 
 const familyCount = aliasFamilies.length;
@@ -213,6 +243,7 @@ const modelCountLabel = '15k+ models';
 					<div class="nav-links">
 						<a href="#how">How</a>
 						<a href="#usage">Usage</a>
+						<a href="#media">Media</a>
 						<a href="/models">Models</a>
 						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">Repo</a>
 					</div>
@@ -231,6 +262,7 @@ const modelCountLabel = '15k+ models';
 						<p class="hero-text">
 							Get a key in Discord, hit a real API, and build with live models, streaming, and
 							tool calling without the usual friction of billing, micro credits, or daily caps.
+							Image and video generation are live too.
 						</p>
 						<div class="hero-actions">
 							<a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
@@ -271,6 +303,13 @@ const modelCountLabel = '15k+ models';
 									<p>Use normal OpenAI tool calls.</p>
 								</div>
 							</div>
+							<div class="signal-box">
+								<span class="material-symbols-outlined">movie</span>
+								<div>
+									<strong>Media routes live</strong>
+									<p>Images and deferred video.</p>
+								</div>
+							</div>
 						</div>
 					</div>
 
@@ -304,14 +343,21 @@ const modelCountLabel = '15k+ models';
 								</div>
 								<div class="mini-stat">
 									<span class="material-symbols-outlined">chat</span>
-									<div>
-										<strong>Route</strong>
-										<code>/v1/chat/completions</code>
-									</div>
+								<div>
+									<strong>Route</strong>
+									<code>/v1/chat/completions</code>
 								</div>
-								<div class="mini-stat">
-									<span class="material-symbols-outlined">description</span>
-									<div>
+							</div>
+							<div class="mini-stat">
+								<span class="material-symbols-outlined">imagesmode</span>
+								<div>
+									<strong>Media</strong>
+									<code>/v1/images + /v1/videos</code>
+								</div>
+							</div>
+							<div class="mini-stat">
+								<span class="material-symbols-outlined">description</span>
+								<div>
 										<strong>Docs / Repo</strong>
 										<code>github.com/vibheksoni/free-ai</code>
 									</div>
@@ -360,6 +406,9 @@ const modelCountLabel = '15k+ models';
 								<li><span class="material-symbols-outlined">favorite</span><code>GET /v1/health</code></li>
 								<li><span class="material-symbols-outlined">view_list</span><code>GET /v1/models</code></li>
 								<li><span class="material-symbols-outlined">chat</span><code>POST /v1/chat/completions</code></li>
+								<li><span class="material-symbols-outlined">imagesmode</span><code>POST /v1/images/generations</code></li>
+								<li><span class="material-symbols-outlined">movie</span><code>POST /v1/videos/generations</code></li>
+								<li><span class="material-symbols-outlined">progress_activity</span><code>GET /v1/videos/:request_id</code></li>
 							</ul>
 							<h3>Auth</h3>
 							<pre><code>Authorization: Bearer YOUR_API_KEY</code></pre>
@@ -376,6 +425,49 @@ const modelCountLabel = '15k+ models';
 					<div class="panel wide-panel">
 						<h3>Tool Calling</h3>
 						<pre><code>{toolSnippet}</code></pre>
+					</div>
+				</section>
+
+				<section class="section" id="media">
+					<div class="section-head">
+						<div class="eyebrow">MEDIA</div>
+						<h2>Generate images and videos through the public API.</h2>
+						<p>
+							Use <code>xai/grok-imagine-image</code> for images and
+							<code>xai/grok-imagine-video</code> for videos. Video generation is deferred: start the
+							job, then poll the returned <code>request_id</code> until the status response includes a
+							video URL.
+						</p>
+					</div>
+					<div class="usage-grid">
+						<div class="panel">
+							<h3>Current enforced limits</h3>
+							<ul class="privacy-list">
+								<li><span class="material-symbols-outlined">check_circle</span><code>xai/grok-imagine-image</code></li>
+								<li><span class="material-symbols-outlined">check_circle</span>Image resolution: <code>1k</code> only</li>
+								<li><span class="material-symbols-outlined">check_circle</span>Image response format is returned as <code>b64_json</code></li>
+								<li><span class="material-symbols-outlined">check_circle</span><code>xai/grok-imagine-video</code></li>
+								<li><span class="material-symbols-outlined">check_circle</span>Video resolution: <code>480p</code> only</li>
+								<li><span class="material-symbols-outlined">check_circle</span>Video duration: <code>1</code> to <code>5</code> seconds</li>
+							</ul>
+						</div>
+						<div class="panel">
+							<h3>Image generation</h3>
+							<pre><code>{imageSnippet}</code></pre>
+						</div>
+					</div>
+					<div class="panel wide-panel">
+						<h3>Start video generation</h3>
+						<pre><code>{videoSnippet}</code></pre>
+					</div>
+					<div class="panel wide-panel">
+						<h3>Poll video status</h3>
+						<pre><code>{videoStatusSnippet}</code></pre>
+						<p>
+							Pending jobs may return <code>202</code> with a payload like
+							<code>&#123;"status":"pending","progress":0&#125;</code>. Keep polling the same
+							<code>request_id</code> until the response contains the final video payload.
+						</p>
 					</div>
 				</section>
 

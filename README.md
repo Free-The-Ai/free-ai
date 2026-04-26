@@ -2,7 +2,7 @@
 
 # FreeTheAi
 
-### Free AI API access with Discord signup, OpenAI-compatible routes, streaming, and tool calling
+### Free AI API access with Discord signup, OpenAI-compatible chat routes, xAI image and video generation, streaming, and tool calling
 
 [![API](https://img.shields.io/badge/API-OpenAI%20Compatible-111827?style=for-the-badge)](https://api.freetheai.xyz)
 [![Base URL](https://img.shields.io/badge/Base%20URL-api.freetheai.xyz-0ea5e9?style=for-the-badge)](https://api.freetheai.xyz)
@@ -18,6 +18,8 @@
 
 - Discord slash-command signup
 - OpenAI-compatible `chat/completions`
+- Image generation via `images/generations`
+- Deferred video generation via `videos/generations`
 - Streaming support
 - Tool calling support
 - No daily cap
@@ -85,6 +87,9 @@ https://api.freetheai.xyz
 | `/v1/health` | `GET` | Health check |
 | `/v1/models` | `GET` | Live model catalog |
 | `/v1/chat/completions` | `POST` | OpenAI-compatible chat completions |
+| `/v1/images/generations` | `POST` | Image generation |
+| `/v1/videos/generations` | `POST` | Start video generation |
+| `/v1/videos/:request_id` | `GET` | Poll video generation status |
 
 Auth:
 
@@ -117,6 +122,64 @@ curl https://api.freetheai.xyz/v1/chat/completions \
     ]
   }'
 ```
+
+### Image Generation
+
+```bash
+curl https://api.freetheai.xyz/v1/images/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "xai/grok-imagine-image",
+    "prompt": "A neon sports car parked under rainy city lights",
+    "n": 1,
+    "aspect_ratio": "auto",
+    "resolution": "1k"
+  }'
+```
+
+### Video Generation
+
+Start the job:
+
+```bash
+curl https://api.freetheai.xyz/v1/videos/generations \
+  -H "Authorization: Bearer YOUR_API_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "model": "xai/grok-imagine-video",
+    "prompt": "A neon sports car slowly driving through rainy city lights",
+    "duration": 5,
+    "resolution": "480p",
+    "aspect_ratio": "16:9"
+  }'
+```
+
+Poll it:
+
+```bash
+curl https://api.freetheai.xyz/v1/videos/REQUEST_ID \
+  -H "Authorization: Bearer YOUR_API_KEY"
+```
+
+Pending jobs may return `202` with a payload like:
+
+```json
+{"status":"pending","progress":0}
+```
+
+Keep polling the same `request_id` until the response includes the final video payload.
+
+## Current Media Limits
+
+The API currently enforces the same anonymous-compatible media limits used by the public site flow:
+
+- `xai/grok-imagine-image`
+- image resolution: `1k` only
+- image responses are returned as `b64_json`
+- `xai/grok-imagine-video`
+- video resolution: `480p` only
+- video duration: `1` to `5` seconds
 
 ## Tool Calling
 
@@ -229,11 +292,13 @@ Use the exact ids returned by `GET /v1/models`.
 
 - `bbl/*`
 - `cat/*`
+- `fth/*`
 - `glm/*`
 - `kai/*`
 - `opc/*`
 - `or/*`
 - `wsf/*`
+- `xai/*`
 
 ## Current Live Snapshot
 
@@ -296,6 +361,12 @@ Current notable families from the deployed API:
 - `cat/gemini-2-5-flash`
 - `cat/gemini-3-flash`
 - `cat/gemini-3-1-pro`
+
+### `fth/*`
+
+- expanded open-model catalog
+- full listing stays API-driven through `GET /v1/models`
+- use the exact returned alias ids such as `fth/Qwen/Qwen2.5-7B-Instruct`
 
 ### `wsf/*`
 

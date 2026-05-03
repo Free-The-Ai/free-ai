@@ -1166,6 +1166,7 @@ h3 {
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	flex-wrap: wrap;
 	gap: 20px;
 	padding: 24px;
 	background: var(--surface);
@@ -1178,6 +1179,19 @@ h3 {
 .cta-banner p {
 	max-width: 58ch;
 	margin: 16px 0 0;
+}
+
+.discord-widget {
+	width: 100%;
+	display: flex;
+	justify-content: center;
+	margin-top: 24px;
+}
+
+.discord-widget iframe {
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	max-width: 100%;
 }
 
 @media (max-width: 1120px) {

@@ -366,6 +366,18 @@ Prompt and completion text are **not stored**.
 
 <div align="center">
 
+## Community
+
+<a href="https://discord.gg/secrets">
+  <img src="https://img.shields.io/badge/Discord-Join%20Server-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Join Discord" />
+</a>
+
+<br><br>
+
+<iframe src="https://discord.com/widget?id=1461555807731585158&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+
+<br>
+
 [Website](https://freetheai.xyz) · [Model Catalog](https://freetheai.xyz/models) · [API](https://api.freetheai.xyz) · [Discord](https://discord.gg/secrets) · [Backup Invite](https://discord.gg/rG3SYpeqYF)
 
 <br>
@@ -373,3 +385,4 @@ Prompt and completion text are **not stored**.
 <sub>No paid tiers. No billing page. Community-run.</sub>
 
 </div>
+

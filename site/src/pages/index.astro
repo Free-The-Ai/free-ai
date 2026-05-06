@@ -81,9 +81,10 @@ const proofStats = [
 		copy: 'Active builder community on Discord.',
 	},
 	{
-		value: '700+',
-		label: 'users',
-		copy: 'Registered and building real projects.',
+		value: 'live',
+		label: 'tokens served',
+		copy: 'Successful input and output tokens processed.',
+		id: 'total-tokens-served',
 	},
 	{
 		value: '$0',
@@ -249,11 +250,37 @@ const fairnessItems = [
 				<section class="proof-grid" aria-label="FreeTheAi usage proof">
 					{proofStats.map((stat) => (
 						<article class="proof-card">
-							<strong>{stat.value}</strong>
+							<strong id={stat.id}>{stat.value}</strong>
 							<span>{stat.label}</span>
 							<p>{stat.copy}</p>
 						</article>
 					))}
+				</section>
+
+				<section class="section live-usage-section" aria-label="Live FreeTheAi usage">
+					<div class="section-head">
+						<div class="eyebrow">LIVE USAGE</div>
+						<h2>What people are using now.</h2>
+						<p>
+							Live aggregate usage and top model aliases, pulled from the API without exposing prompts or completions.
+						</p>
+					</div>
+					<div class="live-usage-grid">
+						<article class="panel live-token-panel">
+							<div class="panel-kicker">Total tokens served</div>
+							<strong id="live-token-total">Loading</strong>
+							<p>
+								<span id="live-token-input">input: loading</span>
+								<span id="live-token-output">output: loading</span>
+							</p>
+						</article>
+						<article class="panel model-leaderboard-panel">
+							<div class="panel-kicker">Top models</div>
+							<div id="model-leaderboard-list" class="model-leaderboard-list">
+								<div class="leaderboard-placeholder">Loading model leaderboard...</div>
+							</div>
+						</article>
+					</div>
 				</section>
 
 				<section class="section split-section" id="quickstart">
@@ -438,5 +465,102 @@ const fairnessItems = [
 				</section>
 			</main>
 		</div>
+		<script is:inline>
+			const apiBase = 'https://api.freetheai.xyz/v1';
+			const siteApiKey = 'freetheai.xyz';
+
+			function compactNumber(value) {
+				const number = Number(value);
+				if (!Number.isFinite(number)) return '0';
+				return new Intl.NumberFormat(undefined, {
+					compactDisplay: 'short',
+					maximumFractionDigits: number >= 1000000 ? 1 : 0,
+					notation: 'compact',
+				}).format(number);
+			}
+
+			function fullNumber(value) {
+				const number = Number(value);
+				if (!Number.isFinite(number)) return '0';
+				return new Intl.NumberFormat().format(number);
+			}
+
+			function escapeHtml(value) {
+				return String(value)
+					.replaceAll('&', '&amp;')
+					.replaceAll('<', '&lt;')
+					.replaceAll('>', '&gt;')
+					.replaceAll('"', '&quot;')
+					.replaceAll("'", '&#39;');
+			}
+
+			async function loadLiveUsageStats() {
+				const tokenProof = document.getElementById('total-tokens-served');
+				const tokenTotal = document.getElementById('live-token-total');
+				const tokenInput = document.getElementById('live-token-input');
+				const tokenOutput = document.getElementById('live-token-output');
+				try {
+					const response = await fetch(`${apiBase}/health`, {
+						headers: { Accept: 'application/json' },
+					});
+					if (!response.ok) throw new Error(`health ${response.status}`);
+					const payload = await response.json();
+					const totals = payload?.total_tokens_served ?? payload?.total_tokens_serverd ?? {};
+					const total = Number(totals.total ?? 0);
+					const input = Number(totals.input ?? 0);
+					const output = Number(totals.output ?? 0);
+					if (tokenProof) tokenProof.textContent = compactNumber(total);
+					if (tokenTotal) tokenTotal.textContent = fullNumber(total);
+					if (tokenInput) tokenInput.textContent = `input: ${fullNumber(input)}`;
+					if (tokenOutput) tokenOutput.textContent = `output: ${fullNumber(output)}`;
+				} catch (error) {
+					if (tokenProof) tokenProof.textContent = 'live';
+					if (tokenTotal) tokenTotal.textContent = 'Unavailable';
+					if (tokenInput) tokenInput.textContent = 'input: unavailable';
+					if (tokenOutput) tokenOutput.textContent = 'output: unavailable';
+					console.warn('Failed to load live token totals.', error);
+				}
+			}
+
+			async function loadModelLeaderboard() {
+				const target = document.getElementById('model-leaderboard-list');
+				if (!target) return;
+				try {
+					const response = await fetch(`${apiBase}/models/leaderboard?limit=6`, {
+						headers: {
+							Accept: 'application/json',
+							Authorization: `Bearer ${siteApiKey}`,
+						},
+					});
+					if (!response.ok) throw new Error(`leaderboard ${response.status}`);
+					const payload = await response.json();
+					const entries = Array.isArray(payload?.data) ? payload.data : [];
+					if (entries.length === 0) {
+						target.innerHTML = '<div class="leaderboard-placeholder">No successful model usage yet.</div>';
+						return;
+					}
+					target.innerHTML = entries
+						.map((entry) => {
+							const model = String(entry.alias_model || 'unknown');
+							const rank = Number(entry.rank || 0);
+							const totalRequests = Number(entry.total_requests || 0);
+							return `
+								<div class="model-leaderboard-row">
+									<span>#${rank}</span>
+									<code>${escapeHtml(model)}</code>
+									<strong>${fullNumber(totalRequests)}</strong>
+								</div>
+							`;
+						})
+						.join('');
+				} catch (error) {
+					target.innerHTML = '<div class="leaderboard-placeholder">Could not load the live leaderboard.</div>';
+					console.warn('Failed to load model leaderboard.', error);
+				}
+			}
+
+			loadLiveUsageStats();
+			loadModelLeaderboard();
+		</script>
 	</body>
 </html>

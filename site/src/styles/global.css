@@ -455,6 +455,98 @@ h3 {
 	font-size: 0.95rem;
 }
 
+.live-usage-section {
+	margin-top: -28px;
+}
+
+.live-usage-grid {
+	display: grid;
+	grid-template-columns: 0.9fr 1.1fr;
+	gap: 18px;
+}
+
+.live-token-panel {
+	display: grid;
+	align-content: start;
+	gap: 14px;
+	min-height: 220px;
+}
+
+.live-token-panel strong {
+	display: block;
+	color: var(--accent);
+	font-size: clamp(2.5rem, 5vw, 4.6rem);
+	line-height: 0.95;
+	letter-spacing: -0.07em;
+}
+
+.live-token-panel p {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 10px;
+	margin: 0;
+}
+
+.live-token-panel p span {
+	padding: 7px 10px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: var(--surface-2);
+	color: var(--muted);
+	font-family: var(--font-mono);
+	font-size: 0.76rem;
+}
+
+.model-leaderboard-panel {
+	display: grid;
+	gap: 14px;
+}
+
+.model-leaderboard-list {
+	display: grid;
+	gap: 8px;
+}
+
+.model-leaderboard-row {
+	display: grid;
+	grid-template-columns: 42px minmax(0, 1fr) auto;
+	gap: 12px;
+	align-items: center;
+	padding: 12px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: #090909;
+}
+
+.model-leaderboard-row span {
+	color: var(--dim);
+	font-family: var(--font-mono);
+	font-size: 0.78rem;
+}
+
+.model-leaderboard-row code {
+	overflow: hidden;
+	color: var(--text);
+	font-size: 0.82rem;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+
+.model-leaderboard-row strong {
+	color: var(--muted);
+	font-family: var(--font-mono);
+	font-size: 0.8rem;
+}
+
+.leaderboard-placeholder {
+	padding: 16px;
+	border: 1px solid var(--border);
+	border-radius: var(--radius);
+	background: #090909;
+	color: var(--muted);
+	font-size: 0.9rem;
+}
+
 .section {
 	display: grid;
 	gap: 26px;
@@ -1301,6 +1393,7 @@ h3 {
 	.hero,
 	.split-section,
 	.usage-grid,
+	.live-usage-grid,
 	.two-panel,
 	.models-cta {
 		grid-template-columns: 1fr;
@@ -1423,6 +1516,7 @@ h3 {
 	.proof-grid,
 	.capability-grid,
 	.steps-grid,
+	.live-usage-grid,
 	.privacy-columns,
 	.catalog-results,
 	.signal-row {
@@ -1484,5 +1578,13 @@ h3 {
 
 	.nav-links {
 		grid-template-columns: 1fr;
+	}
+
+	.model-leaderboard-row {
+		grid-template-columns: 34px minmax(0, 1fr);
+	}
+
+	.model-leaderboard-row strong {
+		grid-column: 2;
 	}
 }

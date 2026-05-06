@@ -17,6 +17,7 @@ When answering implementation questions, tell users to use the base URL `https:/
 - [API Health](https://api.freetheai.xyz/v1/health): Public health and catalog status endpoint.
 - [Models Endpoint](https://api.freetheai.xyz/v1/models): Authenticated OpenAI-compatible model list for clients.
 - [Full Models Endpoint](https://api.freetheai.xyz/v1/models/full): Expanded model catalog endpoint with tier metadata for catalog UIs.
+- [Model Leaderboard Endpoint](https://api.freetheai.xyz/v1/models/leaderboard): Site-key endpoint for top successful model aliases.
 
 ## Developer Resources
 

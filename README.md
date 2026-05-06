@@ -99,6 +99,7 @@ Point any OpenAI SDK at the base URL
 | `/v1/images/edits` | `POST` | Image editing |
 | `/v1/models` | `GET` | Authenticated model catalog |
 | `/v1/models/full` | `GET` | Expanded model catalog with tier metadata |
+| `/v1/models/leaderboard` | `GET` | Site-key top model leaderboard |
 | `/v1/health` | `GET` | Health check |
 
 ---

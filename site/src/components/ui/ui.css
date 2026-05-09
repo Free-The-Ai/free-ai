@@ -1,36 +1,64 @@
 /* ── Kobalte form component styles ── Hyperstudio dark theme ── */
 /* CSS custom properties inherited from global.css */
 
+/* ── Shared states ── */
+.kb-text-field__label,
+.kb-number-field__label,
+.kb-select__label,
+.kb-progress__label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.kb-button:focus-visible,
+.kb-select__trigger:focus-visible,
+.kb-checkbox__control:focus-visible,
+.kb-switch__control:focus-visible {
+  outline: 2px solid var(--amber);
+  outline-offset: 2px;
+}
+
+.kb-button[data-disabled],
+.kb-select__trigger[data-disabled],
+.kb-text-field__input[data-disabled],
+.kb-text-field__textarea[data-disabled],
+.kb-number-field__input[data-disabled],
+.kb-checkbox__control[data-disabled],
+.kb-checkbox__label[data-disabled],
+.kb-switch__control[data-disabled],
+.kb-switch__label[data-disabled] {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.kb-text-field__description,
+.kb-checkbox__description { color: var(--dim); font-size: 0.8rem; line-height: 1.5; }
+
+.kb-text-field__error,
+.kb-checkbox__error { color: var(--danger); font-size: 0.8rem; }
+
+.kb-text-field__input[data-invalid],
+.kb-text-field__textarea[data-invalid],
+.kb-number-field__input[data-invalid] { border-color: var(--danger); }
+
 /* ── Button ── */
 .kb-button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 10px;
-  min-height: 48px;
-  padding: 0 24px;
-  border: 1.5px solid var(--border-strong);
+  min-height: var(--control-height);
+  padding: var(--control-padding);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.055);
+  background: var(--control-bg);
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: background 200ms ease, border-color 200ms ease, color 200ms ease,
-    transform 150ms ease, box-shadow 200ms ease;
+  transition: background 200ms ease, border-color 200ms ease, color 200ms ease;
   white-space: nowrap;
-}
-.kb-button:hover { transform: translateY(-1px); }
-.kb-button:active { transform: translateY(0); }
-.kb-button:focus-visible {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
-}
-.kb-button[data-disabled] {
-  opacity: 0.4;
-  cursor: not-allowed;
-  transform: none;
 }
 .kb-button[data-variant="primary"] {
   border-color: var(--accent);
@@ -54,26 +82,20 @@
 }
 .kb-button[data-variant="danger"]:hover {
   background: rgba(255, 77, 77, 0.1);
-  box-shadow: 0 0 24px rgba(255, 77, 77, 0.08);
 }
 .kb-button[data-size="sm"] {
-  min-height: 36px;
-  padding: 0 16px;
+  min-height: var(--control-height-sm);
+  padding: var(--control-padding-sm);
   font-size: 0.82rem;
 }
 .kb-button[data-size="lg"] {
-  min-height: 56px;
-  padding: 0 32px;
+  min-height: var(--control-height-lg);
+  padding: var(--control-padding-lg);
   font-size: 1.05rem;
 }
 
 /* ── TextField ── */
 .kb-text-field { display: grid; gap: 6px; }
-.kb-text-field__label {
-  color: var(--muted);
-  font-size: 0.85rem;
-  font-weight: 500;
-}
 .kb-text-field__input,
 .kb-text-field__textarea {
   width: 100%;
@@ -81,7 +103,7 @@
   padding: 10px 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--control-bg);
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 0.95rem;
@@ -100,36 +122,16 @@
   border-color: var(--border-strong);
   box-shadow: 0 0 0 1px var(--border-strong);
 }
-.kb-text-field__input[data-invalid],
-.kb-text-field__textarea[data-invalid] {
-  border-color: var(--danger);
-}
-.kb-text-field__input[data-disabled],
-.kb-text-field__textarea[data-disabled] {
-  opacity: 0.45;
-  cursor: not-allowed;
-}
-.kb-text-field__description {
-  color: var(--dim);
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
-.kb-text-field__error {
-  color: var(--danger);
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
 
 /* ── NumberField ── */
 .kb-number-field { display: grid; gap: 6px; }
-.kb-number-field__label { color: var(--muted); font-size: 0.85rem; font-weight: 500; }
 .kb-number-field__input {
   width: 100%;
   min-height: 44px;
   padding: 10px 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--control-bg);
   color: var(--text);
   font-family: var(--font-mono);
   font-size: 0.95rem;
@@ -140,12 +142,9 @@
   border-color: var(--border-strong);
   box-shadow: 0 0 0 1px var(--border-strong);
 }
-.kb-number-field__input[data-invalid] { border-color: var(--danger); }
-.kb-number-field__input[data-disabled] { opacity: 0.45; cursor: not-allowed; }
 
 /* ── Select ── */
 .kb-select { display: grid; gap: 6px; }
-.kb-select__label { color: var(--muted); font-size: 0.85rem; font-weight: 500; }
 .kb-select__trigger {
   display: flex;
   align-items: center;
@@ -155,7 +154,7 @@
   padding: 0 14px;
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--control-bg);
   color: var(--text);
   font-family: var(--font-sans);
   font-size: 0.95rem;
@@ -163,12 +162,7 @@
   transition: border-color 200ms ease, box-shadow 200ms ease;
 }
 .kb-select__trigger:hover { border-color: var(--border-strong); }
-.kb-select__trigger:focus-visible {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
-}
 .kb-select__trigger[data-expanded] { border-color: var(--border-strong); }
-.kb-select__trigger[data-disabled] { opacity: 0.45; cursor: not-allowed; }
 .kb-select__icon { color: var(--dim); transition: transform 200ms ease; }
 .kb-select__icon[data-expanded] { transform: rotate(180deg); }
 .kb-select__content {
@@ -221,15 +215,10 @@
   transition: background 150ms ease, border-color 150ms ease;
 }
 .kb-checkbox__control:hover { border-color: var(--text); }
-.kb-checkbox__control:focus-visible {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
-}
 .kb-checkbox__control[data-checked] {
   border-color: var(--accent);
   background: var(--accent);
 }
-.kb-checkbox__control[data-disabled] { opacity: 0.4; cursor: not-allowed; }
 .kb-checkbox__indicator {
   color: #0a0a0a;
   display: flex;
@@ -241,16 +230,6 @@
   font-size: 0.9rem;
   cursor: pointer;
   user-select: none;
-}
-.kb-checkbox__label[data-disabled] { opacity: 0.4; cursor: not-allowed; }
-.kb-checkbox__description {
-  color: var(--dim);
-  font-size: 0.8rem;
-  line-height: 1.5;
-}
-.kb-checkbox__error {
-  color: var(--danger);
-  font-size: 0.8rem;
 }
 
 /* ── Switch ── */
@@ -264,16 +243,8 @@
   margin-top: 2px;
   padding: 0 2px;
   border-radius: 999px;
-  background: var(--border-strong);
-  cursor: pointer;
-  transition: background 200ms ease;
+  transition: transform 200ms ease;
 }
-.kb-switch__control:focus-visible {
-  outline: 2px solid var(--amber);
-  outline-offset: 2px;
-}
-.kb-switch__control[data-checked] { background: var(--amber); }
-.kb-switch__control[data-disabled] { opacity: 0.4; cursor: not-allowed; }
 .kb-switch__thumb {
   width: 16px;
   height: 16px;
@@ -283,7 +254,6 @@
 }
 .kb-switch__thumb[data-checked] { transform: translateX(18px); }
 .kb-switch__label { color: var(--text); font-size: 0.9rem; cursor: pointer; user-select: none; }
-.kb-switch__label[data-disabled] { opacity: 0.4; cursor: not-allowed; }
 
 /* ── Progress ── */
 .kb-progress { display: grid; gap: 8px; }
@@ -293,7 +263,6 @@
   justify-content: space-between;
   gap: 12px;
 }
-.kb-progress__label { color: var(--muted); font-size: 0.85rem; font-weight: 500; }
 .kb-progress__value-label {
   color: var(--dim);
   font-family: var(--font-mono);

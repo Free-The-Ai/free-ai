@@ -1,6 +1,7 @@
 import { Select as KSelect } from "@kobalte/core/select";
 import { splitProps, For } from "solid-js";
 import type { ComponentProps } from "solid-js";
+import { CheckmarkIcon, ChevronDownIcon } from "./icons";
 
 export interface SelectOption {
   value: string;
@@ -36,15 +37,7 @@ export default function Select(props: SelectProps) {
         <KSelect.Item item={itemProps.item} class="kb-select__item">
           <KSelect.ItemLabel>{itemProps.item.textValue}</KSelect.ItemLabel>
           <KSelect.ItemIndicator class="kb-select__item-indicator">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-              <path
-                d="M3 8l3.5 3.5L13 5"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              />
-            </svg>
+            <CheckmarkIcon />
           </KSelect.ItemIndicator>
         </KSelect.Item>
       )}
@@ -57,15 +50,7 @@ export default function Select(props: SelectProps) {
           {(state) => state.selectedOption() ?? local.placeholder ?? "Select..."}
         </KSelect.Value>
         <KSelect.Icon class="kb-select__icon">
-          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M4 6l4 4 4-4"
-              stroke="currentColor"
-              stroke-width="1.5"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <ChevronDownIcon />
         </KSelect.Icon>
       </KSelect.Trigger>
       <KSelect.Portal>

@@ -1,6 +1,6 @@
 import { Button as KButton } from "@kobalte/core/button";
 import { splitProps } from "solid-js";
-import type { ComponentProps, JSX, ValidComponent } from "solid-js";
+import type { ComponentProps, ValidComponent } from "solid-js";
 
 type Variant = "primary" | "ghost" | "danger";
 type Size = "sm" | "md" | "lg";
@@ -11,7 +11,7 @@ interface ButtonProps extends Omit<ComponentProps<typeof KButton>, "as"> {
   as?: ValidComponent;
 }
 
-const sizeMap: Record<Size, string> = { sm: "sm", md: undefined as any, lg: "lg" };
+const sizeMap: Record<Size, string | undefined> = { sm: "sm", md: undefined, lg: "lg" };
 
 export default function Button(props: ButtonProps) {
   const [local, rest] = splitProps(props, ["variant", "size", "class"]);

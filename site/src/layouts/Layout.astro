@@ -1,0 +1,65 @@
+---
+import BaseHead from '../components/BaseHead.astro';
+import { siteConfig } from '../config/site';
+
+interface Props {
+	title?: string;
+	description?: string;
+	image?: string;
+	jsonLd?: Record<string, unknown>[];
+	currentPath?: string;
+}
+
+const {
+	title = siteConfig.title,
+	description = siteConfig.description,
+	image = siteConfig.defaults.ogImage,
+	jsonLd = [],
+	currentPath = '',
+} = Astro.props;
+
+const navLinks: [string, string][] = [
+	['/', 'Home'],
+	['/docs', 'Docs'],
+	['/models', 'Models'],
+	[siteConfig.socials.github, 'Repo'],
+];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<BaseHead title={title} description={description} image={image} jsonLd={jsonLd} />
+	</head>
+	<body>
+		<div class="page-shell">
+			<header class="site-header">
+				<nav class="nav">
+					<a class="brand" href="/" aria-label="FreeTheAi home">
+						<span class="brand-mark">FTA</span>
+						<span>FreeTheAi</span>
+					</a>
+					<div class="nav-links">
+						{navLinks.map(([href, label]) => (
+							<a
+								href={href}
+								class={currentPath === href ? 'is-active' : ''}
+								target={href.startsWith('http') ? '_blank' : undefined}
+								rel={href.startsWith('http') ? 'noreferrer' : undefined}
+							>
+								{label}
+							</a>
+						))}
+					</div>
+					<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+						<span class="material-symbols-outlined">forum</span>
+						<span class="desktop-label">Join Discord</span>
+						<span class="mobile-label">Discord</span>
+					</a>
+				</nav>
+			</header>
+
+			<slot />
+		</div>
+	</body>
+</html>

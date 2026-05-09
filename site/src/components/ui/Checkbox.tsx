@@ -1,5 +1,6 @@
 import { Checkbox as KCheckbox } from "@kobalte/core/checkbox";
 import { splitProps, type ComponentProps } from "solid-js";
+import { CheckmarkIcon } from "./icons";
 
 interface CheckboxProps extends ComponentProps<typeof KCheckbox> {
   label?: string;
@@ -21,15 +22,7 @@ export default function Checkbox(props: CheckboxProps) {
       <KCheckbox.Input />
       <KCheckbox.Control class="kb-checkbox__control">
         <KCheckbox.Indicator class="kb-checkbox__indicator">
-          <svg width="14" height="14" viewBox="0 0 16 16" fill="none">
-            <path
-              d="M3 8l3.5 3.5L13 5"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            />
-          </svg>
+          <CheckmarkIcon />
         </KCheckbox.Indicator>
       </KCheckbox.Control>
       {(local.label || local.description || local.error) && (

@@ -6,3 +6,4 @@ export { default as Checkbox } from "./Checkbox";
 export { default as Switch } from "./Switch";
 export { default as Progress } from "./Progress";
 export type { SelectOption } from "./Select";
+export { CheckmarkIcon, ChevronDownIcon } from "./icons";

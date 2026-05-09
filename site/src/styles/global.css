@@ -158,6 +158,11 @@ pre {
 	background: rgba(255, 255, 255, 0.04);
 }
 
+/* ── Mobile hamburger (hidden on desktop) ── */
+.nav-hamburger {
+	display: none;
+}
+
 .discord-button,
 .primary-button,
 .ghost-button {
@@ -418,6 +423,8 @@ h3 {
 .code-card pre,
 .panel pre {
 	margin: 0;
+	max-width: 100%;
+	min-width: 0;
 	padding: 16px;
 	overflow: auto;
 	border: 1px solid var(--border);
@@ -426,6 +433,18 @@ h3 {
 	color: #b0b0b0;
 	line-height: 1.6;
 	font-size: 0.8rem;
+	white-space: pre-wrap;
+	overflow-wrap: anywhere;
+	word-break: break-word;
+}
+
+.code-card pre code,
+.panel pre code {
+	display: block;
+	max-width: 100%;
+	white-space: inherit;
+	overflow-wrap: inherit;
+	word-break: inherit;
 }
 
 .docs-content,
@@ -1045,6 +1064,101 @@ h3 {
 	animation: shimmer 1.8s ease-in-out infinite;
 }
 
+/* ── Nav drawer ── */
+.nav-drawer-overlay {
+	position: fixed;
+	inset: 0;
+	z-index: 99;
+	background: rgba(0, 0, 0, 0.6);
+	backdrop-filter: blur(4px);
+}
+.nav-drawer {
+	position: fixed;
+	top: 0;
+	right: 0;
+	bottom: 0;
+	z-index: 100;
+	width: min(320px, 85vw);
+	max-width: 320px;
+	display: flex;
+	flex-direction: column;
+	padding: 24px;
+	background: var(--color-bg-2, #141414);
+	border-left: 1px solid var(--border);
+	overflow-y: auto;
+}
+.nav-drawer__title {
+	font-size: 0.82rem;
+	font-weight: 600;
+	color: var(--muted);
+	text-transform: uppercase;
+	letter-spacing: 0.06em;
+	margin-bottom: 20px;
+}
+.nav-drawer__links {
+	display: flex;
+	flex-direction: column;
+	gap: 4px;
+	flex: 1;
+}
+.nav-drawer__link {
+	padding: 14px 16px;
+	border: 1px solid transparent;
+	border-radius: var(--radius);
+	text-decoration: none;
+	color: var(--text);
+	font-size: 1.05rem;
+	font-weight: 600;
+	transition: background 150ms ease, border-color 150ms ease;
+}
+.nav-drawer__link:hover {
+	background: rgba(231, 197, 154, 0.06);
+	border-color: var(--border);
+}
+.nav-drawer__footer {
+	padding-top: 16px;
+	border-top: 1px solid var(--border);
+	margin-top: 16px;
+}
+.nav-drawer__discord {
+	display: inline-flex;
+	align-items: center;
+	gap: 10px;
+	width: 100%;
+	padding: 14px 16px;
+	border: 1px solid var(--amber);
+	border-radius: var(--radius);
+	text-decoration: none;
+	color: var(--amber);
+	font-size: 0.95rem;
+	font-weight: 600;
+	transition: background 150ms ease;
+}
+.nav-drawer__discord:hover {
+	background: rgba(231, 197, 154, 0.1);
+}
+.nav-drawer__close {
+	position: absolute;
+	top: 16px;
+	right: 16px;
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border: 1px solid transparent;
+	border-radius: var(--radius-sm);
+	background: transparent;
+	color: var(--muted);
+	cursor: pointer;
+	transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+.nav-drawer__close:hover {
+	background: rgba(231, 197, 154, 0.08);
+	color: var(--text);
+	border-color: var(--border);
+}
+
 @media (max-width: 1120px) {
 
 	.hero,
@@ -1162,49 +1276,33 @@ h3 {
 		align-items: stretch;
 	}
 
-	.nav-links {
-		grid-column: 1 / -1;
-		grid-row: 2;
-		display: grid;
-		grid-template-columns: repeat(4, minmax(0, 1fr));
-		gap: 2px;
-		padding: 3px;
-		border: 1px solid var(--border);
-		border-radius: var(--radius);
-		background: #0a0a0a;
-	}
-
-	.nav-links a {
-		display: flex;
-		align-items: center;
-		justify-content: center;
-		min-height: 34px;
-		padding: 0 6px;
-		border-radius: var(--radius-sm);
-		font-size: 0.78rem;
-	}
-
+	.nav-links,
 	.discord-button {
-		grid-column: 2;
-		grid-row: 1;
-		justify-self: end;
-		width: auto;
-		min-height: 34px;
-		padding: 0 10px;
-		gap: 6px;
-		font-size: 0.8rem;
-	}
-
-	.desktop-label {
 		display: none;
 	}
 
-	.mobile-label {
-		display: inline;
+	.nav-hamburger {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		justify-content: center;
+		gap: 4px;
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		border: 1px solid var(--border);
+		border-radius: var(--radius-sm);
+		background: transparent;
+		cursor: pointer;
+		justify-self: end;
 	}
-
-	.discord-button .material-symbols-outlined {
-		font-size: 18px;
+	.hamburger-bar {
+		display: block;
+		width: 18px;
+		height: 2px;
+		background: var(--text);
+		border-radius: 1px;
+		transition: transform 200ms ease, opacity 200ms ease;
 	}
 
 	.primary-button,

@@ -1,5 +1,6 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
+import NavDrawer from '../components/NavDrawer';
 import { siteConfig } from '../config/site';
 
 interface Props {
@@ -51,11 +52,12 @@ const navLinks: [string, string][] = [
 							</a>
 						))}
 					</div>
-					<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
-						<span class="material-symbols-outlined">forum</span>
-						<span class="desktop-label">Join Discord</span>
-						<span class="mobile-label">Discord</span>
-					</a>
+				<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+					<span class="material-symbols-outlined">forum</span>
+					<span class="desktop-label">Join Discord</span>
+					<span class="mobile-label">Discord</span>
+				</a>
+				<NavDrawer client:load />
 				</nav>
 			</header>
 

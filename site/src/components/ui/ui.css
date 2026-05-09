@@ -290,3 +290,59 @@
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(350%); }
 }
+
+/* ── Dialog ── */
+.kb-dialog__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+}
+
+.kb-dialog__content {
+  position: fixed;
+  z-index: 100;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+.kb-dialog__title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 16px;
+  letter-spacing: -0.03em;
+}
+
+.kb-dialog__description {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 16px;
+}
+
+.kb-dialog__close {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+  transition: background 150ms ease, color 150ms ease, border-color 150ms ease;
+}
+.kb-dialog__close:hover {
+  background: rgba(231, 197, 154, 0.08);
+  color: var(--text);
+  border-color: var(--border);
+}

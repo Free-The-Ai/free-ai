@@ -1,4 +1,3 @@
-import { Accordion as KAccordion } from "@kobalte/core/accordion";
 import { For, type JSXElement } from "solid-js";
 import { ChevronDownIcon } from "./icons";
 
@@ -15,31 +14,30 @@ export default function Accordion(props: {
   defaultValue?: string[];
   multiple?: boolean;
 }) {
+  const defaultOpen = new Set(props.defaultValue ?? (props.items.length > 0 ? [props.items[0].value] : []));
+
   return (
-    <KAccordion
-      class="kb-accordion"
-      defaultValue={props.defaultValue ?? (props.items.length > 0 ? [props.items[0].value] : [])}
-      multiple={props.multiple ?? true}
-      collapsible
-    >
+    <div class="kb-accordion">
       <For each={props.items}>
         {(item) => (
-          <KAccordion.Item class="kb-accordion__item" value={item.value} id={item.value} disabled={item.disabled}>
-            <KAccordion.Header class="kb-accordion__header" as="h3">
-              <KAccordion.Trigger class="kb-accordion__trigger">
-                <span class="kb-accordion__trigger-content">
-                  {item.eyebrow && <span class="kb-accordion__eyebrow">{item.eyebrow}</span>}
-                  <span class="kb-accordion__label">{item.label}</span>
-                </span>
-                <ChevronDownIcon class="kb-accordion__chevron" aria-hidden />
-              </KAccordion.Trigger>
-            </KAccordion.Header>
-            <KAccordion.Content class="kb-accordion__content">
+          <details class="kb-accordion__item" id={item.value} open={defaultOpen.has(item.value)} data-disabled={item.disabled ? "" : undefined}>
+            <summary
+              class="kb-accordion__trigger"
+              aria-disabled={item.disabled ? "true" : undefined}
+              onClick={(event) => item.disabled && event.preventDefault()}
+            >
+              <span class="kb-accordion__trigger-content">
+                {item.eyebrow && <span class="kb-accordion__eyebrow">{item.eyebrow}</span>}
+                <span class="kb-accordion__label">{item.label}</span>
+              </span>
+              <ChevronDownIcon class="kb-accordion__chevron" aria-hidden />
+            </summary>
+            <div class="kb-accordion__content">
               <div class="kb-accordion__body">{item.children}</div>
-            </KAccordion.Content>
-          </KAccordion.Item>
+            </div>
+          </details>
         )}
       </For>
-    </KAccordion>
+    </div>
   );
 }

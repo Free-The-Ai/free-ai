@@ -4,6 +4,8 @@ export { default as Collapsible } from "./Collapsible";
 export { default as Dialog } from "./Dialog";
 export { default as NumberField } from "./NumberField";
 export { default as Progress } from "./Progress";
+export { default as RadioGroup } from "./RadioGroup";
+export type { RadioOption } from "./RadioGroup";
 export { default as Select } from "./Select";
 export type { SelectOption } from "./Select";
 export { default as Switch } from "./Switch";

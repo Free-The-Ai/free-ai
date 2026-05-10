@@ -1,6 +1,6 @@
 import { createSignal, createEffect, onMount, For, Show } from "solid-js";
-import { Button, TextField, Select, Progress } from "./ui";
-import type { SelectOption } from "./ui";
+import { Button, TextField, Select, Progress, RadioGroup } from "./ui";
+import type { SelectOption, RadioOption } from "./ui";
 
 interface Model {
   id: string;
@@ -21,7 +21,7 @@ const PINNED = [
 const PAGE_OPTIONS: SelectOption[] = [
   { value: "40", label: "40" }, { value: "80", label: "80" }, { value: "120", label: "120" },
 ];
-const SORT_OPTIONS: SelectOption[] = [
+const SORT_OPTIONS: RadioOption[] = [
   { value: "alias-asc", label: "Alias A-Z" },
   { value: "alias-desc", label: "Alias Z-A" },
   { value: "prefix", label: "Prefix then alias" },
@@ -139,8 +139,8 @@ export default function CatalogBrowser() {
           />
         </label>
         <label class="catalog-sort">
-          <span>Sort</span>
-          <Select
+          <RadioGroup
+            label="Sort"
             value={sort()}
             onChange={(v: string) => { setSort(v); setPage(1); }}
             options={SORT_OPTIONS}

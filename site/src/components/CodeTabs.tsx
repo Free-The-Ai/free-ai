@@ -23,7 +23,12 @@ export default function CodeTabs(props: { examples: CodeExample[] }) {
         return (
           <div class="panel code-panel">
             <div class="panel-kicker">{ex.kicker}</div>
-            <pre><code>{ex.code}</code></pre>
+            <div class="docs-code-group">
+              <pre><code>{ex.code}</code></pre>
+              <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+                <span class="material-symbols-outlined">content_copy</span>
+              </button>
+            </div>
           </div>
         );
       }}

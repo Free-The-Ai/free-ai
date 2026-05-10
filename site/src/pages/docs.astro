@@ -1,6 +1,6 @@
 ---
 import Layout from '../layouts/Layout.astro';
-import FeedbackForm from '../components/FeedbackForm';
+import FeedbackPanel from '../components/FeedbackPanel';
 import { siteConfig } from '../config/site';
 import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
 
@@ -307,14 +307,7 @@ const imageModels = [
 					</div>
 			</section>
 
-			<section class="panel docs-card" id="feedback">
-				<div class="eyebrow">FEEDBACK</div>
-				<h2>Share your thoughts</h2>
-				<p>
-					Bug reports, feature ideas, docs improvements. Let us know what you need.
-				</p>
-				<FeedbackForm client:load />
-			</section>
+			<FeedbackPanel client:load />
 		</div>
 		</section>
 	</main>

@@ -1,5 +1,5 @@
 import { createSignal, For, onMount } from "solid-js";
-import { Progress } from "./ui";
+import { Skeleton } from "./ui";
 
 const API = "https://api.freetheai.xyz/v1";
 
@@ -69,10 +69,10 @@ export default function LiveStats() {
         <div class="live-usage-grid">
           <article class="panel live-token-panel">
             <div class="panel-kicker">Total tokens served</div>
-            <strong>{te() ? "Unavailable" : tl() ? <Progress /> : fullNum(td()!.total)}</strong>
+            <strong>{te() ? "Unavailable" : tl() ? <Skeleton width="180" height="22" /> : fullNum(td()!.total)}</strong>
             <p>
               {te() ? <><span>input: unavailable</span><span>output: unavailable</span></>
-               : tl() ? <><span class="loading-shimmer" /><span class="loading-shimmer" /></>
+               : tl() ? <><Skeleton width="120" height="12" /><Skeleton width="120" height="12" /></>
                : <><span>input: {fullNum(td()!.input)}</span><span>output: {fullNum(td()!.output)}</span></>}
             </p>
           </article>
@@ -80,7 +80,7 @@ export default function LiveStats() {
             <div class="panel-kicker">Top models</div>
             <div class="model-leaderboard-list">
               {le() ? <div class="leaderboard-placeholder">Could not load the live leaderboard.</div>
-               : tl() ? <div class="leaderboard-placeholder"><Progress /></div>
+                : tl() ? <div class="leaderboard-placeholder"><Skeleton width="200" height="14" /></div>
                 : lr().length === 0 ? <div class="leaderboard-placeholder">No successful model usage yet.</div>
                : <For each={lr()}>{(e) => (
                    <div class="model-leaderboard-row">

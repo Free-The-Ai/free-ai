@@ -729,3 +729,36 @@
 .kb-radio-group__item-label {
   white-space: nowrap;
 }
+
+/* ── Skeleton ── */
+.kb-skeleton {
+  display: inline-block;
+  overflow: hidden;
+  position: relative;
+}
+
+.kb-skeleton [data-animate] {
+  background: linear-gradient(
+    110deg,
+    var(--border) 25%,
+    var(--surface) 40%,
+    var(--border) 65%
+  );
+  background-size: 300% 100%;
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+
+/* cursor skeleton for inline text replacement */
+.skeleton-text {
+  display: inline-block;
+  vertical-align: middle;
+}
+.skeleton-line {
+  display: block;
+  width: 100%;
+}
+
+@keyframes skeletonShimmer {
+  0% { background-position: 100% 0; }
+  100% { background-position: -50% 0; }
+}

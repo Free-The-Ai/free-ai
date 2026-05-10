@@ -1,5 +1,5 @@
 import { createSignal, createEffect, onMount, For, Show } from "solid-js";
-import { Button, Checkbox, NumberField, Progress, RadioGroup, Select, TextField } from "./ui";
+import { Button, Checkbox, NumberField, RadioGroup, Select, Skeleton, TextField } from "./ui";
 import type { RadioOption, SelectOption } from "./ui";
 
 interface Model {
@@ -192,7 +192,7 @@ export default function CatalogBrowser() {
       <div class="catalog-meta">
         <div class="catalog-status">
           {allModels().length === 0
-            ? <><Progress /><span class="catalog-status-text">Loading models...</span></>
+            ? <Skeleton width="240" height="14"><span class="catalog-status-text">Loading models...</span></Skeleton>
             : `${filteredModels().length.toLocaleString()} matching models`}
         </div>
         <div class="catalog-page-label">
@@ -210,7 +210,7 @@ export default function CatalogBrowser() {
               {allModels().length === 0
                 ? source() === "unavailable"
                   ? "Could not load the live catalog or fallback snapshot for this page."
-                  : <><Progress /><span>Loading models...</span></>
+                   : <><Skeleton width="200" height="14" /><span class="catalog-status-text">Loading models...</span></>
                 : "No models match your current search."}
             </div>
           }

@@ -982,6 +982,37 @@ h3 {
 	gap: 12px;
 }
 
+.catalog-filters {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+	padding-top: 4px;
+}
+
+.catalog-jump {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	color: var(--muted);
+	font-size: 0.82rem;
+	font-weight: 600;
+}
+
+.catalog-jump .kb-number-field {
+	min-width: 80px;
+	width: 90px;
+}
+
+.catalog-jump .kb-number-field__input::-webkit-inner-spin-button,
+.catalog-jump .kb-number-field__input::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+.catalog-jump .kb-number-field__input[type="number"] {
+	-moz-appearance: textfield;
+}
+
 .catalog-results {
 	display: grid;
 	grid-template-columns: repeat(2, minmax(0, 1fr));

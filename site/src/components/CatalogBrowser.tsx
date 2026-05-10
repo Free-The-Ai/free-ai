@@ -1,6 +1,6 @@
 import { createSignal, createEffect, onMount, For, Show } from "solid-js";
-import { Button, TextField, Select, Progress, RadioGroup } from "./ui";
-import type { SelectOption, RadioOption } from "./ui";
+import { Button, Checkbox, NumberField, Progress, RadioGroup, Select, TextField } from "./ui";
+import type { RadioOption, SelectOption } from "./ui";
 
 interface Model {
   id: string;
@@ -10,6 +10,7 @@ interface Model {
 const LIVE_ENDPOINT = "https://api.freetheai.xyz/v1/models/full";
 const LIVE_KEY = "freetheai.xyz";
 const DISABLED = new Set(["xai"]);
+const IMAGE_PREFIXES = new Set(["img", "vhr"]);
 const PINNED = [
   "img/gpt-image-2", "vhr/bytedance_seedream_v4", "vhr/flux_dev",
   "vhr/gpt_image_2", "vhr/nano_banana_2", "yng/agent-1",
@@ -38,6 +39,7 @@ export default function CatalogBrowser() {
   const [pageSize, setPageSize] = createSignal(80);
   const [page, setPage] = createSignal(1);
   const [source, setSource] = createSignal("loading...");
+  const [imageOnly, setImageOnly] = createSignal(false);
 
   const prefixCounts = () => {
     const m = new Map<string, number>();
@@ -50,9 +52,13 @@ export default function CatalogBrowser() {
     });
   };
 
+  const imageModelCount = () =>
+    allModels().filter((m) => IMAGE_PREFIXES.has(m.prefix)).length;
+
   const filteredModels = () => {
     let models = allModels();
     if (prefix() !== "all") models = models.filter((m) => m.prefix === prefix());
+    if (imageOnly()) models = models.filter((m) => IMAGE_PREFIXES.has(m.prefix));
     const q = query().trim().toLowerCase();
     if (q) models = models.filter((m) => m.id.toLowerCase().includes(q));
     switch (sort()) {
@@ -73,6 +79,10 @@ export default function CatalogBrowser() {
     const start = (page() - 1) * pageSize();
     return filteredModels().slice(start, start + pageSize());
   };
+
+  createEffect(() => {
+    if (page() > pageCount()) setPage(pageCount());
+  });
 
   /* Fetch on mount */
   onMount(async () => {
@@ -146,6 +156,14 @@ export default function CatalogBrowser() {
             options={SORT_OPTIONS}
           />
         </label>
+      </div>
+
+      <div class="catalog-filters">
+        <Checkbox
+          checked={imageOnly()}
+          onChange={setImageOnly}
+          label={`Image models only (${imageModelCount()})`}
+        />
       </div>
 
       <div class="catalog-prefixes">
@@ -233,6 +251,18 @@ export default function CatalogBrowser() {
         >
           Next
         </Button>
+        <span class="catalog-jump">
+          Go to
+          <NumberField
+            aria-label="Jump to page"
+            value={page()}
+            minValue={1}
+            maxValue={pageCount()}
+            onChange={(v: number | null) => {
+              if (v !== null) setPage(Math.max(1, Math.min(Math.floor(v), pageCount())));
+            }}
+          />
+        </span>
       </div>
     </div>
   );

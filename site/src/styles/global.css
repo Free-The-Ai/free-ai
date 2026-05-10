@@ -675,6 +675,10 @@ h3 {
 	gap: 24px;
 }
 
+.section > * {
+	min-width: 0;
+}
+
 .section-head {
 	display: grid;
 	gap: 12px;
@@ -1101,17 +1105,21 @@ h3 {
 	position: fixed;
 	inset: 0;
 	z-index: 99;
+	width: 100dvw;
+	height: 100dvh;
 	background: rgba(0, 0, 0, 0.6);
 	backdrop-filter: blur(4px);
 }
+
 .nav-drawer {
 	position: fixed;
 	top: 0;
 	right: 0;
 	bottom: 0;
 	z-index: 100;
-	width: min(320px, 85vw);
-	max-width: 320px;
+	width: min(320px, calc(100dvw - 32px));
+	max-width: calc(100dvw - 32px);
+	height: 100dvh;
 	display: flex;
 	flex-direction: column;
 	padding: 24px;

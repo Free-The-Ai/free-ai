@@ -1485,16 +1485,3 @@ h3 {
 	gap: 16px;
 	max-width: 520px;
 }
-
-.feedback-form__error {
-	color: var(--danger);
-	font-size: 0.85rem;
-	margin: 0;
-}
-
-.feedback-form__success {
-	color: var(--neon-green);
-	font-size: 0.85rem;
-	margin: 0;
-	font-weight: 500;
-}

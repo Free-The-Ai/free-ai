@@ -1,6 +1,7 @@
 ---
 import BaseHead from '../components/BaseHead.astro';
 import NavDrawer from '../components/NavDrawer';
+import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
 
 interface Props {
@@ -62,6 +63,7 @@ const navLinks: [string, string][] = [
 			</header>
 
 			<slot />
+		<ToastRegion client:load />
 		</div>
 	</body>
 </html>

@@ -8,5 +8,6 @@ export { default as Switch } from "./Switch";
 export { default as Progress } from "./Progress";
 export { default as Tabs } from "./Tabs";
 export type { Tab } from "./Tabs";
+export { showToast, ToastRegion } from "./Toast";
 export type { SelectOption } from "./Select";
 export { CheckmarkIcon, ChevronDownIcon } from "./icons";

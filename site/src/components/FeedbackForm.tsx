@@ -1,5 +1,5 @@
 import { createSignal } from "solid-js";
-import { Button, TextField, Select, Switch } from "./ui";
+import { Button, TextField, Select, Switch, showToast } from "./ui";
 import type { SelectOption } from "./ui";
 
 const TOPIC_OPTIONS: SelectOption[] = [
@@ -9,24 +9,20 @@ const TOPIC_OPTIONS: SelectOption[] = [
   { value: "other", label: "Other feedback" },
 ];
 
-type Status = "idle" | "sending" | "sent" | "error";
-
 export default function FeedbackForm() {
   const [subject, setSubject] = createSignal("");
   const [topic, setTopic] = createSignal("");
   const [message, setMessage] = createSignal("");
   const [notify, setNotify] = createSignal(false);
-  const [status, setStatus] = createSignal<Status>("idle");
-  const [error, setError] = createSignal("");
+  const [sending, setSending] = createSignal(false);
 
   const handleSubmit = async (e: Event) => {
     e.preventDefault();
     if (!message().trim()) {
-      setError("Please enter a message.");
+      showToast("Missing message", "Please enter a message before sending.", "error");
       return;
     }
-    setError("");
-    setStatus("sending");
+    setSending(true);
 
     try {
       console.log("[FeedbackForm]", {
@@ -36,14 +32,15 @@ export default function FeedbackForm() {
         notify: notify(),
       });
       await new Promise((resolve) => setTimeout(resolve, 600));
-      setStatus("sent");
+      showToast("Feedback sent", "Thanks for helping us improve.", "success");
       setSubject("");
       setTopic("");
       setMessage("");
       setNotify(false);
     } catch (err) {
-      setStatus("error");
-      setError(String(err));
+      showToast("Failed to send", String(err), "error");
+    } finally {
+      setSending(false);
     }
   };
 
@@ -82,19 +79,12 @@ export default function FeedbackForm() {
         onChange={setNotify}
       />
 
-      {error() && <p class="feedback-form__error">{error()}</p>}
-      {status() === "sent" && (
-        <p class="feedback-form__success">Thanks for your feedback.</p>
-      )}
-
       <Button
         type="submit"
         variant="primary"
-        disabled={status() === "sending" || status() === "sent"}
+        disabled={sending()}
       >
-        {status() === "sending" ? "Sending..."
-          : status() === "sent" ? "Sent!"
-          : "Send Feedback"}
+        {sending() ? "Sending..." : "Send Feedback"}
       </Button>
     </form>
   );

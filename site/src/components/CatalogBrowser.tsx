@@ -1,5 +1,5 @@
 import { createSignal, createEffect, onMount, For, Show } from "solid-js";
-import { Button, Checkbox, NumberField, RadioGroup, Select, Skeleton, TextField } from "./ui";
+import { Button, Checkbox, Combobox, NumberField, RadioGroup, Select, Skeleton } from "./ui";
 import type { RadioOption, SelectOption } from "./ui";
 
 interface Model {
@@ -133,13 +133,15 @@ export default function CatalogBrowser() {
   return (
     <div class="panel catalog-panel">
       <div class="catalog-toolbar">
-        <label class="catalog-search">
-          <span class="material-symbols-outlined">search</span>
-          <TextField
+        <div class="catalog-search">
+          <Combobox
+            options={allModels().map((m) => m.id)}
+            value={query()}
             placeholder="Search alias ids like fth/, yng/, cat/, sonnet, kimi, gemma..."
             onChange={(v: string) => { setQuery(v); setPage(1); }}
+            onInputChange={(v: string) => { setQuery(v); setPage(1); }}
           />
-        </label>
+        </div>
         <label class="catalog-page-size">
           <span>Per page</span>
           <Select

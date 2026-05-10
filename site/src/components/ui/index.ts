@@ -1,3 +1,5 @@
+export { default as Accordion } from "./Accordion";
+export type { AccordionItem } from "./Accordion";
 export { default as Button } from "./Button";
 export { default as Checkbox } from "./Checkbox";
 export { default as Collapsible } from "./Collapsible";

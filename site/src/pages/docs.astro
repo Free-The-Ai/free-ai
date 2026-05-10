@@ -1,6 +1,7 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import FeedbackPanel from '../components/FeedbackPanel';
+import DocsAccordion from '../components/DocsAccordion';
 import { siteConfig } from '../config/site';
 import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
 
@@ -182,183 +183,21 @@ const imageModels = [
 			</aside>
 
 			<div class="docs-content">
-				<section class="panel docs-card" id="auth">
-					<div class="eyebrow">AUTH</div>
-					<h2>Get a key</h2>
-					<p>
-						Join Discord and run <code>/signup</code>. Send the key as a bearer token.
-						If you lose it, run <code>/resetkey</code>.
-					</p>
-					<div class="docs-code-group">
-						<pre><code>{baseSnippet}</code></pre>
-						<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-							<span class="material-symbols-outlined">content_copy</span>
-						</button>
-					</div>
-				</section>
-
-				<section class="panel docs-card" id="endpoints">
-					<div class="eyebrow">ENDPOINTS</div>
-					<h2>Supported routes</h2>
-					<div class="docs-table">
-						{endpoints.map(([method, route, desc]) => (
-							<div class="docs-row">
-								<code>{method}</code>
-								<code>{route}</code>
-								<span>{desc}</span>
-							</div>
-						))}
-					</div>
-				</section>
-
-				<section class="panel docs-card" id="chat">
-					<div class="eyebrow">CHAT COMPLETIONS</div>
-					<h2>OpenAI-compatible chat</h2>
-					<p>
-						Point OpenAI-compatible clients at <code>https://api.freetheai.xyz/v1</code>.
-						Use exact model aliases from <a href="/models">/models</a>.
-					</p>
-					<div class="docs-code-grid">
-						<div>
-							<h3>curl</h3>
-							<div class="docs-code-group">
-								<pre><code>{chatCurlSnippet}</code></pre>
-								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-									<span class="material-symbols-outlined">content_copy</span>
-								</button>
-							</div>
-						</div>
-						<div>
-							<h3>JavaScript SDK</h3>
-							<div class="docs-code-group">
-								<pre><code>{openAISDKSnippet}</code></pre>
-								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-									<span class="material-symbols-outlined">content_copy</span>
-								</button>
-							</div>
-						</div>
-					</div>
-				</section>
-
-				<section class="panel docs-card" id="messages">
-					<div class="eyebrow">MESSAGES API</div>
-					<h2>Anthropic-style clients</h2>
-					<p>
-						Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.
-					</p>
-					<div class="docs-code-group">
-						<pre><code>{messagesSnippet}</code></pre>
-						<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-							<span class="material-symbols-outlined">content_copy</span>
-						</button>
-					</div>
-				</section>
-
-				<section class="panel docs-card" id="models">
-					<div class="eyebrow">MODEL CATALOG</div>
-					<h2>List models</h2>
-					<p>
-						Use <code>/v1/models</code> for normal clients. Use <code>/v1/models/full</code>
-						when you need tier and catalog metadata for a UI.
-					</p>
-					<div class="docs-code-grid">
-						<div>
-							<h3>Client catalog</h3>
-							<div class="docs-code-group">
-								<pre><code>{modelListSnippet}</code></pre>
-								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-									<span class="material-symbols-outlined">content_copy</span>
-								</button>
-							</div>
-						</div>
-						<div>
-							<h3>Full catalog</h3>
-							<div class="docs-code-group">
-								<pre><code>{fullModelListSnippet}</code></pre>
-								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-									<span class="material-symbols-outlined">content_copy</span>
-								</button>
-							</div>
-						</div>
-					</div>
-				</section>
-
-				<section class="panel docs-card" id="images">
-					<div class="eyebrow">IMAGES</div>
-					<h2>Generate and edit images</h2>
-					<p>
-						Use <code>/v1/images/generations</code> for text-to-image. Use
-						<code>/v1/images/edits</code> only with <code>img/gpt-image-2</code>.
-						Generation responses may contain either <code>b64_json</code> or <code>url</code>,
-						so robust clients should support both.
-					</p>
-					<div class="docs-table">
-						{imageModels.map(([model, support, desc]) => (
-							<div class="docs-row">
-								<code>{model}</code>
-								<span>{support}</span>
-								<span>{desc}</span>
-							</div>
-						))}
-					</div>
-					<div class="docs-code-grid">
-						<div>
-							<h3>Image generation</h3>
-							<div class="docs-code-group">
-								<pre><code>{vhrImageSnippet}</code></pre>
-								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-									<span class="material-symbols-outlined">content_copy</span>
-								</button>
-							</div>
-						</div>
-						<div>
-							<h3>Image edit</h3>
-							<div class="docs-code-group">
-								<pre><code>{imageEditSnippet}</code></pre>
-								<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-									<span class="material-symbols-outlined">content_copy</span>
-								</button>
-							</div>
-						</div>
-					</div>
-					<h3>Python save helper</h3>
-					<div class="docs-code-group">
-						<pre><code>{pythonImageSnippet}</code></pre>
-						<button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-							<span class="material-symbols-outlined">content_copy</span>
-						</button>
-					</div>
-				</section>
-
-				<section class="panel docs-card" id="errors">
-					<div class="eyebrow">ERRORS</div>
-					<h2>Common responses</h2>
-					<div class="docs-table compact">
-						<div class="docs-row">
-							<code>400</code>
-							<span>Invalid request body, missing prompt, unknown model, or unsupported media operation.</span>
-						</div>
-						<div class="docs-row">
-							<code>401</code>
-							<span>Missing or invalid API key. Run <code>/signup</code> or <code>/resetkey</code>.</span>
-						</div>
-						<div class="docs-row">
-							<code>403</code>
-							<span>The model is unknown, disabled, or unavailable in the current catalog.</span>
-						</div>
-						<div class="docs-row">
-							<code>429</code>
-							<span>Rate limit or concurrency limit reached. Wait and retry.</span>
-						</div>
-						<div class="docs-row">
-							<code>5xx</code>
-							<span>Provider or gateway failure. Retry once before reporting it in Discord.</span>
-						</div>
-					</div>
-			</section>
-
-			<FeedbackPanel client:load />
-		</div>
+				<DocsAccordion client:load
+					baseSnippet={baseSnippet}
+					chatCurlSnippet={chatCurlSnippet}
+					openAISDKSnippet={openAISDKSnippet}
+					messagesSnippet={messagesSnippet}
+					modelListSnippet={modelListSnippet}
+					fullModelListSnippet={fullModelListSnippet}
+					vhrImageSnippet={vhrImageSnippet}
+					imageEditSnippet={imageEditSnippet}
+					pythonImageSnippet={pythonImageSnippet}
+					endpoints={endpoints}
+					imageModels={imageModels}
+				/>
+				<FeedbackPanel client:load />
+			</div>
 		</section>
 	</main>
 </Layout>

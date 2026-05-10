@@ -75,10 +75,12 @@ export default function CatalogBrowser() {
   };
 
   const pageCount = () => Math.max(1, Math.ceil(filteredModels().length / pageSize()));
+  const prefixTotal = () => prefixCounts().length;
   const visibleModels = () => {
     const start = (page() - 1) * pageSize();
     return filteredModels().slice(start, start + pageSize());
   };
+  const isImageModel = (model: Model) => IMAGE_PREFIXES.has(model.prefix);
 
   createEffect(() => {
     if (page() > pageCount()) setPage(pageCount());
@@ -132,6 +134,33 @@ export default function CatalogBrowser() {
 
   return (
     <div class="panel catalog-panel">
+      <div class="catalog-panel-head">
+        <div>
+          <div class="eyebrow">LIVE INDEX</div>
+          <h3>Find the alias your client should send.</h3>
+        </div>
+        <span class="catalog-source-pill">{source()}</span>
+      </div>
+
+      <div class="catalog-stat-strip" aria-label="Catalog summary">
+        <div class="catalog-stat">
+          <span>Total</span>
+          <strong>{allModels().length ? allModels().length.toLocaleString() : "..."}</strong>
+        </div>
+        <div class="catalog-stat">
+          <span>Image</span>
+          <strong>{allModels().length ? imageModelCount().toLocaleString() : "..."}</strong>
+        </div>
+        <div class="catalog-stat">
+          <span>Prefixes</span>
+          <strong>{allModels().length ? prefixTotal().toLocaleString() : "..."}</strong>
+        </div>
+        <div class="catalog-stat">
+          <span>Matching</span>
+          <strong>{allModels().length ? filteredModels().length.toLocaleString() : "..."}</strong>
+        </div>
+      </div>
+
       <div class="catalog-toolbar">
         <div class="catalog-search">
           <Combobox
@@ -219,14 +248,35 @@ export default function CatalogBrowser() {
         >
           <For each={visibleModels()}>
             {(model, idx) => (
-              <article class="model-card">
+              <article class={`model-card ${isImageModel(model) ? "is-image" : ""}`}>
                 <div class="model-card-top">
                   <span class="model-prefix">{model.prefix}/*</span>
+                  <span class="model-kind">{isImageModel(model) ? "Image" : "Text"}</span>
+                </div>
+                <code class="model-id">{model.id}</code>
+                <button
+                  class="model-copy"
+                  title="Copy model alias"
+                  aria-label={"Copy " + model.id}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    navigator.clipboard.writeText(model.id).catch(() => {});
+                    const btn = e.currentTarget as HTMLElement;
+                    const icon = btn.querySelector(".material-symbols-outlined");
+                    if (icon) {
+                      icon.textContent = "check";
+                      setTimeout(() => { icon.textContent = "content_copy"; }, 1500);
+                    }
+                  }}
+                >
+                  <span class="material-symbols-outlined">content_copy</span>
+                </button>
+                <div class="model-card-bottom">
                   <span class="model-index">
                     #{(idx() + 1 + (page() - 1) * pageSize()).toLocaleString()}
                   </span>
+                  <span>exact alias</span>
                 </div>
-                <code class="model-id">{model.id}</code>
               </article>
             )}
           </For>

@@ -124,7 +124,11 @@ pre {
 .page-shell {
 	position: relative;
 	z-index: 1;
+	display: flex;
+	flex-direction: column;
 	width: min(1120px, calc(100vw - 32px));
+	min-height: 100vh;
+	min-height: 100svh;
 	margin: 0 auto;
 	padding: 14px 0 60px;
 }
@@ -245,6 +249,7 @@ pre {
 }
 
 main {
+	flex: 1;
 	display: grid;
 	gap: 64px;
 	padding-top: 48px;
@@ -1448,7 +1453,7 @@ h3 {
 
 /* ── Footer ── */
 .site-footer {
-	margin-top: 80px;
+	margin-top: auto;
 	padding-top: 32px;
 	border-top: 1px solid var(--border);
 	display: grid;

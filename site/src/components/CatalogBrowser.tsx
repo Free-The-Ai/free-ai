@@ -133,17 +133,7 @@ export default function CatalogBrowser() {
     <div class="panel catalog-panel">
       <div class="catalog-panel-head">
         <div>
-          <div class="eyebrow">LIVE INDEX</div>
-          <h3>Find the alias your client should send.</h3>
-          <p>
-            Search exact aliases or filter by provider prefix. Every visible alias can be sent as the
-            <code> model</code> value.
-          </p>
-        </div>
-        <div class="catalog-meta" aria-live="polite">
-          <span>{source() === "snapshot" ? "Snapshot catalog" : source() === "error" ? "Catalog unavailable" : "Live catalog"}</span>
-          <span>{prefixCounts().length.toLocaleString()} providers</span>
-          <span>{allModels().length.toLocaleString()} aliases</span>
+          <h3>Models</h3>
         </div>
       </div>
 

@@ -1,4 +1,4 @@
-import { createSignal, onMount, onCleanup } from "solid-js";
+import { createMemo, createSignal, onCleanup, onMount } from "solid-js";
 
 export default function LiveStats() {
   const [health, setHealth] = createSignal<{
@@ -29,25 +29,34 @@ export default function LiveStats() {
     return n.toLocaleString();
   };
 
-  const h = health();
+  const stats = createMemo(() => {
+    const h = health();
+    if (!h) return null;
+
+    return {
+      models: h.catalog?.model_count ?? 0,
+      requests: h.total_tokens_served?.successful_requests ?? 0,
+      tokens: h.total_tokens_served?.total ?? 0,
+    };
+  });
 
   return (
     <div style={{ display: "flex", gap: "clamp(16px,4vw,40px)", "flex-wrap": "wrap", "justify-content": "center" }}>
       <div style={{"text-align": "center"}}>
         <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
-          {h ? h.catalog.model_count.toLocaleString() : "..."}
+          {stats() ? stats()!.models.toLocaleString() : "..."}
         </div>
         <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>models</div>
       </div>
       <div style={{"text-align": "center"}}>
         <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
-          {h ? fmt(h.total_tokens_served.total) : "..."}
+          {stats() ? fmt(stats()!.tokens) : "..."}
         </div>
         <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>tokens served</div>
       </div>
       <div style={{"text-align": "center"}}>
         <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
-          {h ? h.total_tokens_served.successful_requests.toLocaleString() : "..."}
+          {stats() ? stats()!.requests.toLocaleString() : "..."}
         </div>
         <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>requests</div>
       </div>

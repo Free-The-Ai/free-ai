@@ -71,14 +71,21 @@ export default function LiveStats() {
           <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>requests</div>
         </div>
       </div>
-      {stats() && stats()!.clients.length > 0 && (
+      {stats() && (
         <div class="home-client-strip" aria-label="Top API clients">
-          {stats()!.clients.map((client) => (
+          {stats()!.clients.length > 0 ? (
+            stats()!.clients.map((client) => (
+              <div class="home-client-chip">
+                <span>{client.client_name}</span>
+                <strong>{fmt(client.total_requests)}</strong>
+              </div>
+            ))
+          ) : (
             <div class="home-client-chip">
-              <span>{client.client_name}</span>
-              <strong>{fmt(client.total_requests)}</strong>
+              <span>client mix</span>
+              <strong>live soon</strong>
             </div>
-          ))}
+          )}
         </div>
       )}
     </div>

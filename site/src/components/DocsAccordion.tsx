@@ -15,13 +15,34 @@ interface DocsAccordionProps {
   imageModels: [string, string, string][];
 }
 
-function CodeBlock(props: { code: string }) {
+function CodeBlock(props: { code: string; lang?: string }) {
   return (
     <div class="docs-code-group">
-      <pre><code>{props.code}</code></pre>
-      <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
-        <span class="material-symbols-outlined">content_copy</span>
-      </button>
+      {props.lang ? (
+        <div class="docs-code-bar">
+          <span class="docs-code-lang">{props.lang}</span>
+          <button
+            class="copy-btn"
+            type="button"
+            title="Copy"
+            aria-label="Copy to clipboard"
+          >
+            <span class="material-symbols-outlined">content_copy</span>
+          </button>
+        </div>
+      ) : (
+        <button
+          class="copy-btn"
+          type="button"
+          title="Copy"
+          aria-label="Copy to clipboard"
+        >
+          <span class="material-symbols-outlined">content_copy</span>
+        </button>
+      )}
+      <pre>
+        <code>{props.code}</code>
+      </pre>
     </div>
   );
 }
@@ -38,7 +59,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
             Join Discord and run <code>/signup</code>. Send the key as a bearer token.
             If you lose it, run <code>/resetkey</code>.
           </p>
-          <CodeBlock code={props.baseSnippet} />
+          <CodeBlock code={props.baseSnippet} lang="plaintext" />
         </section>
       ),
     },
@@ -75,11 +96,11 @@ export default function DocsAccordion(props: DocsAccordionProps) {
           <div class="docs-code-grid">
             <div>
               <h3>curl</h3>
-              <CodeBlock code={props.chatCurlSnippet} />
+              <CodeBlock code={props.chatCurlSnippet} lang="bash" />
             </div>
             <div>
               <h3>JavaScript SDK</h3>
-              <CodeBlock code={props.openAISDKSnippet} />
+              <CodeBlock code={props.openAISDKSnippet} lang="javascript" />
             </div>
           </div>
         </section>
@@ -94,7 +115,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
           <p>
             Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.
           </p>
-          <CodeBlock code={props.messagesSnippet} />
+          <CodeBlock code={props.messagesSnippet} lang="bash" />
         </section>
       ),
     },
@@ -111,11 +132,11 @@ export default function DocsAccordion(props: DocsAccordionProps) {
           <div class="docs-code-grid">
             <div>
               <h3>Client catalog</h3>
-              <CodeBlock code={props.modelListSnippet} />
+              <CodeBlock code={props.modelListSnippet} lang="bash" />
             </div>
             <div>
               <h3>Full catalog</h3>
-              <CodeBlock code={props.fullModelListSnippet} />
+              <CodeBlock code={props.fullModelListSnippet} lang="bash" />
             </div>
           </div>
         </section>
@@ -147,15 +168,15 @@ export default function DocsAccordion(props: DocsAccordionProps) {
           <div class="docs-code-grid">
             <div>
               <h3>Image generation</h3>
-              <CodeBlock code={props.vhrImageSnippet} />
+              <CodeBlock code={props.vhrImageSnippet} lang="bash" />
             </div>
             <div>
               <h3>Image edit</h3>
-              <CodeBlock code={props.imageEditSnippet} />
+              <CodeBlock code={props.imageEditSnippet} lang="bash" />
             </div>
           </div>
           <h3>Python save helper</h3>
-          <CodeBlock code={props.pythonImageSnippet} />
+          <CodeBlock code={props.pythonImageSnippet} lang="python" />
         </section>
       ),
     },

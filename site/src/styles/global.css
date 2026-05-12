@@ -572,9 +572,17 @@ h3 {
 .docs-code-bar {
     display: flex;
     align-items: center;
-    padding: 6px 14px;
+    justify-content: space-between;
+    padding: 6px 8px 6px 14px;
     border-bottom: 1px solid var(--border);
     background: var(--sk-inset-bg);
+}
+.docs-code-bar .copy-btn {
+    position: static;
+    opacity: 0.65;
+}
+.docs-code-bar .copy-btn:hover {
+    opacity: 1;
 }
 .docs-code-lang {
     font-family: var(--font-mono);

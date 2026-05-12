@@ -569,6 +569,23 @@ h3 {
 	overflow-x: auto;
 }
 
+.docs-code-bar {
+    display: flex;
+    align-items: center;
+    padding: 6px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--sk-inset-bg);
+}
+.docs-code-lang {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--dim);
+}
+
+
 .copy-btn {
 	position: absolute;
 	top: 8px;

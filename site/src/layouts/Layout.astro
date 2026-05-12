@@ -3,6 +3,7 @@ import BaseHead from '../components/BaseHead.astro';
 import Logo from '../components/Logo.astro';
 import NavDrawer from '../components/NavDrawer';
 import SmoothScroll from '../components/SmoothScroll';
+import HapticsInit from '../components/HapticsInit';
 import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
 
@@ -99,8 +100,46 @@ const navLinks: [string, string][] = [
 
 		<ToastRegion client:load />
 		<SmoothScroll client:load />
+		<HapticsInit client:load />
 	</div>
 
+	<script>
+		// Auto-decorate interactive elements with haptic hints
+		(function(){
+			const MAP = {
+				'a[href]': 'tap',
+				'button:not([data-haptic])': 'tap',
+				'.primary-button': 'heavy',
+				'.discord-button': 'heavy',
+				'.nav-hamburger': 'press',
+				'.copy-btn': 'select',
+				'.model-card': 'tap',
+				'.status-card': 'tap',
+				'.catalog-chip': 'press',
+				'.kb-accordion__trigger': 'press',
+				'.docs-section-head': 'press',
+				'select:not([data-haptic])': 'select',
+				'input[type="checkbox"]:not([data-haptic])': 'select',
+			};
+			function decorate(root) {
+				for (const [sel, pattern] of Object.entries(MAP)) {
+					try {
+						root.querySelectorAll(sel).forEach(el => {
+							if (!el.hasAttribute('data-haptic')) el.setAttribute('data-haptic', pattern);
+						});
+					} catch {}
+				}
+			}
+			decorate(document);
+			if (typeof MutationObserver !== 'undefined') {
+				new MutationObserver(muts => {
+					for (const m of muts) m.addedNodes.forEach(n => {
+						if (n.nodeType === 1 && typeof n.querySelectorAll === 'function') decorate(n);
+					});
+				}).observe(document.body, { childList: true, subtree: true });
+			}
+		})();
+	</script>
 	<script>
 		document.addEventListener("click", async (e) => {
 			const btn = e.target.closest(".copy-btn");

@@ -14,6 +14,11 @@ export default function NavDrawer() {
   let rootRef: HTMLDivElement | undefined;
 
   createEffect(() => {
+    const nav = rootRef?.closest(".nav");
+    if (nav instanceof HTMLElement) {
+      nav.classList.toggle("has-open-drawer", open());
+    }
+
     if (!open() || typeof document === "undefined") return;
 
     const closeOnEscape = (event: KeyboardEvent) => {

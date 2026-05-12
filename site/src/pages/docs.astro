@@ -143,6 +143,7 @@ const imageModels = [
 		</button>
 		<section class="docs-layout">
 			<aside class="docs-sidebar" id="docs-section-nav" aria-label="Docs sections">
+				<button class="docs-sidebar-close" type="button" aria-label="Close docs sections">Close</button>
 				<span class="docs-sidebar-label">On this page</span>
 				<a href="#auth">Auth</a>
 				<a href="#endpoints">Endpoints</a>
@@ -208,7 +209,9 @@ const imageModels = [
 			});
 
 			docsSidebar.addEventListener('click', (event) => {
-				if (event.target instanceof Element && event.target.closest('a')) setDocsSectionsOpen(false);
+				if (event.target instanceof Element && (event.target.closest('a') || event.target.closest('.docs-sidebar-close'))) {
+					setDocsSectionsOpen(false);
+				}
 			});
 
 			document.addEventListener('pointerdown', (event) => {

@@ -1907,11 +1907,13 @@ h3 {
 @keyframes drawer-sheet-in {
 	from {
 		opacity: 0;
-		transform: translateY(-12px);
+		transform: scaleY(0.95);
+		transform-origin: top center;
 	}
 	to {
 		opacity: 1;
-		transform: translateY(0);
+		transform: scaleY(1);
+		transform-origin: top center;
 	}
 }
 
@@ -2374,10 +2376,17 @@ h3 {
 		min-height: 0;
 		width: 100%;
 		padding: 8px;
-		border: 1px solid var(--border);
+		border: 1px solid var(--sk-border);
 		border-radius: var(--radius);
-		background: var(--surface);
+		background: var(--sk-shell-bg);
 		position: relative;
+		transition: border-radius 220ms cubic-bezier(0.16, 1, 0.3, 1),
+		            border-bottom-color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+	}
+
+	.nav.has-open-drawer {
+		border-radius: var(--radius) var(--radius) 0 0;
+		border-bottom-color: transparent;
 	}
 
 	.brand {
@@ -2574,6 +2583,45 @@ h3 {
 		            opacity 220ms cubic-bezier(0.16, 1, 0.3, 1);
 	}
 
+	.docs-sidebar-close {
+		position: absolute;
+		top: 16px;
+		right: 16px;
+		z-index: 36;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		width: 36px;
+		height: 36px;
+		padding: 0;
+		border: 1px solid var(--sk-border);
+		border-radius: var(--radius-sm);
+		background: var(--sk-shell-bg);
+		box-shadow: var(--sk-raised-shadow);
+		color: var(--muted);
+		font-size: 0;
+		cursor: pointer;
+		transition: color 150ms ease, border-color 150ms ease;
+	}
+
+	.docs-sidebar-close::before,
+	.docs-sidebar-close::after {
+		content: "";
+		position: absolute;
+		width: 14px;
+		height: 1.5px;
+		background: currentColor;
+		border-radius: 1px;
+	}
+
+	.docs-sidebar-close::before { transform: rotate(45deg); }
+	.docs-sidebar-close::after { transform: rotate(-45deg); }
+
+	.docs-sidebar-close:hover {
+		color: var(--text);
+		border-color: var(--border-strong);
+	}
+
 	.docs-main[data-sections-open] .docs-sidebar {
 		opacity: 1;
 		pointer-events: auto;
@@ -2636,10 +2684,8 @@ h3 {
 		max-height: calc(100dvh - 72px);
 		padding: 18px;
 		overflow-y: auto;
-		border-left: 1px solid var(--sk-border);
-		border-right: 1px solid var(--sk-border);
+		border: none;
 		border-bottom: 1px solid var(--sk-border);
-		border-top: none;
 		border-radius: 0 0 var(--radius) var(--radius);
 		animation: drawer-sheet-in 280ms cubic-bezier(0.16, 1, 0.3, 1);
 	}
@@ -2945,4 +2991,15 @@ h3 {
 	.status-board {
 		padding: 18px;
 	}
+}
+
+/* ── Haptic pseudo-feedback (desktop fallback) ── */
+@keyframes haptic-press {
+	0% { transform: scale(1); }
+	30% { transform: scale(0.96); }
+	100% { transform: scale(1); }
+}
+
+.haptic-active {
+	animation: haptic-press 120ms ease-out;
 }

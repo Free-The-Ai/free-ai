@@ -7,6 +7,7 @@ const LINKS: [string, string, boolean][] = [
   ["/", "Home", false],
   ["/docs", "Docs", false],
   ["/models", "Models", false],
+  ["/status", "Status", false],
   [siteConfig.socials.github, "Repo", true],
 ];
 

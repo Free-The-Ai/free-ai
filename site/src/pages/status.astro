@@ -1,0 +1,18 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProviderStatusGrid from '../components/ProviderStatusGrid';
+import { buildOrganizationJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd } from '../utils/jsonLd';
+
+const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildWebApiJsonLd()];
+---
+
+<Layout
+	title="FreeTheAi Status"
+	description="Live provider status for FreeTheAi API aliases."
+	jsonLd={jsonLd}
+	currentPath="/status"
+>
+	<main class="status-main">
+		<ProviderStatusGrid client:load />
+	</main>
+</Layout>

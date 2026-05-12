@@ -1505,6 +1505,189 @@ h3 {
 }
 
 /* ── Nav drawer ── */
+/* Status */
+.status-main {
+	width: 100%;
+	padding: 84px 0 96px;
+}
+
+.status-board {
+	display: grid;
+	gap: 24px;
+}
+
+.status-board-head {
+	display: flex;
+	align-items: end;
+	justify-content: space-between;
+	gap: 24px;
+}
+
+.status-board-head h1 {
+	margin: 0;
+	font-family: var(--font-serif);
+	font-size: clamp(2.4rem, 6vw, 4.8rem);
+	line-height: 0.95;
+	letter-spacing: -0.06em;
+}
+
+.status-summary {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: flex-end;
+	gap: 8px;
+	color: var(--muted);
+	font-size: 0.82rem;
+}
+
+.status-summary span,
+.status-footnote,
+.status-alert {
+	border: 1px solid var(--border);
+	background: var(--control-bg);
+}
+
+.status-summary span {
+	padding: 8px 10px;
+}
+
+.status-alert {
+	padding: 14px 16px;
+	color: var(--amber);
+	font-size: 0.9rem;
+}
+
+.status-grid {
+	display: grid;
+	grid-template-columns: repeat(4, minmax(0, 1fr));
+	gap: 12px;
+}
+
+.status-card {
+	position: relative;
+	overflow: hidden;
+	display: grid;
+	gap: 22px;
+	min-height: 190px;
+	padding: 18px;
+	border: 1px solid var(--border);
+	background: linear-gradient(135deg, rgba(255, 255, 255, 0.045), rgba(255, 255, 255, 0.012));
+}
+
+.status-card::before {
+	content: "";
+	position: absolute;
+	inset: auto -15% -45% auto;
+	width: 180px;
+	height: 180px;
+	border-radius: 50%;
+	background: rgba(255, 255, 255, 0.05);
+	pointer-events: none;
+}
+
+.status-card.is-up {
+	border-color: rgba(46, 160, 67, 0.36);
+	background: linear-gradient(135deg, rgba(46, 160, 67, 0.23), rgba(46, 160, 67, 0.035));
+}
+
+.status-card.is-degraded {
+	border-color: rgba(217, 119, 6, 0.4);
+	background: linear-gradient(135deg, rgba(217, 119, 6, 0.23), rgba(217, 119, 6, 0.04));
+}
+
+.status-card.is-down {
+	border-color: rgba(255, 77, 77, 0.42);
+	background: linear-gradient(135deg, rgba(255, 77, 77, 0.25), rgba(255, 77, 77, 0.045));
+}
+
+.status-card.is-unknown {
+	border-color: var(--border-strong);
+}
+
+.status-card-top,
+.status-card-meta {
+	position: relative;
+	z-index: 1;
+}
+
+.status-card-top {
+	display: flex;
+	align-items: center;
+	gap: 9px;
+}
+
+.status-card-top strong {
+	font-size: 1rem;
+	letter-spacing: -0.02em;
+}
+
+.status-card-top span:last-child {
+	margin-left: auto;
+	color: var(--muted);
+	font-size: 0.78rem;
+	text-transform: uppercase;
+	letter-spacing: 0.08em;
+}
+
+.status-dot {
+	width: 9px;
+	height: 9px;
+	border-radius: 50%;
+	background: var(--dim);
+}
+
+.is-up .status-dot {
+	background: #2ea043;
+}
+
+.is-degraded .status-dot {
+	background: var(--amber);
+}
+
+.is-down .status-dot {
+	background: var(--danger);
+}
+
+.status-card-main {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	align-items: baseline;
+	gap: 8px;
+}
+
+.status-card-main span {
+	font-family: var(--font-serif);
+	font-size: clamp(2rem, 5vw, 3.4rem);
+	line-height: 0.9;
+	letter-spacing: -0.06em;
+}
+
+.status-card-main small {
+	color: var(--muted);
+	font-size: 0.82rem;
+}
+
+.status-card-meta {
+	display: grid;
+	grid-template-columns: minmax(0, 1fr) auto;
+	gap: 8px 12px;
+	color: var(--muted);
+	font-size: 0.82rem;
+}
+
+.status-card-meta strong {
+	color: var(--text);
+	font-weight: 600;
+}
+
+.status-footnote {
+	justify-self: start;
+	padding: 10px 12px;
+	color: var(--muted);
+	font-size: 0.82rem;
+}
+
 .nav-drawer-overlay {
 	position: fixed;
 	inset: 0;
@@ -1688,6 +1871,10 @@ h3 {
 		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
+	.status-grid {
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+	}
+
 	.docs-sidebar {
 		position: static;
 		grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -1753,6 +1940,23 @@ h3 {
 		overflow: hidden;
 		text-overflow: ellipsis;
 		white-space: nowrap;
+	}
+
+	.status-main {
+		padding: 46px 0 72px;
+	}
+
+	.status-board-head {
+		align-items: start;
+		flex-direction: column;
+	}
+
+	.status-summary {
+		justify-content: flex-start;
+	}
+
+	.status-grid {
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	.section,
@@ -1858,6 +2062,10 @@ h3 {
 	.live-usage-grid,
 	.privacy-columns,
 	.catalog-results {
+		grid-template-columns: 1fr;
+	}
+
+	.status-grid {
 		grid-template-columns: 1fr;
 	}
 

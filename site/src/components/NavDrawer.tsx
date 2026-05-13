@@ -9,7 +9,21 @@ const LINKS: [string, string, boolean][] = [
   [siteConfig.socials.github, "Repo", true],
 ];
 
-export default function NavDrawer() {
+const DOC_LINKS: [string, string][] = [
+  ["#auth", "Auth"],
+  ["#endpoints", "Endpoints"],
+  ["#chat", "Chat"],
+  ["#messages", "Messages"],
+  ["#models", "Models"],
+  ["#images", "Images"],
+  ["#errors", "Errors"],
+];
+
+type NavDrawerProps = {
+  currentPath?: string;
+};
+
+export default function NavDrawer(props: NavDrawerProps) {
   const [open, setOpen] = createSignal(false);
   let rootRef: HTMLDivElement | undefined;
 
@@ -59,7 +73,7 @@ export default function NavDrawer() {
             {LINKS.map(([href, label, external]) => (
               <a
                 href={href}
-                class="nav-drawer__link"
+                class={`nav-drawer__link${props.currentPath === href ? " is-active" : ""}`}
                 onClick={() => setOpen(false)}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noreferrer" : undefined}
@@ -68,6 +82,18 @@ export default function NavDrawer() {
               </a>
             ))}
           </div>
+          <Show when={props.currentPath === "/docs"}>
+            <div class="nav-drawer__section" aria-label="Docs sections">
+              <span class="nav-drawer__section-label">Docs sections</span>
+              <div class="nav-drawer__section-links">
+                {DOC_LINKS.map(([href, label]) => (
+                  <a href={href} class="nav-drawer__section-link" onClick={() => setOpen(false)}>
+                    {label}
+                  </a>
+                ))}
+              </div>
+            </div>
+          </Show>
           <div class="nav-drawer__footer">
             <a
               href={siteConfig.socials.discord}

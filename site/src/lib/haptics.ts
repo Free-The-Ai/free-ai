@@ -34,6 +34,8 @@ const PATTERNS: Record<HapticPattern, number | number[]> = {
   heavy: 40,
 };
 
+let vibrationWarningLogged = false;
+
 // ── Capability detection ──
 
 function hasVibrate(): boolean {
@@ -45,8 +47,11 @@ function vibrate(pattern: number | number[]): void {
     if (hasVibrate()) {
       navigator.vibrate(typeof pattern === 'number' ? pattern : (pattern as number[]));
     }
-  } catch {
-    // silently degrade
+  } catch (error) {
+    if (!vibrationWarningLogged) {
+      console.warn('Failed to trigger haptic vibration', error);
+      vibrationWarningLogged = true;
+    }
   }
 }
 
@@ -61,6 +66,26 @@ function cssHaptic(el: Element): void {
   hapticTimer = setTimeout(() => {
     el.classList.remove(HAPTIC_CLASS);
   }, 120);
+}
+
+function eventElement(event: Event): Element | null {
+  if (event.target instanceof Element) return event.target;
+
+  for (const target of event.composedPath()) {
+    if (target instanceof Element) return target;
+  }
+
+  return null;
+}
+
+function delegatedTarget(event: Event, selector: string): Element | null {
+  return eventElement(event)?.closest(selector) ?? null;
+}
+
+function hapticPattern(value: string | null): HapticPattern {
+  return value && Object.prototype.hasOwnProperty.call(PATTERNS, value)
+    ? (value as HapticPattern)
+    : 'tap';
 }
 
 // ── Public API ──
@@ -86,10 +111,15 @@ const DELEGATE_EVENTS: Array<[string, HapticPattern]> = [
 ];
 
 function handleHapticEvent(e: Event): void {
-  const target = (e.target as HTMLElement).closest('[data-haptic]');
+  const target = delegatedTarget(e, '[data-haptic]');
   if (!target) return;
-  const pattern = (target.getAttribute('data-haptic') || 'tap') as HapticPattern;
+  const pattern = hapticPattern(target.getAttribute('data-haptic'));
   hapticOn(target, pattern);
+}
+
+function handleHapticPointerEnter(e: Event): void {
+  const target = delegatedTarget(e, '[data-haptic="press"]');
+  if (target && hasVibrate()) vibrate(PATTERNS.press);
 }
 
 let initialized = false;
@@ -103,19 +133,7 @@ export function initHaptics(): void {
     document.addEventListener(eventName, handleHapticEvent, { passive: true });
   }
 
-  // Also handle pointerenter for press pattern
-  document.addEventListener(
-    'pointerenter',
-    (e) => {
-      const target = (e.target as HTMLElement).closest('[data-haptic="press"]');
-      if (!target) return;
-      // Only vibrate on hover if supported — don't CSS pulse on hover
-      if (hasVibrate()) {
-        vibrate(PATTERNS.press);
-      }
-    },
-    { passive: true },
-  );
+  document.addEventListener('pointerenter', handleHapticPointerEnter, { passive: true });
 }
 
 /** Tear down delegation (for hot-reload / cleanup). */
@@ -124,4 +142,5 @@ export function destroyHaptics(): void {
   initialized = false;
   document.removeEventListener('click', handleHapticEvent);
   document.removeEventListener('pointerdown', handleHapticEvent);
+  document.removeEventListener('pointerenter', handleHapticPointerEnter);
 }

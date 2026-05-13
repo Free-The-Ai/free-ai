@@ -79,7 +79,7 @@ const navLinks: [string, string][] = [
 					<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
 						Join Discord
 					</a>
-					<NavDrawer client:load />
+					<NavDrawer currentPath={currentPath} client:load />
 				</nav>
 			</header>
 
@@ -123,11 +123,9 @@ const navLinks: [string, string][] = [
 			};
 			function decorate(root) {
 				for (const [sel, pattern] of Object.entries(MAP)) {
-					try {
-						root.querySelectorAll(sel).forEach(el => {
-							if (!el.hasAttribute('data-haptic')) el.setAttribute('data-haptic', pattern);
-						});
-					} catch {}
+					root.querySelectorAll(sel).forEach(el => {
+						if (!el.hasAttribute('data-haptic')) el.setAttribute('data-haptic', pattern);
+					});
 				}
 			}
 			decorate(document);
@@ -141,8 +139,15 @@ const navLinks: [string, string][] = [
 		})();
 	</script>
 	<script>
+		function closestFromEvent(e, selector) {
+			if (e.target instanceof Element) return e.target.closest(selector);
+
+			const path = typeof e.composedPath === 'function' ? e.composedPath() : [];
+			return path.find(node => node instanceof Element && node.matches(selector)) ?? null;
+		}
+
 		document.addEventListener("click", async (e) => {
-			const btn = e.target.closest(".copy-btn");
+			const btn = closestFromEvent(e, ".copy-btn");
 			if (!btn) return;
 			const code = btn.parentElement?.querySelector("code");
 			if (!code) return;

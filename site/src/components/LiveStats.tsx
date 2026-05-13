@@ -29,14 +29,20 @@ export default function LiveStats() {
         const v = d?.total_tokens_served ?? d?.total_tokens_serverd ?? {};
         setTokens({ total: +v.total || 0, input: +v.input || 0, output: +v.output || 0 });
       } else setTokens(false);
-    } catch { setTokens(false); }
+    } catch (error) {
+      console.warn("Failed to load live token totals", error);
+      setTokens(false);
+    }
 
     try {
       const r = await fetch(`${API}/models/leaderboard?limit=6`, {
         headers: { Accept: "application/json", Authorization: "Bearer freetheai.xyz" },
       });
       r.ok ? setLb(((await r.json()).data ?? []) as any) : setLb(false);
-    } catch { setLb(false); }
+    } catch (error) {
+      console.warn("Failed to load live model leaderboard", error);
+      setLb(false);
+    }
   });
 
   const t = () => tokens();

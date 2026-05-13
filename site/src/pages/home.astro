@@ -26,7 +26,7 @@ const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
 >
   <main>
     <CanvasScroller client:load />
-    <section style="max-width:600px;margin:0 auto;padding-top:120px;position:relative;z-index:1;text-align:center" data-parallax="0.3">
+    <section class="home-hero" style="max-width:600px;margin:0 auto;padding-top:120px;position:relative;z-index:1;text-align:center" data-parallax="0.3">
       <h1 style="line-height:0" data-parallax="0.2">
         <Logo width={520} label="FreeTheAI" style="display:block;width:min(92vw,520px);height:auto;margin:0 auto" />
       </h1>
@@ -46,7 +46,7 @@ const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
 
       <div style="margin-top:56px;display:flex;flex-direction:column;align-items:center">
         <LiveStats client:load />
-        <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:var(--accent);font-size:0.85rem;text-decoration:none;font-weight:500">
+        <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:var(--accent-text);text-shadow:var(--accent-text-glow);font-size:0.85rem;text-decoration:none;font-weight:500">
           Join Discord <span style="font-size:1rem">&rarr;</span>
         </a>
       </div>

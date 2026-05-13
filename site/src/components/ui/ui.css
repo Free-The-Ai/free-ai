@@ -73,10 +73,11 @@
   border-color: var(--accent);
   background: linear-gradient(180deg, #ee5d20 0%, #cc4408 100%);
   box-shadow: var(--sk-raised-shadow);
-  color: #0a0a0a;
+  color: var(--accent-text-strong);
+  text-shadow: var(--accent-text-glow);
 }
 .kb-button[data-variant="primary"]:hover {
-  background: linear-gradient(180deg, #e84d0a 0%, #b83a06 100%);
+  background: linear-gradient(180deg, #ff9a45 0%, #f76c1d 48%, #c94a0d 100%);
   box-shadow: var(--sk-raised-shadow), var(--sk-accent-glow);
 }
 .kb-button[data-variant="ghost"] {
@@ -249,7 +250,8 @@
   background: var(--accent);
 }
 .kb-checkbox__indicator {
-  color: #0a0a0a;
+  color: var(--accent-text-strong);
+  text-shadow: var(--accent-text-glow);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -692,7 +694,8 @@
 }
 .kb-radio-group__item[data-checked] {
   border-color: var(--accent);
-  color: var(--accent);
+  color: var(--accent-text);
+  text-shadow: var(--accent-text-glow);
   background: rgba(231, 197, 154, 0.06);
 }
 .kb-radio-group__item:hover:not([data-disabled]) {

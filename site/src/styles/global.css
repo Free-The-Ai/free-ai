@@ -3052,3 +3052,35 @@ h3 {
 .haptic-active {
 	animation: haptic-press 120ms ease-out;
 }
+
+/* ── Shiki syntax highlighting ── */
+.shiki-wrapper {
+	overflow: hidden;
+}
+
+.shiki-wrapper .shiki {
+	background: var(--code-bg) !important;
+	padding: 18px 20px;
+	border-radius: var(--radius);
+	overflow-x: auto;
+	font-family: var(--font-mono);
+	font-size: 0.875rem;
+	line-height: 1.65;
+}
+
+.shiki-wrapper .shiki code {
+	color: inherit;
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
+}
+
+/* Ensure the copy button appears over Shiki code blocks */
+.docs-code-group .shiki-wrapper + .copy-btn,
+.docs-code-group:has(.shiki-wrapper) .copy-btn {
+	opacity: 0;
+}
+
+.docs-code-group:has(.shiki-wrapper):hover .copy-btn {
+	opacity: 1;
+}

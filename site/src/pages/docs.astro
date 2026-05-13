@@ -13,6 +13,7 @@ https://api.freetheai.xyz/v1
 
 Header
 Authorization: Bearer YOUR_API_KEY`;
+const baseSnippetHtml = await highlight(baseSnippet, "plaintext");
 
 const chatCurlSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
@@ -24,6 +25,7 @@ const chatCurlSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
     ],
     "stream": true
   }'`;
+const chatCurlSnippetHtml = await highlight(chatCurlSnippet, "bash");
 
 const openAISDKSnippet = `import OpenAI from "openai";
 
@@ -38,6 +40,7 @@ const res = await client.chat.completions.create({
 });
 
 console.log(res.choices[0].message.content);`;
+const openAISDKSnippetHtml = await highlight(openAISDKSnippet, "javascript");
 
 const messagesSnippet = `curl https://api.freetheai.xyz/v1/messages \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
@@ -49,12 +52,15 @@ const messagesSnippet = `curl https://api.freetheai.xyz/v1/messages \\
       { "role": "user", "content": "Give me a short implementation plan." }
     ]
   }'`;
+const messagesSnippetHtml = await highlight(messagesSnippet, "bash");
 
 const modelListSnippet = `curl https://api.freetheai.xyz/v1/models \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY"`;
+const modelListSnippetHtml = await highlight(modelListSnippet, "bash");
 
 const fullModelListSnippet = `curl "https://api.freetheai.xyz/v1/models/full" \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY"`;
+const fullModelListSnippetHtml = await highlight(fullModelListSnippet, "bash");
 
 const vhrImageSnippet = `curl https://api.freetheai.xyz/v1/images/generations \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
@@ -63,6 +69,7 @@ const vhrImageSnippet = `curl https://api.freetheai.xyz/v1/images/generations \\
     "model": "vhr/gpt_image_2",
     "prompt": "A cinematic neon sports car parked under rainy city lights"
   }'`;
+const vhrImageSnippetHtml = await highlight(vhrImageSnippet, "bash");
 
 const imageEditSnippet = `curl https://api.freetheai.xyz/v1/images/edits \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
@@ -72,6 +79,7 @@ const imageEditSnippet = `curl https://api.freetheai.xyz/v1/images/edits \\
     "prompt": "Improve this logo and make it cleaner",
     "image": "data:image/png;base64,BASE64_IMAGE_HERE"
   }'`;
+const imageEditSnippetHtml = await highlight(imageEditSnippet, "bash");
 
 const pythonImageSnippet = `import base64
 import os
@@ -110,6 +118,7 @@ res = requests.post(
 )
 res.raise_for_status()
 save_image_result(res.json(), "generated.png")`;
+const pythonImageSnippetHtml = await highlight(pythonImageSnippet, "python");
 
 const endpoints = [
 	['POST', '/v1/chat/completions', 'OpenAI-compatible chat, streaming, tool calling, and multi-turn conversations.'],
@@ -158,17 +167,25 @@ const imageModels = [
 				</div>
 				<DocsAccordion
 					baseSnippet={baseSnippet}
+					baseSnippetHtml={baseSnippetHtml}
 					chatCurlSnippet={chatCurlSnippet}
+					chatCurlSnippetHtml={chatCurlSnippetHtml}
 					openAISDKSnippet={openAISDKSnippet}
+					openAISDKSnippetHtml={openAISDKSnippetHtml}
 					messagesSnippet={messagesSnippet}
+					messagesSnippetHtml={messagesSnippetHtml}
 					modelListSnippet={modelListSnippet}
+					modelListSnippetHtml={modelListSnippetHtml}
 					fullModelListSnippet={fullModelListSnippet}
+					fullModelListSnippetHtml={fullModelListSnippetHtml}
 					vhrImageSnippet={vhrImageSnippet}
+					vhrImageSnippetHtml={vhrImageSnippetHtml}
 					imageEditSnippet={imageEditSnippet}
+					imageEditSnippetHtml={imageEditSnippetHtml}
 					pythonImageSnippet={pythonImageSnippet}
+					pythonImageSnippetHtml={pythonImageSnippetHtml}
 					endpoints={endpoints}
-					imageModels={imageModels}
-				/>
+					imageModels={imageModels}				/>
 			</div>
 		</section>
 	</main>

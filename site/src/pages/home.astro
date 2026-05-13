@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import CanvasScroller from '../components/CanvasScroller';
 import LiveStats from '../components/DiscordStats';
+import { highlight } from '../lib/highlight';
 import Logo from '../components/Logo.astro';
 import { siteConfig } from '../config/site';
 
@@ -16,6 +17,7 @@ const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
     "model": "yng/gemini-3-1-pro",
     "messages": [{ "role": "user", "content": "Hello" }]
   }'`;
+const snippetHtml = await highlight(snippet, "bash");
 ---
 
 <Layout
@@ -57,7 +59,7 @@ const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
           <div class="card-label">Try it</div>
         </div>
         <div class="docs-code-group">
-          <pre><code>{snippet}</code></pre>
+          <div class="shiki-wrapper" set:html={snippetHtml} />
           <button class="copy-btn" type="button" title="Copy">
             <span class="material-symbols-outlined">content_copy</span>
           </button>

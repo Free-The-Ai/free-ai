@@ -16,22 +16,22 @@
  */
 
 export type HapticPattern =
-  | 'tap'
-  | 'press'
-  | 'longPress'
-  | 'select'
-  | 'error'
-  | 'success'
-  | 'heavy';
+    | "tap"
+    | "press"
+    | "longPress"
+    | "select"
+    | "error"
+    | "success"
+    | "heavy";
 
 const PATTERNS: Record<HapticPattern, number | number[]> = {
-  tap: 10,
-  press: 15,
-  longPress: 30,
-  select: [5, 10, 5],
-  error: [30, 50, 30],
-  success: [10, 30, 10],
-  heavy: 40,
+    tap: 10,
+    press: 15,
+    longPress: 30,
+    select: [5, 10, 5],
+    error: [30, 50, 30],
+    success: [10, 30, 10],
+    heavy: 40,
 };
 
 let vibrationWarningLogged = false;
@@ -39,108 +39,115 @@ let vibrationWarningLogged = false;
 // ── Capability detection ──
 
 function hasVibrate(): boolean {
-  return typeof navigator !== 'undefined' && 'vibrate' in navigator;
+    return typeof navigator !== "undefined" && "vibrate" in navigator;
 }
 
 function vibrate(pattern: number | number[]): void {
-  try {
-    if (hasVibrate()) {
-      navigator.vibrate(typeof pattern === 'number' ? pattern : (pattern as number[]));
+    try {
+        if (hasVibrate()) {
+            navigator.vibrate(
+                typeof pattern === "number" ? pattern : (pattern as number[]),
+            );
+        }
+    } catch (error) {
+        if (!vibrationWarningLogged) {
+            console.warn("Failed to trigger haptic vibration", error);
+            vibrationWarningLogged = true;
+        }
     }
-  } catch (error) {
-    if (!vibrationWarningLogged) {
-      console.warn('Failed to trigger haptic vibration', error);
-      vibrationWarningLogged = true;
-    }
-  }
 }
 
 // ── CSS pseudo-haptic fallback ──
 
-const HAPTIC_CLASS = 'haptic-active';
+const HAPTIC_CLASS = "haptic-active";
 let hapticTimer: ReturnType<typeof setTimeout> | null = null;
 
 function cssHaptic(el: Element): void {
-  el.classList.add(HAPTIC_CLASS);
-  if (hapticTimer) clearTimeout(hapticTimer);
-  hapticTimer = setTimeout(() => {
-    el.classList.remove(HAPTIC_CLASS);
-  }, 120);
+    el.classList.add(HAPTIC_CLASS);
+    if (hapticTimer) clearTimeout(hapticTimer);
+    hapticTimer = setTimeout(() => {
+        el.classList.remove(HAPTIC_CLASS);
+    }, 120);
 }
 
-function eventElement(event: Event): Element | null {
-  if (event.target instanceof Element) return event.target;
+// ── Event delegation target resolution ──
 
-  for (const target of event.composedPath()) {
-    if (target instanceof Element) return target;
-  }
-
-  return null;
-}
-
-function delegatedTarget(event: Event, selector: string): Element | null {
-  return eventElement(event)?.closest(selector) ?? null;
+/**
+ * Walk the event's composedPath to find the first Element matching `selector`.
+ * Equivalent to calling `.closest(selector)` on the event target, but avoids
+ * calling `.closest()` on a non-Element target (e.g. Document, Window) which
+ * would throw `TypeError: t.target.closest is not a function`.
+ */
+function closestTarget(event: Event, selector: string): Element | null {
+    for (const node of event.composedPath()) {
+        if (node instanceof Element && node.matches(selector)) return node;
+    }
+    return null;
 }
 
 function hapticPattern(value: string | null): HapticPattern {
-  return value && Object.prototype.hasOwnProperty.call(PATTERNS, value)
-    ? (value as HapticPattern)
-    : 'tap';
+    return value && Object.prototype.hasOwnProperty.call(PATTERNS, value)
+        ? (value as HapticPattern)
+        : "tap";
 }
 
 // ── Public API ──
 
 /** Fire a single haptic pulse. */
 export function haptic(pattern: HapticPattern): void {
-  vibrate(PATTERNS[pattern]);
+    vibrate(PATTERNS[pattern]);
 }
 
 /** Fire haptic + CSS pseudo-haptic on a target element. */
 export function hapticOn(el: Element, pattern: HapticPattern): void {
-  vibrate(PATTERNS[pattern]);
-  if (!hasVibrate()) {
-    cssHaptic(el);
-  }
+    vibrate(PATTERNS[pattern]);
+    if (!hasVibrate()) {
+        cssHaptic(el);
+    }
 }
 
 // ── Event delegation ──
 
 const DELEGATE_EVENTS: Array<[string, HapticPattern]> = [
-  ['click', 'tap'],
-  ['pointerdown', 'press'],
+    ["click", "tap"],
+    ["pointerdown", "press"],
 ];
 
 function handleHapticEvent(e: Event): void {
-  const target = delegatedTarget(e, '[data-haptic]');
-  if (!target) return;
-  const pattern = hapticPattern(target.getAttribute('data-haptic'));
-  hapticOn(target, pattern);
+    const target = closestTarget(e, "[data-haptic]");
+    if (!target) return;
+    const pattern = hapticPattern(target.getAttribute("data-haptic"));
+    hapticOn(target, pattern);
 }
 
 function handleHapticPointerEnter(e: Event): void {
-  const target = delegatedTarget(e, '[data-haptic="press"]');
-  if (target && hasVibrate()) vibrate(PATTERNS.press);
+    const target = closestTarget(e, '[data-haptic="press"]');
+    if (target && hasVibrate()) vibrate(PATTERNS.press);
 }
 
 let initialized = false;
 
 /** Enable global delegation. Call once at app root. */
 export function initHaptics(): void {
-  if (initialized) return;
-  initialized = true;
+    if (initialized) return;
+    initialized = true;
 
-  for (const [eventName, _pattern] of DELEGATE_EVENTS) {
-    document.addEventListener(eventName, handleHapticEvent, { passive: true });
-  }
+    for (const [eventName, _pattern] of DELEGATE_EVENTS) {
+        document.addEventListener(eventName, handleHapticEvent, {
+            passive: true,
+        });
+    }
 
-  document.addEventListener('pointerenter', handleHapticPointerEnter, { passive: true });
+    document.addEventListener("pointerenter", handleHapticPointerEnter, {
+        passive: true,
+    });
 }
 
 /** Tear down delegation (for hot-reload / cleanup). */
 export function destroyHaptics(): void {
-  if (!initialized) return;
-  initialized = false;
-  document.removeEventListener('click', handleHapticEvent);
-  document.removeEventListener('pointerdown', handleHapticEvent);
-  document.removeEventListener('pointerenter', handleHapticPointerEnter);
+    if (!initialized) return;
+    initialized = false;
+    document.removeEventListener("click", handleHapticEvent);
+    document.removeEventListener("pointerdown", handleHapticEvent);
+    document.removeEventListener("pointerenter", handleHapticPointerEnter);
 }

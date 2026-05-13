@@ -1,13 +1,24 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import CanvasScroller from '../components/CanvasScroller';
-import LiveStats from '../components/DiscordStats';
-import { highlight } from '../lib/highlight';
-import Logo from '../components/Logo.astro';
-import { siteConfig } from '../config/site';
+import Layout from "../layouts/Layout.astro";
+import CanvasScroller from "../components/CanvasScroller";
+import LiveStats from "../components/DiscordStats";
+import { highlight } from "../lib/highlight";
+import Logo from "../components/Logo.astro";
+import { siteConfig } from "../config/site";
+import {
+    buildWebsiteJsonLd,
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebApiJsonLd,
+    buildFaqJsonLd,
+} from "../utils/jsonLd";
 
 const jsonLd = [
-  { "@context": "https://schema.org", "@type": "WebSite", "name": "FreeTheAi", "url": "https://freetheai.xyz" }
+    buildWebsiteJsonLd(),
+    buildOrganizationJsonLd(),
+    buildSoftwareJsonLd(),
+    buildWebApiJsonLd(),
+    buildFaqJsonLd(),
 ];
 
 const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
@@ -18,74 +29,324 @@ const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
     "messages": [{ "role": "user", "content": "Hello" }]
   }'`;
 const snippetHtml = await highlight(snippet, "bash");
+
+const pageTitle =
+    "Free The AI — Free AI API with 16,000+ Models | No Credit Card";
+const pageDescription =
+    "Free the AI with FreeTheAi — a free OpenAI-compatible API gateway with 16,000+ models, Discord key signup, streaming chat, tool calling, image generation, and image editing. No credit card, no billing, no daily limits.";
 ---
 
 <Layout
-  title="FreeTheAi — Free AI API"
-  description="Free OpenAI-compatible API. 16,000+ models. Get a key via Discord."
-  jsonLd={jsonLd}
-  currentPath="/home"
+    title={pageTitle}
+    description={pageDescription}
+    jsonLd={jsonLd}
+    currentPath="/home"
 >
-  <main>
-    <CanvasScroller client:load />
-    <section class="home-hero" style="max-width:600px;margin:0 auto;padding-top:120px;position:relative;z-index:1;text-align:center" data-parallax="0.3">
-      <h1 style="line-height:0" data-parallax="0.2">
-        <Logo width={520} label="FreeTheAI" style="display:block;width:min(92vw,520px);height:auto;margin:0 auto" />
-      </h1>
-      <p style="color:var(--muted);font-size:1.15rem;margin:20px auto 0;line-height:1.6;max-width:480px">
-        OpenAI-compatible. 16,000+ models.<br>No card. No catch.
-      </p>
-      <div style="margin-top:40px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
-        <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
-          <span>Get a free API key</span>
-          <span style="opacity:0.6;font-size:0.85rem;margin-left:4px">&rarr;</span>
-        </a>
-      </div>
-      <div style="display:flex;gap:16px;margin-top:16px;justify-content:center">
-        <a href="/models" style="color:var(--muted);font-size:0.9rem;text-decoration:underline;text-underline-offset:3px">Browse Models</a>
-        <a href="/docs" style="color:var(--muted);font-size:0.9rem;text-decoration:underline;text-underline-offset:3px">Read Docs</a>
-      </div>
+    <main>
+        <CanvasScroller client:load />
 
-      <div style="margin-top:56px;display:flex;flex-direction:column;align-items:center">
-        <LiveStats client:load />
-        <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer" style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:var(--accent-text);text-shadow:var(--accent-text-glow);font-size:0.85rem;text-decoration:none;font-weight:500">
-          Join Discord <span style="font-size:1rem">&rarr;</span>
-        </a>
-      </div>
+        <!-- Hero Section -->
+        <section
+            class="home-hero"
+            style="max-width:600px;margin:0 auto;padding-top:120px;position:relative;z-index:1;text-align:center"
+            data-parallax="0.3"
+        >
+            <h1 data-parallax="0.2" style="position:relative">
+                <Logo
+                    width={520}
+                    label="FreeTheAI"
+                    style="display:block;width:min(92vw,520px);height:auto;margin:0 auto"
+                />
+                <span class="sr-only"
+                    >Free The AI — Free OpenAI-compatible API with 16,000+
+                    models</span
+                >
+            </h1>
+            <p
+                style="color:var(--muted);font-size:1.15rem;margin:20px auto 0;line-height:1.6;max-width:480px"
+            >
+                OpenAI-compatible. 16,000+ models.<br />No card. No catch.
+            </p>
+            <div
+                style="margin-top:40px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center"
+            >
+                <a
+                    class="primary-button"
+                    href={siteConfig.socials.discord}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <span>Get a free API key</span>
+                    <span style="opacity:0.6;font-size:0.85rem;margin-left:4px"
+                        >&rarr;</span
+                    >
+                </a>
+            </div>
+            <div
+                style="display:flex;gap:16px;margin-top:16px;justify-content:center"
+            >
+                <a
+                    href="/models"
+                    style="color:var(--muted);font-size:0.9rem;text-decoration:underline;text-underline-offset:3px"
+                    >Browse Models</a
+                >
+                <a
+                    href="/docs"
+                    style="color:var(--muted);font-size:0.9rem;text-decoration:underline;text-underline-offset:3px"
+                    >Read Docs</a
+                >
+            </div>
 
-      <div class="code-card" style="margin-top:64px;text-align:left" data-parallax="-0.4">
-        <div class="card-head">
-          <div class="dot-row"><span></span><span></span><span></span></div>
-          <div class="card-label">Try it</div>
-        </div>
-        <div class="docs-code-group">
-          <div class="shiki-wrapper" set:html={snippetHtml} />
-          <button class="copy-btn" type="button" title="Copy">
-            <span class="material-symbols-outlined">content_copy</span>
-          </button>
-        </div>
-      </div>
-    </section>
-  </main>
+            <div
+                style="margin-top:56px;display:flex;flex-direction:column;align-items:center"
+            >
+                <LiveStats client:load />
+                <a
+                    href={siteConfig.socials.discord}
+                    target="_blank"
+                    rel="noreferrer"
+                    style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:var(--accent-text);text-shadow:var(--accent-text-glow);font-size:0.85rem;text-decoration:none;font-weight:500"
+                >
+                    Join Discord <span style="font-size:1rem">&rarr;</span>
+                </a>
+            </div>
 
-  <script>
-    // Lightweight scroll parallax
-    const els = document.querySelectorAll('[data-parallax]');
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          const maxY = document.documentElement.scrollHeight - window.innerHeight;
-          const ratio = maxY > 0 ? window.scrollY / maxY : 0;
-          els.forEach(el => {
-            const speed = parseFloat(el.getAttribute('data-parallax') || '0');
-            el.style.transform = `translateY(${-ratio * speed * 120}px)`;
-            el.style.willChange = 'transform';
-          });
-          ticking = false;
-        });
-        ticking = true;
-      }
-    }, { passive: true });
-  </script>
+            <div
+                class="code-card"
+                style="margin-top:64px;text-align:left"
+                data-parallax="-0.4"
+            >
+                <div class="card-head">
+                    <div class="dot-row">
+                        <span></span><span></span><span></span>
+                    </div>
+                    <div class="card-label">Try it</div>
+                </div>
+                <div class="docs-code-group">
+                    <div class="shiki-wrapper" set:html={snippetHtml} />
+                    <button class="copy-btn" type="button" title="Copy">
+                        <span class="material-symbols-outlined"
+                            >content_copy</span
+                        >
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SEO Content Section — targets "free the ai", "free ai api", and long-tail informational queries -->
+        <section
+            class="home-content"
+            style="max-width:720px;margin:80px auto 0;padding:0 24px 80px;position:relative;z-index:1"
+        >
+            <div style="color:var(--text);line-height:1.8;font-size:1.05rem">
+                <h2
+                    style="font-size:1.6rem;font-weight:600;margin:0 0 16px;color:var(--text)"
+                >
+                    What Is FreeTheAi?
+                </h2>
+                <p style="margin:0 0 16px;color:var(--muted)">
+                    FreeTheAi is a <strong style="color:var(--text)"
+                        >free AI API gateway</strong
+                    > that gives developers instant access to over 16,000 AI models
+                    through a single OpenAI-compatible endpoint. Whether you need
+                    a <strong style="color:var(--text)"
+                        >free OpenAI API alternative</strong
+                    >, a <strong style="color:var(--text)">free LLM API</strong> for
+                    your agent framework, or a <strong style="color:var(--text)"
+                        >free image generation API</strong
+                    > for creative projects, FreeTheAi delivers production-grade inference
+                    without a credit card, without billing, and without daily usage
+                    caps.
+                </p>
+                <p style="margin:0 0 16px;color:var(--muted)">
+                    The project was built to <strong style="color:var(--text)"
+                        >free the AI</strong
+                    > — to remove the friction that keeps developers, students, and
+                    builders from accessing state-of-the-art models. No paid tiers,
+                    no API credit exhaustion, and no prompt storage. Just a free key
+                    from Discord and a base URL that works with any OpenAI SDK.
+                </p>
+
+                <h2
+                    style="font-size:1.6rem;font-weight:600;margin:32px 0 16px;color:var(--text)"
+                >
+                    Why Use a Free AI API?
+                </h2>
+                <p style="margin:0 0 16px;color:var(--muted)">
+                    Most AI APIs require credit card verification, prepaid
+                    credits, or monthly billing commitments before you can send
+                    a single request. FreeTheAi flips that model: <strong
+                        style="color:var(--text)"
+                        >get a free API key via Discord</strong
+                    > in seconds and start building immediately. The API is fully
+                    OpenAI-compatible, so any SDK, plugin, or tool that works with
+                    OpenAI will work here with zero code changes — just swap the base
+                    URL and API key.
+                </p>
+                <p style="margin:0 0 16px;color:var(--muted)">
+                    With <strong style="color:var(--text)"
+                        >16,000+ models</strong
+                    > spanning GPT, Claude, Gemini, DeepSeek, Grok, open-weight models,
+                    and specialized image generation models like gpt-image-2, you
+                    get the widest model selection available behind a single free
+                    API key. Use the live <a
+                        href="/models"
+                        style="color:var(--accent-text);text-underline-offset:3px"
+                        >model catalog</a
+                    > to search and filter by provider prefix.
+                </p>
+
+                <h2
+                    style="font-size:1.6rem;font-weight:600;margin:32px 0 16px;color:var(--text)"
+                >
+                    What Can You Build?
+                </h2>
+                <p style="margin:0 0 16px;color:var(--muted)">
+                    FreeTheAi supports the full OpenAI API surface: <strong
+                        style="color:var(--text)"
+                        >streaming chat completions</strong
+                    > for real-time conversational AI, <strong
+                        style="color:var(--text)"
+                        >tool calling and structured outputs</strong
+                    > for agent frameworks, <strong style="color:var(--text)"
+                        >Anthropic-style messages</strong
+                    > for Claude-compatible clients, <strong
+                        style="color:var(--text)">image generation</strong
+                    > for visual content, and <strong style="color:var(--text)"
+                        >image editing</strong
+                    > with base64 input images. Build chatbots, coding agents, content
+                    pipelines, image tools, and multi-model orchestrations — all against
+                    a single free endpoint.
+                </p>
+                <p style="margin:0 0 16px;color:var(--muted)">
+                    Students use FreeTheAi to experiment with LLMs without
+                    hitting paywalls. Developers prototype agent workflows
+                    before committing to paid providers. Researchers run batch
+                    evaluations across dozens of models at zero cost. The rate
+                    limits scale with community participation — invite friends
+                    to Discord to unlock higher throughput tiers.
+                </p>
+
+                <h2
+                    style="font-size:1.6rem;font-weight:600;margin:32px 0 16px;color:var(--text)"
+                >
+                    Privacy and Community
+                </h2>
+                <p style="margin:0 0 16px;color:var(--muted)">
+                    FreeTheAi does not store your prompts, completions, or
+                    conversation history. Only model alias, token count,
+                    timestamp, and status code are tracked for operational
+                    metrics. The project is community-run, open-source, and free
+                    forever. Join the <a
+                        href={siteConfig.socials.discord}
+                        target="_blank"
+                        rel="noreferrer"
+                        style="color:var(--accent-text);text-underline-offset:3px"
+                        >Discord server</a
+                    > to get your key, browse models with <code
+                        style="color:var(--accent-text);background:var(--accent-muted);padding:2px 6px;border-radius:4px;font-size:0.9em"
+                        >/models</code
+                    >, and connect with other builders using <strong
+                        style="color:var(--text)">free AI APIs</strong
+                    > in production.
+                </p>
+
+                <h2
+                    style="font-size:1.6rem;font-weight:600;margin:32px 0 16px;color:var(--text)"
+                >
+                    Getting Started
+                </h2>
+                <ol
+                    style="margin:0 0 24px;padding-left:24px;color:var(--muted);line-height:2"
+                >
+                    <li>
+                        Join the <a
+                            href={siteConfig.socials.discord}
+                            target="_blank"
+                            rel="noreferrer"
+                            style="color:var(--accent-text);text-underline-offset:3px"
+                            >FreeTheAi Discord</a>
+                    </li>
+                    <li>
+                        Run <code
+                            style="color:var(--accent-text);background:var(--accent-muted);padding:2px 6px;border-radius:4px;font-size:0.9em"
+                            >/signup</code
+                        > in any channel to get your free API key
+                    </li>
+                    <li>
+                        Set <code
+                            style="color:var(--accent-text);background:var(--accent-muted);padding:2px 6px;border-radius:4px;font-size:0.9em"
+                            >FREETHEAI_API_KEY</code
+                        > in your environment
+                    </li>
+                    <li>
+                        Point any OpenAI SDK at <code
+                            style="color:var(--accent-text);background:var(--accent-muted);padding:2px 6px;border-radius:4px;font-size:0.9em"
+                            >https://api.freetheai.xyz/v1</code>
+                    </li>
+                    <li>
+                        Browse the <a
+                            href="/docs"
+                            style="color:var(--accent-text);text-underline-offset:3px"
+                            >API docs</a
+                        > for endpoint-specific examples
+                    </li>
+                </ol>
+                <p style="margin:0;color:var(--muted)">
+                    Ready to <strong style="color:var(--text)"
+                        >free the AI</strong
+                    > in your next project? <a
+                        href={siteConfig.socials.discord}
+                        target="_blank"
+                        rel="noreferrer"
+                        style="color:var(--accent-text);text-underline-offset:3px"
+                        >Get your free API key now</a
+                    > and start building with 16,000+ models today.
+                </p>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        // Lightweight scroll parallax
+        const els = document.querySelectorAll("[data-parallax]");
+        let ticking = false;
+        window.addEventListener(
+            "scroll",
+            () => {
+                if (!ticking) {
+                    requestAnimationFrame(() => {
+                        const maxY =
+                            document.documentElement.scrollHeight -
+                            window.innerHeight;
+                        const ratio = maxY > 0 ? window.scrollY / maxY : 0;
+                        els.forEach((el) => {
+                            const speed = parseFloat(
+                                el.getAttribute("data-parallax") || "0",
+                            );
+                            el.style.transform = `translateY(${-ratio * speed * 120}px)`;
+                            el.style.willChange = "transform";
+                        });
+                        ticking = false;
+                    });
+                    ticking = true;
+                }
+            },
+            { passive: true },
+        );
+    </script>
 </Layout>
+
+<style is:global>
+    .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+</style>

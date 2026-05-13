@@ -40,6 +40,33 @@ If `gh` is unavailable, use GitHub's Releases page and draft a new release from 
 - Prefer live model catalog links over hardcoded model counts when possible.
 - Add long-tail docs when users ask repeated questions, for example `free OpenAI SDK setup`, `free image generation API`, and `Anthropic messages compatible API`.
 
+### Completed SEO Fixes (2026-05)
+
+1. **Root redirect fixed**: Replaced `<meta http-equiv="refresh">` soft redirect at `/` with `Astro.redirect("/home", 301)` producing a proper HTTP redirect with `noindex` on the fallback page. Root URL excluded from sitemap via `filter` option. Canonical points to `/home`. This eliminates duplicate content splitting between `/` and `/home`.
+
+2. **Homepage content added**: Added ~500 words of unique descriptive content targeting the exact phrase "free the ai" and related long-tail keywords (`free OpenAI API alternative`, `free LLM API`, `free image generation API`, `free AI API gateway`). Content covers: what FreeTheAi is, why use a free AI API, what you can build, privacy stance, and getting started steps.
+
+3. **H1 accessibility fixed**: Replaced `line-height:0` with a visible H1 container and added an `.sr-only` span containing "Free The AI — Free OpenAI-compatible API with 16,000+ models" for screen readers and search engines.
+
+4. **Title tags differentiated**: Homepage title changed to `"Free The AI — Free AI API with 16,000+ Models | No Credit Card"` to include the spaced phrase "Free The AI" that matches real search queries. Other pages use distinct titles to prevent cannibalization:
+   - `/docs`: "FreeTheAi API Docs - Chat, Models, Images"
+   - `/models`: "Free AI Model Catalog"
+   - `/status`: "FreeTheAi Status"
+
+5. **Keywords enriched**: Added `"free the ai"` as the first keyword in `site.ts` defaults. Updated site description to include "free the ai" phrasing.
+
+6. **Structured data expanded**: Added FAQPage, SoftwareApplication, WebAPI, and Organization JSON-LD schemas to the homepage (previously only had WebSite). FAQ schema targets rich-snippet eligibility for queries like "is FreeTheAi really free" and "how to get a free AI API key".
+
+7. **AI discoverability**: Added `<link rel="llms.txt" href="/llms.txt">` to document head for LLM-crawler discovery. Added `<link rel="alternate" hreflang="en-US">` for internationalization signals.
+
+### Post-Deploy Checklist
+
+- [ ] Submit updated `https://freetheai.xyz/sitemap-index.xml` in Google Search Console
+- [ ] Request indexing for the homepage (`/home`) via GSC URL Inspection tool
+- [ ] Monitor Coverage report for "Crawled, currently not indexed" over the next 2-4 weeks
+- [ ] Check that Google is showing FAQ rich snippets for the homepage within 4-6 weeks
+- [ ] Verify `/` returns a 301 redirect (not 200) in browser devtools Network tab
+
 ## Distribution
 
 - Use one strong launch post, then follow-up posts with different angles.

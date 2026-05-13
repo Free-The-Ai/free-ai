@@ -1,12 +1,25 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import DocsAccordion from '../components/DocsAccordion';
-import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
-import { highlight } from '../lib/highlight';
+import Layout from "../layouts/Layout.astro";
+import DocsAccordion from "../components/DocsAccordion";
+import {
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebsiteJsonLd,
+    buildWebApiJsonLd,
+    buildFaqJsonLd,
+} from "../utils/jsonLd";
+import { highlight } from "../lib/highlight";
 
-const pageDescription = 'FreeTheAi API documentation for chat completions, model listing, image generation, and image editing.';
+const pageDescription =
+    "FreeTheAi API documentation for chat completions, model listing, image generation, and image editing.";
 
-const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd(), buildWebApiJsonLd(), buildFaqJsonLd()];
+const jsonLd = [
+    buildWebsiteJsonLd(),
+    buildOrganizationJsonLd(),
+    buildSoftwareJsonLd(),
+    buildWebApiJsonLd(),
+    buildFaqJsonLd(),
+];
 
 const baseSnippet = `Base URL
 https://api.freetheai.xyz/v1
@@ -120,71 +133,103 @@ save_image_result(res.json(), "generated.png")`;
 const pythonImageSnippetHtml = await highlight(pythonImageSnippet, "python");
 
 const endpoints = [
-	['POST', '/v1/chat/completions', 'OpenAI-compatible chat, streaming, tool calling, and multi-turn conversations.'],
-	['POST', '/v1/messages', 'Anthropic-style Messages API for compatible clients and frameworks.'],
-	['GET', '/v1/models', 'Authenticated model list for normal clients.'],
-	['GET', '/v1/models/full', 'Expanded model catalog with throughput policy metadata for catalog UIs.'],
-	['GET', '/v1/models/leaderboard', 'Site-key model leaderboard for public catalog and landing-page widgets.'],
-	['POST', '/v1/images/generations', 'Image generation with img/gpt-image-2 and vhr/* generation models.'],
-	['POST', '/v1/images/edits', 'Image editing with img/gpt-image-2 and a base64 data URL input image.'],
-	['GET', '/v1/health', 'Public API health and catalog status.'],
+    [
+        "POST",
+        "/v1/chat/completions",
+        "OpenAI-compatible chat, streaming, tool calling, and multi-turn conversations.",
+    ],
+    [
+        "POST",
+        "/v1/messages",
+        "Anthropic-style Messages API for compatible clients and frameworks.",
+    ],
+    ["GET", "/v1/models", "Authenticated model list for normal clients."],
+    [
+        "GET",
+        "/v1/models/full",
+        "Expanded model catalog with throughput policy metadata for catalog UIs.",
+    ],
+    [
+        "GET",
+        "/v1/models/leaderboard",
+        "Site-key model leaderboard for public catalog and landing-page widgets.",
+    ],
+    [
+        "POST",
+        "/v1/images/generations",
+        "Image generation with img/gpt-image-2 and vhr/* generation models.",
+    ],
+    [
+        "POST",
+        "/v1/images/edits",
+        "Image editing with img/gpt-image-2 and a base64 data URL input image.",
+    ],
+    ["GET", "/v1/health", "Public API health and catalog status."],
 ];
 
 const imageModels = [
-	['img/gpt-image-2', 'Generation + editing', 'Returns base64 image data. Use this for edits.'],
-	['vhr/flux_dev', 'Generation only', 'Text-to-image model.'],
-	['vhr/gpt_image_2', 'Generation only', 'Text-to-image model.'],
-	['vhr/nano_banana_2', 'Generation only', 'Text-to-image model.'],
-	['vhr/bytedance_seedream_v4', 'Generation only', 'Text-to-image model.'],
-
+    [
+        "img/gpt-image-2",
+        "Generation + editing",
+        "Returns base64 image data. Use this for edits.",
+    ],
+    ["vhr/flux_dev", "Generation only", "Text-to-image model."],
+    ["vhr/gpt_image_2", "Generation only", "Text-to-image model."],
+    ["vhr/nano_banana_2", "Generation only", "Text-to-image model."],
+    ["vhr/bytedance_seedream_v4", "Generation only", "Text-to-image model."],
 ];
 ---
 
 <Layout
-	title="FreeTheAi API Docs - Chat, Models, Images"
-	description={pageDescription}
-	jsonLd={jsonLd}
-	currentPath="/docs"
+    title="FreeTheAi API Docs - Chat, Models, Images"
+    description={pageDescription}
+    jsonLd={jsonLd}
+    currentPath="/docs"
 >
-	<main class="docs-main" data-docs-nav>
-		<section class="docs-layout">
-			<aside class="docs-sidebar" id="docs-section-nav" aria-label="Docs sections">
-				<span class="docs-sidebar-label">On this page</span>
-				<a href="#auth">Auth</a>
-				<a href="#endpoints">Endpoints</a>
-				<a href="#chat">Chat</a>
-				<a href="#messages">Messages</a>
-				<a href="#models">Models</a>
-				<a href="#images">Images</a>
-				<a href="#errors">Errors</a>
-			</aside>
+    <main class="docs-main" data-docs-nav>
+        <section class="docs-layout">
+            <aside
+                class="docs-sidebar"
+                id="docs-section-nav"
+                aria-label="Docs sections"
+            >
+                <span class="docs-sidebar-label">On this page</span>
+                <a href="#auth">Auth</a>
+                <a href="#endpoints">Endpoints</a>
+                <a href="#chat">Chat</a>
+                <a href="#messages">Messages</a>
+                <a href="#models">Models</a>
+                <a href="#images">Images</a>
+                <a href="#errors">Errors</a>
+            </aside>
 
-			<div class="docs-content">
-				<div class="docs-content-head">
-					<h1>API Docs</h1>
-					<p>Chat, models, images — one key, one base URL.</p>
-				</div>
-				<DocsAccordion
-					baseSnippet={baseSnippet}
-					chatCurlSnippet={chatCurlSnippet}
-					chatCurlSnippetHtml={chatCurlSnippetHtml}
-					openAISDKSnippet={openAISDKSnippet}
-					openAISDKSnippetHtml={openAISDKSnippetHtml}
-					messagesSnippet={messagesSnippet}
-					messagesSnippetHtml={messagesSnippetHtml}
-					modelListSnippet={modelListSnippet}
-					modelListSnippetHtml={modelListSnippetHtml}
-					fullModelListSnippet={fullModelListSnippet}
-					fullModelListSnippetHtml={fullModelListSnippetHtml}
-					vhrImageSnippet={vhrImageSnippet}
-					vhrImageSnippetHtml={vhrImageSnippetHtml}
-					imageEditSnippet={imageEditSnippet}
-					imageEditSnippetHtml={imageEditSnippetHtml}
-					pythonImageSnippet={pythonImageSnippet}
-					pythonImageSnippetHtml={pythonImageSnippetHtml}
-					endpoints={endpoints}
-					imageModels={imageModels}				/>
-			</div>
-		</section>
-	</main>
+            <div class="docs-content">
+                <div class="docs-content-head">
+                    <h1>API Docs</h1>
+                    <p>Chat, models, images — one key, one base URL.</p>
+                </div>
+                <DocsAccordion
+                    baseSnippet={baseSnippet}
+                    chatCurlSnippet={chatCurlSnippet}
+                    chatCurlSnippetHtml={chatCurlSnippetHtml}
+                    openAISDKSnippet={openAISDKSnippet}
+                    openAISDKSnippetHtml={openAISDKSnippetHtml}
+                    messagesSnippet={messagesSnippet}
+                    messagesSnippetHtml={messagesSnippetHtml}
+                    modelListSnippet={modelListSnippet}
+                    modelListSnippetHtml={modelListSnippetHtml}
+                    fullModelListSnippet={fullModelListSnippet}
+                    fullModelListSnippetHtml={fullModelListSnippetHtml}
+                    vhrImageSnippet={vhrImageSnippet}
+                    vhrImageSnippetHtml={vhrImageSnippetHtml}
+                    imageEditSnippet={imageEditSnippet}
+                    imageEditSnippetHtml={imageEditSnippetHtml}
+                    pythonImageSnippet={pythonImageSnippet}
+                    pythonImageSnippetHtml={pythonImageSnippetHtml}
+                    endpoints={endpoints}
+                    imageModels={imageModels}
+                />
+            </div>
+        </section>
+    </main>
 </Layout>

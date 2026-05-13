@@ -1,20 +1,32 @@
 ---
-import Layout from '../layouts/Layout.astro';
-import CatalogBrowser from '../components/CatalogBrowser';
-import { buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd, buildFaqJsonLd } from '../utils/jsonLd';
+import Layout from "../layouts/Layout.astro";
+import CatalogBrowser from "../components/CatalogBrowser";
+import {
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebsiteJsonLd,
+    buildWebApiJsonLd,
+    buildFaqJsonLd,
+} from "../utils/jsonLd";
 
-const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildSoftwareJsonLd(), buildWebApiJsonLd(), buildFaqJsonLd()];
+const jsonLd = [
+    buildWebsiteJsonLd(),
+    buildOrganizationJsonLd(),
+    buildSoftwareJsonLd(),
+    buildWebApiJsonLd(),
+    buildFaqJsonLd(),
+];
 ---
 
 <Layout
-	title="Free AI Model Catalog"
-	description="Live model index for FreeTheAi — search model aliases by ID."
-	jsonLd={jsonLd}
-	currentPath="/models"
+    title="Free AI Model Catalog"
+    description="Live model index for FreeTheAi — search model aliases by ID."
+    jsonLd={jsonLd}
+    currentPath="/models"
 >
-	<main class="models-main">
-		<section class="section shell models-catalog-section" id="catalog">
-			<CatalogBrowser client:load />
-		</section>
-	</main>
+    <main class="models-main">
+        <section class="section shell models-catalog-section" id="catalog">
+            <CatalogBrowser client:load />
+        </section>
+    </main>
 </Layout>

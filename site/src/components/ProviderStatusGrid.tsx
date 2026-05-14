@@ -590,7 +590,7 @@ export default function ProviderStatusGrid() {
 
     const fetchHealth = async () => {
         try {
-            const response = await fetch("/api/health", { cache: "no-store" });
+            const response = await fetch(`${siteConfig.socials.api}/v1/health`, { cache: "no-store" });
             if (!response.ok) throw new Error(`health ${response.status}`);
             setHealth(await response.json());
             setLoadedAt(new Date());

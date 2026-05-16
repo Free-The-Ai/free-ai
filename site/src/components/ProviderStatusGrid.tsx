@@ -271,14 +271,25 @@ const CSS = `
 /* Drag handle — desktop hidden, mobile visible */
 .popover-drag-handle {
   display: none;
-  width: 36px;
-  height: 5px;
-  margin: 10px auto 8px;
-  border-radius: 3px;
-  background: var(--border-strong);
+  width: 64px;
+  height: 28px;
+  margin: 0 auto;
+  padding: 10px 14px 13px;
+  box-sizing: border-box;
+  border: 0;
+  background: transparent;
   flex-shrink: 0;
   cursor: grab;
   touch-action: none;
+}
+.popover-drag-handle::before {
+  content: "";
+  display: block;
+  width: 36px;
+  height: 5px;
+  margin: 0 auto;
+  border-radius: 3px;
+  background: var(--border-strong);
 }
 .popover-drag-handle:active {
   cursor: grabbing;
@@ -613,7 +624,9 @@ export default function ProviderStatusGrid() {
     let dragStartY = 0;
     let sheetStartOffset = 0;
     let sheetEl: HTMLDivElement | undefined;
-    const DISMISS_THRESHOLD = 0.3; // 30% of sheet height
+    let dragBoundMove: ((e: PointerEvent) => void) | null = null;
+    let dragBoundUp: ((e: PointerEvent) => void) | null = null;
+    const DISMISS_THRESHOLD = 0.3;
 
     const fetchHealth = async () => {
         try {
@@ -830,6 +843,7 @@ export default function ProviderStatusGrid() {
         setSelectedPrefix(null);
         setDragOffset(0);
         setIsDragging(false);
+        dragCaptureEl = undefined;
         setIsScrollThumbDragging(false);
         popoverBodyEl = undefined;
         scrollRailEl = undefined;
@@ -844,25 +858,41 @@ export default function ProviderStatusGrid() {
     /* ── Drag-to-dismiss ── */
     const handleDragStart = (e: PointerEvent) => {
         if (!isMobile()) return;
+
+        const target = e.target as HTMLElement;
+        if (target.closest("button,a")) return;
+
         e.preventDefault();
         dragStartY = e.clientY;
         sheetStartOffset = dragOffset();
         setIsDragging(true);
-        if (sheetEl) sheetEl.setPointerCapture(e.pointerId);
+
+        dragBoundMove = handleDragMove;
+        dragBoundUp = handleDragEnd;
+        document.addEventListener("pointermove", dragBoundMove, { passive: false });
+        document.addEventListener("pointerup", dragBoundUp, { passive: false });
+        document.addEventListener("pointercancel", dragBoundUp, { passive: false });
     };
 
     const handleDragMove = (e: PointerEvent) => {
         if (!isDragging()) return;
+        e.preventDefault();
         const delta = e.clientY - dragStartY;
-        // Only allow downward drag, with slight resistance on upward
         const newOffset = delta > 0 ? delta : delta * 0.3;
         setDragOffset(Math.max(0, sheetStartOffset + newOffset));
     };
 
     const handleDragEnd = (e: PointerEvent) => {
         if (!isDragging()) return;
+        e.preventDefault();
         setIsDragging(false);
-        if (sheetEl) sheetEl.releasePointerCapture(e.pointerId);
+        if (dragBoundMove) document.removeEventListener("pointermove", dragBoundMove);
+        if (dragBoundUp) {
+            document.removeEventListener("pointerup", dragBoundUp);
+            document.removeEventListener("pointercancel", dragBoundUp);
+        }
+        dragBoundMove = null;
+        dragBoundUp = null;
 
         const sheetHeight = sheetEl?.offsetHeight ?? 400;
         const threshold = sheetHeight * DISMISS_THRESHOLD;
@@ -1140,9 +1170,6 @@ export default function ProviderStatusGrid() {
                                     <div
                                         class="popover-drag-handle"
                                         onPointerDown={handleDragStart}
-                                        onPointerMove={handleDragMove}
-                                        onPointerUp={handleDragEnd}
-                                        onPointerCancel={handleDragEnd}
                                     />
                                 </Show>
 
@@ -1151,15 +1178,6 @@ export default function ProviderStatusGrid() {
                                     class={`popover-header${isMobile() ? " has-handle" : ""}`}
                                     onPointerDown={
                                         isMobile() ? handleDragStart : undefined
-                                    }
-                                    onPointerMove={
-                                        isMobile() ? handleDragMove : undefined
-                                    }
-                                    onPointerUp={
-                                        isMobile() ? handleDragEnd : undefined
-                                    }
-                                    onPointerCancel={
-                                        isMobile() ? handleDragEnd : undefined
                                     }
                                 >
                                     <button

@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import DocsAccordion from "../components/DocsAccordion";
+import DocsMobileNav from "../components/DocsMobileNav";
 import {
     buildOrganizationJsonLd,
     buildSoftwareJsonLd,
@@ -187,6 +188,7 @@ const imageModels = [
     currentPath="/docs"
 >
     <main class="docs-main" data-docs-nav>
+        <DocsMobileNav client:load />
         <section class="docs-layout">
             <aside
                 class="docs-sidebar"

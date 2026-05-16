@@ -1,6 +1,7 @@
 import {
     For,
     Show,
+    createEffect,
     createMemo,
     createSignal,
     onCleanup,
@@ -39,6 +40,12 @@ type ModelEntry = {
 
 type ModelCatalog = {
     data: ModelEntry[];
+};
+
+type ScrollRailMetrics = {
+    scrollable: boolean;
+    thumbHeight: number;
+    thumbTop: number;
 };
 
 const providerOrder = [
@@ -226,6 +233,8 @@ const CSS = `
   align-items: center;
   justify-content: center;
   padding: 16px;
+  overflow: hidden;
+  overscroll-behavior: contain;
   background: rgba(0, 0, 0, 0.4);
   backdrop-filter: blur(3px);
   animation: backdrop-in 0.18s ease;
@@ -237,10 +246,14 @@ const CSS = `
 
 /* ═══ Popover Shell ═══ */
 .popover {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: min(520px, calc(100vw - 32px));
   max-height: min(640px, calc(100vh - 64px));
+  max-height: min(640px, calc(100dvh - 64px));
+  height: min(640px, calc(100vh - 64px));
+  height: min(640px, calc(100dvh - 64px));
   min-width: 0;
   overflow: hidden;
   border: 1px solid var(--sk-border);
@@ -347,22 +360,77 @@ const CSS = `
 }
 
 /* Body — scrolls independently */
-.popover-body {
+.popover-body-frame {
+  position: relative;
   flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+}
+.popover-body {
+  height: 100%;
   overflow-y: auto;
   overflow-x: hidden;
   min-width: 0;
+  min-height: 0;
   padding: 8px 24px 24px;
-  scrollbar-width: thin;
-  scrollbar-color: var(--border-strong) transparent;
+  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   overscroll-behavior: contain;
+  touch-action: pan-y;
 }
-.popover-body::-webkit-scrollbar { width: 4px; }
-.popover-body::-webkit-scrollbar-track { background: transparent; }
-.popover-body::-webkit-scrollbar-thumb {
-  background: var(--border-strong);
-  border-radius: 2px;
+.popover-body::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+.popover-scroll-rail {
+  position: absolute;
+  top: 8px;
+  right: 7px;
+  bottom: 14px;
+  width: 12px;
+  border-radius: 999px;
+  background: transparent;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+  touch-action: none;
+}
+.popover-body-frame.is-scrollable .popover-scroll-rail {
+  opacity: 1;
+  pointer-events: auto;
+}
+.popover-scroll-rail:hover,
+.popover-scroll-rail.is-dragging {
+  background: transparent;
+}
+.popover-scroll-thumb {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  min-height: 32px;
+  border-radius: 999px;
+  background: transparent;
+  cursor: grab;
+  touch-action: none;
+}
+.popover-scroll-thumb::before {
+  content: "";
+  position: absolute;
+  inset: 0 4px;
+  border-radius: 999px;
+  background: rgba(238, 93, 32, 0.48);
+}
+.popover-scroll-thumb:hover,
+.popover-scroll-thumb.is-dragging {
+  background: transparent;
+}
+.popover-scroll-thumb.is-dragging {
+  cursor: grabbing;
+}
+.popover-scroll-thumb:hover::before,
+.popover-scroll-thumb.is-dragging::before {
+  background: rgba(238, 93, 32, 0.78);
 }
 
 /* Detail sections */
@@ -506,6 +574,9 @@ const CSS = `
     width: 100%;
     max-width: 100%;
     max-height: 88vh;
+    max-height: 88dvh;
+    height: 88vh;
+    height: 88dvh;
     border-radius: 14px 14px 0 0;
     border-bottom: none;
     transform: translateY(100%);
@@ -536,7 +607,7 @@ const CSS = `
   }
 
   .popover-body {
-    padding: 4px 18px calc(20px + env(safe-area-inset-bottom, 0px));
+    padding: 4px 30px calc(20px + env(safe-area-inset-bottom, 0px)) 18px;
     overscroll-behavior: contain;
   }
 
@@ -561,9 +632,19 @@ const CSS = `
 }
 
 /* ═══ Lock body scroll when popover is open ═══ */
+html.popover-open {
+  background: var(--bg);
+}
+html.popover-open,
 body.popover-open {
   overflow: hidden;
-  touch-action: none;
+  overscroll-behavior: none;
+}
+body.popover-open {
+  position: fixed;
+  left: 0;
+  right: 0;
+  width: 100%;
 }
 `;
 
@@ -578,7 +659,21 @@ export default function ProviderStatusGrid() {
         Map<string, string[]>
     >(new Map());
     const [modelsFailed, setModelsFailed] = createSignal(false);
+    const [scrollRailMetrics, setScrollRailMetrics] =
+        createSignal<ScrollRailMetrics>({
+            scrollable: false,
+            thumbHeight: 0,
+            thumbTop: 0,
+        });
+    const [isScrollThumbDragging, setIsScrollThumbDragging] =
+        createSignal(false);
     let interval: number | undefined;
+    let lockedScrollY = 0;
+    let popoverBodyEl: HTMLDivElement | undefined;
+    let scrollRailEl: HTMLDivElement | undefined;
+    let scrollRailFrame: number | undefined;
+    let scrollDragStartY = 0;
+    let scrollDragStartTop = 0;
 
     /* ── Drag-to-dismiss state ── */
     const [dragOffset, setDragOffset] = createSignal(0);
@@ -638,28 +733,210 @@ export default function ProviderStatusGrid() {
         if (interval) window.clearInterval(interval);
     });
 
+    /* ── Persistent modal scroll rail ── */
+    const resetScrollRail = () => {
+        setScrollRailMetrics({
+            scrollable: false,
+            thumbHeight: 0,
+            thumbTop: 0,
+        });
+    };
+
+    const updateScrollRail = () => {
+        const body = popoverBodyEl;
+        const rail = scrollRailEl;
+        if (!body || !rail) {
+            resetScrollRail();
+            return;
+        }
+
+        const maxScroll = body.scrollHeight - body.clientHeight;
+        const railHeight = rail.clientHeight;
+        if (maxScroll <= 1 || railHeight <= 0) {
+            resetScrollRail();
+            return;
+        }
+
+        const thumbHeight = Math.max(
+            32,
+            Math.round((body.clientHeight / body.scrollHeight) * railHeight),
+        );
+        const maxThumbTop = Math.max(0, railHeight - thumbHeight);
+        const thumbTop = Math.round((body.scrollTop / maxScroll) * maxThumbTop);
+
+        setScrollRailMetrics({
+            scrollable: true,
+            thumbHeight,
+            thumbTop,
+        });
+    };
+
+    const queueScrollRailUpdate = () => {
+        if (typeof window === "undefined") return;
+        if (scrollRailFrame !== undefined) {
+            window.cancelAnimationFrame(scrollRailFrame);
+        }
+        scrollRailFrame = window.requestAnimationFrame(() => {
+            scrollRailFrame = undefined;
+            updateScrollRail();
+        });
+    };
+
+    const scrollBodyFromThumbTop = (thumbTop: number) => {
+        const body = popoverBodyEl;
+        const rail = scrollRailEl;
+        if (!body || !rail) return;
+
+        const maxScroll = body.scrollHeight - body.clientHeight;
+        const maxThumbTop = rail.clientHeight - scrollRailMetrics().thumbHeight;
+        body.scrollTop =
+            maxThumbTop > 0 ? (thumbTop / maxThumbTop) * maxScroll : 0;
+        updateScrollRail();
+    };
+
+    const handleScrollRailPointerDown = (e: PointerEvent) => {
+        if (!scrollRailMetrics().scrollable) return;
+        if (e.target !== e.currentTarget) return;
+        const rail = scrollRailEl;
+        if (!rail) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const metrics = scrollRailMetrics();
+        const rect = rail.getBoundingClientRect();
+        const maxThumbTop = Math.max(0, rail.clientHeight - metrics.thumbHeight);
+        const thumbTop = Math.max(
+            0,
+            Math.min(
+                e.clientY - rect.top - metrics.thumbHeight / 2,
+                maxThumbTop,
+            ),
+        );
+        scrollBodyFromThumbTop(thumbTop);
+    };
+
+    const handleScrollThumbPointerDown = (e: PointerEvent) => {
+        if (!scrollRailMetrics().scrollable) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        scrollDragStartY = e.clientY;
+        scrollDragStartTop = scrollRailMetrics().thumbTop;
+        setIsScrollThumbDragging(true);
+        (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
+    };
+
+    const handleScrollThumbPointerMove = (e: PointerEvent) => {
+        if (!isScrollThumbDragging()) return;
+        const rail = scrollRailEl;
+        if (!rail) return;
+
+        e.preventDefault();
+        e.stopPropagation();
+
+        const maxThumbTop = Math.max(
+            0,
+            rail.clientHeight - scrollRailMetrics().thumbHeight,
+        );
+        const thumbTop = Math.max(
+            0,
+            Math.min(scrollDragStartTop + e.clientY - scrollDragStartY, maxThumbTop),
+        );
+        scrollBodyFromThumbTop(thumbTop);
+    };
+
+    const handleScrollThumbPointerEnd = (e: PointerEvent) => {
+        if (!isScrollThumbDragging()) return;
+        e.preventDefault();
+        e.stopPropagation();
+        setIsScrollThumbDragging(false);
+        const thumb = e.currentTarget as HTMLDivElement;
+        if (thumb.hasPointerCapture(e.pointerId)) {
+            thumb.releasePointerCapture(e.pointerId);
+        }
+    };
+
+    const handlePopoverBodyWheel = (e: WheelEvent) => {
+        const body = popoverBodyEl;
+        if (!body) return;
+
+        const maxScroll = body.scrollHeight - body.clientHeight;
+        if (maxScroll <= 1) return;
+
+        const deltaY =
+            e.deltaMode === WheelEvent.DOM_DELTA_LINE
+                ? e.deltaY * 16
+                : e.deltaMode === WheelEvent.DOM_DELTA_PAGE
+                  ? e.deltaY * body.clientHeight
+                  : e.deltaY;
+        const nextScrollTop = Math.max(
+            0,
+            Math.min(body.scrollTop + deltaY, maxScroll),
+        );
+
+        e.preventDefault();
+        e.stopPropagation();
+        body.scrollTop = nextScrollTop;
+        updateScrollRail();
+    };
+
+    createEffect(() => {
+        const prefix = selectedPrefix();
+        if (prefix) modelsByPrefix().get(prefix);
+        queueScrollRailUpdate();
+    });
+
+    onCleanup(() => {
+        if (typeof window !== "undefined" && scrollRailFrame !== undefined) {
+            window.cancelAnimationFrame(scrollRailFrame);
+        }
+    });
+
     /* ── Body scroll lock ── */
+    const lockPageScroll = () => {
+        if (typeof document === "undefined") return;
+        if (document.body.classList.contains("popover-open")) return;
+
+        lockedScrollY = window.scrollY;
+        document.documentElement.classList.add("popover-open");
+        document.body.classList.add("popover-open");
+        document.body.style.top = `-${lockedScrollY}px`;
+    };
+
+    const unlockPageScroll = () => {
+        if (typeof document === "undefined") return;
+        if (!document.body.classList.contains("popover-open")) return;
+
+        const restoreY = lockedScrollY;
+        document.documentElement.classList.remove("popover-open");
+        document.body.classList.remove("popover-open");
+        document.body.style.top = "";
+        lockedScrollY = 0;
+        window.scrollTo(0, restoreY);
+    };
+
     const openPopover = (prefix: string) => {
+        lockPageScroll();
         setSelectedPrefix(prefix);
         setDragOffset(0);
-        if (typeof document !== "undefined") {
-            document.body.classList.add("popover-open");
-        }
+        queueScrollRailUpdate();
     };
 
     const closePopover = () => {
         setSelectedPrefix(null);
         setDragOffset(0);
         setIsDragging(false);
-        if (typeof document !== "undefined") {
-            document.body.classList.remove("popover-open");
-        }
+        setIsScrollThumbDragging(false);
+        popoverBodyEl = undefined;
+        scrollRailEl = undefined;
+        resetScrollRail();
+        unlockPageScroll();
     };
 
     onCleanup(() => {
-        if (typeof document !== "undefined") {
-            document.body.classList.remove("popover-open");
-        }
+        unlockPageScroll();
     });
 
     /* ── Drag-to-dismiss ── */
@@ -772,7 +1049,10 @@ export default function ProviderStatusGrid() {
     onMount(() => {
         if (typeof window !== "undefined") {
             setIsMobile(window.innerWidth <= 640);
-            const onResize = () => setIsMobile(window.innerWidth <= 640);
+            const onResize = () => {
+                setIsMobile(window.innerWidth <= 640);
+                queueScrollRailUpdate();
+            };
             window.addEventListener("resize", onResize);
             onCleanup(() => window.removeEventListener("resize", onResize));
         }
@@ -1028,125 +1308,168 @@ export default function ProviderStatusGrid() {
                                 </div>
 
                                 {/* Body — scrolls */}
-                                <div class="popover-body">
-                                    {/* Reliability */}
-                                    <dl class="detail-section">
-                                        <h4 class="detail-section-title">
-                                            Reliability
-                                        </h4>
-                                        <dt>60m error rate</dt>
-                                        <dd
-                                            class={
-                                                provider().error_rate_60m === 0
-                                                    ? "zero"
-                                                    : ""
-                                            }
-                                        >
-                                            {formatPercent(
-                                                provider().error_rate_60m,
-                                            )}
-                                        </dd>
-                                        <dt>30m errors</dt>
-                                        <dd>
-                                            {provider().errors_30m.toLocaleString()}
-                                        </dd>
-                                        <dt>60m errors</dt>
-                                        <dd>
-                                            {provider().errors_60m.toLocaleString()}
-                                        </dd>
-                                    </dl>
-
-                                    {/* Throughput */}
-                                    <dl class="detail-section">
-                                        <h4 class="detail-section-title">
-                                            Throughput
-                                        </h4>
-                                        <dt>60m requests</dt>
-                                        <dd>
-                                            {provider().requests_60m.toLocaleString()}
-                                        </dd>
-                                        <dt>30m successes</dt>
-                                        <dd>
-                                            {provider().successes_30m.toLocaleString()}
-                                        </dd>
-                                        <dt>60m successes</dt>
-                                        <dd>
-                                            {provider().successes_60m.toLocaleString()}
-                                        </dd>
-                                    </dl>
-
-                                    {/* Activity */}
-                                    <dl class="detail-section">
-                                        <h4 class="detail-section-title">
-                                            Activity
-                                        </h4>
-                                        <dt>Last success</dt>
-                                        <dd>
-                                            {formatTimestamp(
-                                                provider().last_success_at,
-                                            )}
-                                        </dd>
-                                        <dt>Last error</dt>
-                                        <dd
-                                            class={
-                                                !provider().last_error_at
-                                                    ? "zero"
-                                                    : ""
-                                            }
-                                        >
-                                            {formatTimestamp(
-                                                provider().last_error_at,
-                                            )}
-                                        </dd>
-                                    </dl>
-
-                                    {/* Model chips */}
-                                    <Show when={providerModels().length > 0}>
-                                        <div class="models-section">
-                                            <h4 class="models-title">
-                                                Models under {provider().prefix}
-                                                /
-                                                {isAffected
-                                                    ? provider().status ===
-                                                      "down"
-                                                        ? " — likely affected"
-                                                        : " — may be affected"
-                                                    : ""}
+                                <div
+                                    class={`popover-body-frame${scrollRailMetrics().scrollable ? " is-scrollable" : ""}`}
+                                    onWheel={handlePopoverBodyWheel}
+                                >
+                                    <div
+                                        class="popover-body"
+                                        ref={(el) => {
+                                            popoverBodyEl = el;
+                                            queueScrollRailUpdate();
+                                        }}
+                                        onScroll={updateScrollRail}
+                                    >
+                                        {/* Reliability */}
+                                        <dl class="detail-section">
+                                            <h4 class="detail-section-title">
+                                                Reliability
                                             </h4>
-                                            <div class="models-chips">
-                                                <For each={visibleModels()}>
-                                                    {(modelId) => (
-                                                        <span
-                                                            class="model-chip"
-                                                            title={modelId}
-                                                        >
-                                                            {modelId}
-                                                        </span>
-                                                    )}
-                                                </For>
-                                                <Show when={hiddenCount() > 0}>
-                                                    <span class="model-chip-more">
-                                                        +
-                                                        {hiddenCount().toLocaleString()}{" "}
-                                                        more
-                                                    </span>
-                                                </Show>
-                                            </div>
-                                        </div>
-                                    </Show>
+                                            <dt>60m error rate</dt>
+                                            <dd
+                                                class={
+                                                    provider()
+                                                        .error_rate_60m === 0
+                                                        ? "zero"
+                                                        : ""
+                                                }
+                                            >
+                                                {formatPercent(
+                                                    provider().error_rate_60m,
+                                                )}
+                                            </dd>
+                                            <dt>30m errors</dt>
+                                            <dd>
+                                                {provider().errors_30m.toLocaleString()}
+                                            </dd>
+                                            <dt>60m errors</dt>
+                                            <dd>
+                                                {provider().errors_60m.toLocaleString()}
+                                            </dd>
+                                        </dl>
 
-                                    {/* Catalog link */}
-                                    <Show when={provider().model_count > 0}>
-                                        <a
-                                            class="catalog-link"
-                                            href={`/models?prefix=${provider().prefix}`}
-                                        >
-                                            View all in model catalog
-                                            <span class="catalog-link-arrow">
-                                                &rarr;
-                                            </span>
-                                        </a>
-                                    </Show>
+                                        {/* Throughput */}
+                                        <dl class="detail-section">
+                                            <h4 class="detail-section-title">
+                                                Throughput
+                                            </h4>
+                                            <dt>60m requests</dt>
+                                            <dd>
+                                                {provider().requests_60m.toLocaleString()}
+                                            </dd>
+                                            <dt>30m successes</dt>
+                                            <dd>
+                                                {provider().successes_30m.toLocaleString()}
+                                            </dd>
+                                            <dt>60m successes</dt>
+                                            <dd>
+                                                {provider().successes_60m.toLocaleString()}
+                                            </dd>
+                                        </dl>
+
+                                        {/* Activity */}
+                                        <dl class="detail-section">
+                                            <h4 class="detail-section-title">
+                                                Activity
+                                            </h4>
+                                            <dt>Last success</dt>
+                                            <dd>
+                                                {formatTimestamp(
+                                                    provider().last_success_at,
+                                                )}
+                                            </dd>
+                                            <dt>Last error</dt>
+                                            <dd
+                                                class={
+                                                    !provider().last_error_at
+                                                        ? "zero"
+                                                        : ""
+                                                }
+                                            >
+                                                {formatTimestamp(
+                                                    provider().last_error_at,
+                                                )}
+                                            </dd>
+                                        </dl>
+
+                                        {/* Model chips */}
+                                        <Show when={providerModels().length > 0}>
+                                            <div class="models-section">
+                                                <h4 class="models-title">
+                                                    Models under {provider().prefix}
+                                                    /
+                                                    {isAffected
+                                                        ? provider().status ===
+                                                          "down"
+                                                            ? " — likely affected"
+                                                            : " — may be affected"
+                                                        : ""}
+                                                </h4>
+                                                <div class="models-chips">
+                                                    <For each={visibleModels()}>
+                                                        {(modelId) => (
+                                                            <span
+                                                                class="model-chip"
+                                                                title={modelId}
+                                                            >
+                                                                {modelId}
+                                                            </span>
+                                                        )}
+                                                    </For>
+                                                    <Show
+                                                        when={hiddenCount() > 0}
+                                                    >
+                                                        <span class="model-chip-more">
+                                                            +
+                                                            {hiddenCount().toLocaleString()}{" "}
+                                                            more
+                                                        </span>
+                                                    </Show>
+                                                </div>
+                                            </div>
+                                        </Show>
+
+                                        {/* Catalog link */}
+                                        <Show when={provider().model_count > 0}>
+                                            <a
+                                                class="catalog-link"
+                                                href={`/models?prefix=${provider().prefix}`}
+                                            >
+                                                View all in model catalog
+                                                <span class="catalog-link-arrow">
+                                                    &rarr;
+                                                </span>
+                                            </a>
+                                        </Show>
+                                    </div>
+
+                                    <div
+                                        class={`popover-scroll-rail${isScrollThumbDragging() ? " is-dragging" : ""}`}
+                                        ref={(el) => {
+                                            scrollRailEl = el;
+                                            queueScrollRailUpdate();
+                                        }}
+                                        aria-hidden="true"
+                                        onPointerDown={handleScrollRailPointerDown}
+                                    >
+                                        <div
+                                            class={`popover-scroll-thumb${isScrollThumbDragging() ? " is-dragging" : ""}`}
+                                            style={{
+                                                height: `${scrollRailMetrics().thumbHeight}px`,
+                                                transform: `translateY(${scrollRailMetrics().thumbTop}px)`,
+                                            }}
+                                            onPointerDown={
+                                                handleScrollThumbPointerDown
+                                            }
+                                            onPointerMove={
+                                                handleScrollThumbPointerMove
+                                            }
+                                            onPointerUp={handleScrollThumbPointerEnd}
+                                            onPointerCancel={
+                                                handleScrollThumbPointerEnd
+                                            }
+                                        />
+                                    </div>
                                 </div>
                             </div>
                         </div>

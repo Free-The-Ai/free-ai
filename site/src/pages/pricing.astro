@@ -1,6 +1,5 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import { siteConfig } from "../config/site";
 import PaidModelTable from "../components/PaidModelTable";
 import {
     buildBreadcrumbJsonLd,
@@ -33,9 +32,12 @@ const paidModelCount = paidPlan.model_groups.reduce(
     (total, group) => total + group.models.length,
     0,
 );
-const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
-    ["request units / day", "request units / hour", "concurrent requests"].includes(label),
-);
+const planStats = [
+    { value: paidModelCount, label: "paid aliases" },
+    { value: "1,000", label: "units / day" },
+    { value: "100", label: "units / hour" },
+    { value: "3", label: "concurrent" },
+];
 ---
 
 <Layout
@@ -47,185 +49,84 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
     <main class="pricing-main">
         <section class="pricing-hero shell">
             <div class="pricing-hero-copy">
-                <span class="eyebrow">Paid API</span>
-                <h1>More powerful models when the free API is not enough.</h1>
+                <span class="eyebrow">FreeTheAi ~ Paid plan</span>
+                <h1>Premium models at an affordable price.</h1>
                 <p class="hero-text">
-                    The free API stays free. The paid plan is a separate, limited-seat
-                    option for builders who need stronger models, steadier access, and
-                    higher-powered routes without crowding the free pools.
+                    Stable uptime and a different model collection for users who need
+                    more than the free pool.
                 </p>
-                <div class="hero-actions">
-                    <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
-                        Claim a paid slot
-                        <span>&rarr;</span>
-                    </a>
-                    <a class="ghost-button" href="/models">Browse free models</a>
-                </div>
                 <p class="pricing-note">
-                    Launch slots are limited while we measure real usage and keep the
-                    paid account pools healthy.
-                </p>
-                <p class="pricing-endpoint docs-code-group">
-                    Paid base URL: <code>{paidPlan.base_url}</code>
-                    <button class="copy-btn pricing-copy-button" type="button" title="Copy paid base URL">
-                        <span class="material-symbols-outlined">content_copy</span>
-                    </button>
+                    * Free plan stays free. Paid is only for higher uptime and separate
+                    premium routes.
                 </p>
             </div>
 
             <article class="pricing-card pricing-plan-card">
-                <div class="pricing-plan-head">
-                    <div>
-                        <span class="eyebrow">Launch plan</span>
-                        <h2>{paidPlan.plan.name}</h2>
-                    </div>
-                    <span>{paidModelCount} aliases</span>
-                </div>
                 <div class="pricing-price">
                     <strong>{paidPlan.plan.price}</strong>
                     <span>/ {paidPlan.plan.period}</span>
                 </div>
                 <div class="pricing-plan-strip">
-                    {heroLimits.map(({ value, label }) => (
+                    {planStats.map(({ value, label }) => (
                         <div>
                             <strong>{value}</strong>
                             <span>{label}</span>
                         </div>
                     ))}
                 </div>
-                <p class="pricing-plan-foot">Includes monthly quota and premium-pool guardrails.</p>
             </article>
-        </section>
-
-        <section class="section shell pricing-section">
-            <div class="section-head">
-                <span class="eyebrow">How limits work</span>
-                <h2>Affordable, but protected from pool drain.</h2>
-                <p>
-                    The paid plan is designed to hook real builders without letting one
-                    user burn through the launch inventory. Each request deducts the
-                    listed model cost from your hourly, daily, and monthly budget.
-                </p>
-            </div>
-
-            <div class="pricing-feature-grid">
-                <article class="capability-card">
-                    <span class="capability-icon material-symbols-outlined">bolt</span>
-                    <h3>Different catalog from free</h3>
-                    <p>
-                        Paid models live on separate <code>sky/*</code> and
-                        <code>pbl/*</code> aliases. They are meant for harder coding,
-                        reasoning, and long-form work.
-                    </p>
-                </article>
-                <article class="capability-card">
-                    <span class="capability-icon material-symbols-outlined">speed</span>
-                    <h3>Request-unit pricing</h3>
-                    <p>
-                        Cheap hook models can cost <code>0.5</code> units, normal
-                        models cost <code>1</code>, and heavy models cost up to
-                        <code>4</code> units per request.
-                    </p>
-                </article>
-                <article class="capability-card">
-                    <span class="capability-icon material-symbols-outlined">lock</span>
-                    <h3>Launch safety limits</h3>
-                    <p>
-                        Accounts have hourly, daily, monthly, and concurrency limits.
-                        The <code>pbl/*</code> pool also has a separate
-                        <code>250</code> unit daily cap to keep premium routes
-                        available.
-                    </p>
-                </article>
-            </div>
         </section>
 
         <section class="section shell pricing-section">
             <div class="section-head">
                 <span class="eyebrow">Model costs</span>
-                <h2>Search paid aliases.</h2>
+                <h2>Paid aliases.</h2>
             </div>
 
             <PaidModelTable groups={paidPlan.model_groups} client:load />
         </section>
-
-        <section class="section shell pricing-section">
-            <article class="cta-banner pricing-cta">
-                <div>
-                    <span class="eyebrow">Limited launch</span>
-                    <h2>Want a slot?</h2>
-                    <p>
-                        Join Discord and ask for the paid plan. The owner will issue a
-                        monthly paid API key while launch slots are available.
-                    </p>
-                </div>
-                <div class="cta-actions">
-                    <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
-                        Join Discord
-                        <span>&rarr;</span>
-                    </a>
-                    <a class="ghost-button" href="/docs">Read API docs</a>
-                </div>
-            </article>
-        </section>
     </main>
 </Layout>
 
-<style>
+<style is:global>
     .pricing-main {
-        gap: 32px;
-        padding: 22px 0 72px;
+        gap: 28px;
+        padding: 22px 0 64px;
     }
 
     .pricing-hero {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(300px, 420px);
-        gap: clamp(24px, 4vw, 44px);
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+        gap: clamp(24px, 5vw, 72px);
         align-items: center;
         min-height: auto;
-        padding: clamp(26px, 4.4vw, 48px);
+        padding: clamp(28px, 4.6vw, 52px);
     }
 
     .pricing-hero-copy {
         display: grid;
-        gap: 16px;
+        gap: 18px;
         min-width: 0;
     }
 
     .pricing-hero h1 {
-        max-width: 13.5ch;
-        font-size: clamp(2.45rem, 5.8vw, 4.85rem);
-        line-height: 0.98;
+        max-width: 15ch;
+        font-size: clamp(2.35rem, 4.7vw, 4rem);
+        line-height: 1.02;
         letter-spacing: -0.055em;
     }
 
+    .pricing-hero .hero-text {
+        max-width: 47ch;
+        margin: 0;
+    }
+
     .pricing-note {
-        max-width: 58ch;
+        max-width: 56ch;
         margin: 0;
         color: var(--dim);
-        font-size: 0.9rem;
+        font-size: 0.96rem;
         line-height: 1.55;
-    }
-
-    .pricing-endpoint {
-        display: inline-flex;
-        align-items: center;
-        gap: 10px;
-        width: fit-content;
-        max-width: 100%;
-        margin: 2px 0 0;
-        padding: 10px 12px;
-        border: 1px solid var(--sk-border);
-        border-radius: var(--radius-sm);
-        background: var(--sk-inset-bg);
-        box-shadow: var(--sk-inset-shadow);
-        color: var(--muted);
-        font-size: 0.85rem;
-    }
-
-    .pricing-endpoint code {
-        color: var(--text);
-        font-family: var(--font-mono);
     }
 
     .pricing-card {
@@ -248,9 +149,11 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
         overflow: hidden;
         display: grid;
         justify-self: end;
-        width: min(100%, 420px);
+        width: min(100%, 380px);
+        min-height: 240px;
+        align-content: space-between;
         gap: 18px;
-        padding: clamp(20px, 2.4vw, 26px);
+        padding: clamp(22px, 2.8vw, 32px);
     }
 
     .pricing-plan-card::before {
@@ -264,41 +167,6 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
         pointer-events: none;
     }
 
-    .pricing-plan-head {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 14px;
-        padding-bottom: 14px;
-        border-bottom: 1px solid var(--sk-border);
-    }
-
-    .pricing-plan-head h2 {
-        margin: 6px 0 0;
-        color: var(--text);
-        font-size: clamp(1.25rem, 2.4vw, 1.65rem);
-        letter-spacing: -0.035em;
-    }
-
-    .pricing-plan-head > span {
-        display: inline-flex;
-        align-items: center;
-        min-height: 30px;
-        padding: 0 10px;
-        border: 1px solid rgba(238, 93, 32, 0.28);
-        border-radius: 999px;
-        background: rgba(238, 93, 32, 0.08);
-        color: var(--accent-text);
-        font-family: var(--font-mono);
-        font-size: 0.68rem;
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        text-shadow: var(--accent-text-glow);
-        white-space: nowrap;
-    }
-
     .pricing-price {
         display: flex;
         align-items: flex-end;
@@ -308,7 +176,7 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
     .pricing-price strong {
         color: var(--accent-text-strong);
         font-family: var(--font-serif);
-        font-size: clamp(3.3rem, 6.8vw, 4.8rem);
+        font-size: clamp(3rem, 6vw, 4.2rem);
         font-weight: 500;
         line-height: 0.88;
         letter-spacing: -0.08em;
@@ -324,14 +192,13 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
         letter-spacing: 0.08em;
     }
 
-    .pricing-plan-strip,
-    .pricing-feature-grid {
+    .pricing-plan-strip {
         display: grid;
         gap: 12px;
     }
 
     .pricing-plan-strip {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 
     .pricing-plan-strip div {
@@ -355,16 +222,6 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
         color: var(--muted);
         font-size: 0.7rem;
         line-height: 1.35;
-    }
-
-    .pricing-plan-foot {
-        color: var(--dim);
-        font-size: 0.82rem;
-        line-height: 1.45;
-    }
-
-    .pricing-feature-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
     }
 
     .pricing-section {
@@ -463,7 +320,6 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
         font-size: 0.9rem;
     }
 
-    .pricing-copy-button,
     .pricing-model-copy {
         flex: 0 0 auto;
         width: 30px;
@@ -478,20 +334,13 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
         cursor: pointer;
     }
 
-    .pricing-copy-button:hover,
     .pricing-model-copy:hover {
         color: var(--text);
         border-color: rgba(238, 93, 32, 0.42);
     }
 
-    .pricing-cta {
-        grid-template-columns: minmax(0, 1fr) auto;
-        align-items: center;
-    }
-
     @media (max-width: 1120px) {
-        .pricing-hero,
-        .pricing-cta {
+        .pricing-hero {
             grid-template-columns: 1fr;
         }
 
@@ -504,9 +353,6 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
             max-width: 15ch;
         }
 
-        .pricing-feature-grid {
-            grid-template-columns: 1fr;
-        }
     }
 
     @media (max-width: 560px) {
@@ -521,7 +367,7 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
         }
 
         .pricing-hero h1 {
-            font-size: clamp(2.25rem, 13vw, 3.2rem);
+            font-size: clamp(2.15rem, 12vw, 3.05rem);
             line-height: 1.02;
         }
 
@@ -535,11 +381,6 @@ const heroLimits = paidPlan.plan.limits.filter(({ label }) =>
 
         .pricing-plan-strip {
             grid-template-columns: 1fr;
-        }
-
-        .pricing-plan-head {
-            flex-direction: column;
-            gap: 8px;
         }
     }
 </style>

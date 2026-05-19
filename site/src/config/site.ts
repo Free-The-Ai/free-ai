@@ -1,7 +1,7 @@
 export const siteConfig = {
     title: "FreeTheAi",
     description:
-        "Free the AI with FreeTheAi - a free OpenAI-compatible API gateway with 16,000+ models, Discord key signup, chat completions, streaming, tool calling, image generation, image editing, Anthropic messages, and optional paid slots for higher-power models.",
+        "FreeTheAi is a free OpenAI-compatible AI API gateway with 50+ active models, Discord key signup, daily check-in, chat completions, streaming, tool calling, image generation, image editing, Anthropic messages, and optional paid slots.",
     site: "https://freetheai.xyz",
     author: {
         name: "FreeTheAi",
@@ -15,9 +15,12 @@ export const siteConfig = {
     defaults: {
         locale: "en_US",
         twitterCard: "summary_large_image",
-        ogImage: "/freetheai-transparent-logo-responsive-same-colors.png",
+        ogImage: "/FreeTheAi.png",
         keywords: [
             "free the ai",
+            "freetheai",
+            "freetheai api",
+            "freetheai xyz",
             "free ai api",
             "free openai api",
             "openai compatible api",
@@ -50,7 +53,8 @@ export const siteConfig = {
             "free ai for developers",
             "free ai for students",
             "agent framework api",
-            "16000 models api",
+            "live ai model catalog",
+            "50 active models api",
             "free api no daily limit",
             "ai api without credit card",
             "free llm access",

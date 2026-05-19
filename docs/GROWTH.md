@@ -6,7 +6,7 @@ Use this checklist to improve GitHub discovery, Google SEO, and launch conversio
 
 ## GitHub Repository
 
-- Keep the repo description short and keyword-rich: `Free OpenAI-compatible AI API with 16,000+ models, image generation, tool calling, and Discord key signup.`
+- Keep the repo description short and keyword-rich: `Free OpenAI-compatible AI API with 50+ active models, image generation, tool calling, and Discord key signup.`
 - Use focused topics instead of generic tags. Suggested topics: `free-ai-api`, `openai-compatible`, `ai-api`, `llm-api`, `chat-completions`, `image-generation`, `developer-tools`, `astro`, `discord-bot`, `api-gateway`.
 - Keep the first README screen conversion-focused: one-line value prop, proof badges, quick start, and copy-paste examples.
 - Ship regular release tags so GitHub shows activity and users can subscribe to updates.
@@ -46,16 +46,17 @@ If `gh` is unavailable, use GitHub's Releases page and draft a new release from 
 
 2. **Homepage content added**: Added ~500 words of unique descriptive content targeting the exact phrase "free the ai" and related long-tail keywords (`free OpenAI API alternative`, `free LLM API`, `free image generation API`, `free AI API gateway`). Content covers: what FreeTheAi is, why use a free AI API, what you can build, privacy stance, and getting started steps.
 
-3. **H1 accessibility fixed**: Replaced `line-height:0` with a visible H1 container and added an `.sr-only` span containing "Free The AI — Free OpenAI-compatible API with 16,000+ models" for screen readers and search engines.
+3. **H1 accessibility fixed**: Replaced `line-height:0` with a visible H1 container and added an `.sr-only` span containing "FreeTheAi - Free The AI - Free OpenAI-compatible API with 50+ active models" for screen readers and search engines.
 
-4. **Title tags differentiated**: Homepage title changed to `"Free The AI — Free AI API with 16,000+ Models | No Credit Card"` to include the spaced phrase "Free The AI" that matches real search queries. Other pages use distinct titles to prevent cannibalization:
-   - `/docs`: "FreeTheAi API Docs - Chat, Models, Images"
-   - `/models`: "Free AI Model Catalog"
+4. **Title tags differentiated**: Homepage title changed to `"FreeTheAi - Free OpenAI-Compatible AI API | No Credit Card"` while keeping "Free The AI" in crawlable page text. Other pages use distinct titles to prevent cannibalization:
+   - `/docs`: "FreeTheAi API Docs - OpenAI-Compatible Chat, Images, Models"
+   - `/models`: "FreeTheAi Model Catalog - Free OpenAI-Compatible AI Models"
+   - `/pricing`: "FreeTheAi Paid API Pricing - $8 Higher-Power Model Slots"
    - `/status`: "FreeTheAi Status"
 
 5. **Keywords enriched**: Added `"free the ai"` as the first keyword in `site.ts` defaults. Updated site description to include "free the ai" phrasing.
 
-6. **Structured data expanded**: Added FAQPage, SoftwareApplication, WebAPI, and Organization JSON-LD schemas to the homepage (previously only had WebSite). FAQ schema targets rich-snippet eligibility for queries like "is FreeTheAi really free" and "how to get a free AI API key".
+6. **Structured data expanded**: Added FAQPage, HowTo, BreadcrumbList, CollectionPage, SoftwareApplication, WebAPI, Service, and Organization JSON-LD schemas across public pages. FAQ schema targets rich-snippet eligibility for queries like "is FreeTheAi really free" and "how to get a free AI API key".
 
 7. **AI discoverability**: Added `<link rel="llms.txt" href="/llms.txt">` to document head for LLM-crawler discovery. Added `<link rel="alternate" hreflang="en-US">` for internationalization signals.
 

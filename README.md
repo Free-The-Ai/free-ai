@@ -7,13 +7,13 @@
 <sub><i>gpt-image-2 api for free</i></sub>
 <br><br>
 
-**Free OpenAI-compatible API — 16,000+ models, zero billing**
+**Free OpenAI-compatible API - 50+ active models, zero billing**
 
 Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 <br>
 
-[![Models](https://img.shields.io/badge/models-16%2C248-white?style=flat-square)](https://freetheai.xyz/models)
+[![Models](https://img.shields.io/badge/models-50%2B%20active-white?style=flat-square)](https://freetheai.xyz/models)
 [![API](https://img.shields.io/badge/OpenAI-compatible-white?style=flat-square)](https://api.freetheai.xyz)
 [![Cost](https://img.shields.io/badge/cost-%240-white?style=flat-square)](https://freetheai.xyz)
 [![Prompts](https://img.shields.io/badge/prompts-not%20stored-white?style=flat-square)](https://freetheai.xyz)
@@ -29,7 +29,7 @@ Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 ## Overview
 
-Free API gateway with 16,000+ models behind a single key. OpenAI-compatible — if your SDK works with OpenAI, it works here. Full request docs live at [freetheai.xyz/docs](https://freetheai.xyz/docs).
+Free API gateway with 50+ active models behind a single key. OpenAI-compatible - if your SDK works with OpenAI, it works here. Full request docs live at [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
 - `POST /v1/chat/completions` — chat with streaming
 - `POST /v1/messages` — Anthropic-style messages route
@@ -51,32 +51,30 @@ Auth        Bearer YOUR_API_KEY
 <tr>
 <td width="50%">
 
-**1 — Join Discord**
+**1 - Join Discord**
 
 Open [discord.gg/secrets](https://discord.gg/secrets)
 
 </td>
 <td width="50%">
 
-**2 — Get a key**
+**2 - Get a key**
 
-Run `/signup` in any channel
+Run `/signup` and complete the Discord modal
 
 </td>
 </tr>
 <tr>
 <td>
 
-**3 — Set your environment**
+**3 - Check in**
 
-```bash
-export FREETHEAI_API_KEY="sk-..."
-```
+Run `/checkin` with your API key once per UTC day
 
 </td>
 <td>
 
-**4 — Build**
+**4 - Build**
 
 Point any OpenAI SDK at the base URL
 
@@ -84,8 +82,11 @@ Point any OpenAI SDK at the base URL
 </tr>
 </table>
 
+> [!IMPORTANT]
+> New keys must complete `/checkin` once per UTC day before API use. `/checkin` asks for your existing key and a randomized human challenge.
+
 > [!TIP]
-> Lost your key? Run `/resetkey` — same account, same stats, fresh key.
+> Lost your key? Run `/resetkey` and provide a real reset reason - same account, same stats, fresh key.
 
 ---
 
@@ -115,7 +116,7 @@ curl https://api.freetheai.xyz/v1/chat/completions \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "yng/gemini-3-1-pro",
+    "model": "bbg/moonshotai/Kimi-K2.5",
     "messages": [
       { "role": "user", "content": "Write a Python hello world." }
     ],
@@ -138,7 +139,7 @@ const client = new OpenAI({
 });
 
 const res = await client.chat.completions.create({
-  model: "yng/gemini-3-1-pro",
+  model: "bbg/moonshotai/Kimi-K2.5",
   messages: [{ role: "user", content: "Say hello." }],
 });
 
@@ -160,7 +161,7 @@ client = OpenAI(
 )
 
 res = client.chat.completions.create(
-    model="yng/gemini-3-1-pro",
+    model="bbg/moonshotai/Kimi-K2.5",
     messages=[{"role": "user", "content": "Say hello."}],
 )
 
@@ -178,7 +179,7 @@ curl https://api.freetheai.xyz/v1/messages \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "rev/claude-sonnet-4.5",
+    "model": "bbg/moonshotai/Kimi-K2.5",
     "max_tokens": 256,
     "messages": [
       { "role": "user", "content": "Write a migration plan." }
@@ -297,22 +298,18 @@ Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.x
 
 | Prefix | What it is |
 | :--- | :--- |
-| `fth/*` | Large open-weight catalog |
-| `or/*` | Free-tier models |
-| `cat/*` | Chat models |
-| `yng/*` | Chat models |
 | `kai/*` | Aggregated models |
 | `bbg/*` | Premium allowlist |
 | `bbl/*` | Chat models |
+| `cwy/*` | Chat models |
+| `glm/*` | Chat models |
 | `opc/*` | Free models |
-| `rev/*` | Chat models |
 | `wsf/*` | Chat models |
 | `vhr/*` | Image generation |
 | `img/*` | Image generation and editing |
 
 > [!NOTE]
 > Use exact alias IDs from `GET /v1/models`. Model availability updates automatically as upstream catalogs change.
-> The old direct `glm/*` provider is no longer offered. Use the live catalog for current alternatives.
 
 ---
 
@@ -366,8 +363,9 @@ Prompt and completion text are **not stored**.
 
 | Command | Description |
 | :--- | :--- |
-| `/signup` | Get your API key |
-| `/resetkey` | Rotate to a fresh key |
+| `/signup` | Get your API key after the modal |
+| `/checkin` | Daily key activation challenge |
+| `/resetkey` | Rotate to a fresh key after a reason + challenge |
 | `/models` | Browse models |
 | `/stats` | Your usage stats |
 | `/generate` | Generate an image |

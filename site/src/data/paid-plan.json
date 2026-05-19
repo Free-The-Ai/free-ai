@@ -1,0 +1,196 @@
+{
+  "updated_at": "2026-05-19",
+  "base_url": "https://paid.freetheai.xyz/v1",
+  "plan": {
+    "name": "Launch plan",
+    "price": "$8",
+    "period": "month",
+    "summary": "One simple plan for power users. Usage is counted in request units, so lighter models cost less and heavier models cost more.",
+    "limits": [
+      {
+        "value": "$8",
+        "label": "per month"
+      },
+      {
+        "value": "1,000",
+        "label": "request units / day"
+      },
+      {
+        "value": "100",
+        "label": "request units / hour"
+      },
+      {
+        "value": "30,000",
+        "label": "request units / month"
+      },
+      {
+        "value": "3",
+        "label": "concurrent requests"
+      },
+      {
+        "value": "250",
+        "label": "PBL units / day"
+      }
+    ]
+  },
+  "model_groups": [
+    {
+      "id": "sky",
+      "label": "SKY models",
+      "description": "general paid pool",
+      "models": [
+        {
+          "id": "sky/gpt-4o",
+          "unit_cost": 1,
+          "unit_label": "1 unit",
+          "route": "chat"
+        },
+        {
+          "id": "sky/gpt-5.2",
+          "unit_cost": 1,
+          "unit_label": "1 unit",
+          "route": "chat"
+        },
+        {
+          "id": "sky/gpt-5-mini",
+          "unit_cost": 1,
+          "unit_label": "1 unit",
+          "route": "chat"
+        },
+        {
+          "id": "sky/gpt-4o-mini",
+          "unit_cost": 1,
+          "unit_label": "1 unit",
+          "route": "chat"
+        },
+        {
+          "id": "sky/tinfoil/gpt-oss-120b",
+          "unit_cost": 1,
+          "unit_label": "1 unit",
+          "route": "chat"
+        },
+        {
+          "id": "sky/claude-haiku-4-5",
+          "unit_cost": 1,
+          "unit_label": "1 unit",
+          "route": "chat"
+        },
+        {
+          "id": "sky/claude-sonnet-4-5",
+          "unit_cost": 2,
+          "unit_label": "2 units",
+          "route": "chat"
+        },
+        {
+          "id": "sky/claude-opus-4-5",
+          "unit_cost": 2.5,
+          "unit_label": "2.5 units",
+          "route": "chat"
+        },
+        {
+          "id": "sky/claude-opus-4-6",
+          "unit_cost": 2.5,
+          "unit_label": "2.5 units",
+          "route": "chat"
+        },
+        {
+          "id": "sky/meta-llama/Llama-4-Maverick-17B-128E-Instruct-FP8",
+          "unit_cost": 1,
+          "unit_label": "1 unit",
+          "route": "chat"
+        },
+        {
+          "id": "sky/meta-llama/Llama-4-Scout-17B-16E-Instruct",
+          "unit_cost": 1,
+          "unit_label": "1 unit",
+          "route": "chat"
+        },
+        {
+          "id": "sky/mistral-small-2603",
+          "unit_cost": 0.5,
+          "unit_label": "0.5 units",
+          "route": "chat"
+        },
+        {
+          "id": "sky/gpt-image-1.5",
+          "unit_cost": 3,
+          "unit_label": "3 units / image",
+          "route": "images"
+        }
+      ]
+    },
+    {
+      "id": "pbl",
+      "label": "PBL models",
+      "description": "premium paid pool",
+      "models": [
+        {
+          "id": "pbl/deepseek-v3",
+          "unit_cost": 0.5,
+          "unit_label": "0.5 units",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/deepseek-r1",
+          "unit_cost": 1,
+          "unit_label": "1 unit",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/gpt-5.1",
+          "unit_cost": 2,
+          "unit_label": "2 units",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/o3",
+          "unit_cost": 3,
+          "unit_label": "3 units",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/gpt-5.4",
+          "unit_cost": 3,
+          "unit_label": "3 units",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/claude-4.6-sonnet",
+          "unit_cost": 3,
+          "unit_label": "3 units",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/claude-4.7-opus",
+          "unit_cost": 4,
+          "unit_label": "4 units",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/gemini-2.5-pro",
+          "unit_cost": 3,
+          "unit_label": "3 units",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/gemini-3.0-pro",
+          "unit_cost": 3,
+          "unit_label": "3 units",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/gemini-3.1-pro",
+          "unit_cost": 3,
+          "unit_label": "3 units",
+          "route": "chat"
+        },
+        {
+          "id": "pbl/grok-4",
+          "unit_cost": 3,
+          "unit_label": "3 units",
+          "route": "chat"
+        }
+      ]
+    }
+  ]
+}

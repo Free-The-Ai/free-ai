@@ -77,10 +77,35 @@ export default function DocsAccordion(props: DocsAccordionProps) {
             children: (
                 <section class="docs-card">
                     <p>
-                        Join Discord and run <code>/signup</code>. Send the key
-                        as a bearer token. If you lose it, run{" "}
-                        <code>/resetkey</code>.
+                        Join Discord and run <code>/signup</code>. The bot opens
+                        a modal that asks for your use case, bot-disclosure
+                        answer, and a randomized human challenge. Send the issued
+                        key as a bearer token.
                     </p>
+                    <div class="docs-table compact">
+                        <div class="docs-row">
+                            <code>/signup</code>
+                            <span>
+                                Creates a key after the modal is completed. Existing
+                                keys are rejected; use <code>/resetkey</code> instead.
+                            </span>
+                        </div>
+                        <div class="docs-row">
+                            <code>/checkin</code>
+                            <span>
+                                Required once per UTC day. Enter your existing API
+                                key and solve the randomized challenge before using
+                                the free API.
+                            </span>
+                        </div>
+                        <div class="docs-row">
+                            <code>/resetkey</code>
+                            <span>
+                                Rotates a lost key after a real reset reason and
+                                challenge answer. Your account history stays linked.
+                            </span>
+                        </div>
+                    </div>
                     <CodeBlock
                         code={props.baseSnippet}
                         html={props.baseSnippetHtml}
@@ -267,8 +292,8 @@ export default function DocsAccordion(props: DocsAccordionProps) {
                         <div class="docs-row">
                             <code>403</code>
                             <span>
-                                The model is unknown, disabled, or unavailable
-                                in the current catalog.
+                                Daily check-in required, or the model is unknown,
+                                disabled, or unavailable in the current catalog.
                             </span>
                         </div>
                         <div class="docs-row">

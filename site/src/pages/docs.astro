@@ -8,11 +8,13 @@ import {
     buildWebsiteJsonLd,
     buildWebApiJsonLd,
     buildFaqJsonLd,
+    buildSignupHowToJsonLd,
+    buildBreadcrumbJsonLd,
 } from "../utils/jsonLd";
 import { highlight } from "../lib/highlight";
 
 const pageDescription =
-    "FreeTheAi API documentation for chat completions, model listing, image generation, and image editing.";
+    "FreeTheAi API docs for OpenAI-compatible chat completions, Anthropic-style messages, model listing, image generation, image editing, signup, check-in, and key reset.";
 
 const jsonLd = [
     buildWebsiteJsonLd(),
@@ -20,6 +22,11 @@ const jsonLd = [
     buildSoftwareJsonLd(),
     buildWebApiJsonLd(),
     buildFaqJsonLd(),
+    buildSignupHowToJsonLd(),
+    buildBreadcrumbJsonLd([
+        { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
+        { name: "API Docs", url: "https://freetheai.xyz/docs" },
+    ]),
 ];
 
 const baseSnippet = `Base URL
@@ -32,7 +39,7 @@ const chatCurlSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "yng/gemini-3-1-pro",
+    "model": "bbg/moonshotai/Kimi-K2.5",
     "messages": [
       { "role": "user", "content": "Write a tiny Flask route." }
     ],
@@ -48,7 +55,7 @@ const client = new OpenAI({
 });
 
 const res = await client.chat.completions.create({
-  model: "yng/gemini-3-1-pro",
+  model: "bbg/moonshotai/Kimi-K2.5",
   messages: [{ role: "user", content: "Reply with OK." }]
 });
 
@@ -59,7 +66,7 @@ const messagesSnippet = `curl https://api.freetheai.xyz/v1/messages \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "rev/claude-sonnet-4.5",
+    "model": "bbg/moonshotai/Kimi-K2.5",
     "max_tokens": 256,
     "messages": [
       { "role": "user", "content": "Give me a short implementation plan." }
@@ -182,7 +189,7 @@ const imageModels = [
 ---
 
 <Layout
-    title="FreeTheAi API Docs - Chat, Models, Images"
+    title="FreeTheAi API Docs - OpenAI-Compatible Chat, Images, Models"
     description={pageDescription}
     jsonLd={jsonLd}
     currentPath="/docs"
@@ -208,7 +215,7 @@ const imageModels = [
             <div class="docs-content">
                 <div class="docs-content-head">
                     <h1>API Docs</h1>
-                    <p>Chat, models, images — one key, one base URL.</p>
+                    <p>Chat, models, images, signup, and check-in - one key, one base URL.</p>
                 </div>
                 <DocsAccordion
                     baseSnippet={baseSnippet}

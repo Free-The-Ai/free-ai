@@ -7,11 +7,38 @@ export function buildWebsiteJsonLd() {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'WebSite',
+		'@id': 'https://freetheai.xyz/#website',
 		name: 'FreeTheAi',
+		alternateName: ['Free The AI', 'FreeTheAI', 'FreeTheAi.xyz'],
 		url: 'https://freetheai.xyz',
 		description:
-			'Free OpenAI-compatible API with 16,000+ models. Chat completions, streaming, tool calling, image generation, and image editing — all behind a single free key from Discord.',
+			'Free OpenAI-compatible API with 50+ active models. Chat completions, streaming, tool calling, image generation, and image editing - all behind a single free key from Discord.',
 		inLanguage: 'en-US',
+		publisher: {
+			'@id': 'https://freetheai.xyz/#organization',
+		},
+		hasPart: [
+			{
+				'@type': 'WebPage',
+				name: 'FreeTheAi API Docs',
+				url: 'https://freetheai.xyz/docs',
+			},
+			{
+				'@type': 'CollectionPage',
+				name: 'FreeTheAi Model Catalog',
+				url: 'https://freetheai.xyz/models',
+			},
+			{
+				'@type': 'WebPage',
+				name: 'FreeTheAi Pricing',
+				url: 'https://freetheai.xyz/pricing',
+			},
+			{
+				'@type': 'WebPage',
+				name: 'FreeTheAi Status',
+				url: 'https://freetheai.xyz/status',
+			},
+		],
 		potentialAction: {
 			'@type': 'SearchAction',
 			target: {
@@ -32,10 +59,14 @@ export function buildOrganizationJsonLd() {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'Organization',
+		'@id': 'https://freetheai.xyz/#organization',
 		name: 'FreeTheAi',
+		alternateName: ['Free The AI', 'FreeTheAI', 'FreeTheAi.xyz'],
+		legalName: 'FreeTheAi',
 		url: 'https://freetheai.xyz',
+		logo: 'https://freetheai.xyz/freetheai-transparent-logo-responsive-same-colors.png',
 		description:
-			'Community-run free AI API project with 16,000+ models, Discord signup, optional paid slots for higher-power models, and a public searchable model catalog.',
+			'Community-run free AI API project with 50+ active models, Discord signup, optional paid slots for higher-power models, and a public searchable model catalog.',
 		sameAs: [
 			'https://discord.gg/secrets',
 			'https://github.com/vibheksoni/free-ai',
@@ -53,13 +84,16 @@ export function buildSoftwareJsonLd() {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'SoftwareApplication',
+		'@id': 'https://freetheai.xyz/#software',
 		name: 'FreeTheAi API',
 		applicationCategory: 'DeveloperApplication',
 		applicationSubCategory: 'AI API Gateway',
 		operatingSystem: 'Web',
 		description:
-			'Free OpenAI-compatible AI API with 16,000+ models, Discord key signup, streaming chat completions, tool calling, image generation, image editing, and a live searchable model catalog.',
+			'Free OpenAI-compatible AI API with 50+ active models, Discord key signup, streaming chat completions, tool calling, image generation, image editing, and a live searchable model catalog.',
 		url: 'https://freetheai.xyz',
+		downloadUrl: 'https://github.com/vibheksoni/free-ai',
+		isAccessibleForFree: true,
 		audience: {
 			'@type': 'Audience',
 			audienceType: 'Developers, builders, students, and agent framework users',
@@ -72,7 +106,7 @@ export function buildSoftwareJsonLd() {
 			'Anthropic-style messages endpoint',
 			'Image generation via gpt-image-2',
 			'Image editing with prompt and base64 input',
-			'Live searchable model catalog with 16,000+ models',
+			'Live searchable model catalog with 50+ active models',
 			'No billing or credit card required',
 			'No daily usage limits',
 		],
@@ -81,6 +115,7 @@ export function buildSoftwareJsonLd() {
 			price: '0',
 			priceCurrency: 'USD',
 			availability: 'https://schema.org/InStock',
+			url: 'https://freetheai.xyz/docs',
 		},
 	};
 }
@@ -94,16 +129,143 @@ export function buildWebApiJsonLd() {
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'WebAPI',
+		'@id': 'https://api.freetheai.xyz/v1#webapi',
 		name: 'FreeTheAi API',
 		url: 'https://api.freetheai.xyz/v1',
 		description:
-			'Free OpenAI-compatible REST API with chat completions, streaming, tool calling, image generation, image editing, and 16,000+ models.',
+			'Free OpenAI-compatible REST API with chat completions, streaming, tool calling, image generation, image editing, and 50+ active models.',
 		documentation: 'https://freetheai.xyz',
 		termsOfService: 'https://freetheai.xyz/docs',
+		isAccessibleForFree: true,
 		provider: {
-			'@type': 'Organization',
-			name: 'FreeTheAi',
-			url: 'https://freetheai.xyz',
+			'@id': 'https://freetheai.xyz/#organization',
+		},
+	};
+}
+
+export function buildBreadcrumbJsonLd(items: { name: string; url: string }[]) {
+	/**
+	 * var breadcrumbJsonLd
+	 * type object
+	 * desc Breadcrumb structured data for page hierarchy and cleaner search snippets.
+	 */
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: items.map((item, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			name: item.name,
+			item: item.url,
+		})),
+	};
+}
+
+export function buildSignupHowToJsonLd() {
+	/**
+	 * var signupHowToJsonLd
+	 * type object
+	 * desc Structured data for the current Discord signup and check-in flow.
+	 */
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'HowTo',
+		name: 'How to get and activate a FreeTheAi API key',
+		description:
+			'Join Discord, complete the /signup modal, then run /checkin with your key and the human challenge before using the free API.',
+		totalTime: 'PT2M',
+		supply: [
+			{
+				'@type': 'HowToSupply',
+				name: 'Discord account',
+			},
+		],
+		tool: [
+			{
+				'@type': 'HowToTool',
+				name: 'FreeTheAi Discord bot',
+			},
+		],
+		step: [
+			{
+				'@type': 'HowToStep',
+				name: 'Join Discord',
+				text: 'Open discord.gg/secrets and join the FreeTheAi Discord server.',
+				url: 'https://freetheai.xyz/docs#auth',
+			},
+			{
+				'@type': 'HowToStep',
+				name: 'Run /signup',
+				text: 'Run /signup and complete the modal with your use case, bot-disclosure answer, and randomized human challenge.',
+				url: 'https://freetheai.xyz/docs#auth',
+			},
+			{
+				'@type': 'HowToStep',
+				name: 'Run /checkin',
+				text: 'Run /checkin each UTC day, enter your existing API key, and solve the randomized challenge before making API requests.',
+				url: 'https://freetheai.xyz/docs#auth',
+			},
+			{
+				'@type': 'HowToStep',
+				name: 'Use the API',
+				text: 'Set your API key as a bearer token and send requests to https://api.freetheai.xyz/v1.',
+				url: 'https://freetheai.xyz/docs#chat',
+			},
+		],
+	};
+}
+
+export function buildModelCatalogJsonLd(models: string[]) {
+	/**
+	 * var modelCatalogJsonLd
+	 * type object
+	 * desc Structured data for the server-rendered public model catalog snapshot.
+	 */
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'CollectionPage',
+		name: 'FreeTheAi AI Model Catalog',
+		url: 'https://freetheai.xyz/models',
+		description:
+			'Searchable FreeTheAi model catalog with active OpenAI-compatible chat, image, and tool-capable model aliases.',
+		isPartOf: {
+			'@id': 'https://freetheai.xyz/#website',
+		},
+		mainEntity: {
+			'@type': 'ItemList',
+			numberOfItems: models.length,
+			itemListElement: models.slice(0, 50).map((model, index) => ({
+				'@type': 'ListItem',
+				position: index + 1,
+				name: model,
+				url: `https://freetheai.xyz/models?q=${encodeURIComponent(model)}`,
+			})),
+		},
+	};
+}
+
+export function buildPaidPlanJsonLd(plan: { price: string; period: string; summary: string }) {
+	/**
+	 * var paidPlanJsonLd
+	 * type object
+	 * desc Structured data for the optional paid API launch plan.
+	 */
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'Service',
+		name: 'FreeTheAi Paid API',
+		url: 'https://freetheai.xyz/pricing',
+		description: plan.summary,
+		provider: {
+			'@id': 'https://freetheai.xyz/#organization',
+		},
+		offers: {
+			'@type': 'Offer',
+			price: plan.price.replace(/[^0-9.]/g, ''),
+			priceCurrency: 'USD',
+			availability: 'https://schema.org/LimitedAvailability',
+			category: `${plan.period} subscription`,
+			url: 'https://freetheai.xyz/pricing',
 		},
 	};
 }
@@ -131,7 +293,7 @@ export function buildFaqJsonLd() {
 				name: 'How many AI models does FreeTheAi have?',
 				acceptedAnswer: {
 					'@type': 'Answer',
-					text: 'FreeTheAi provides access to over 16,000 models including GPT, Claude, Gemini, DeepSeek, Grok, and thousands of open-weight models.',
+					text: 'FreeTheAi currently exposes 50+ active models across chat, image, and tool-capable routes. The live catalog at freetheai.xyz/models is the source of truth.',
 				},
 			},
 			{
@@ -147,7 +309,23 @@ export function buildFaqJsonLd() {
 				name: 'How do I get an API key?',
 				acceptedAnswer: {
 					'@type': 'Answer',
-					text: 'Join the FreeTheAi Discord server at discord.gg/secrets and run the /signup command in any channel to receive your free API key.',
+					text: 'Join the FreeTheAi Discord server at discord.gg/secrets, run /signup, and complete the modal with your use case, bot-disclosure answer, and randomized human challenge.',
+				},
+			},
+			{
+				'@type': 'Question',
+				name: 'Why does my key need check-in?',
+				acceptedAnswer: {
+					'@type': 'Answer',
+					text: 'FreeTheAi uses a daily /checkin modal to reduce automated abuse. Enter your existing API key and solve the randomized challenge once per UTC day before using the API.',
+				},
+			},
+			{
+				'@type': 'Question',
+				name: 'How do I reset a lost FreeTheAi API key?',
+				acceptedAnswer: {
+					'@type': 'Answer',
+					text: 'Run /resetkey in Discord. The reset flow asks for a real reason and a human challenge, then rotates your key while preserving your account history.',
 				},
 			},
 			{

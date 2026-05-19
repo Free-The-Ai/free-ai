@@ -1,7 +1,7 @@
 {
   "name": "FreeTheAi",
   "short_name": "FreeTheAi",
-  "description": "Free OpenAI-compatible API with 16,000+ models",
+  "description": "Free OpenAI-compatible API with 50+ active models",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#101010",

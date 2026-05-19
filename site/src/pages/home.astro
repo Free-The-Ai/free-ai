@@ -11,6 +11,8 @@ import {
     buildSoftwareJsonLd,
     buildWebApiJsonLd,
     buildFaqJsonLd,
+    buildSignupHowToJsonLd,
+    buildBreadcrumbJsonLd,
 } from "../utils/jsonLd";
 
 const jsonLd = [
@@ -19,21 +21,25 @@ const jsonLd = [
     buildSoftwareJsonLd(),
     buildWebApiJsonLd(),
     buildFaqJsonLd(),
+    buildSignupHowToJsonLd(),
+    buildBreadcrumbJsonLd([
+        { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
+    ]),
 ];
 
 const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "yng/gemini-3-1-pro",
+    "model": "bbg/moonshotai/Kimi-K2.5",
     "messages": [{ "role": "user", "content": "Hello" }]
   }'`;
 const snippetHtml = await highlight(snippet, "bash");
 
 const pageTitle =
-    "Free The AI — Free AI API with 16,000+ Models | No Credit Card";
+    "FreeTheAi - Free OpenAI-Compatible AI API | No Credit Card";
 const pageDescription =
-    "Free the AI with FreeTheAi — a free OpenAI-compatible API gateway with 16,000+ models, Discord key signup, streaming chat, tool calling, image generation, and image editing. No credit card, no billing, no daily limits.";
+    "FreeTheAi is a free OpenAI-compatible AI API with 50+ active models, Discord key signup, streaming chat, tool calling, image generation, and image editing. No credit card or billing.";
 ---
 
 <Layout
@@ -51,21 +57,26 @@ const pageDescription =
             style="max-width:600px;margin:0 auto;padding-top:120px;position:relative;z-index:1;text-align:center"
             data-parallax="0.3"
         >
+            <p
+                style="margin:0 0 16px;color:var(--accent-text);font-family:var(--font-mono);font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;text-shadow:var(--accent-text-glow)"
+            >
+                Official FreeTheAi API
+            </p>
             <h1 data-parallax="0.2" style="position:relative">
                 <Logo
                     width={520}
-                    label="FreeTheAI"
+                    label="FreeTheAi"
                     style="display:block;width:min(92vw,520px);height:auto;margin:0 auto"
                 />
                 <span class="sr-only"
-                    >Free The AI — Free OpenAI-compatible API with 16,000+
-                    models</span
+                    >FreeTheAi - Free The AI - Free OpenAI-compatible API with 50+
+                    active models</span
                 >
             </h1>
             <p
                 style="color:var(--muted);font-size:1.15rem;margin:20px auto 0;line-height:1.6;max-width:480px"
             >
-                OpenAI-compatible. 16,000+ models.<br />No card. No catch.
+                OpenAI-compatible. 50+ active models.<br />No card. No catch.
             </p>
             <div
                 style="margin-top:40px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center"
@@ -151,7 +162,7 @@ const pageDescription =
                     <h2 class="beat-heading">What Is FreeTheAi?</h2>
                     <p class="beat-prose">
                         FreeTheAi is a <strong>free AI API gateway</strong>
-                        with 16,000+ models behind a single OpenAI-compatible endpoint.
+                        with 50+ active models behind a single OpenAI-compatible endpoint.
                         No credit card, no billing, no daily caps — just a free Discord
                         key and a base URL that works with any OpenAI SDK. No prompt
                         storage, no card required. Optional paid slots exist for
@@ -200,8 +211,12 @@ const pageDescription =
                             >
                         </li>
                         <li>
-                            Run <code>/signup</code> in any channel to get your free
-                            API key
+                            Run <code>/signup</code> and complete the modal with your
+                            use case, bot answer, and human challenge
+                        </li>
+                        <li>
+                            Run <code>/checkin</code> with your API key once per UTC
+                            day before using the free API
                         </li>
                         <li>
                             Set <code>FREETHEAI_API_KEY</code> in your environment

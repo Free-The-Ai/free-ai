@@ -1,14 +1,22 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProviderStatusGrid from '../components/ProviderStatusGrid';
-import { buildOrganizationJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd } from '../utils/jsonLd';
+import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd } from '../utils/jsonLd';
 
-const jsonLd = [buildWebsiteJsonLd(), buildOrganizationJsonLd(), buildWebApiJsonLd()];
+const jsonLd = [
+	buildWebsiteJsonLd(),
+	buildOrganizationJsonLd(),
+	buildWebApiJsonLd(),
+	buildBreadcrumbJsonLd([
+		{ name: 'FreeTheAi', url: 'https://freetheai.xyz/home' },
+		{ name: 'Status', url: 'https://freetheai.xyz/status' },
+	]),
+];
 ---
 
 <Layout
 	title="FreeTheAi Status"
-	description="Live provider status for FreeTheAi API aliases."
+	description="Live FreeTheAi API status by public alias prefix, including provider health signals for the free OpenAI-compatible API."
 	jsonLd={jsonLd}
 	currentPath="/status"
 >

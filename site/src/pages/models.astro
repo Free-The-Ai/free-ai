@@ -6,6 +6,7 @@ import {
     buildSoftwareJsonLd,
     buildWebsiteJsonLd,
     buildWebApiJsonLd,
+    buildMachineReadableResourcesJsonLd,
     buildFaqJsonLd,
     buildModelCatalogJsonLd,
     buildBreadcrumbJsonLd,
@@ -17,27 +18,18 @@ const snapshotModels = Array.isArray(modelSnapshot.data)
           .filter((model) => typeof model?.id === "string")
           .map((model) => ({
               id: model.id,
-              prefix:
-                  typeof model?.prefix === "string" && model.prefix
-                      ? model.prefix
-                      : model.id.includes("/")
-                        ? model.id.slice(0, model.id.indexOf("/"))
-                        : "other",
           }))
     : [];
-
-const prefixCounts = [...snapshotModels.reduce((counts, model) => {
-    counts.set(model.prefix, (counts.get(model.prefix) ?? 0) + 1);
-    return counts;
-}, new Map<string, number>())].sort((a, b) => b[1] - a[1]);
-
-const sampleModels = snapshotModels.slice(0, 12);
 
 const jsonLd = [
     buildWebsiteJsonLd(),
     buildOrganizationJsonLd(),
     buildSoftwareJsonLd(),
     buildWebApiJsonLd(),
+    buildMachineReadableResourcesJsonLd({
+        modelCount: snapshotModels.length,
+        modelGeneratedAt: modelSnapshot.generated_at,
+    }),
     buildFaqJsonLd(),
     buildModelCatalogJsonLd(snapshotModels.map((model) => model.id)),
     buildBreadcrumbJsonLd([
@@ -54,50 +46,7 @@ const jsonLd = [
     currentPath="/models"
 >
     <main class="models-main">
-        <section class="section shell models-start">
-            <div class="models-start-head section-head">
-                <span class="eyebrow">Model catalog</span>
-                <h1>FreeTheAi active model aliases.</h1>
-                <p>
-                    Search and copy exact model IDs for the free OpenAI-compatible
-                    API. This page uses the live API first and falls back to the
-                    bundled <code>/models.json</code> snapshot, refreshed from the
-                    current public catalog.
-                </p>
-            </div>
-            <div class="models-start-grid" aria-label="FreeTheAi catalog summary">
-                <a class="models-start-card" href="/docs#chat">
-                    <span class="models-start-icon material-symbols-outlined">terminal</span>
-                    <strong>{snapshotModels.length} active models</strong>
-                    <span class="models-start-copy">
-                        Chat, images, tools, and Anthropic-style clients behind one API key.
-                    </span>
-                </a>
-                <a class="models-start-card" href="/docs#models">
-                    <span class="models-start-icon material-symbols-outlined">route</span>
-                    <strong>{prefixCounts.length} public prefixes</strong>
-                    <span class="models-start-copy">
-                        Current prefixes: {prefixCounts.map(([prefix]) => `${prefix}/*`).join(", ")}.
-                    </span>
-                </a>
-                <a class="models-start-card" href="/docs#auth">
-                    <span class="models-start-icon material-symbols-outlined">key</span>
-                    <strong>Discord key signup</strong>
-                    <span class="models-start-copy">
-                        Use <code>/signup</code>, then complete daily <code>/checkin</code>.
-                    </span>
-                </a>
-            </div>
-            <div class="models-start-grid" aria-label="Sample FreeTheAi model aliases">
-                {sampleModels.map((model) => (
-                    <a class="models-start-card" href={`/models?q=${encodeURIComponent(model.id)}`}>
-                        <span class="models-start-icon material-symbols-outlined">content_copy</span>
-                        <strong>{model.prefix}/*</strong>
-                        <code>{model.id}</code>
-                    </a>
-                ))}
-            </div>
-        </section>
+        <h1 class="sr-only">FreeTheAi model catalog</h1>
         <section class="section shell models-catalog-section" id="catalog">
             <CatalogBrowser client:load />
         </section>

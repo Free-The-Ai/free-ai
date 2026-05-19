@@ -119,6 +119,18 @@ body > .page-shell {
     min-height: 100svh;
 }
 
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
 .shell {
     border: 1px solid var(--sk-border);
     border-radius: var(--radius);
@@ -793,25 +805,21 @@ h3 {
     font-size: clamp(2.5rem, 5.2vw, 4.3rem);
 }
 
-.docs-start,
-.models-start {
+.docs-start {
     gap: 18px;
 }
 
-.docs-start-head,
-.models-start-head {
+.docs-start-head {
     max-width: 820px;
 }
 
-.docs-start-grid,
-.models-start-grid {
+.docs-start-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
 }
 
-.docs-start-card,
-.models-start-card {
+.docs-start-card {
     display: grid;
     grid-template-columns: 36px minmax(0, 1fr);
     gap: 8px 12px;
@@ -827,14 +835,12 @@ h3 {
         background 200ms ease;
 }
 
-.docs-start-card:hover,
-.models-start-card:hover {
+.docs-start-card:hover {
     border-color: var(--border-strong);
     background: var(--bg);
 }
 
-.docs-start-icon,
-.models-start-icon {
+.docs-start-icon {
     grid-row: 1 / span 2;
     display: inline-flex;
     align-items: center;
@@ -847,28 +853,17 @@ h3 {
     color: var(--amber);
 }
 
-.docs-start-card strong,
-.models-start-card strong {
+.docs-start-card strong {
     min-width: 0;
     font-size: 1rem;
     line-height: 1.2;
 }
 
-.docs-start-copy,
-.models-start-copy {
+.docs-start-copy {
     min-width: 0;
     color: var(--muted);
     font-size: 0.9rem;
     line-height: 1.45;
-}
-
-.models-start-card code {
-    grid-column: 2;
-    overflow: hidden;
-    color: var(--amber);
-    font-size: 0.76rem;
-    text-overflow: ellipsis;
-    white-space: nowrap;
 }
 
 .console-chip {
@@ -2152,7 +2147,6 @@ body.nav-drawer-open {
 .models-cta,
 .docs-start-card,
 .docs-section,
-.models-start-card,
 .model-leaderboard-row,
 .catalog-meta span,
 .catalog-summary button,
@@ -2229,7 +2223,6 @@ body.nav-drawer-open {
 .catalog-summary button:hover,
 .model-card:hover,
 .docs-start-card:hover,
-.models-start-card:hover,
 .model-leaderboard-row:hover,
 .proof-card:hover,
 .capability-card:hover,
@@ -2349,7 +2342,6 @@ body.nav-drawer-open {
 }
 
 .docs-start-icon,
-.models-start-icon,
 .capability-icon {
     border-color: var(--sk-border);
     background: var(--sk-inset-bg);
@@ -3109,8 +3101,7 @@ body.nav-drawer-open {
         gap: 6px;
     }
 
-    .docs-start-grid,
-    .models-start-grid {
+    .docs-start-grid {
         grid-template-columns: 1fr;
     }
 

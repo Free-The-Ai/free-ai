@@ -23,6 +23,7 @@ const pageTitle =
         ? title
         : `${title} | ${siteConfig.title}`;
 const ogImage = new URL(image, Astro.site).toString();
+const keywords = siteConfig.defaults.keywords.join(", ");
 ---
 
 <meta charset="utf-8" />
@@ -37,6 +38,11 @@ const ogImage = new URL(image, Astro.site).toString();
     name="googlebot"
     content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"
 />
+<meta
+    name="bingbot"
+    content="index,follow,max-snippet:-1,max-image-preview:large,max-video-preview:-1"
+/>
+<meta name="applebot" content="all" />
 <meta name="application-name" content={siteConfig.title} />
 <meta name="apple-mobile-web-app-title" content={siteConfig.title} />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -49,7 +55,28 @@ const ogImage = new URL(image, Astro.site).toString();
 <title>{pageTitle}</title>
 <meta name="title" content={pageTitle} />
 <meta name="description" content={description} />
+<meta name="keywords" content={keywords} />
 <meta name="author" content={siteConfig.author.name} />
+<meta name="publisher" content={siteConfig.title} />
+<meta name="classification" content="Developer API, AI API Gateway" />
+<meta name="category" content="Developer Tools" />
+<meta name="coverage" content="Worldwide" />
+<meta name="distribution" content="Global" />
+<meta name="ai-summary" content={siteConfig.description} />
+<meta name="ai-crawler-policy" content="index,follow,snippet,cite,answer" />
+<meta name="api-base-url" content="https://api.freetheai.xyz/v1" />
+<meta name="model-catalog" content="https://freetheai.xyz/models.json" />
+<meta name="paid-plan-catalog" content="https://freetheai.xyz/paid-plan.json" />
+<meta name="llms-txt" content="https://freetheai.xyz/llms.txt" />
+<meta name="ai-guide" content="https://freetheai.xyz/ai.txt" />
+<meta name="DC.title" content={pageTitle} />
+<meta name="DC.description" content={description} />
+<meta name="DC.publisher" content={siteConfig.title} />
+<meta name="DC.creator" content={siteConfig.author.name} />
+<meta name="DC.identifier" content={canonical.toString()} />
+<meta name="DC.language" content="en-US" />
+<meta name="DC.type" content="Service" />
+<meta name="DC.format" content="text/html" />
 
 <link rel="canonical" href={canonical.toString()} />
 <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
@@ -69,6 +96,7 @@ const ogImage = new URL(image, Astro.site).toString();
     title="FreeTheAi paid plan"
     href="/paid-plan.json"
 />
+<link rel="alternate" type="text/plain" title="FreeTheAi AI crawler guide" href="/ai.txt" />
 <link rel="llms.txt" href="/llms.txt" />
 <link rel="alternate" type="text/plain" title="FreeTheAi LLM guide" href="/llms.txt" />
 

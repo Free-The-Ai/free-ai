@@ -40,4 +40,5 @@ The live catalog is the source of truth for public aliases. Currently exposed pr
 ## Optional
 
 - [Sitemap](https://freetheai.xyz/sitemap-index.xml): Search-engine sitemap for page discovery.
+- [AI Search Guide](https://freetheai.xyz/ai.txt): Compact answer-engine summary and canonical resource list.
 - [Open Graph Card](https://freetheai.xyz/FreeTheAi.png): Social preview asset.

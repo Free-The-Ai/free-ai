@@ -10,6 +10,7 @@ import {
     buildOrganizationJsonLd,
     buildSoftwareJsonLd,
     buildWebApiJsonLd,
+    buildMachineReadableResourcesJsonLd,
     buildFaqJsonLd,
     buildSignupHowToJsonLd,
     buildBreadcrumbJsonLd,
@@ -20,6 +21,7 @@ const jsonLd = [
     buildOrganizationJsonLd(),
     buildSoftwareJsonLd(),
     buildWebApiJsonLd(),
+    buildMachineReadableResourcesJsonLd(),
     buildFaqJsonLd(),
     buildSignupHowToJsonLd(),
     buildBreadcrumbJsonLd([
@@ -57,11 +59,6 @@ const pageDescription =
             style="max-width:600px;margin:0 auto;padding-top:120px;position:relative;z-index:1;text-align:center"
             data-parallax="0.3"
         >
-            <p
-                style="margin:0 0 16px;color:var(--accent-text);font-family:var(--font-mono);font-size:0.72rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;text-shadow:var(--accent-text-glow)"
-            >
-                Official FreeTheAi API
-            </p>
             <h1 data-parallax="0.2" style="position:relative">
                 <Logo
                     width={520}
@@ -276,20 +273,6 @@ const pageDescription =
         );
     </script>
 </Layout>
-
-<style is:global>
-    .sr-only {
-        position: absolute;
-        width: 1px;
-        height: 1px;
-        padding: 0;
-        margin: -1px;
-        overflow: hidden;
-        clip: rect(0, 0, 0, 0);
-        white-space: nowrap;
-        border: 0;
-    }
-</style>
 
 <style>
     /*

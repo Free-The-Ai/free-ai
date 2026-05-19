@@ -1,12 +1,19 @@
 ---
 import Layout from '../layouts/Layout.astro';
 import ProviderStatusGrid from '../components/ProviderStatusGrid';
-import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd } from '../utils/jsonLd';
+import {
+	buildBreadcrumbJsonLd,
+	buildMachineReadableResourcesJsonLd,
+	buildOrganizationJsonLd,
+	buildWebsiteJsonLd,
+	buildWebApiJsonLd,
+} from '../utils/jsonLd';
 
 const jsonLd = [
 	buildWebsiteJsonLd(),
 	buildOrganizationJsonLd(),
 	buildWebApiJsonLd(),
+	buildMachineReadableResourcesJsonLd(),
 	buildBreadcrumbJsonLd([
 		{ name: 'FreeTheAi', url: 'https://freetheai.xyz/home' },
 		{ name: 'Status', url: 'https://freetheai.xyz/status' },

@@ -143,6 +143,80 @@ export function buildWebApiJsonLd() {
 	};
 }
 
+export function buildMachineReadableResourcesJsonLd(
+	options: {
+		modelCount?: number;
+		modelGeneratedAt?: string;
+		paidModelCount?: number;
+		paidUpdatedAt?: string;
+	} = {},
+) {
+	/**
+	 * var machineReadableResourcesJsonLd
+	 * type object
+	 * desc Structured data for answer engines and crawlers that prefer canonical resource files.
+	 */
+	return {
+		'@context': 'https://schema.org',
+		'@type': 'DataCatalog',
+		'@id': 'https://freetheai.xyz/#machine-readable-resources',
+		name: 'FreeTheAi machine-readable resources',
+		url: 'https://freetheai.xyz/ai.txt',
+		description:
+			'Canonical machine-readable files for FreeTheAi answer engines: LLM guide, AI crawler guide, public model catalog, paid plan catalog, sitemap, and API health.',
+		inLanguage: 'en-US',
+		creator: {
+			'@id': 'https://freetheai.xyz/#organization',
+		},
+		dataset: [
+			{
+				'@type': 'Dataset',
+				'@id': 'https://freetheai.xyz/models.json#dataset',
+				name: 'FreeTheAi public model catalog',
+				description: 'JSON snapshot of active public FreeTheAi model aliases.',
+				url: 'https://freetheai.xyz/models.json',
+				encodingFormat: 'application/json',
+				isAccessibleForFree: true,
+				dateModified: options.modelGeneratedAt,
+				measurementTechnique: 'Public API catalog snapshot',
+				variableMeasured: ['model id', 'prefix', 'availability', 'visibility'],
+				size: options.modelCount ? `${options.modelCount} models` : undefined,
+			},
+			{
+				'@type': 'Dataset',
+				'@id': 'https://freetheai.xyz/paid-plan.json#dataset',
+				name: 'FreeTheAi paid plan catalog',
+				description: 'JSON snapshot of optional paid launch plan aliases and request-unit costs.',
+				url: 'https://freetheai.xyz/paid-plan.json',
+				encodingFormat: 'application/json',
+				isAccessibleForFree: true,
+				dateModified: options.paidUpdatedAt,
+				measurementTechnique: 'Paid API pricing snapshot',
+				variableMeasured: ['model id', 'route', 'unit cost', 'unit label'],
+				size: options.paidModelCount ? `${options.paidModelCount} models` : undefined,
+			},
+			{
+				'@type': 'Dataset',
+				'@id': 'https://freetheai.xyz/llms.txt#dataset',
+				name: 'FreeTheAi LLM guide',
+				description: 'Plain-text overview for AI assistants and answer engines.',
+				url: 'https://freetheai.xyz/llms.txt',
+				encodingFormat: 'text/plain',
+				isAccessibleForFree: true,
+			},
+			{
+				'@type': 'Dataset',
+				'@id': 'https://freetheai.xyz/ai.txt#dataset',
+				name: 'FreeTheAi AI search guide',
+				description: 'Plain-text crawler policy, canonical resource list, and preferred summary.',
+				url: 'https://freetheai.xyz/ai.txt',
+				encodingFormat: 'text/plain',
+				isAccessibleForFree: true,
+			},
+		],
+	};
+}
+
 export function buildBreadcrumbJsonLd(items: { name: string; url: string }[]) {
 	/**
 	 * var breadcrumbJsonLd

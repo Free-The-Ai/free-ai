@@ -4,7 +4,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495714,
+      "created": 1779497153,
       "id": "agr/deepseek-v4-pro",
       "object": "model",
       "owned_by": "gateway",
@@ -15,11 +15,110 @@
       "access": {
         "available": true
       },
-      "created": 1779495714,
+      "created": 1779497153,
       "id": "agr/glm-5.1",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "agr",
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true
+      },
+      "created": 1779497153,
+      "id": "bbg/deepseek-ai/DeepSeek-V3.2",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true
+      },
+      "created": 1779497153,
+      "id": "bbg/deepseek-ai/DeepSeek-V4-Flash",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true
+      },
+      "created": 1779497153,
+      "id": "bbg/deepseek-ai/DeepSeek-V4-Pro",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true
+      },
+      "created": 1779497153,
+      "id": "bbg/MiniMaxAI/MiniMax-M2.7",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true
+      },
+      "created": 1779497153,
+      "id": "bbg/moonshotai/Kimi-K2.5",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true
+      },
+      "created": 1779497153,
+      "id": "bbg/moonshotai/Kimi-K2.6",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true
+      },
+      "created": 1779497153,
+      "id": "bbg/Qwen/Qwen3.6-35B-A3B",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true
+      },
+      "created": 1779497153,
+      "id": "bbg/zai-org/GLM-5",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true
+      },
+      "created": 1779497153,
+      "id": "bbg/zai-org/GLM-5.1",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
       "visibility": "site_catalog"
     },
     {
@@ -125,7 +224,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495714,
+      "created": 1779497153,
       "id": "glm/glm-4.5",
       "object": "model",
       "owned_by": "gateway",
@@ -136,7 +235,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495714,
+      "created": 1779497153,
       "id": "glm/glm-4.5-air",
       "object": "model",
       "owned_by": "gateway",
@@ -147,7 +246,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495714,
+      "created": 1779497153,
       "id": "glm/glm-4.6",
       "object": "model",
       "owned_by": "gateway",
@@ -158,7 +257,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495714,
+      "created": 1779497153,
       "id": "glm/glm-4.7",
       "object": "model",
       "owned_by": "gateway",
@@ -169,7 +268,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495714,
+      "created": 1779497153,
       "id": "glm/glm-5",
       "object": "model",
       "owned_by": "gateway",
@@ -180,7 +279,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495714,
+      "created": 1779497153,
       "id": "glm/glm-5.1",
       "object": "model",
       "owned_by": "gateway",
@@ -191,7 +290,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495714,
+      "created": 1779497153,
       "id": "img/gpt-image-2",
       "object": "model",
       "owned_by": "gateway",
@@ -323,7 +422,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495715,
+      "created": 1779497154,
       "id": "opc/big-pickle",
       "object": "model",
       "owned_by": "gateway",
@@ -334,7 +433,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495715,
+      "created": 1779497154,
       "id": "opc/deepseek-v4-flash-free",
       "object": "model",
       "owned_by": "gateway",
@@ -345,7 +444,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495715,
+      "created": 1779497154,
       "id": "opc/minimax-m2.5-free",
       "object": "model",
       "owned_by": "gateway",
@@ -356,7 +455,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495715,
+      "created": 1779497154,
       "id": "opc/nemotron-3-super-free",
       "object": "model",
       "owned_by": "gateway",
@@ -367,7 +466,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495715,
+      "created": 1779497154,
       "id": "opc/qwen3.6-plus-free",
       "object": "model",
       "owned_by": "gateway",
@@ -378,7 +477,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495715,
+      "created": 1779497154,
       "id": "wsf/kimi-k2.6",
       "object": "model",
       "owned_by": "gateway",
@@ -389,7 +488,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495715,
+      "created": 1779497154,
       "id": "wsf/swe-1.5",
       "object": "model",
       "owned_by": "gateway",
@@ -400,7 +499,7 @@
       "access": {
         "available": true
       },
-      "created": 1779495715,
+      "created": 1779497154,
       "id": "wsf/swe-1.6",
       "object": "model",
       "owned_by": "gateway",

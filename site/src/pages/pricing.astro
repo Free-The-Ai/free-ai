@@ -1,6 +1,7 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import PaidModelTable from "../components/PaidModelTable";
+import { siteConfig } from "../config/site";
 import {
     buildBreadcrumbJsonLd,
     buildMachineReadableResourcesJsonLd,
@@ -27,17 +28,6 @@ const jsonLd = [
         { name: "Pricing", url: "https://freetheai.xyz/pricing" },
     ]),
 ];
-
-const paidModelCount = paidPlan.model_groups.reduce(
-    (total, group) => total + group.models.length,
-    0,
-);
-const planStats = [
-    { value: paidModelCount, label: "paid aliases" },
-    { value: "1,000", label: "units / day" },
-    { value: "100", label: "units / hour" },
-    { value: "3", label: "concurrent" },
-];
 ---
 
 <Layout
@@ -49,15 +39,10 @@ const planStats = [
     <main class="pricing-main">
         <section class="pricing-hero shell">
             <div class="pricing-hero-copy">
-                <span class="eyebrow">FreeTheAi ~ Paid plan</span>
                 <h1>Premium models at an affordable price.</h1>
                 <p class="hero-text">
                     Stable uptime and a different model collection for users who need
                     more than the free pool.
-                </p>
-                <p class="pricing-note">
-                    * Free plan stays free. Paid is only for higher uptime and separate
-                    premium routes.
                 </p>
             </div>
 
@@ -66,14 +51,16 @@ const planStats = [
                     <strong>{paidPlan.plan.price}</strong>
                     <span>/ {paidPlan.plan.period}</span>
                 </div>
-                <div class="pricing-plan-strip">
-                    {planStats.map(({ value, label }) => (
-                        <div>
-                            <strong>{value}</strong>
-                            <span>{label}</span>
-                        </div>
-                    ))}
-                </div>
+                <p class="pricing-plan-tag">Billed monthly. Cancel anytime.</p>
+                <a
+                    class="primary-button pricing-plan-cta"
+                    href={siteConfig.socials.discord}
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <span>Get a paid key</span>
+                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+                </a>
             </article>
         </section>
 
@@ -151,8 +138,8 @@ const planStats = [
         justify-self: end;
         width: min(100%, 380px);
         min-height: 240px;
-        align-content: space-between;
-        gap: 18px;
+        align-content: center;
+        gap: 14px;
         padding: clamp(22px, 2.8vw, 32px);
     }
 
@@ -192,36 +179,24 @@ const planStats = [
         letter-spacing: 0.08em;
     }
 
-    .pricing-plan-strip {
-        display: grid;
-        gap: 12px;
-    }
-
-    .pricing-plan-strip {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .pricing-plan-strip div {
-        display: grid;
-        gap: 3px;
-        min-width: 0;
-        padding: 10px;
-        border: 1px solid var(--sk-border);
-        border-radius: var(--radius-sm);
-        background: var(--sk-inset-bg);
-        box-shadow: var(--sk-inset-shadow);
-    }
-
-    .pricing-plan-strip strong {
-        color: var(--text);
-        font-family: var(--font-mono);
-        font-size: 0.95rem;
-    }
-
-    .pricing-plan-strip span {
+    .pricing-plan-tag {
+        margin: 0;
         color: var(--muted);
-        font-size: 0.7rem;
-        line-height: 1.35;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.04em;
+    }
+
+    .pricing-plan-cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        width: fit-content;
+    }
+
+    .pricing-plan-cta .cta-arrow {
+        opacity: 0.65;
+        font-size: 0.9rem;
     }
 
     .pricing-section {
@@ -234,14 +209,67 @@ const planStats = [
         gap: 16px;
     }
 
-    .paid-table-toolbar,
-    .paid-table-filters {
-        display: grid;
-        gap: 12px;
+    .paid-table-toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 10px;
     }
 
     .paid-table-search {
-        max-width: 560px;
+        flex: 1 1 260px;
+        min-width: 220px;
+    }
+
+    .paid-table-filters {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        flex: 1 1 auto;
+        min-width: 0;
+    }
+
+    .paid-filter-select {
+        flex: 1 1 150px;
+        min-width: 140px;
+        max-width: 220px;
+        gap: 0;
+    }
+
+    .paid-filter-select .kb-select__trigger {
+        min-height: 40px;
+        padding: 0 12px;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+    }
+
+    .paid-filter-clear {
+        flex: 0 0 auto;
+        height: 40px;
+        padding: 0 14px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-inset-bg);
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        letter-spacing: 0.05em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: border-color 150ms ease, color 150ms ease;
+    }
+
+    .paid-filter-clear:hover {
+        border-color: rgba(238, 93, 32, 0.42);
+        color: var(--accent-text);
+    }
+
+    @media (max-width: 720px) {
+        .paid-filter-select {
+            flex: 1 1 100%;
+            max-width: none;
+        }
     }
 
     .paid-model-table {
@@ -377,10 +405,6 @@ const planStats = [
 
         .pricing-section {
             padding: 18px;
-        }
-
-        .pricing-plan-strip {
-            grid-template-columns: 1fr;
         }
     }
 </style>

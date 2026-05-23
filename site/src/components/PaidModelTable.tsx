@@ -1,5 +1,6 @@
 import { createMemo, createSignal, For, Show } from "solid-js";
-import { TextField } from "./ui";
+import { Select, TextField } from "./ui";
+import type { SelectOption } from "./ui";
 
 interface PaidModel {
   id: string;
@@ -71,6 +72,30 @@ export default function PaidModelTable(props: PaidModelTableProps) {
       .sort((a, b) => a.unit_cost - b.unit_cost || collator.compare(a.id, b.id));
   });
 
+  const prefixOptions = createMemo<SelectOption[]>(() => [
+    { value: "all", label: `All prefixes · ${rows().length}` },
+    ...prefixCounts().map(([id, count]) => ({
+      value: id,
+      label: `${id}/* · ${count}`,
+    })),
+  ]);
+
+  const routeOptions = createMemo<SelectOption[]>(() => [
+    { value: "all", label: `All routes · ${rows().length}` },
+    ...routeCounts().map(([name, count]) => ({
+      value: name,
+      label: `${name} · ${count}`,
+    })),
+  ]);
+
+  const costOptions = createMemo<SelectOption[]>(() => [
+    { value: "all", label: `All costs · ${rows().length}` },
+    ...costCounts().map(([amount, count]) => ({
+      value: String(amount),
+      label: `${formatCost(amount)} unit${amount === 1 ? "" : "s"} · ${count}`,
+    })),
+  ]);
+
   const clearFilters = () => {
     setQuery("");
     setPrefix("all");
@@ -103,50 +128,37 @@ export default function PaidModelTable(props: PaidModelTableProps) {
           />
         </div>
         <div class="paid-table-filters" aria-label="Paid model filters">
-          <div class="catalog-prefixes">
-            <button class={`catalog-chip ${prefix() === "all" ? "is-active" : ""}`} onClick={() => setPrefix("all")}>
-              All prefixes
+          <Select
+            class="paid-filter-select"
+            options={prefixOptions()}
+            value={prefix()}
+            onChange={(val: string) => setPrefix(val ?? "all")}
+            placeholder="All prefixes"
+          />
+          <Select
+            class="paid-filter-select"
+            options={routeOptions()}
+            value={route()}
+            onChange={(val: string) => setRoute(val ?? "all")}
+            placeholder="All routes"
+          />
+          <Select
+            class="paid-filter-select"
+            options={costOptions()}
+            value={cost()}
+            onChange={(val: string) => setCost(val ?? "all")}
+            placeholder="All costs"
+          />
+          <Show when={query().trim() || prefix() !== "all" || route() !== "all" || cost() !== "all"}>
+            <button type="button" class="paid-filter-clear" onClick={clearFilters}>
+              Clear
             </button>
-            <For each={prefixCounts()}>
-              {([id, count]) => (
-                <button class={`catalog-chip ${prefix() === id ? "is-active" : ""}`} onClick={() => setPrefix(id)}>
-                  {id}/* <span>{count}</span>
-                </button>
-              )}
-            </For>
-          </div>
-          <div class="catalog-prefixes">
-            <button class={`catalog-chip ${route() === "all" ? "is-active" : ""}`} onClick={() => setRoute("all")}>
-              All routes
-            </button>
-            <For each={routeCounts()}>
-              {([name, count]) => (
-                <button class={`catalog-chip ${route() === name ? "is-active" : ""}`} onClick={() => setRoute(name)}>
-                  {name} <span>{count}</span>
-                </button>
-              )}
-            </For>
-          </div>
-          <div class="catalog-prefixes">
-            <button class={`catalog-chip ${cost() === "all" ? "is-active" : ""}`} onClick={() => setCost("all")}>
-              All costs
-            </button>
-            <For each={costCounts()}>
-              {([amount, count]) => (
-                <button class={`catalog-chip ${cost() === String(amount) ? "is-active" : ""}`} onClick={() => setCost(String(amount))}>
-                  {formatCost(amount)}u <span>{count}</span>
-                </button>
-              )}
-            </For>
-          </div>
+          </Show>
         </div>
       </div>
 
       <div class="catalog-summary paid-table-summary" aria-live="polite">
         <span>{filteredRows().length} / {rows().length} paid aliases</span>
-        <Show when={query().trim() || prefix() !== "all" || route() !== "all" || cost() !== "all"}>
-          <button type="button" onClick={clearFilters}>Clear filters</button>
-        </Show>
       </div>
 
       <div class="paid-model-table" role="table" aria-label="Paid model unit costs">

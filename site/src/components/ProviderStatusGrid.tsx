@@ -61,6 +61,92 @@ const CSS = `
   align-items: start;
 }
 
+/* ── Status filter pills ── */
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: 1px solid var(--sk-border);
+  border-radius: var(--radius-sm);
+  background: var(--sk-inset-bg);
+  box-shadow: var(--sk-inset-shadow);
+  color: var(--muted);
+  font-family: inherit;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease, background 150ms ease, box-shadow 150ms ease;
+}
+
+.status-pill:hover:not(:disabled) {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.status-pill:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.status-pill:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.status-pill.is-up.is-active {
+  border-color: rgba(46, 160, 67, 0.6);
+  background: rgba(46, 160, 67, 0.12);
+  color: #6fd585;
+  box-shadow: var(--sk-inset-shadow), 0 0 0 1px rgba(46, 160, 67, 0.35);
+}
+
+.status-pill.is-degraded.is-active {
+  border-color: rgba(217, 119, 6, 0.6);
+  background: rgba(217, 119, 6, 0.12);
+  color: var(--amber);
+  box-shadow: var(--sk-inset-shadow), 0 0 0 1px rgba(217, 119, 6, 0.4);
+}
+
+.status-pill.is-down.is-active {
+  border-color: rgba(255, 77, 77, 0.6);
+  background: rgba(255, 77, 77, 0.12);
+  color: var(--danger);
+  box-shadow: var(--sk-inset-shadow), 0 0 0 1px rgba(255, 77, 77, 0.4);
+}
+
+/* ── Empty state when filter excludes all ── */
+.status-grid-empty {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 20px 22px;
+  border: 1px dashed var(--sk-border);
+  border-radius: var(--radius);
+  background: var(--sk-inset-bg);
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.status-grid-empty-clear {
+  padding: 8px 12px;
+  border: 1px solid var(--sk-border);
+  border-radius: var(--radius-sm);
+  background: var(--sk-shell-bg);
+  color: var(--accent-text);
+  font-family: inherit;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: border-color 150ms ease, color 150ms ease;
+}
+
+.status-grid-empty-clear:hover {
+  border-color: var(--accent);
+  text-shadow: var(--accent-text-glow);
+}
+
 /* ── Card ── */
 .status-card {
   position: relative;
@@ -602,6 +688,20 @@ export default function ProviderStatusGrid() {
     const [selectedPrefix, setSelectedPrefix] = createSignal<string | null>(
         null,
     );
+    const [statusFilter, setStatusFilter] = createSignal<Set<ProviderStatus>>(
+        new Set(),
+    );
+    const toggleStatusFilter = (status: ProviderStatus) => {
+        setStatusFilter((prev) => {
+            const next = new Set(prev);
+            if (next.has(status)) {
+                next.delete(status);
+            } else {
+                next.add(status);
+            }
+            return next;
+        });
+    };
     const [scrollRailMetrics, setScrollRailMetrics] =
         createSignal<ScrollRailMetrics>({
             scrollable: false,
@@ -935,6 +1035,12 @@ export default function ProviderStatusGrid() {
         });
     });
 
+    const filteredProviders = createMemo(() => {
+        const filter = statusFilter();
+        if (filter.size === 0) return providers();
+        return providers().filter((provider) => filter.has(provider.status));
+    });
+
     const summary = createMemo(() => {
         const items = providers();
         const degraded = items.filter((item) => item.status === "degraded");
@@ -996,11 +1102,36 @@ export default function ProviderStatusGrid() {
                 </div>
                 <div
                     class="status-summary"
-                    aria-label="Provider health summary"
+                    role="group"
+                    aria-label="Filter providers by health"
                 >
-                    <span>{summary().up} up</span>
-                    <span>{summary().degraded} degraded</span>
-                    <span>{summary().down} down</span>
+                    <button
+                        type="button"
+                        class={`status-pill is-up${statusFilter().has("up") ? " is-active" : ""}`}
+                        aria-pressed={statusFilter().has("up")}
+                        disabled={summary().up === 0}
+                        onClick={() => toggleStatusFilter("up")}
+                    >
+                        {summary().up} up
+                    </button>
+                    <button
+                        type="button"
+                        class={`status-pill is-degraded${statusFilter().has("degraded") ? " is-active" : ""}`}
+                        aria-pressed={statusFilter().has("degraded")}
+                        disabled={summary().degraded === 0}
+                        onClick={() => toggleStatusFilter("degraded")}
+                    >
+                        {summary().degraded} degraded
+                    </button>
+                    <button
+                        type="button"
+                        class={`status-pill is-down${statusFilter().has("down") ? " is-active" : ""}`}
+                        aria-pressed={statusFilter().has("down")}
+                        disabled={summary().down === 0}
+                        onClick={() => toggleStatusFilter("down")}
+                    >
+                        {summary().down} down
+                    </button>
                 </div>
             </div>
 
@@ -1039,88 +1170,106 @@ export default function ProviderStatusGrid() {
                 }
             >
                 <div class="status-grid">
-                    <For each={providers()}>
-                        {(provider) => {
-                            const isSelected = () =>
-                                selectedPrefix() === provider.prefix;
-                            const isAffected =
-                                provider.status === "degraded" ||
-                                provider.status === "down";
-                            const modelCount = provider.model_count;
-                            const showBlast = isAffected && modelCount > 0;
-
-                            return (
-                                <article
-                                    class={`status-card is-${provider.status}${isSelected() ? " is-selected" : ""}`}
-                                    tabindex="0"
-                                    role="button"
-                                    aria-label={`${provider.prefix} provider status ${provider.status}`}
+                    <Show
+                        when={filteredProviders().length > 0}
+                        fallback={
+                            <div class="status-grid-empty">
+                                No providers match the selected status.
+                                <button
+                                    type="button"
+                                    class="status-grid-empty-clear"
                                     onClick={() =>
-                                        isSelected()
-                                            ? closePopover()
-                                            : openPopover(provider.prefix)
+                                        setStatusFilter(new Set())
                                     }
-                                    onKeyDown={(e) => {
-                                        if (
-                                            e.key === "Enter" ||
-                                            e.key === " "
-                                        ) {
-                                            e.preventDefault();
+                                >
+                                    Clear filter
+                                </button>
+                            </div>
+                        }
+                    >
+                        <For each={filteredProviders()}>
+                            {(provider) => {
+                                const isSelected = () =>
+                                    selectedPrefix() === provider.prefix;
+                                const isAffected =
+                                    provider.status === "degraded" ||
+                                    provider.status === "down";
+                                const modelCount = provider.model_count;
+                                const showBlast = isAffected && modelCount > 0;
+
+                                return (
+                                    <article
+                                        class={`status-card is-${provider.status}${isSelected() ? " is-selected" : ""}`}
+                                        tabindex="0"
+                                        role="button"
+                                        aria-label={`${provider.prefix} provider status ${provider.status}`}
+                                        onClick={() =>
                                             isSelected()
                                                 ? closePopover()
-                                                : openPopover(provider.prefix);
+                                                : openPopover(provider.prefix)
                                         }
-                                    }}
-                                >
-                                    <div class="status-card-top">
-                                        <span class="status-dot" />
-                                        <strong>{provider.prefix}/</strong>
-                                        <span>{provider.status}</span>
-                                    </div>
+                                        onKeyDown={(e) => {
+                                            if (
+                                                e.key === "Enter" ||
+                                                e.key === " "
+                                            ) {
+                                                e.preventDefault();
+                                                isSelected()
+                                                    ? closePopover()
+                                                    : openPopover(provider.prefix);
+                                            }
+                                        }}
+                                    >
+                                        <div class="status-card-top">
+                                            <span class="status-dot" />
+                                            <strong>{provider.prefix}/</strong>
+                                            <span>{provider.status}</span>
+                                        </div>
 
-                                    <div class="status-card-main">
-                                        <span>
-                                            {modelCount.toLocaleString()}
-                                        </span>
-                                        <small>
-                                            {modelCount === 1
-                                                ? "model"
-                                                : "models"}
-                                        </small>
-                                    </div>
-
-                                    <div class="status-card-blast-slot">
-                                        {showBlast && (
-                                            <span class="status-card-blast">
-                                                {provider.status === "down"
-                                                    ? "Affected"
-                                                    : "At risk"}{" "}
-                                                <strong>
-                                                    {modelCount.toLocaleString()}
-                                                </strong>{" "}
+                                        <div class="status-card-main">
+                                            <span>
+                                                {modelCount.toLocaleString()}
+                                            </span>
+                                            <small>
                                                 {modelCount === 1
                                                     ? "model"
                                                     : "models"}
-                                            </span>
-                                        )}
-                                    </div>
+                                            </small>
+                                        </div>
 
-                                    <div class="status-card-meta">
-                                        <span>30m errors</span>
-                                        <strong>
-                                            {formatPercent(
-                                                provider.error_rate_30m,
+                                        <div class="status-card-blast-slot">
+                                            {showBlast && (
+                                                <span class="status-card-blast">
+                                                    {provider.status === "down"
+                                                        ? "Affected"
+                                                        : "At risk"}{" "}
+                                                    <strong>
+                                                        {modelCount.toLocaleString()}
+                                                    </strong>{" "}
+                                                    {modelCount === 1
+                                                        ? "model"
+                                                        : "models"}
+                                                </span>
                                             )}
-                                        </strong>
-                                        <span>requests</span>
-                                        <strong>
-                                            {provider.requests_30m.toLocaleString()}
-                                        </strong>
-                                    </div>
-                                </article>
-                            );
-                        }}
-                    </For>
+                                        </div>
+
+                                        <div class="status-card-meta">
+                                            <span>30m errors</span>
+                                            <strong>
+                                                {formatPercent(
+                                                    provider.error_rate_30m,
+                                                )}
+                                            </strong>
+                                            <span>requests</span>
+                                            <strong>
+                                                {provider.requests_30m.toLocaleString()}
+                                            </strong>
+                                        </div>
+                                    </article>
+                                );
+                            }}
+                        </For>
+                    </Show>
                 </div>
             </Show>
 

@@ -70,6 +70,7 @@ export function buildOrganizationJsonLd() {
 		sameAs: [
 			'https://discord.gg/secrets',
 			'https://github.com/vibheksoni/free-ai',
+			'https://github.com/Free-The-Ai',
 			'https://api.freetheai.xyz',
 		],
 	};
@@ -341,83 +342,5 @@ export function buildPaidPlanJsonLd(plan: { price: string; period: string; summa
 			category: `${plan.period} subscription`,
 			url: 'https://freetheai.xyz/pricing',
 		},
-	};
-}
-
-export function buildFaqJsonLd() {
-	/**
-	 * var faqJsonLd
-	 * type object
-	 * desc FAQ structured data for rich search result snippets.
-	 */
-	return {
-		'@context': 'https://schema.org',
-		'@type': 'FAQPage',
-		mainEntity: [
-			{
-				'@type': 'Question',
-				name: 'Is FreeTheAi really free?',
-				acceptedAnswer: {
-					'@type': 'Answer',
-					text: 'Yes. The FreeTheAi free API remains free with no billing or credit card required. Optional paid slots are available for users who need separate higher-power models.',
-				},
-			},
-			{
-				'@type': 'Question',
-				name: 'How many AI models does FreeTheAi have?',
-				acceptedAnswer: {
-					'@type': 'Answer',
-					text: 'FreeTheAi currently exposes 50+ active models across chat, image, and tool-capable routes. The live catalog at freetheai.xyz/models is the source of truth.',
-				},
-			},
-			{
-				'@type': 'Question',
-				name: 'Is FreeTheAi compatible with the OpenAI SDK?',
-				acceptedAnswer: {
-					'@type': 'Answer',
-					text: 'Yes. FreeTheAi is fully OpenAI-compatible. Point any OpenAI SDK at https://api.freetheai.xyz/v1 with your API key and it works.',
-				},
-			},
-			{
-				'@type': 'Question',
-				name: 'How do I get an API key?',
-				acceptedAnswer: {
-					'@type': 'Answer',
-					text: 'Join the FreeTheAi Discord server at discord.gg/secrets, run /signup, and complete the modal with your use case, bot-disclosure answer, and randomized human challenge.',
-				},
-			},
-			{
-				'@type': 'Question',
-				name: 'Why does my key need check-in?',
-				acceptedAnswer: {
-					'@type': 'Answer',
-					text: 'FreeTheAi uses a daily /checkin modal to reduce automated abuse. Enter your existing API key and solve the randomized challenge once per UTC day before using the API.',
-				},
-			},
-			{
-				'@type': 'Question',
-				name: 'How do I reset a lost FreeTheAi API key?',
-				acceptedAnswer: {
-					'@type': 'Answer',
-					text: 'Run /resetkey in Discord. The reset flow asks for a real reason and a human challenge, then rotates your key while preserving your account history.',
-				},
-			},
-			{
-				'@type': 'Question',
-				name: 'Does FreeTheAi support image generation?',
-				acceptedAnswer: {
-					'@type': 'Answer',
-					text: 'Yes. FreeTheAi supports image generation through img/gpt-image-2 and vhr/* image models. Image editing is available through img/gpt-image-2 with a base64 input image.',
-				},
-			},
-			{
-				'@type': 'Question',
-				name: 'Does FreeTheAi store my prompts?',
-				acceptedAnswer: {
-					'@type': 'Answer',
-					text: 'No. FreeTheAi does not store prompt content, completion content, or conversation history. Only model usage metadata and token counts are tracked.',
-				},
-			},
-		],
 	};
 }

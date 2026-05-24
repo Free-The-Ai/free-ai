@@ -21,7 +21,7 @@ Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 <br>
 
-[Website](https://freetheai.xyz) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [API Health](https://api.freetheai.xyz/v1/health) · [Discord](https://discord.gg/secrets)
+[Website](https://freetheai.xyz) · [Quickstart](https://freetheai.xyz/quickstart) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [Pricing](https://freetheai.xyz/pricing) · [Status](https://freetheai.xyz/status) · [API Health](https://api.freetheai.xyz/v1/health) · [Discord](https://discord.gg/secrets)
 
 </div>
 
@@ -31,12 +31,14 @@ Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 Free API gateway with 50+ active models behind a single key. OpenAI-compatible - if your SDK works with OpenAI, it works here. Full request docs live at [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
-- `POST /v1/chat/completions` — chat with streaming
+- `POST /v1/chat/completions` — chat with streaming and tool calling
 - `POST /v1/messages` — Anthropic-style messages route
+- `POST /v1/responses` — OpenAI Responses API
 - `POST /v1/images/generations` — image generation
 - `POST /v1/images/edits` — image editing with prompt + base64 input
 - Tool calling, structured outputs, multi-turn conversations
-- No billing, no daily cap, no prompt storage
+- No billing, no credit card, no prompt storage
+- Optional paid slots at [freetheai.xyz/pricing](https://freetheai.xyz/pricing) for separate higher-power models
 
 ---
 
@@ -96,6 +98,7 @@ Point any OpenAI SDK at the base URL
 | :--- | :---: | :--- |
 | `/v1/chat/completions` | `POST` | Chat completions with streaming |
 | `/v1/messages` | `POST` | Anthropic-style messages |
+| `/v1/responses` | `POST` | OpenAI Responses API |
 | `/v1/images/generations` | `POST` | Image generation |
 | `/v1/images/edits` | `POST` | Image editing |
 | `/v1/models` | `GET` | Authenticated model catalog |
@@ -234,12 +237,12 @@ curl https://api.freetheai.xyz/v1/images/generations \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "vhr/gpt_image_2",
+    "model": "img/gpt-image-2",
     "prompt": "A neon sports car under rainy city lights"
   }'
 ```
 
-Generation models include `img/gpt-image-2`, `vhr/flux_dev`, `vhr/gpt_image_2`, `vhr/nano_banana_2`, and `vhr/bytedance_seedream_v4`.
+The free API exposes `img/gpt-image-2` for both generation and editing. Live availability and any future image models are in [`GET /v1/models`](https://freetheai.xyz/models).
 
 Robust clients should support both response shapes:
 
@@ -305,7 +308,6 @@ Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.x
 | `glm/*` | Chat models |
 | `opc/*` | Free models |
 | `wsf/*` | Chat models |
-| `vhr/*` | Image generation |
 | `img/*` | Image generation and editing |
 
 > [!NOTE]
@@ -323,7 +325,7 @@ Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.x
 | 4 | 28 | 2 |
 | 5 | 35 | 3 |
 
-Tiers unlock through Discord invite progress. No daily limit.
+Tiers unlock through Discord invite progress. Per-user daily success cap defaults to `250/day` (resets at UTC midnight) with role-based bumps for trusted members.
 
 ---
 
@@ -387,6 +389,20 @@ Prompt and completion text are **not stored**.
 
 ---
 
+## Team
+
+Built by a small crew sharing free AI tools with everyone. Open source on GitHub.
+
+| | Member | Role | GitHub |
+| :---: | :--- | :--- | :--- |
+| <img src="https://avatars.githubusercontent.com/u/102437829?v=4" width="48" height="48" alt="Vibhek Soni" style="border-radius:50%" /> | **Vibhek Soni** | Founder. Wrote the full API and most of the platform. | [@vibheksoni](https://github.com/vibheksoni) |
+| <img src="https://avatars.githubusercontent.com/u/166897058?v=4" width="48" height="48" alt="Dr. Vova" style="border-radius:50%" /> | **Dr. Vova** | Frontend and the upcoming GoonPia roleplay site. | [@drvova](https://github.com/drvova) |
+| <img src="https://avatars.githubusercontent.com/u/33468668?v=4" width="48" height="48" alt="Dysekt" style="border-radius:50%" /> | **Dysekt** | Discord ops and community. | [@DysektAI](https://github.com/DysektAI) |
+
+GitHub org: [Free-The-Ai](https://github.com/Free-The-Ai). Full team page: [freetheai.xyz/team](https://freetheai.xyz/team).
+
+---
+
 <div align="center">
 
 ## Community
@@ -394,14 +410,13 @@ Prompt and completion text are **not stored**.
 <a href="https://discord.gg/secrets">
   <img src="https://img.shields.io/badge/Discord-Join%20Server-5865F2?style=flat-square&logo=discord&logoColor=white" alt="Join Discord" />
 </a>
-
-<br><br>
-
-<iframe src="https://discord.com/widget?id=1461555807731585158&theme=dark" width="350" height="500" allowtransparency="true" frameborder="0" sandbox="allow-popups allow-popups-to-escape-sandbox allow-same-origin allow-scripts"></iframe>
+<a href="https://github.com/Free-The-Ai">
+  <img src="https://img.shields.io/badge/GitHub-Free--The--Ai-181717?style=flat-square&logo=github&logoColor=white" alt="Free-The-Ai org" />
+</a>
 
 <br>
 
-[Website](https://freetheai.xyz) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [API](https://api.freetheai.xyz) · [Discord](https://discord.gg/secrets) · [Backup Invite](https://discord.gg/rG3SYpeqYF)
+[Website](https://freetheai.xyz) · [Quickstart](https://freetheai.xyz/quickstart) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [Pricing](https://freetheai.xyz/pricing) · [Status](https://freetheai.xyz/status) · [Team](https://freetheai.xyz/team) · [Discord](https://discord.gg/secrets) · [Backup Invite](https://discord.gg/rG3SYpeqYF)
 
 <br>
 

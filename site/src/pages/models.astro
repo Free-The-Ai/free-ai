@@ -7,19 +7,49 @@ import {
     buildWebsiteJsonLd,
     buildWebApiJsonLd,
     buildMachineReadableResourcesJsonLd,
-    buildFaqJsonLd,
     buildModelCatalogJsonLd,
     buildBreadcrumbJsonLd,
 } from "../utils/jsonLd";
 import modelSnapshot from "../../public/models.json";
 
+const DISABLED_PREFIXES = new Set(["xai", "vhr"]);
+
+const modelPrefix = (id: string): string =>
+    id.includes("/") ? id.slice(0, id.indexOf("/")) : "other";
+
 const snapshotModels = Array.isArray(modelSnapshot.data)
     ? modelSnapshot.data
-          .filter((model) => typeof model?.id === "string")
+          .filter((model) => typeof model?.id === "string" && model.id.trim())
           .map((model) => ({
-              id: model.id,
+              id: model.id.trim(),
+              prefix:
+                  typeof (model as { prefix?: string }).prefix === "string" &&
+                  (model as { prefix?: string }).prefix!.trim()
+                      ? (model as { prefix?: string }).prefix!.trim()
+                      : modelPrefix(model.id.trim()),
           }))
+          .filter((model) => !DISABLED_PREFIXES.has(model.prefix))
     : [];
+
+const sortedSnapshotModels = [...snapshotModels].sort((left, right) =>
+    left.id.localeCompare(right.id, undefined, { numeric: true, sensitivity: "base" }),
+);
+
+const prefixGroups = (() => {
+    const groups = new Map<string, string[]>();
+    for (const model of sortedSnapshotModels) {
+        const list = groups.get(model.prefix) ?? [];
+        list.push(model.id);
+        groups.set(model.prefix, list);
+    }
+    return [...groups.entries()].sort((left, right) =>
+        left[0].localeCompare(right[0]),
+    );
+})();
+
+const totalSnapshotModels = sortedSnapshotModels.length;
+const totalSnapshotPrefixes = prefixGroups.length;
+const snapshotGeneratedAt = modelSnapshot.generated_at ?? null;
 
 const jsonLd = [
     buildWebsiteJsonLd(),
@@ -27,21 +57,22 @@ const jsonLd = [
     buildSoftwareJsonLd(),
     buildWebApiJsonLd(),
     buildMachineReadableResourcesJsonLd({
-        modelCount: snapshotModels.length,
-        modelGeneratedAt: modelSnapshot.generated_at,
+        modelCount: totalSnapshotModels,
+        modelGeneratedAt: snapshotGeneratedAt,
     }),
-    buildFaqJsonLd(),
-    buildModelCatalogJsonLd(snapshotModels.map((model) => model.id)),
+    buildModelCatalogJsonLd(sortedSnapshotModels.map((model) => model.id)),
     buildBreadcrumbJsonLd([
         { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
         { name: "Model Catalog", url: "https://freetheai.xyz/models" },
     ]),
 ];
+
+const pageDescription = `Search the FreeTheAi model catalog: ${totalSnapshotModels} active OpenAI-compatible chat, image, and tool-capable model aliases across ${totalSnapshotPrefixes} provider prefixes with live filtering and copyable IDs.`;
 ---
 
 <Layout
     title="FreeTheAi Model Catalog - Free OpenAI-Compatible AI Models"
-    description="Search the FreeTheAi model catalog: 50+ active OpenAI-compatible chat, image, and tool-capable model aliases with live filtering and copyable IDs."
+    description={pageDescription}
     jsonLd={jsonLd}
     currentPath="/models"
 >
@@ -49,6 +80,77 @@ const jsonLd = [
         <h1 class="sr-only">FreeTheAi model catalog</h1>
         <section class="section shell models-catalog-section" id="catalog">
             <CatalogBrowser client:load />
+            <noscript>
+                <p class="models-noscript">
+                    JavaScript is disabled. The full live catalog browser needs
+                    JavaScript, but the static snapshot below lists every public
+                    alias for crawlers and read-only viewers.
+                </p>
+            </noscript>
+            <section
+                class="models-static-catalog"
+                aria-label="Static FreeTheAi model catalog snapshot"
+                data-snapshot-models={totalSnapshotModels}
+                data-snapshot-prefixes={totalSnapshotPrefixes}
+            >
+                <header class="models-static-head">
+                    <h2>FreeTheAi public model aliases</h2>
+                    <p>
+                        {totalSnapshotModels} OpenAI-compatible model aliases across
+                        {totalSnapshotPrefixes} provider prefixes. Use any alias as
+                        the <code>model</code> field with base URL{" "}
+                        <code>https://api.freetheai.xyz/v1</code>.
+                        {snapshotGeneratedAt && (
+                            <span class="models-static-stamp">
+                                Snapshot generated {snapshotGeneratedAt}.
+                            </span>
+                        )}
+                    </p>
+                </header>
+                {prefixGroups.map(([prefix, ids]) => (
+                    <section class="models-static-group">
+                        <h3>
+                            {prefix}/* <span>{ids.length} models</span>
+                        </h3>
+                        <ul>
+                            {ids.map((id) => (
+                                <li>
+                                    <code>{id}</code>
+                                </li>
+                            ))}
+                        </ul>
+                    </section>
+                ))}
+                <p class="models-static-foot">
+                    Live availability and rate limits are documented in the{" "}
+                    <a href="/docs#models">API docs</a>. The live catalog above
+                    reflects current model state from the FreeTheAi API.
+                </p>
+            </section>
         </section>
     </main>
 </Layout>
+
+<style is:global>
+    .models-static-catalog {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+
+    .models-noscript .models-noscript-msg,
+    .models-noscript p {
+        margin: 0 0 18px;
+        padding: 12px 14px;
+        border: 1px dashed var(--sk-border);
+        border-radius: var(--radius-sm);
+        color: var(--muted);
+        font-size: 0.88rem;
+    }
+</style>

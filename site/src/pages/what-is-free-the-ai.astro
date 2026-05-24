@@ -1,0 +1,350 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+import {
+    buildWebsiteJsonLd,
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebApiJsonLd,
+    buildBreadcrumbJsonLd,
+} from "../utils/jsonLd";
+
+const pageDescription =
+    "FreeTheAi is a free OpenAI-compatible AI API built by Vibhek Soni to share the AI tools he had access to with everyone. 50+ active models, Discord key signup, daily /checkin, no credit card.";
+
+const articleJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: "What Is Free The AI",
+    description: pageDescription,
+    mainEntityOfPage: "https://freetheai.xyz/what-is-free-the-ai",
+    author: {
+        "@type": "Person",
+        name: "Vibhek Soni",
+        url: "https://github.com/vibheksoni",
+        image: "https://avatars.githubusercontent.com/u/102437829?v=4",
+    },
+    publisher: {
+        "@id": "https://freetheai.xyz/#organization",
+    },
+    image: "https://freetheai.xyz/FreeTheAi.png",
+    inLanguage: "en-US",
+};
+
+const jsonLd = [
+    buildWebsiteJsonLd(),
+    buildOrganizationJsonLd(),
+    buildSoftwareJsonLd(),
+    buildWebApiJsonLd(),
+    articleJsonLd,
+    buildBreadcrumbJsonLd([
+        { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
+        {
+            name: "What Is Free The AI",
+            url: "https://freetheai.xyz/what-is-free-the-ai",
+        },
+    ]),
+];
+---
+
+<Layout
+    title="What Is Free The AI - FreeTheAi for Developers"
+    description={pageDescription}
+    jsonLd={jsonLd}
+    currentPath="/what-is-free-the-ai"
+>
+    <main class="explainer-main">
+        <article class="explainer-shell shell">
+            <header class="explainer-head">
+                <h1>What Is Free The AI?</h1>
+                <p class="explainer-lede">
+                    <strong>FreeTheAi</strong> is a free OpenAI-compatible AI API
+                    built by <a href="https://github.com/vibheksoni" target="_blank" rel="noreferrer">Vibhek Soni</a>{" "}
+                    to share the AI tools he had access to with everyone. Free
+                    chat, free images, free Anthropic-style messages, no credit
+                    card, no waiting list.
+                </p>
+                <p class="explainer-sub">
+                    If you searched for <em>FreeTheAi</em>, <em>Free TheAI</em>,
+                    <em>Free The AI API</em>, or <em>FreeTheAI</em>, this is the
+                    developer platform you want.
+                </p>
+            </header>
+
+            <section class="explainer-card">
+                <h2>Why FreeTheAi exists</h2>
+                <p>
+                    Vibhek had access to a lot of free AI resources spread across
+                    different platforms, providers, and trial pools. Most
+                    developers either never find them or stitch together a dozen
+                    APIs to use them. FreeTheAi pools all of that into one
+                    OpenAI-compatible endpoint so anyone can build with real models
+                    without paying upfront, signing up to ten dashboards, or
+                    fighting expired free tiers.
+                </p>
+                <p>
+                    The free tier stays free. The Discord-based signup and daily
+                    <code>/checkin</code> exist to keep automated abuse off the
+                    pool so it stays usable for actual builders.
+                </p>
+                <p>
+                    The project is open source on{" "}
+                    <a href="https://github.com/vibheksoni/free-ai" target="_blank" rel="noreferrer">GitHub</a>{" "}
+                    and run by a small team. Meet them on the{" "}
+                    <a href="/team">team page</a>.
+                </p>
+            </section>
+
+            <section class="explainer-card">
+                <h2>How FreeTheAi works</h2>
+                <ul class="explainer-bullets">
+                    <li>
+                        Free OpenAI-compatible API at{" "}
+                        <code>https://api.freetheai.xyz/v1</code>
+                    </li>
+                    <li>
+                        50+ active models across chat, tool calling, and image
+                        routes
+                    </li>
+                    <li>
+                        Drop-in for the OpenAI Python and JavaScript SDKs - just
+                        change <code>base_url</code> and the API key
+                    </li>
+                    <li>
+                        Anthropic-style <code>/v1/messages</code> compatibility
+                        for Claude-style clients
+                    </li>
+                    <li>
+                        Image generation and editing through{" "}
+                        <code>img/gpt-image-2</code>
+                    </li>
+                    <li>
+                        No credit card. Keys come from the FreeTheAi Discord
+                        with <code>/signup</code> and a one-tap daily{" "}
+                        <code>/checkin</code>.
+                    </li>
+                </ul>
+            </section>
+
+            <section class="explainer-card">
+                <h2>Where to go next</h2>
+                <div class="explainer-links">
+                    <a class="explainer-link" href="/quickstart">
+                        <strong>Quickstart</strong>
+                        <span>
+                            Get a key, send your first OpenAI-compatible request,
+                            see a 200 in under a minute.
+                        </span>
+                    </a>
+                    <a class="explainer-link" href="/docs">
+                        <strong>API docs</strong>
+                        <span>
+                            Chat completions, Anthropic messages, model listing,
+                            images, errors, and rate limits.
+                        </span>
+                    </a>
+                    <a class="explainer-link" href="/models">
+                        <strong>Model catalog</strong>
+                        <span>
+                            Live searchable list of every public alias, with
+                            copyable IDs and provider prefixes.
+                        </span>
+                    </a>
+                    <a class="explainer-link" href="/team">
+                        <strong>Team</strong>
+                        <span>
+                            The people behind FreeTheAi: Vibhek, Dr. Vova, and
+                            Dysekt.
+                        </span>
+                    </a>
+                    <a class="explainer-link" href="/pricing">
+                        <strong>Pricing</strong>
+                        <span>
+                            The free tier stays free. Optional $8/month launch
+                            slots cover separate higher-power models.
+                        </span>
+                    </a>
+                    <a class="explainer-link" href="/status">
+                        <strong>Status</strong>
+                        <span>
+                            Live provider health by alias prefix, with filterable
+                            up / degraded / down state.
+                        </span>
+                    </a>
+                </div>
+            </section>
+
+            <section class="explainer-card">
+                <h2>Frequently confused names</h2>
+                <p>
+                    The brand can appear written as <code>FreeTheAi</code>,{" "}
+                    <code>FreeTheAI</code>, <code>Free The AI</code>, or{" "}
+                    <code>Free TheAI</code>. They all point to the same project
+                    at <a href="https://freetheai.xyz">freetheai.xyz</a>. The
+                    canonical wordmark is <strong>FreeTheAi</strong>.
+                </p>
+                <p>
+                    FreeTheAi is unrelated to broader phrases like "free the AI"
+                    used in opinion writing or activism. If you came here looking
+                    for the developer API, you are in the right place.
+                </p>
+            </section>
+
+            <footer class="explainer-foot">
+                <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+                    <span>Get a free API key</span>
+                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+                </a>
+                <a class="explainer-secondary" href="/quickstart">
+                    Read the quickstart
+                </a>
+            </footer>
+        </article>
+    </main>
+</Layout>
+
+<style is:global>
+    .explainer-main {
+        gap: 28px;
+        padding: 22px 0 64px;
+    }
+
+    .explainer-shell {
+        display: grid;
+        gap: 22px;
+        padding: clamp(28px, 4.6vw, 52px);
+    }
+
+    .explainer-head h1 {
+        margin: 0 0 12px;
+        font-size: clamp(2.35rem, 4.6vw, 3.5rem);
+        line-height: 1.04;
+        letter-spacing: -0.045em;
+    }
+
+    .explainer-lede {
+        margin: 0 0 8px;
+        max-width: 62ch;
+        color: var(--text);
+        font-size: 1.05rem;
+        line-height: 1.55;
+    }
+
+    .explainer-sub {
+        margin: 0;
+        max-width: 62ch;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+
+    .explainer-card {
+        padding: 22px 24px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+    }
+
+    .explainer-card h2 {
+        margin: 0 0 12px;
+        font-family: var(--font-serif);
+        font-size: 1.35rem;
+    }
+
+    .explainer-card p {
+        margin: 0 0 10px;
+        color: var(--muted);
+        line-height: 1.6;
+    }
+
+    .explainer-card p:last-child {
+        margin-bottom: 0;
+    }
+
+    .explainer-card code {
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-size: 0.85em;
+    }
+
+    .explainer-bullets {
+        margin: 0;
+        padding: 0 0 0 20px;
+        color: var(--muted);
+        line-height: 1.6;
+    }
+
+    .explainer-bullets li {
+        margin-bottom: 6px;
+    }
+
+    .explainer-links {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 12px;
+        margin-top: 4px;
+    }
+
+    .explainer-link {
+        display: grid;
+        gap: 4px;
+        padding: 14px 16px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius-sm);
+        background: var(--sk-shell-bg);
+        color: var(--text);
+        text-decoration: none;
+        transition: border-color 150ms ease, box-shadow 150ms ease;
+    }
+
+    .explainer-link:hover {
+        border-color: rgba(238, 93, 32, 0.42);
+        box-shadow: var(--sk-inset-shadow), 0 0 0 1px rgba(238, 93, 32, 0.18);
+    }
+
+    .explainer-link strong {
+        font-family: var(--font-mono);
+        font-size: 0.92rem;
+        color: var(--accent-text);
+        text-shadow: var(--accent-text-glow);
+    }
+
+    .explainer-link span {
+        color: var(--muted);
+        font-size: 0.85rem;
+        line-height: 1.5;
+    }
+
+    .explainer-foot {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        padding-top: 6px;
+    }
+
+    .explainer-foot .cta-arrow {
+        opacity: 0.65;
+        font-size: 0.9rem;
+    }
+
+    .explainer-secondary {
+        color: var(--muted);
+        font-size: 0.92rem;
+        text-decoration: none;
+        border-bottom: 1px solid var(--sk-border);
+        padding-bottom: 2px;
+    }
+
+    .explainer-secondary:hover {
+        color: var(--accent-text);
+        border-color: rgba(238, 93, 32, 0.42);
+    }
+
+    @media (max-width: 560px) {
+        .explainer-shell {
+            padding: 22px;
+        }
+    }
+</style>

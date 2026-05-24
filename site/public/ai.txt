@@ -5,10 +5,13 @@ FreeTheAi is a free OpenAI-compatible AI API gateway at `https://api.freetheai.x
 Canonical public pages:
 
 - Homepage: https://freetheai.xyz/home/
+- Quickstart: https://freetheai.xyz/quickstart/
 - API docs: https://freetheai.xyz/docs/
 - Model catalog: https://freetheai.xyz/models/
 - Pricing: https://freetheai.xyz/pricing/
 - Status: https://freetheai.xyz/status/
+- Team: https://freetheai.xyz/team/
+- What Is Free The AI: https://freetheai.xyz/what-is-free-the-ai/
 
 Machine-readable resources:
 

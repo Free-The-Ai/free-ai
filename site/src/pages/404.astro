@@ -1,0 +1,122 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+import {
+    buildWebsiteJsonLd,
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebApiJsonLd,
+    buildBreadcrumbJsonLd,
+} from "../utils/jsonLd";
+
+const jsonLd = [
+    buildWebsiteJsonLd(),
+    buildOrganizationJsonLd(),
+    buildSoftwareJsonLd(),
+    buildWebApiJsonLd(),
+    buildBreadcrumbJsonLd([
+        { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
+    ]),
+];
+---
+
+<Layout
+    title="Page not found - FreeTheAi"
+    description={siteConfig.description}
+    jsonLd={jsonLd}
+    currentPath="/404"
+>
+    <main class="not-found-main">
+        <section class="not-found-card shell">
+            <span class="not-found-code">404</span>
+            <h1>Lost in the model catalog.</h1>
+            <p>
+                The page you tried to open doesn't exist. The free OpenAI-compatible
+                API and the full site are still right here.
+            </p>
+            <div class="not-found-links">
+                <a class="primary-button" href="/home">
+                    <span>Back to home</span>
+                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+                </a>
+                <a class="not-found-secondary" href="/quickstart">Quickstart</a>
+                <a class="not-found-secondary" href="/models">Model catalog</a>
+                <a class="not-found-secondary" href="/docs">API docs</a>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style is:global>
+    .not-found-main {
+        display: grid;
+        place-items: center;
+        min-height: 65vh;
+        padding: 32px 0;
+    }
+
+    .not-found-card {
+        display: grid;
+        gap: 14px;
+        max-width: 600px;
+        padding: clamp(28px, 4.6vw, 44px);
+        text-align: center;
+    }
+
+    .not-found-code {
+        display: inline-block;
+        margin: 0 auto;
+        padding: 4px 14px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius-full);
+        background: var(--sk-inset-bg);
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-shadow: var(--accent-text-glow);
+    }
+
+    .not-found-card h1 {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: clamp(2rem, 4.5vw, 2.8rem);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+    }
+
+    .not-found-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+
+    .not-found-links {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: center;
+        gap: 14px;
+        margin-top: 6px;
+    }
+
+    .not-found-links .cta-arrow {
+        opacity: 0.65;
+        font-size: 0.9rem;
+    }
+
+    .not-found-secondary {
+        color: var(--muted);
+        font-size: 0.92rem;
+        text-decoration: none;
+        border-bottom: 1px solid var(--sk-border);
+        padding-bottom: 2px;
+    }
+
+    .not-found-secondary:hover {
+        color: var(--accent-text);
+        border-color: rgba(238, 93, 32, 0.42);
+    }
+</style>

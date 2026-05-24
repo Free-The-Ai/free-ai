@@ -1,6 +1,92 @@
 ---
-// P0 SEO Fix: Proper HTTP 301 redirect instead of meta refresh
-// Prevents duplicate content splitting between / and /home
-// Google treats 301 as a permanent redirect, preserving link equity
-return Astro.redirect("/home", 301);
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+import {
+    buildWebsiteJsonLd,
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebApiJsonLd,
+    buildBreadcrumbJsonLd,
+} from "../utils/jsonLd";
+
+const jsonLd = [
+    buildWebsiteJsonLd(),
+    buildOrganizationJsonLd(),
+    buildSoftwareJsonLd(),
+    buildWebApiJsonLd(),
+    buildBreadcrumbJsonLd([
+        { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
+    ]),
+];
 ---
+
+<Layout
+    title={siteConfig.title}
+    description={siteConfig.description}
+    jsonLd={jsonLd}
+    currentPath="/home"
+>
+    <main class="root-redirect-main">
+        <noscript>
+            <meta http-equiv="refresh" content="0;url=/home" />
+        </noscript>
+        <section class="root-redirect-card shell">
+            <h1>FreeTheAi</h1>
+            <p>
+                Free OpenAI-compatible API with 50+ active models. Loading the
+                full site at <a href="/home">/home</a>.
+            </p>
+            <a class="primary-button" href="/home">
+                <span>Open FreeTheAi</span>
+                <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+        </section>
+    </main>
+</Layout>
+
+<script is:inline>
+    (function () {
+        var path = "/home" + window.location.search + window.location.hash;
+        window.location.replace(path);
+    })();
+</script>
+
+<style is:global>
+    .root-redirect-main {
+        display: grid;
+        place-items: center;
+        min-height: 60vh;
+        padding: 32px 0;
+    }
+
+    .root-redirect-card {
+        display: grid;
+        gap: 14px;
+        max-width: 520px;
+        padding: 32px;
+        text-align: center;
+    }
+
+    .root-redirect-card h1 {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: clamp(1.8rem, 4vw, 2.4rem);
+        letter-spacing: -0.02em;
+    }
+
+    .root-redirect-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+
+    .root-redirect-card .primary-button {
+        justify-self: center;
+    }
+
+    .root-redirect-card .cta-arrow {
+        opacity: 0.65;
+        font-size: 0.9rem;
+    }
+</style>

@@ -28,7 +28,7 @@ interface Policy {
 
 const LIVE_ENDPOINT = "https://api.freetheai.xyz/v1/models/full";
 const LIVE_KEY = "freetheai.xyz";
-const DISABLED = new Set(["xai"]);
+const DISABLED = new Set<string>();
 const PAGE_SIZE = 80;
 
 const SUPPORTED_ROUTES: Array<{

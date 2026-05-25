@@ -12,7 +12,7 @@ import {
 } from "../utils/jsonLd";
 import modelSnapshot from "../../public/models.json";
 
-const DISABLED_PREFIXES = new Set(["xai", "vhr"]);
+const DISABLED_PREFIXES = new Set(["vhr"]);
 
 const modelPrefix = (id: string): string =>
     id.includes("/") ? id.slice(0, id.indexOf("/")) : "other";

@@ -135,6 +135,71 @@ export default function DocsAccordion(props: DocsAccordionProps) {
             ),
         },
         {
+            value: "compatibility",
+            label: "Cross-compatible client formats",
+            eyebrow: "Compatibility",
+            children: (
+                <section class="docs-card">
+                    <p>
+                        FreeTheAi supports multiple API formats for easier client
+                        compatibility. You can use OpenAI-compatible Chat
+                        Completions, Anthropic-compatible Messages, and Responses-style
+                        routes with the same API key and the same model aliases.
+                    </p>
+                    <div class="docs-table compact">
+                        <div class="docs-row">
+                            <code>POST /v1/chat/completions</code>
+                            <span>
+                                OpenAI-compatible chat completions. Streaming, tool
+                                calling, and structured outputs.
+                            </span>
+                        </div>
+                        <div class="docs-row">
+                            <code>POST /v1/messages</code>
+                            <span>
+                                Anthropic-compatible Messages route. System prompts,
+                                tool use, and the same content blocks Claude clients
+                                expect.
+                            </span>
+                        </div>
+                        <div class="docs-row">
+                            <code>POST /v1/responses</code>
+                            <span>
+                                Responses-style route. Same key, same model alias.
+                            </span>
+                        </div>
+                        <div class="docs-row">
+                            <code>GET /v1/models</code>
+                            <span>Authenticated client catalog.</span>
+                        </div>
+                        <div class="docs-row">
+                            <code>GET /v1/models/full</code>
+                            <span>
+                                Catalog with context, output, image-support, and
+                                access metadata.
+                            </span>
+                        </div>
+                        <div class="docs-row">
+                            <code>POST /v1/audio/speech</code>
+                            <span>
+                                Text-to-speech route for supported role-gated voice aliases.
+                            </span>
+                        </div>
+                        <div class="docs-row">
+                            <code>POST /v1/audio/transcriptions</code>
+                            <span>
+                                Speech-to-text route for OpenAI-style multipart audio uploads.
+                            </span>
+                        </div>
+                    </div>
+                    <p>
+                        Pick the route that matches your client. The model alias
+                        and the key never change between formats.
+                    </p>
+                </section>
+            ),
+        },
+        {
             value: "chat",
             label: "OpenAI-compatible chat",
             eyebrow: "Chat Completions",
@@ -270,45 +335,346 @@ export default function DocsAccordion(props: DocsAccordionProps) {
         },
         {
             value: "errors",
-            label: "Common responses",
+            label: "Errors and rate limits",
             eyebrow: "Errors",
             children: (
-                <section class="docs-card">
-                    <div class="docs-table compact">
-                        <div class="docs-row">
-                            <code>400</code>
-                            <span>
-                                Invalid request body, missing prompt, unknown
-                                model, or unsupported media operation.
-                            </span>
+                <section class="docs-card docs-errors">
+                    <div class="docs-errors-shape">
+                        <h3>Error shape</h3>
+                        <p>
+                            Most API errors use the OpenAI-style envelope. The
+                            <code>type</code> field is the machine-readable code
+                            you should branch on; <code>message</code> is the
+                            human-readable string.
+                        </p>
+                        <pre>
+                            <code>{`{
+  "error": {
+    "message": "human readable message",
+    "type": "machine_readable_type"
+  }
+}`}</code>
+                        </pre>
+                        <p>
+                            Streaming requests can fail mid-stream after the SSE
+                            connection has already opened. In that case the API
+                            sends an error event followed by{" "}
+                            <code>data: [DONE]</code>:
+                        </p>
+                        <pre>
+                            <code>{`data: {"error":{"message":"upstream provider temporarily unavailable","type":"provider_error"}}
+
+data: [DONE]`}</code>
+                        </pre>
+                        <p>
+                            Some <code>bbg/*</code> errors include a short public
+                            diagnostic id you can quote in Discord support, for
+                            example <code>Error id: bbg-xxxxxxxxxxxx</code>.
+                        </p>
+                    </div>
+
+                    <div class="docs-errors-group">
+                        <h3>Auth, check-in, and role gates</h3>
+                        <div class="docs-table compact">
+                            <div class="docs-row">
+                                <code>401 invalid_api_key</code>
+                                <span>
+                                    Missing, invalid, revoked, or inactive key.
+                                    Send the exact key from <code>/signup</code>{" "}
+                                    as <code>Authorization: Bearer YOUR_KEY</code>{" "}
+                                    with no quotes, markdown, or extra spaces.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>403 daily_checkin_required</code>
+                                <span>
+                                    Key is valid but the Discord owner has not
+                                    checked in today. Run <code>/checkin</code> in
+                                    the FreeTheAi Discord server.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>403 model_access_denied</code>
+                                <span>
+                                    Model is role-gated. The user needs the{" "}
+                                    <strong>Seems Legit</strong> Discord role,
+                                    earned through active server participation.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>403 discord_membership_required</code>
+                                <span>
+                                    Key owner left the Discord. Rejoin with the
+                                    same Discord account that owns the key.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>403 user_paused</code>
+                                <span>
+                                    Account paused by staff. Staff action required.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>403 ip_blacklisted</code>
+                                <span>
+                                    Source IP is banned. No client-side fix; staff
+                                    action required.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>403 client_signature_banned</code>
+                                <span>
+                                    Banned client signature. Switch to a supported
+                                    client; staff action may be required.
+                                </span>
+                            </div>
                         </div>
-                        <div class="docs-row">
-                            <code>401</code>
-                            <span>
-                                Missing or invalid API key. Run{" "}
-                                <code>/signup</code> or <code>/resetkey</code>.
-                            </span>
+                    </div>
+
+                    <div class="docs-errors-group">
+                        <h3>Request validation</h3>
+                        <div class="docs-table compact">
+                            <div class="docs-row">
+                                <code>400 invalid_request_error</code>
+                                <span>
+                                    Bad JSON, missing field, unknown alias, or
+                                    unsupported route. Common messages:{" "}
+                                    <em>invalid json payload</em>,{" "}
+                                    <em>missing model</em>, <em>missing prompt</em>,{" "}
+                                    <em>unknown aliased model</em>,{" "}
+                                    <em>unsupported responses input shape</em>,{" "}
+                                    <em>upstream rejected the request payload</em>.
+                                    Use a model from <code>GET /v1/models</code>.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>400 context_length_exceeded</code>
+                                <span>
+                                    Prompt or request is too large. Reduce context,
+                                    attachments, message history, or requested
+                                    output tokens.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>400 content_policy_violation</code>
+                                <span>
+                                    Blocked by moderation/safety filters. Change
+                                    the prompt content.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>404 invalid_request_error</code>
+                                <span>
+                                    Currently used for deferred video lookup when
+                                    the request id is unknown.
+                                </span>
+                            </div>
                         </div>
-                        <div class="docs-row">
-                            <code>403</code>
-                            <span>
-                                Daily check-in required, or the model is unknown,
-                                disabled, or unavailable in the current catalog.
-                            </span>
+                    </div>
+
+                    <div class="docs-errors-group">
+                        <h3>Rate limits, daily caps, and concurrency</h3>
+                        <div class="docs-table compact">
+                            <div class="docs-row">
+                                <code>429 rate_limit_error</code>
+                                <span>
+                                    Per-minute, daily-success cap, image cap, image
+                                    cooldown, upstream rate limit, or anti-abuse
+                                    overlap block. Honor <code>Retry-After</code>{" "}
+                                    when present and wait for the next UTC reset.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>429 concurrency_limit_error</code>
+                                <span>
+                                    Already running the maximum allowed parallel
+                                    requests. Wait for one to finish.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>429 glm_depleted</code>
+                                <span>
+                                    GLM provider quota is depleted for the current
+                                    5-hour window. Retry later.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>499 client_canceled</code>
+                                <span>
+                                    Client disconnected while the request was still
+                                    running. Keep the connection open until the
+                                    response completes.
+                                </span>
+                            </div>
                         </div>
-                        <div class="docs-row">
-                            <code>429</code>
-                            <span>
-                                Rate limit or concurrency limit reached. Wait
-                                and retry.
-                            </span>
+                    </div>
+
+                    <div class="docs-errors-group">
+                        <h3>Provider and gateway</h3>
+                        <div class="docs-table compact">
+                            <div class="docs-row">
+                                <code>502 provider_error</code>
+                                <span>
+                                    Provider call/read/translation failed. Retry,
+                                    or try another model. If it persists, report
+                                    the model and timestamp.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>503 provider_unavailable</code>
+                                <span>
+                                    Provider account pool is cooling down, busy, or
+                                    upstream returned 5xx. Retry after{" "}
+                                    <code>Retry-After</code> (typically 30s).
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>504 provider_timeout</code>
+                                <span>
+                                    Provider took too long. Retry with smaller
+                                    context/output or use streaming.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>500 server_error</code>
+                                <span>
+                                    Internal gateway error. Not user-fixable. Retry
+                                    once, then report it.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>503 server_error</code>
+                                <span>
+                                    Internal dependency unavailable (DB, store,
+                                    handler). Retry shortly.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>503 discord_membership_error</code>
+                                <span>
+                                    Discord membership/role lookup failed
+                                    temporarily. Retry shortly.
+                                </span>
+                            </div>
                         </div>
-                        <div class="docs-row">
-                            <code>5xx</code>
-                            <span>
-                                Provider or gateway failure. Retry once before
-                                reporting it in Discord.
-                            </span>
+                    </div>
+
+                    <div class="docs-errors-group">
+                        <h3>Site-only catalog and stats endpoints</h3>
+                        <div class="docs-table compact">
+                            <div class="docs-row">
+                                <code>401 invalid_request_error</code>
+                                <span>
+                                    Site-only endpoints (e.g. full catalog with
+                                    metadata) need{" "}
+                                    <code>Authorization: Bearer freetheai.xyz</code>.
+                                    Common messages:{" "}
+                                    <em>invalid site catalog key</em>,{" "}
+                                    <em>invalid site stats key</em>.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="docs-errors-group">
+                        <h3>Headers to respect</h3>
+                        <p>
+                            Rate, concurrency, and cooldown errors include
+                            machine-readable headers. Clients should branch on
+                            these rather than parsing the human message.
+                        </p>
+                        <div class="docs-table compact">
+                            <div class="docs-row">
+                                <code>Retry-After</code>
+                                <span>Seconds to wait before retrying.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>X-RateLimit-*</code>
+                                <span>
+                                    <code>Limit</code>, <code>Remaining</code>,{" "}
+                                    <code>Reset</code> for per-minute requests.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>X-Concurrency-*</code>
+                                <span>
+                                    <code>Limit</code>, <code>Remaining</code>,{" "}
+                                    <code>Reset</code> for parallel requests.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>X-DailyLimit-*</code>
+                                <span>
+                                    <code>Limit</code>, <code>Remaining</code>,{" "}
+                                    <code>Reset</code> for the daily success cap.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>X-ImageDailyLimit-*</code>
+                                <span>
+                                    Daily image-generation cap headers.
+                                </span>
+                            </div>
+                            <div class="docs-row">
+                                <code>X-ImageGenerationCooldown-*</code>
+                                <span>
+                                    Per-user image-generation cooldown headers.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="docs-errors-group">
+                        <h3>One-line user copy</h3>
+                        <div class="docs-table compact">
+                            <div class="docs-row">
+                                <code>401 invalid_api_key</code>
+                                <span>Your API key is missing or wrong.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>403 daily_checkin_required</code>
+                                <span>Run <code>/checkin</code> in Discord.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>403 model_access_denied</code>
+                                <span>This model needs the Seems Legit role.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>400 invalid_request_error</code>
+                                <span>Your request body, model, or route is wrong.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>400 context_length_exceeded</code>
+                                <span>Your prompt or context is too large.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>400 content_policy_violation</code>
+                                <span>The request was blocked by moderation.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>429 rate_limit_error</code>
+                                <span>You hit a rate limit, daily cap, or cooldown.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>429 concurrency_limit_error</code>
+                                <span>Wait for your active request to finish.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>502 provider_error</code>
+                                <span>Provider failed unexpectedly. Retry or try another model.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>503 provider_unavailable</code>
+                                <span>Provider is temporarily unavailable.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>504 provider_timeout</code>
+                                <span>Provider took too long.</span>
+                            </div>
+                            <div class="docs-row">
+                                <code>500/503 server_error</code>
+                                <span>Gateway internal issue. Retry once.</span>
+                            </div>
                         </div>
                     </div>
                 </section>

@@ -6,6 +6,7 @@ Canonical public pages:
 
 - Homepage: https://freetheai.xyz/home/
 - Quickstart: https://freetheai.xyz/quickstart/
+- Setup guides: https://freetheai.xyz/setup/
 - API docs: https://freetheai.xyz/docs/
 - Model catalog: https://freetheai.xyz/models/
 - Pricing: https://freetheai.xyz/pricing/

@@ -1,511 +1,1008 @@
 {
+  "object": "list",
+  "generated_at": "2026-05-24T23:35:36Z",
   "data": [
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
       },
-      "created": 1779497153,
+      "created": 1626777600,
       "id": "agr/deepseek-v4-pro",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "agr",
-      "visibility": "site_catalog"
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "context_window": 1048576,
+      "max_input_tokens": 1048576,
+      "max_output_tokens": 32768
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
       },
-      "created": 1779497153,
+      "created": 1626777600,
       "id": "agr/glm-5.1",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "agr",
-      "visibility": "site_catalog"
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "context_window": 202752,
+      "max_input_tokens": 202752,
+      "max_output_tokens": 32768
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
-      "id": "bbg/deepseek-ai/DeepSeek-V3.2",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "bbg",
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true
-      },
-      "created": 1779497153,
-      "id": "bbg/deepseek-ai/DeepSeek-V4-Flash",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "bbg",
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true
-      },
-      "created": 1779497153,
-      "id": "bbg/deepseek-ai/DeepSeek-V4-Pro",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "bbg",
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true
-      },
-      "created": 1779497153,
+      "context_window": 50000,
+      "created": 1779665274,
       "id": "bbg/MiniMaxAI/MiniMax-M2.7",
+      "max_input_tokens": 50000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbg",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
-      "id": "bbg/moonshotai/Kimi-K2.5",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "bbg",
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true
-      },
-      "created": 1779497153,
-      "id": "bbg/moonshotai/Kimi-K2.6",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "bbg",
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true
-      },
-      "created": 1779497153,
+      "context_window": 50000,
+      "created": 1779665274,
       "id": "bbg/Qwen/Qwen3.6-35B-A3B",
+      "max_input_tokens": 50000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbg",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
+      "context_window": 50000,
+      "created": 1779665274,
+      "id": "bbg/deepseek-ai/DeepSeek-V3.2",
+      "max_input_tokens": 50000,
+      "max_output_tokens": 32000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "requires_seems_legit": false,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 50000,
+      "created": 1779665274,
+      "id": "bbg/deepseek-ai/DeepSeek-V4-Flash",
+      "max_input_tokens": 50000,
+      "max_output_tokens": 32000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "requires_seems_legit": false,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 50000,
+      "created": 1779665274,
+      "id": "bbg/deepseek-ai/DeepSeek-V4-Pro",
+      "max_input_tokens": 50000,
+      "max_output_tokens": 32000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "requires_seems_legit": false,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 50000,
+      "created": 1779665274,
+      "id": "bbg/moonshotai/Kimi-K2.5",
+      "max_input_tokens": 50000,
+      "max_output_tokens": 32000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "requires_seems_legit": false,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 50000,
+      "created": 1779665274,
+      "id": "bbg/moonshotai/Kimi-K2.6",
+      "max_input_tokens": 50000,
+      "max_output_tokens": 32000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "bbg",
+      "requires_seems_legit": false,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 50000,
+      "created": 1779665274,
       "id": "bbg/zai-org/GLM-5",
+      "max_input_tokens": 50000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbg",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
+      "context_window": 50000,
+      "created": 1779665274,
       "id": "bbg/zai-org/GLM-5.1",
+      "max_input_tokens": 50000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbg",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 80000,
       "created": 0,
       "id": "bbl/gemini-2.5-flash",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbl",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 80000,
       "created": 0,
       "id": "bbl/gemini-2.5-flash-lite",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbl",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 80000,
       "created": 0,
       "id": "bbl/gemini-3.0-flash",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbl",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 80000,
       "created": 0,
       "id": "bbl/gemini-3.5-flash",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbl",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 80000,
       "created": 0,
       "id": "bbl/gpt-4.1",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbl",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 80000,
       "created": 0,
       "id": "bbl/gpt-5-mini",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbl",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 80000,
       "created": 0,
       "id": "bbl/gpt-5.4-mini",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbl",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 80000,
       "created": 0,
       "id": "bbl/gpt-5.5-mini",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbl",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 80000,
       "created": 0,
       "id": "bbl/grok-4.1-fast-non-reasoning",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "bbl",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
+      "created": 1753632000,
       "id": "glm/glm-4.5",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "glm",
-      "visibility": "site_catalog"
+      "requires_seems_legit": false,
+      "visibility": "site_catalog",
+      "context_window": 128000,
+      "max_input_tokens": 128000,
+      "max_output_tokens": 98304
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
+      "created": 1753632000,
       "id": "glm/glm-4.5-air",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "glm",
-      "visibility": "site_catalog"
+      "requires_seems_legit": false,
+      "visibility": "site_catalog",
+      "context_window": 128000,
+      "max_input_tokens": 128000,
+      "max_output_tokens": 98304
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
+      "created": 1759276800,
       "id": "glm/glm-4.6",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "glm",
-      "visibility": "site_catalog"
+      "requires_seems_legit": false,
+      "visibility": "site_catalog",
+      "context_window": 200000,
+      "max_input_tokens": 200000,
+      "max_output_tokens": 131072
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
+      "created": 1774620000,
+      "id": "glm/glm-5-turbo",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "glm",
+      "requires_seems_legit": false,
+      "visibility": "site_catalog",
+      "context_window": 200000,
+      "max_input_tokens": 200000,
+      "max_output_tokens": 131072
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "created": 1766332800,
       "id": "glm/glm-4.7",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "glm",
-      "visibility": "site_catalog"
+      "requires_seems_legit": false,
+      "visibility": "site_catalog",
+      "context_window": 200000,
+      "max_input_tokens": 200000,
+      "max_output_tokens": 131072
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
+      "created": 1770739200,
       "id": "glm/glm-5",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "glm",
-      "visibility": "site_catalog"
+      "requires_seems_legit": false,
+      "visibility": "site_catalog",
+      "context_window": 200000,
+      "max_input_tokens": 200000,
+      "max_output_tokens": 131072
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
+      "created": 1774620000,
       "id": "glm/glm-5.1",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "glm",
-      "visibility": "site_catalog"
+      "requires_seems_legit": false,
+      "visibility": "site_catalog",
+      "context_window": 200000,
+      "max_input_tokens": 200000,
+      "max_output_tokens": 131072
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497153,
+      "created": 1779665274,
       "id": "img/gpt-image-2",
       "object": "model",
       "owned_by": "gateway",
       "prefix": "img",
-      "visibility": "site_catalog"
+      "requires_seems_legit": false,
+      "visibility": "site_catalog",
+      "supports_images": true
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 131072,
       "created": 1778035480,
       "id": "kai/baidu/cobuddy:free",
+      "max_input_tokens": 131072,
+      "max_output_tokens": 65536,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 1048576,
       "created": 1777000666,
       "id": "kai/deepseek/deepseek-v4-flash:free",
+      "max_input_tokens": 1048576,
+      "max_output_tokens": 384000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 256000,
       "created": 0,
       "id": "kai/kilo-auto/free",
+      "max_input_tokens": 256000,
+      "max_output_tokens": 10000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 256000,
       "created": 1777393095,
       "id": "kai/nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free",
+      "max_input_tokens": 256000,
+      "max_output_tokens": 65536,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 1000000,
       "created": 1773245239,
       "id": "kai/nvidia/nemotron-3-super-120b-a12b:free",
+      "max_input_tokens": 1000000,
+      "max_output_tokens": 262144,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 200000,
       "created": 1769917427,
       "id": "kai/openrouter/free",
+      "max_input_tokens": 200000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 1048756,
       "created": 1777398589,
       "id": "kai/openrouter/owl-alpha",
+      "max_input_tokens": 1048756,
+      "max_output_tokens": 262144,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 131072,
       "created": 1777388504,
       "id": "kai/poolside/laguna-m.1:free",
+      "max_input_tokens": 131072,
+      "max_output_tokens": 8192,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
+      "context_window": 131072,
       "created": 1777389604,
       "id": "kai/poolside/laguna-xs.2:free",
+      "max_input_tokens": 131072,
+      "max_output_tokens": 8192,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1756238927,
-      "id": "kai/stepfun/step-3.5-flash:free",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "kai",
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true
-      },
+      "context_window": 256000,
       "created": 1756238927,
       "id": "kai/x-ai/grok-code-fast-1:optimized:free",
+      "max_input_tokens": 256000,
+      "max_output_tokens": 10000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
       },
-      "created": 1779497154,
+      "created": 0,
+      "id": "mim/mimo-v2-omni",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "mim",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "context_window": 262144,
+      "max_input_tokens": 262144,
+      "max_output_tokens": 32768
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
+      },
+      "created": 0,
+      "id": "mim/mimo-v2-pro",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "mim",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "context_window": 1048576,
+      "max_input_tokens": 1048576,
+      "max_output_tokens": 131072
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
+      },
+      "created": 0,
+      "id": "mim/mimo-v2-tts",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "mim",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "supports_audio": true
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
+      },
+      "created": 0,
+      "id": "mim/mimo-v2.5",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "mim",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "context_window": 1048576,
+      "max_input_tokens": 1048576,
+      "max_output_tokens": 131072
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
+      },
+      "created": 0,
+      "id": "mim/mimo-v2.5-pro",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "mim",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "context_window": 1048576,
+      "max_input_tokens": 1048576,
+      "max_output_tokens": 131072
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
+      },
+      "created": 0,
+      "id": "mim/mimo-v2.5-tts",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "mim",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "supports_audio": true
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
+      },
+      "created": 0,
+      "id": "mim/mimo-v2.5-tts-voiceclone",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "mim",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "supports_audio": true
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
+      },
+      "created": 0,
+      "id": "mim/mimo-v2.5-tts-voicedesign",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "mim",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "supports_audio": true
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1779665276,
       "id": "opc/big-pickle",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 128000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "opc",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497154,
+      "context_window": 200000,
+      "created": 1779665276,
       "id": "opc/deepseek-v4-flash-free",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 128000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "opc",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497154,
+      "context_window": 204800,
+      "created": 1779665276,
       "id": "opc/minimax-m2.5-free",
+      "max_input_tokens": 204800,
+      "max_output_tokens": 131072,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "opc",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497154,
+      "context_window": 204800,
+      "created": 1779665276,
       "id": "opc/nemotron-3-super-free",
+      "max_input_tokens": 204800,
+      "max_output_tokens": 128000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "opc",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497154,
+      "context_window": 262144,
+      "created": 1779665276,
       "id": "opc/qwen3.6-plus-free",
+      "max_input_tokens": 262144,
+      "max_output_tokens": 65536,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "opc",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497154,
+      "context_window": 104000,
+      "created": 1779665275,
       "id": "wsf/kimi-k2.6",
+      "max_input_tokens": 104000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "wsf",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497154,
+      "context_window": 80000,
+      "created": 1779665275,
       "id": "wsf/swe-1.5",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "wsf",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
     },
     {
       "access": {
-        "available": true
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
       },
-      "created": 1779497154,
+      "context_window": 80000,
+      "created": 1779665275,
       "id": "wsf/swe-1.6",
+      "max_input_tokens": 80000,
+      "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "wsf",
+      "requires_seems_legit": false,
       "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
+      },
+      "created": 1779665274,
+      "id": "xai/grok-stt",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "xai",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "supports_audio": true
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [
+          "seems_legit"
+        ],
+        "requires_seems_legit": true
+      },
+      "created": 1779665274,
+      "id": "xai/grok-tts",
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "xai",
+      "requires_seems_legit": true,
+      "visibility": "role_gated",
+      "supports_audio": true
     }
   ],
-  "object": "list"
+  "policy": {
+    "invite_tiers": [
+      {
+        "concurrency_limit": 1,
+        "level": 1,
+        "minimum_invites": 0,
+        "rate_limit_per_minute": 10
+      },
+      {
+        "concurrency_limit": 1,
+        "level": 2,
+        "minimum_invites": 3,
+        "rate_limit_per_minute": 15
+      },
+      {
+        "concurrency_limit": 2,
+        "level": 3,
+        "minimum_invites": 8,
+        "rate_limit_per_minute": 20
+      },
+      {
+        "concurrency_limit": 2,
+        "level": 4,
+        "minimum_invites": 15,
+        "rate_limit_per_minute": 28
+      },
+      {
+        "concurrency_limit": 3,
+        "level": 5,
+        "minimum_invites": 30,
+        "rate_limit_per_minute": 35
+      }
+    ],
+    "seems_legit_required_prefixes": [
+      "agr/",
+      "mim/",
+      "xai/"
+    ],
+    "seems_legit_required_role_label": "seems_legit",
+    "seems_legit_required_role_public": true
+  }
 }

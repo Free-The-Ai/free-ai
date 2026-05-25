@@ -12,6 +12,7 @@ The live catalog is the source of truth for public aliases. Currently exposed pr
 
 - [Homepage](https://freetheai.xyz/): Product overview, Discord signup flow, API surface, privacy posture, and community context.
 - [Quickstart](https://freetheai.xyz/quickstart): 60-second OpenAI SDK setup with Python, JavaScript, and curl examples for the first chat completion.
+- [Setup Guides](https://freetheai.xyz/setup): Step-by-step setup for OpenCode, Kilo Code, Zed, Cline, Roo Code, Continue.dev, Aider, Claude Code, SillyTavern, Janitor AI, Chub AI, RisuAI, LibreChat, Open WebUI, LobeChat, AnythingLLM, Cherry Studio, TypingMind, BoltAI, Page Assist, Chatbox, and Big-AGI.
 - [API Docs](https://freetheai.xyz/docs): Canonical request examples for chat completions, Messages API, model listing, image generation, image editing, and common errors.
 - [Model Catalog](https://freetheai.xyz/models): Live searchable model aliases, provider prefixes, and catalog filtering.
 - [Pricing](https://freetheai.xyz/pricing): Optional paid launch plan, request-unit costs, and paid model aliases.

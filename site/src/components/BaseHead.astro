@@ -8,6 +8,7 @@ interface Props {
     description?: string;
     image?: string;
     jsonLd?: Record<string, unknown>[];
+    keywords?: string;
 }
 
 const {
@@ -15,6 +16,7 @@ const {
     description = siteConfig.description,
     image = siteConfig.defaults.ogImage,
     jsonLd = [],
+    keywords: extraKeywords,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -23,7 +25,10 @@ const pageTitle =
         ? title
         : `${title} | ${siteConfig.title}`;
 const ogImage = new URL(image, Astro.site).toString();
-const keywords = siteConfig.defaults.keywords.join(", ");
+const baseKeywords = siteConfig.defaults.keywords.join(", ");
+const keywords = extraKeywords
+    ? `${extraKeywords}, ${baseKeywords}`
+    : baseKeywords;
 ---
 
 <meta charset="utf-8" />

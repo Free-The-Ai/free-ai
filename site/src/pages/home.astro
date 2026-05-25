@@ -240,6 +240,32 @@ const pageDescription =
                 </div>
             </div>
         </section>
+
+        <section class="section shell home-support">
+            <div class="home-support-card">
+                <span class="home-support-eyebrow">Community funded</span>
+                <h2>Keep the free tier alive.</h2>
+                <p>
+                    If FreeTheAi saves you a subscription or unblocks a project,
+                    a small donation helps cover servers and keeps more free
+                    capacity online.
+                </p>
+                <div class="home-support-cta">
+                    <a
+                        class="primary-button home-support-button"
+                        href={siteConfig.socials.donate}
+                        target="_blank"
+                        rel="noreferrer"
+                    >
+                        <span aria-hidden="true">💗</span>
+                        <span>Donate</span>
+                    </a>
+                    <a class="home-support-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
+                        Star the repo
+                    </a>
+                </div>
+            </div>
+        </section>
     </main>
 
     <script>
@@ -273,6 +299,99 @@ const pageDescription =
 </Layout>
 
 <style>
+    .home-support {
+        margin-top: 8px;
+    }
+
+    .home-support-card {
+        position: relative;
+        display: grid;
+        gap: 12px;
+        padding: clamp(22px, 3.4vw, 32px);
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+        overflow: hidden;
+    }
+
+    .home-support-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3px;
+        background: linear-gradient(180deg, #ff7ab6, #ee5d20);
+        pointer-events: none;
+    }
+
+    .home-support-eyebrow {
+        position: relative;
+        z-index: 1;
+        color: #ff9bc4;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        text-shadow: 0 0 8px rgba(255, 122, 182, 0.24);
+    }
+
+    .home-support-card h2 {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+        line-height: 1.1;
+        letter-spacing: -0.02em;
+    }
+
+    .home-support-card p {
+        position: relative;
+        z-index: 1;
+        margin: 0;
+        max-width: 64ch;
+        color: var(--muted);
+        font-size: 0.98rem;
+        line-height: 1.6;
+    }
+
+    .home-support-cta {
+        position: relative;
+        z-index: 1;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+        margin-top: 6px;
+    }
+
+    .home-support-button {
+        border-color: rgba(255, 122, 182, 0.55);
+        background: rgba(255, 122, 182, 0.1);
+        color: #ffd6e7;
+        text-shadow: 0 0 10px rgba(255, 122, 182, 0.32);
+    }
+
+    .home-support-button:hover {
+        border-color: rgba(255, 122, 182, 0.82);
+        background: rgba(255, 122, 182, 0.16);
+        color: #ffe8f1;
+    }
+
+    .home-support-link {
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.86rem;
+        text-decoration: none;
+        border-bottom: 1px solid var(--sk-border);
+        padding-bottom: 2px;
+    }
+
+    .home-support-link:hover {
+        color: #ff9bc4;
+        border-color: rgba(255, 122, 182, 0.45);
+    }
+
     /*
      * ═══════════════════════════════════════
      * Content Section — Visual Crescendo

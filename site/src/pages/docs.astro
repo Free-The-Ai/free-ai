@@ -86,7 +86,7 @@ const vhrImageSnippet = `curl https://api.freetheai.xyz/v1/images/generations \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "vhr/gpt_image_2",
+    "model": "img/gpt-image-2",
     "prompt": "A cinematic neon sports car parked under rainy city lights"
   }'`;
 const vhrImageSnippetHtml = await highlight(vhrImageSnippet, "bash");
@@ -131,7 +131,7 @@ res = requests.post(
         "Content-Type": "application/json",
     },
     json={
-        "model": "vhr/gpt_image_2",
+        "model": "img/gpt-image-2",
         "prompt": "A clean product mockup on a dark desk",
     },
     timeout=180,
@@ -149,13 +149,18 @@ const endpoints = [
     [
         "POST",
         "/v1/messages",
-        "Anthropic-style Messages API for compatible clients and frameworks.",
+        "Anthropic-compatible Messages route for Claude-style clients and frameworks.",
+    ],
+    [
+        "POST",
+        "/v1/responses",
+        "Responses-style route. Same key, same model alias.",
     ],
     ["GET", "/v1/models", "Authenticated model list for normal clients."],
     [
         "GET",
         "/v1/models/full",
-        "Expanded model catalog with throughput policy metadata for catalog UIs.",
+        "Expanded model catalog with context, output, image-support, and access metadata.",
     ],
     [
         "GET",
@@ -165,12 +170,22 @@ const endpoints = [
     [
         "POST",
         "/v1/images/generations",
-        "Image generation with img/gpt-image-2 and vhr/* generation models.",
+        "Image generation with img/gpt-image-2.",
     ],
     [
         "POST",
         "/v1/images/edits",
         "Image editing with img/gpt-image-2 and a base64 data URL input image.",
+    ],
+    [
+        "POST",
+        "/v1/audio/speech",
+        "Text-to-speech for role-gated voice aliases such as xai/grok-tts and mim/*tts*.",
+    ],
+    [
+        "POST",
+        "/v1/audio/transcriptions",
+        "Speech-to-text multipart uploads for role-gated voice aliases such as xai/grok-stt.",
     ],
     ["GET", "/v1/health", "Public API health and catalog status."],
 ];
@@ -181,10 +196,6 @@ const imageModels = [
         "Generation + editing",
         "Returns base64 image data. Use this for edits.",
     ],
-    ["vhr/flux_dev", "Generation only", "Text-to-image model."],
-    ["vhr/gpt_image_2", "Generation only", "Text-to-image model."],
-    ["vhr/nano_banana_2", "Generation only", "Text-to-image model."],
-    ["vhr/bytedance_seedream_v4", "Generation only", "Text-to-image model."],
 ];
 ---
 
@@ -205,6 +216,7 @@ const imageModels = [
                 <span class="docs-sidebar-label">On this page</span>
                 <a href="#auth">Auth</a>
                 <a href="#endpoints">Endpoints</a>
+                <a href="#compatibility">Compatibility</a>
                 <a href="#chat">Chat</a>
                 <a href="#messages">Messages</a>
                 <a href="#models">Models</a>

@@ -6,6 +6,7 @@ const LINKS: [string, string, boolean][] = [
   ["/home", "Home", false],
   ["/docs", "Docs", false],
   ["/models", "Models", false],
+  ["/setup", "Setup", false],
   ["/pricing", "Pricing", false],
   ["/status", "Status", false],
   [siteConfig.socials.github, "Repo", true],
@@ -160,6 +161,16 @@ export default function NavDrawer(props: NavDrawerProps) {
               >
                 <span class="material-symbols-outlined">forum</span>
                 Join Discord
+              </a>
+              <a
+                href={siteConfig.socials.donate}
+                class="nav-drawer__donate"
+                target="_blank"
+                rel="noreferrer"
+                onClick={() => closeDrawer()}
+              >
+                <span class="material-symbols-outlined">favorite</span>
+                Donate
               </a>
             </div>
           </nav>

@@ -1,0 +1,639 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { siteConfig } from "../../config/site";
+import { highlight } from "../../lib/highlight";
+import {
+    SETUP_GUIDES,
+    CATEGORY_LABELS,
+    CATEGORY_DESCRIPTIONS,
+    type SetupGuide,
+    type SetupStep,
+} from "../../data/setup-guides";
+import {
+    buildBreadcrumbJsonLd,
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebApiJsonLd,
+    buildWebsiteJsonLd,
+} from "../../utils/jsonLd";
+
+export async function getStaticPaths() {
+    return SETUP_GUIDES.map((guide) => ({
+        params: { slug: guide.slug },
+        props: { guide },
+    }));
+}
+
+interface Props {
+    guide: SetupGuide;
+}
+
+const { guide } = Astro.props as Props;
+
+interface PreparedStep {
+    step: SetupStep;
+    codeHtml?: string;
+}
+
+const prepared: PreparedStep[] = await Promise.all(
+    guide.steps.map(async (step) => ({
+        step,
+        codeHtml: step.code
+            ? await highlight(step.code.value, step.code.lang)
+            : undefined,
+    })),
+);
+
+const compatibilityChips: Array<{ label: string; on: boolean; title: string }> =
+    [
+        {
+            label: "Chat completions",
+            on: !!guide.compatibility.chatCompletions,
+            title: "Supports POST /v1/chat/completions",
+        },
+        {
+            label: "Messages",
+            on: !!guide.compatibility.messages,
+            title: "Supports Anthropic-style POST /v1/messages",
+        },
+        {
+            label: "Responses",
+            on: !!guide.compatibility.responses,
+            title: "Supports POST /v1/responses",
+        },
+        {
+            label: "Streaming",
+            on: !!guide.compatibility.streaming,
+            title: "Server-sent events streaming",
+        },
+        {
+            label: "Tool calling",
+            on: !!guide.compatibility.toolCalling,
+            title: "Native function/tool calling",
+        },
+        {
+            label: "Images",
+            on: !!guide.compatibility.images,
+            title: "Image input or generation",
+        },
+    ];
+
+const shownChips = compatibilityChips.filter((chip) => chip.on);
+
+const howToJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "HowTo",
+    name: `Connect ${guide.name} to FreeTheAi`,
+    description: guide.summary,
+    totalTime: `PT${Math.max(2, guide.steps.length)}M`,
+    supply: [
+        {
+            "@type": "HowToSupply",
+            name: "FreeTheAi API key from Discord /signup",
+        },
+        {
+            "@type": "HowToSupply",
+            name: `${guide.name} client`,
+        },
+    ],
+    tool: [
+        {
+            "@type": "HowToTool",
+            name: "FreeTheAi OpenAI-compatible API",
+        },
+    ],
+    step: guide.steps.map((step, index) => ({
+        "@type": "HowToStep",
+        position: index + 1,
+        name: step.title,
+        text: step.body,
+        url: `https://freetheai.xyz/setup/${guide.slug}#step-${index + 1}`,
+    })),
+};
+
+const jsonLd = [
+    buildWebsiteJsonLd(),
+    buildOrganizationJsonLd(),
+    buildSoftwareJsonLd(),
+    buildWebApiJsonLd(),
+    howToJsonLd,
+    buildBreadcrumbJsonLd([
+        { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
+        { name: "Setup", url: "https://freetheai.xyz/setup" },
+        {
+            name: guide.name,
+            url: `https://freetheai.xyz/setup/${guide.slug}`,
+        },
+    ]),
+];
+
+const pageTitle = `Connect ${guide.name} to FreeTheAi - Free OpenAI-Compatible API Setup`;
+const pageDescription = `${guide.tagline} Step-by-step setup guide for ${guide.name} with FreeTheAi - free OpenAI-compatible API at ${guide.baseUrl}. ${guide.summary}`.slice(
+    0,
+    300,
+);
+const pageKeywords = [
+    guide.name.toLowerCase(),
+    `${guide.name.toLowerCase()} freetheai`,
+    `${guide.name.toLowerCase()} setup`,
+    `${guide.name.toLowerCase()} api`,
+    `${guide.name.toLowerCase()} openai compatible`,
+    "free openai compatible api",
+    "freetheai setup",
+    ...guide.keywords,
+].join(", ");
+---
+
+<Layout
+    title={pageTitle}
+    description={pageDescription}
+    jsonLd={jsonLd}
+    currentPath={`/setup/${guide.slug}`}
+    keywords={pageKeywords}
+>
+    <main class="setup-detail-main">
+        <nav class="setup-detail-trail" aria-label="Breadcrumb">
+            <a href="/setup">All setup guides</a>
+            <span aria-hidden="true">&rarr;</span>
+            <span>{CATEGORY_LABELS[guide.category]}</span>
+            <span aria-hidden="true">&rarr;</span>
+            <strong>{guide.name}</strong>
+        </nav>
+
+        <section class="setup-detail-hero shell">
+            <span class="eyebrow">{CATEGORY_LABELS[guide.category]}</span>
+            <h1>{guide.name}</h1>
+            <p class="setup-detail-tagline">{guide.tagline}</p>
+            <p class="setup-detail-summary">{guide.summary}</p>
+
+            <div class="setup-detail-meta">
+                <div>
+                    <span>Base URL</span>
+                    <code>{guide.baseUrl}</code>
+                </div>
+                {guide.apiPath && (
+                    <div>
+                        <span>API path</span>
+                        <code>{guide.apiPath}</code>
+                    </div>
+                )}
+                {guide.recommendedModels.length > 0 && (
+                    <div>
+                        <span>Recommended models</span>
+                        <code>{guide.recommendedModels[0]}</code>
+                    </div>
+                )}
+            </div>
+
+            {shownChips.length > 0 && (
+                <div class="setup-detail-chips">
+                    {shownChips.map((chip) => (
+                        <span class="setup-detail-chip" title={chip.title}>
+                            <span class="material-symbols-outlined" aria-hidden="true">check</span>
+                            {chip.label}
+                        </span>
+                    ))}
+                </div>
+            )}
+
+            <div class="setup-detail-cta">
+                <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+                    <span>Get a free key</span>
+                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+                </a>
+                {guide.docsUrl && (
+                    <a class="setup-secondary" href={guide.docsUrl} target="_blank" rel="noreferrer">
+                        Official docs
+                    </a>
+                )}
+                {guide.repository && (
+                    <a class="setup-secondary" href={guide.repository} target="_blank" rel="noreferrer">
+                        GitHub repo
+                    </a>
+                )}
+                {guide.homepage && !guide.docsUrl && (
+                    <a class="setup-secondary" href={guide.homepage} target="_blank" rel="noreferrer">
+                        Visit {guide.name}
+                    </a>
+                )}
+            </div>
+        </section>
+
+        <section class="section shell setup-detail-steps">
+            <header class="setup-detail-step-head">
+                <span class="eyebrow">Step by step</span>
+                <h2>Connect {guide.name} to FreeTheAi.</h2>
+            </header>
+            <ol class="setup-detail-list">
+                {prepared.map(({ step, codeHtml }, index) => (
+                    <li id={`step-${index + 1}`}>
+                        <div class="setup-detail-step">
+                            <span class="setup-detail-step-num">{index + 1}</span>
+                            <div class="setup-detail-step-body">
+                                <h3>{step.title}</h3>
+                                <p>{step.body}</p>
+                                {step.code && codeHtml && (
+                                    <div class="setup-detail-snippet">
+                                        <header>
+                                            <strong>{step.code.lang}</strong>
+                                        </header>
+                                        <pre set:html={codeHtml} />
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </li>
+                ))}
+            </ol>
+        </section>
+
+        {guide.recommendedModels.length > 0 && (
+            <section class="section shell setup-detail-models">
+                <header class="section-head">
+                    <span class="eyebrow">Recommended aliases</span>
+                    <h2>Models that pair well with {guide.name}.</h2>
+                </header>
+                <ul class="setup-detail-model-list">
+                    {guide.recommendedModels.map((model) => (
+                        <li>
+                            <code>{model}</code>
+                        </li>
+                    ))}
+                </ul>
+                <p class="setup-detail-model-foot">
+                    See the full live catalog at <a href="/models">/models</a>. Aliases
+                    are stable; pricing on the free tier stays $0.
+                </p>
+            </section>
+        )}
+
+        {guide.gotchas && guide.gotchas.length > 0 && (
+            <section class="section shell setup-detail-gotchas">
+                <header class="section-head">
+                    <span class="eyebrow">Heads up</span>
+                    <h2>Common gotchas.</h2>
+                </header>
+                <ul>
+                    {guide.gotchas.map((gotcha) => (
+                        <li>{gotcha}</li>
+                    ))}
+                </ul>
+            </section>
+        )}
+
+        <section class="section shell setup-detail-foot">
+            <header class="section-head">
+                <span class="eyebrow">Where to next</span>
+                <h2>Keep building.</h2>
+            </header>
+            <div class="setup-foot-links">
+                <a class="setup-secondary" href="/setup">All setup guides</a>
+                <a class="setup-secondary" href="/quickstart">Quickstart</a>
+                <a class="setup-secondary" href="/docs#compatibility">Cross-compatibility docs</a>
+                <a class="setup-secondary" href="/models">Model catalog</a>
+                <a class="setup-secondary" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+                    Ask in Discord
+                </a>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style is:global>
+    .setup-detail-main {
+        gap: 24px;
+        padding: 22px 0 64px;
+    }
+
+    .setup-detail-trail {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        max-width: var(--shell-max-width, 1200px);
+        margin: 0 auto;
+        padding: 0 clamp(16px, 4vw, 32px);
+        color: var(--muted);
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+    }
+
+    .setup-detail-trail a {
+        color: var(--accent-text);
+        text-decoration: none;
+        text-shadow: var(--accent-text-glow);
+    }
+
+    .setup-detail-trail a:hover {
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    .setup-detail-trail strong {
+        color: var(--text);
+        font-weight: 600;
+    }
+
+    .setup-detail-hero {
+        display: grid;
+        gap: 14px;
+        padding: clamp(28px, 4.6vw, 52px);
+    }
+
+    .setup-detail-hero h1 {
+        margin: 0;
+        font-size: clamp(2.4rem, 5vw, 3.5rem);
+        line-height: 1.04;
+        letter-spacing: -0.045em;
+    }
+
+    .setup-detail-tagline {
+        margin: 0;
+        max-width: 64ch;
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-size: 0.92rem;
+        line-height: 1.55;
+    }
+
+    .setup-detail-summary {
+        margin: 0;
+        max-width: 64ch;
+        color: var(--muted);
+        font-size: 1rem;
+        line-height: 1.55;
+    }
+
+    .setup-detail-meta {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+        padding: 14px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius-sm);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+    }
+
+    .setup-detail-meta div {
+        display: grid;
+        gap: 4px;
+        min-width: 0;
+    }
+
+    .setup-detail-meta span {
+        color: var(--dim);
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .setup-detail-meta code {
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        word-break: break-all;
+    }
+
+    .setup-detail-chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .setup-detail-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        padding: 5px 10px;
+        border: 1px solid rgba(238, 93, 32, 0.32);
+        border-radius: var(--radius-sm);
+        background: rgba(238, 93, 32, 0.08);
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        text-shadow: var(--accent-text-glow);
+    }
+
+    .setup-detail-chip .material-symbols-outlined {
+        font-size: 14px;
+    }
+
+    .setup-detail-cta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 14px;
+    }
+
+    .setup-detail-cta .cta-arrow {
+        opacity: 0.65;
+        font-size: 0.9rem;
+    }
+
+    .setup-detail-steps {
+        display: grid;
+        gap: 18px;
+        padding: clamp(22px, 3.8vw, 36px);
+    }
+
+    .setup-detail-step-head {
+        display: grid;
+        gap: 4px;
+    }
+
+    .setup-detail-step-head .eyebrow {
+        color: var(--dim);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+    }
+
+    .setup-detail-step-head h2 {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: 1.5rem;
+        letter-spacing: -0.02em;
+    }
+
+    .setup-detail-list {
+        display: grid;
+        gap: 14px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+        counter-reset: setup-step;
+    }
+
+    .setup-detail-list > li {
+        scroll-margin-top: 80px;
+    }
+
+    .setup-detail-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 14px;
+        padding: 18px 20px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+    }
+
+    .setup-detail-step-num {
+        flex: 0 0 auto;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 32px;
+        height: 32px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius-full);
+        background: var(--sk-shell-bg);
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        text-shadow: var(--accent-text-glow);
+    }
+
+    .setup-detail-step-body {
+        flex: 1 1 auto;
+        min-width: 0;
+        display: grid;
+        gap: 8px;
+    }
+
+    .setup-detail-step-body h3 {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+    }
+
+    .setup-detail-step-body p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.95rem;
+        line-height: 1.55;
+    }
+
+    .setup-detail-step-body code {
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-size: 0.85em;
+    }
+
+    .setup-detail-snippet {
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius-sm);
+        background: var(--bg);
+        overflow: hidden;
+    }
+
+    .setup-detail-snippet header {
+        padding: 6px 12px;
+        border-bottom: 1px solid var(--sk-border);
+        background: var(--sk-shell-bg);
+    }
+
+    .setup-detail-snippet header strong {
+        color: var(--dim);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+    }
+
+    .setup-detail-snippet pre {
+        margin: 0;
+        padding: 14px 16px;
+        overflow-x: auto;
+        font-size: 0.82rem;
+        line-height: 1.55;
+    }
+
+    .setup-detail-models {
+        display: grid;
+        gap: 12px;
+        padding: clamp(22px, 3.8vw, 36px);
+    }
+
+    .setup-detail-models h2 {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: 1.4rem;
+        letter-spacing: -0.02em;
+    }
+
+    .setup-detail-model-list {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .setup-detail-model-list code {
+        display: inline-block;
+        padding: 5px 9px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius-sm);
+        background: var(--sk-inset-bg);
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+    }
+
+    .setup-detail-model-foot {
+        margin: 0;
+        color: var(--muted);
+        font-size: 0.86rem;
+    }
+
+    .setup-detail-model-foot a {
+        color: var(--accent-text);
+        text-decoration: underline;
+        text-underline-offset: 2px;
+    }
+
+    .setup-detail-gotchas {
+        display: grid;
+        gap: 12px;
+        padding: clamp(22px, 3.8vw, 36px);
+    }
+
+    .setup-detail-gotchas h2 {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: 1.35rem;
+        letter-spacing: -0.02em;
+    }
+
+    .setup-detail-gotchas ul {
+        margin: 0;
+        padding: 0 0 0 20px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.6;
+    }
+
+    .setup-detail-gotchas li {
+        margin-bottom: 6px;
+    }
+
+    .setup-detail-foot {
+        display: grid;
+        gap: 14px;
+        padding: clamp(22px, 3.8vw, 36px);
+    }
+
+    .setup-detail-foot h2 {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: 1.35rem;
+        letter-spacing: -0.02em;
+    }
+</style>

@@ -1,0 +1,5 @@
+docs/SKILL_SKEUOMORPHIC.md
+__pycache__/
+*.pyc
+*.pyo
+.DS_Store

@@ -11,6 +11,7 @@ export const siteConfig = {
         discord: "https://discord.gg/secrets",
         github: "https://github.com/vibheksoni/free-ai",
         api: "https://api.freetheai.xyz",
+        donate: "https://buymeacoffee.com/vibheksoni",
     },
     defaults: {
         locale: "en_US",

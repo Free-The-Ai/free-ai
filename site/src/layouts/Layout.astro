@@ -6,6 +6,12 @@ import SmoothScroll from '../components/SmoothScroll';
 import HapticsInit from '../components/HapticsInit';
 import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
+import {
+	SETUP_GUIDES,
+	CATEGORY_ORDER,
+	CATEGORY_LABELS,
+	setupGuidesByCategory,
+} from '../data/setup-guides';
 
 interface Props {
 	title?: string;
@@ -13,6 +19,7 @@ interface Props {
 	image?: string;
 	jsonLd?: Record<string, unknown>[];
 	currentPath?: string;
+	keywords?: string;
 }
 
 const {
@@ -21,6 +28,7 @@ const {
 	image = siteConfig.defaults.ogImage,
 	jsonLd = [],
 	currentPath = '',
+	keywords,
 } = Astro.props;
 
 const navLinks: [string, string][] = [
@@ -30,12 +38,16 @@ const navLinks: [string, string][] = [
 	['/pricing', 'Pricing'],
 	['/status', 'Status'],
 ];
+
+const setupCategories = setupGuidesByCategory();
+const setupGuideCount = SETUP_GUIDES.length;
+const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup/');
 ---
 
 <!doctype html>
 <html lang="en">
 	<head>
-		<BaseHead title={title} description={description} image={image} jsonLd={jsonLd} />
+		<BaseHead title={title} description={description} image={image} jsonLd={jsonLd} keywords={keywords} />
 	</head>
 	<body>
 		<div id="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center">
@@ -75,11 +87,62 @@ const navLinks: [string, string][] = [
 								{label}
 							</a>
 						))}
+						<div class={`nav-dropdown ${isSetupActive ? 'is-active' : ''}`}>
+							<a
+								href="/setup"
+								class={`nav-dropdown-trigger ${isSetupActive ? 'is-active' : ''}`}
+								aria-haspopup="true"
+							>
+								Setup
+								<span class="nav-dropdown-caret" aria-hidden="true">&#9662;</span>
+							</a>
+							<div class="nav-dropdown-panel" role="menu" aria-label="Setup guides">
+								<div class="nav-dropdown-head">
+									<a href="/setup" class="nav-dropdown-head-link">
+										<strong>Setup guides</strong>
+										<span>{setupGuideCount} apps and clients</span>
+									</a>
+								</div>
+								{CATEGORY_ORDER.flatMap((category) => {
+									const guides = setupCategories[category];
+									if (!guides || guides.length === 0) return [];
+									return [
+										<div class="nav-dropdown-group" key={category}>
+											<span class="nav-dropdown-group-label">
+												{CATEGORY_LABELS[category]}
+											</span>
+											{guides.map((guide) => (
+												<a
+													href={`/setup/${guide.slug}`}
+													class="nav-dropdown-item"
+													role="menuitem"
+												>
+													<strong>{guide.name}</strong>
+													<span>{guide.tagline}</span>
+												</a>
+											))}
+										</div>,
+									];
+								})}
+							</div>
+						</div>
 						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">GitHub</a>
 					</div>
-					<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
-						Join Discord
-					</a>
+					<div class="nav-actions">
+						<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+							Join Discord
+						</a>
+						<a
+							class="discord-button donate-button"
+							href={siteConfig.socials.donate}
+							target="_blank"
+							rel="noreferrer"
+							aria-label="Support FreeTheAi on Buy Me a Coffee"
+						>
+							<span class="donate-button-icon" aria-hidden="true">&#9829;</span>
+							<span class="donate-button-label">Donate</span>
+						</a>
+					</div>
 					<NavDrawer currentPath={currentPath} client:load />
 				</nav>
 			</header>
@@ -91,6 +154,7 @@ const navLinks: [string, string][] = [
 			<footer class="site-footer">
 				<div class="footer-links">
 					<a href="/quickstart">Quickstart</a>
+					<a href="/setup">Setup guides</a>
 					<a href="/models">Models</a>
 					<a href="/pricing">Pricing</a>
 					<a href="/status">Status</a>
@@ -99,6 +163,10 @@ const navLinks: [string, string][] = [
 					<a href="/what-is-free-the-ai">What is FreeTheAi</a>
 					<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">GitHub</a>
 					<a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">Discord</a>
+					<a class="footer-donate-link" href={siteConfig.socials.donate} target="_blank" rel="noreferrer">
+						<span aria-hidden="true">💗</span>
+						Donate
+					</a>
 				</div>
 				<div class="footer-bottom">free tier stays free. paid slots are optional.</div>
 			</footer>

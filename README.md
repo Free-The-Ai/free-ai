@@ -21,7 +21,7 @@ Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 <br>
 
-[Website](https://freetheai.xyz) · [Quickstart](https://freetheai.xyz/quickstart) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [Pricing](https://freetheai.xyz/pricing) · [Status](https://freetheai.xyz/status) · [API Health](https://api.freetheai.xyz/v1/health) · [Discord](https://discord.gg/secrets)
+[Website](https://freetheai.xyz) · [Quickstart](https://freetheai.xyz/quickstart) · [Setup Guides](https://freetheai.xyz/setup) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [Pricing](https://freetheai.xyz/pricing) · [Status](https://freetheai.xyz/status) · [API Health](https://api.freetheai.xyz/v1/health) · [Discord](https://discord.gg/secrets) · [Support](https://buymeacoffee.com/vibheksoni)
 
 </div>
 
@@ -89,6 +89,27 @@ Point any OpenAI SDK at the base URL
 
 > [!TIP]
 > Lost your key? Run `/resetkey` and provide a real reset reason - same account, same stats, fresh key.
+
+---
+
+## Setup Guides
+
+Step-by-step setup for the most common AI clients lives at [freetheai.xyz/setup](https://freetheai.xyz/setup).
+
+| Category | Clients |
+| :--- | :--- |
+| Coding agents | OpenCode, Kilo Code, Zed, Cline, Roo Code, Continue.dev |
+| CLI | Aider, Claude Code |
+| Roleplay & chat | SillyTavern, Janitor AI, Chub AI, RisuAI |
+| General chat clients | LibreChat, Open WebUI, LobeChat, AnythingLLM, Cherry Studio, TypingMind, BoltAI, Page Assist, Chatbox, Big-AGI |
+
+Each guide ships exact field labels, a copy-paste config, and the gotchas users actually hit.
+
+---
+
+## SKILL.md
+
+This repo includes a [`SKILL.md`](SKILL.md) describing how AI agents should connect to FreeTheAi (base URL, routes, model aliases, capability metadata, and rate limits). The standalone skeuomorphic UI skill that previously lived here is now at [`docs/SKILL_SKEUOMORPHIC.md`](docs/SKILL_SKEUOMORPHIC.md).
 
 ---
 
@@ -295,6 +316,20 @@ If this project helps you, star the repo and share the docs page. It helps more 
 
 ---
 
+## Support The Project
+
+FreeTheAi is built and maintained by [Vibhek Soni](https://github.com/vibheksoni). The free tier always stays free. If this project saves you a subscription, replaces a paid plan, or unblocks something you were stuck on, a small tip helps cover servers, proxies, and the long nights spent keeping models alive.
+
+[![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20FreeTheAi-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/vibheksoni)
+
+- One-time tip on Buy Me a Coffee: [`buymeacoffee.com/vibheksoni`](https://buymeacoffee.com/vibheksoni)
+- Star the repo: [`github.com/vibheksoni/free-ai`](https://github.com/vibheksoni/free-ai)
+- Share the docs and the [setup guides](https://freetheai.xyz/setup) with anyone you know who needs a free OpenAI-compatible key
+
+Thanks for keeping the free tier alive.
+
+---
+
 ## Models
 
 Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.xyz/models). Request examples and endpoint details are on [freetheai.xyz/docs](https://freetheai.xyz/docs).
@@ -398,6 +433,7 @@ Built by a small crew sharing free AI tools with everyone. Open source on GitHub
 | <img src="https://avatars.githubusercontent.com/u/102437829?v=4" width="48" height="48" alt="Vibhek Soni" style="border-radius:50%" /> | **Vibhek Soni** | Founder. Wrote the full API and most of the platform. | [@vibheksoni](https://github.com/vibheksoni) |
 | <img src="https://avatars.githubusercontent.com/u/166897058?v=4" width="48" height="48" alt="Dr. Vova" style="border-radius:50%" /> | **Dr. Vova** | Frontend and the upcoming GoonPia roleplay site. | [@drvova](https://github.com/drvova) |
 | <img src="https://avatars.githubusercontent.com/u/33468668?v=4" width="48" height="48" alt="Dysekt" style="border-radius:50%" /> | **Dysekt** | Discord ops and community. | [@DysektAI](https://github.com/DysektAI) |
+| <img src="https://avatars.githubusercontent.com/u/157276603?v=4" width="48" height="48" alt="Sai Revanth" style="border-radius:50%" /> | **Sai Revanth** | Discord manager. Day-to-day moderation and onboarding. | [@svsairevanth](https://github.com/svsairevanth) |
 
 GitHub org: [Free-The-Ai](https://github.com/Free-The-Ai). Full team page: [freetheai.xyz/team](https://freetheai.xyz/team).
 
@@ -413,10 +449,13 @@ GitHub org: [Free-The-Ai](https://github.com/Free-The-Ai). Full team page: [free
 <a href="https://github.com/Free-The-Ai">
   <img src="https://img.shields.io/badge/GitHub-Free--The--Ai-181717?style=flat-square&logo=github&logoColor=white" alt="Free-The-Ai org" />
 </a>
+<a href="https://buymeacoffee.com/vibheksoni">
+  <img src="https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20FreeTheAi-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black" alt="Buy Me a Coffee" />
+</a>
 
 <br>
 
-[Website](https://freetheai.xyz) · [Quickstart](https://freetheai.xyz/quickstart) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [Pricing](https://freetheai.xyz/pricing) · [Status](https://freetheai.xyz/status) · [Team](https://freetheai.xyz/team) · [Discord](https://discord.gg/secrets) · [Backup Invite](https://discord.gg/rG3SYpeqYF)
+[Website](https://freetheai.xyz) · [Quickstart](https://freetheai.xyz/quickstart) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [Pricing](https://freetheai.xyz/pricing) · [Status](https://freetheai.xyz/status) · [Team](https://freetheai.xyz/team) · [Discord](https://discord.gg/secrets) · [Backup Invite](https://discord.gg/rG3SYpeqYF) · [Support](https://buymeacoffee.com/vibheksoni)
 
 <br>
 

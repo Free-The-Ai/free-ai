@@ -396,8 +396,8 @@ data: [DONE]`}</code>
                             <div class="docs-row">
                                 <code>403 model_access_denied</code>
                                 <span>
-                                    Model is role-gated. The user needs the{" "}
-                                    <strong>Seems Legit</strong> Discord role,
+                                    Model is limited to{" "}
+                                    <strong>Verified members</strong>,
                                     earned through active server participation.
                                 </span>
                             </div>
@@ -637,7 +637,7 @@ data: [DONE]`}</code>
                             </div>
                             <div class="docs-row">
                                 <code>403 model_access_denied</code>
-                                <span>This model needs the Seems Legit role.</span>
+                                <span>This model is for Verified members.</span>
                             </div>
                             <div class="docs-row">
                                 <code>400 invalid_request_error</code>

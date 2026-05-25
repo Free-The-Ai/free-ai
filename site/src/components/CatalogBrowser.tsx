@@ -73,7 +73,7 @@ const FILTER_LABELS: Record<FilterKey, string> = {
   images: "Images",
   audio: "Audio",
   long: "128k+ context",
-  gated: "Role-gated",
+  gated: "Verified members",
 };
 
 const modelSupportsImages = (model: Model): boolean =>
@@ -396,11 +396,11 @@ export default function CatalogBrowser() {
     setPage(1);
   };
 
-  const seemsLegitLabel = () =>
-    policy()?.seems_legit_required_role_label ?? "seems_legit";
-
-  const seemsLegitTooltip = () => {
-    return `Role-gated. Requires the ${seemsLegitLabel()} Discord role.`;
+  const verifiedMemberLabel = () => {
+    const label = policy()?.seems_legit_required_role_label;
+    const normalized = label?.toLowerCase().replace(/[\s-]+/g, "_");
+    if (!normalized || normalized === "seems_legit") return "Verified members";
+    return label;
   };
 
   const prefixButtonLabel = () => {
@@ -505,7 +505,7 @@ export default function CatalogBrowser() {
 
       <Show when={hasGatedModel()}>
         <blockquote class="catalog-note">
-          Orange-outlined models need the <code>{seemsLegitLabel()}</code> Discord role.
+          Orange-outlined models are available to {verifiedMemberLabel()}.
         </blockquote>
       </Show>
 
@@ -698,13 +698,13 @@ export default function CatalogBrowser() {
                 <Show when={model().visibility}>
                   <div>
                     <span>Visibility</span>
-                    <strong>{model().visibility === "role_gated" ? "Role gated" : "Public catalog"}</strong>
+                    <strong>{model().visibility === "role_gated" ? "Verified members" : "Public catalog"}</strong>
                   </div>
                 </Show>
                 <Show when={model().requires_seems_legit}>
                   <div>
                     <span>Access</span>
-                    <strong>Role gated</strong>
+                    <strong>Verified members only</strong>
                   </div>
                 </Show>
               </section>
@@ -713,8 +713,8 @@ export default function CatalogBrowser() {
                 <p class="model-modal-gate">
                   <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
                   <span>
-                    This model is locked to the <code>{seemsLegitLabel()}</code> Discord role on the FreeTheAi server.
-                    Run <code>/checkin</code> daily once you have the role.
+                    This model is available to {verifiedMemberLabel()} on the FreeTheAi Discord server.
+                    Run <code>/checkin</code> daily once you have access.
                   </span>
                 </p>
               </Show>

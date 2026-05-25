@@ -113,9 +113,6 @@ const setupKeywords = [
                                 <p class="setup-card-tagline">{guide.tagline}</p>
                                 <p class="setup-card-summary">{guide.summary}</p>
                                 <div class="setup-card-foot">
-                                    <span class="setup-card-route">
-                                        <code>{guide.baseUrl}</code>
-                                    </span>
                                     <span class="setup-card-go">View setup &rarr;</span>
                                 </div>
                             </a>
@@ -318,17 +315,11 @@ const setupKeywords = [
     .setup-card-foot {
         display: flex;
         align-items: center;
-        justify-content: space-between;
+        justify-content: flex-end;
         gap: 10px;
         margin-top: 4px;
         padding-top: 10px;
         border-top: 1px solid var(--sk-border);
-    }
-
-    .setup-card-route code {
-        color: var(--dim);
-        font-family: var(--font-mono);
-        font-size: 0.7rem;
     }
 
     .setup-card-go {

@@ -273,6 +273,17 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				window.__soundPlay('navigation.forward');
 			}
 		});
+		// Hero milestone fanfare on first user click of the session
+		(function () {
+			if (sessionStorage.getItem('fta:hero')) return;
+			document.addEventListener('click', function heroWelcome() {
+				sessionStorage.setItem('fta:hero', '1');
+				if (typeof window.__soundPlay === 'function') {
+					window.__soundPlay('hero.milestone');
+				}
+				document.removeEventListener('click', heroWelcome, true);
+			}, true);
+		})();
 	</script>
 	<script>
 		function closestFromEvent(e, selector) {

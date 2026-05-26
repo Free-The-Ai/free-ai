@@ -125,33 +125,24 @@ const modelRoutes = (model: Model) => {
   return SUPPORTED_ROUTES;
 };
 
-const readCatalogParams = () => {
-  if (typeof window === "undefined") {
-    return {
-      prefixes: [] as string[],
-      types: [] as FilterKey[],
-      query: "",
-    };
-  }
-  const params = new URLSearchParams(window.location.search);
-  const rawPrefix = params.get("prefix")?.trim() || "";
-  const prefixes = rawPrefix && rawPrefix !== "all" && rawPrefix !== "*"
-    ? rawPrefix.split(",").map((p) => p.trim()).filter(Boolean)
-    : [];
-  const rawType = params.get("type")?.trim() || "";
-  const legacyType = rawType ||
-    (params.get("images") === "1" ? "images" : "") ||
-    (params.get("seemslegit") === "1" ? "gated" : "");
-  const validKeys = new Set<string>(FILTER_OPTIONS);
-  const types = legacyType
-    ? legacyType.split(",").map((t) => t.trim()).filter((t) => validKeys.has(t))
-    : [];
-  return {
-    prefixes,
-    types: types as FilterKey[],
-    query: params.get("q")?.trim() || "",
+  const readCatalogParams = () => {
+    if (typeof window === "undefined") {
+      return { prefixes: [] as string[], types: [] as FilterKey[], query: "" };
+    }
+    const params = new URLSearchParams(window.location.search);
+    const rawPrefix = params.get("prefix")?.trim() || "";
+    const prefixes = rawPrefix && !/^(all|\*)$/.test(rawPrefix)
+      ? rawPrefix.split(",").map(p => p.trim()).filter(Boolean)
+      : [];
+    const legacyType = params.get("type")?.trim() ||
+      (params.get("images") === "1" ? "images" : "") ||
+      (params.get("seemslegit") === "1" ? "gated" : "");
+    const validKeys = new Set<string>(FILTER_OPTIONS);
+    const types = legacyType
+      ? legacyType.split(",").map(t => t.trim()).filter(t => validKeys.has(t))
+      : [];
+    return { prefixes, types: types as FilterKey[], query: params.get("q")?.trim() || "" };
   };
-};
 
 export default function CatalogBrowser() {
   const initial = readCatalogParams();
@@ -308,12 +299,13 @@ export default function CatalogBrowser() {
       access.requires_seems_legit === true ||
       requiredRoles.includes("seems_legit");
     const out: Model = { id: _id, prefix: pfx, required_roles: requiredRoles };
-    const v = str(i.visibility); if (v) out.visibility = v;
-    const cw = posInt(i.context_window); if (cw) out.context_window = cw;
-    const mit = posInt(i.max_input_tokens); if (mit) out.max_input_tokens = mit;
-    const mot = posInt(i.max_output_tokens); if (mot) out.max_output_tokens = mot;
-    if (typeof i.supports_images === "boolean") out.supports_images = i.supports_images;
-    if (typeof i.supports_audio === "boolean") out.supports_audio = i.supports_audio;
+    for (const f of [["visibility", str], ["context_window", posInt], ["max_input_tokens", posInt], ["max_output_tokens", posInt]] as [string, typeof str][]) {
+      const v = f[1]((i as any)[f[0]]);
+      if (v) (out as any)[f[0]] = v;
+    }
+    for (const k of ["supports_images", "supports_audio"]) {
+      if (typeof (i as any)[k] === "boolean") (out as any)[k] = (i as any)[k];
+    }
     if (requiresSeemsLegit) out.requires_seems_legit = true;
     return out;
   };

@@ -61,20 +61,29 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 		</div>
 		<script is:inline>
 			(function(){
-				if(window.__loaderDismissed)return;
-				window.__loaderDismissed=true;
 				var l=document.getElementById('loader');
 				if(!l)return;
 				function hide(){
-					l.style.transition='opacity 200ms linear';
+					l.style.transition='opacity 300ms ease-out';
 					l.style.opacity='0';
 					l.style.pointerEvents='none';
 				}
-				if(document.readyState==='loading'){
-					document.addEventListener('DOMContentLoaded',hide);
-				}else{
-					hide();
+				function show(){
+					l.style.transition='none';
+					l.style.opacity='1';
+					l.style.pointerEvents='auto';
 				}
+				/* Initial full-page load: show logo at least 700ms */
+				if(!window.__loaderDismissed){
+					window.__loaderDismissed=true;
+					var ready=function(){setTimeout(hide,700)};
+					if(document.readyState==='loading'){
+						document.addEventListener('DOMContentLoaded',ready);
+					}else{ready()}
+				}
+				/* SPA navigation: flash loader between pages */
+				document.addEventListener('astro:before-preparation',show);
+				document.addEventListener('astro:page-load',function(){setTimeout(hide,250)});
 			})();
 		</script>
 

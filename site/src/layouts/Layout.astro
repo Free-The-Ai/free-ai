@@ -87,15 +87,16 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 								{label}
 							</a>
 						))}
-						<div class={`nav-dropdown ${isSetupActive ? 'is-active' : ''}`}>
-							<a
-								href="/setup"
-								class={`nav-dropdown-trigger ${isSetupActive ? 'is-active' : ''}`}
+						<div class={`nav-dropdown${isSetupActive ? ' is-active' : ''}`}>
+							<button
+								type="button"
+								class={`nav-dropdown-trigger${isSetupActive ? ' is-active' : ''}`}
 								aria-haspopup="true"
+								aria-expanded="false"
 							>
 								Setup
-								<span class="nav-dropdown-caret" aria-hidden="true">&#9662;</span>
-							</a>
+								<span class="nav-dropdown-caret" aria-hidden="true"></span>
+							</button>
 							<div class="nav-dropdown-panel" role="menu" aria-label="Setup guides">
 								<div class="nav-dropdown-head">
 									<a href="/setup" class="nav-dropdown-head-link">
@@ -117,6 +118,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 													class="nav-dropdown-item"
 													role="menuitem"
 												>
+													{guide.logoUrl && <img src={guide.logoUrl} alt="" class="nav-dropdown-icon" width="16" height="16" loading="lazy" />}
 													<strong>{guide.name}</strong>
 													<span>{guide.tagline}</span>
 												</a>
@@ -239,6 +241,48 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				}, 2000);
 			}
 		});
+	</script>
+	<script>
+		(function () {
+			var drop = document.querySelector('.nav-dropdown');
+			var trigger = document.querySelector('.nav-dropdown-trigger');
+			if (!drop || !trigger) return;
+
+			function isOpen() { return drop.classList.contains('is-open'); }
+
+			function open() {
+				drop.classList.add('is-open');
+				trigger.setAttribute('aria-expanded', 'true');
+			}
+
+			function close() {
+				drop.classList.remove('is-open');
+				trigger.setAttribute('aria-expanded', 'false');
+			}
+
+			trigger.addEventListener('click', function (e) {
+				e.preventDefault();
+				isOpen() ? close() : open();
+			});
+
+			document.addEventListener('click', function (e) {
+				if (isOpen() && !drop.contains(e.target)) close();
+			});
+
+			document.addEventListener('keydown', function (e) {
+				if (e.key === 'Escape' && isOpen()) {
+					close();
+					trigger.focus();
+				}
+			});
+
+			var panel = drop.querySelector('.nav-dropdown-panel');
+			if (panel) {
+				panel.addEventListener('focusout', function (e) {
+					if (!panel.contains(e.relatedTarget) && !trigger.contains(e.relatedTarget)) close();
+				});
+			}
+		})();
 	</script>
 </body>
 </html>

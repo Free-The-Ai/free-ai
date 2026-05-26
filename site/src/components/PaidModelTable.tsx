@@ -160,7 +160,7 @@ export default function PaidModelTable(props: PaidModelTableProps) {
             placeholder="All costs"
           />
           <Show when={query().trim() || prefix() !== "all" || route() !== "all" || cost() !== "all"}>
-            <button type="button" class="paid-filter-clear" onClick={clearFilters}>
+            <button type="button" class="paid-filter-clear" onClick={clearFilters} data-sound="interaction.subtle">
               Clear
             </button>
           </Show>

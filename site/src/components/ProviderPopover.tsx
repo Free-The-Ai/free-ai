@@ -7,6 +7,7 @@ import {
 } from "solid-js";
 import type { ProviderHealth } from "./ProviderStatusGrid";
 import { formatPercent } from "../utils/format";
+import { disconnectPointerDrag } from "../lib/domUtils";
 
 type ScrollRailMetrics = {
     scrollable: boolean;
@@ -443,12 +444,8 @@ function useDragToDismiss(isMobile: () => boolean, onDismiss: () => void) {
         if (!isDragging()) return;
         e.preventDefault();
         setIsDragging(false);
-        if (boundMove) document.removeEventListener("pointermove", boundMove);
-        if (boundUp) {
-            document.removeEventListener("pointerup", boundUp);
-            document.removeEventListener("pointercancel", boundUp);
-        }
-        boundMove = null; boundUp = null;
+        disconnectPointerDrag(boundMove, boundUp);
+        boundMove = boundUp = null;
         const threshold = (sheetEl?.offsetHeight ?? 400) * DISMISS_THRESHOLD;
         if (dragOffset() > threshold) onDismiss();
         else setDragOffset(0);
@@ -470,13 +467,7 @@ function useDragToDismiss(isMobile: () => boolean, onDismiss: () => void) {
         dragOffset, isDragging,
         setSheetRef: (el: HTMLDivElement) => { sheetEl = el; },
         onDragStart: start, resetOffset: () => setDragOffset(0),
-        cleanup: () => {
-            if (boundMove) document.removeEventListener("pointermove", boundMove);
-            if (boundUp) {
-                document.removeEventListener("pointerup", boundUp);
-                document.removeEventListener("pointercancel", boundUp);
-            }
-        },
+        cleanup: () => { disconnectPointerDrag(boundMove, boundUp); },
     };
 }
 

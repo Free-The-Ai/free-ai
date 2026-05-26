@@ -345,6 +345,90 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
     );
 }
 
+// ── Catalog Filters Toolbar sub-component ──
+
+function CatalogFiltersToolbar({ query, setQuery, setPage, prefixes, togglePrefix, prefixCounts, typeFilters, toggleType, visibleTypeOptions, prefixButtonLabel, typeButtonLabel }: {
+  query: string; setQuery: (v: string) => void; setPage: (v: number | ((p: number) => number)) => void;
+  prefixes: Set<string>; togglePrefix: (p: string) => void; prefixCounts: [string, number][];
+  typeFilters: Set<FilterKey>; toggleType: (k: FilterKey) => void; visibleTypeOptions: FilterKey[];
+  prefixButtonLabel: string; typeButtonLabel: string;
+}) {
+  return (
+    <div class="catalog-toolbar">
+      <div class="catalog-search-field">
+        <span class="material-symbols-outlined catalog-search-icon">search</span>
+        <TextField
+          class="catalog-search-input"
+          value={query}
+          placeholder="Search model aliases..."
+          onChange={(v: string) => { setQuery(v); setPage(1); }}
+        />
+      </div>
+      <div class="catalog-filter-group">
+        <details class="catalog-filter">
+          <summary class={`catalog-filter-trigger ${prefixes.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
+            <span class="catalog-filter-label">Prefix</span>
+            <span class="catalog-filter-value">{prefixButtonLabel}</span>
+            <Show when={prefixes.size > 0}>
+              <span class="catalog-filter-count">{prefixes.size}</span>
+            </Show>
+            <span class="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
+          </summary>
+          <div class="catalog-filter-menu" role="group" aria-label="Filter by prefix">
+            <For each={prefixCounts}>
+              {([pfx, count]) => (
+                <label class={`catalog-filter-option ${prefixes.has(pfx) ? "is-active" : ""}`}>
+                  <input type="checkbox" checked={prefixes.has(pfx)} onChange={() => togglePrefix(pfx)} data-sound="interaction.toggle" />
+                  <span class="catalog-filter-option-name">{pfx}/*</span>
+                  <span class="catalog-filter-option-count">{count}</span>
+                </label>
+              )}
+            </For>
+          </div>
+        </details>
+        <details class="catalog-filter">
+          <summary class={`catalog-filter-trigger ${typeFilters.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
+            <span class="catalog-filter-label">Capability</span>
+            <span class="catalog-filter-value">{typeButtonLabel}</span>
+            <Show when={typeFilters.size > 0}>
+              <span class="catalog-filter-count">{typeFilters.size}</span>
+            </Show>
+            <span class="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
+          </summary>
+          <div class="catalog-filter-menu" role="group" aria-label="Filter by capability">
+            <For each={visibleTypeOptions}>
+              {(key) => (
+                <label class={`catalog-filter-option ${typeFilters.has(key) ? "is-active" : ""}`}>
+                  <input type="checkbox" checked={typeFilters.has(key)} onChange={() => toggleType(key)} data-sound="interaction.toggle" />
+                  <span class="catalog-filter-option-name">{FILTER_LABELS[key]}</span>
+                </label>
+              )}
+            </For>
+          </div>
+        </details>
+      </div>
+    </div>
+  );
+}
+
+// ── Catalog Pagination sub-component ──
+
+function CatalogPagination({ page, pageCount, filteredCount, totalCount, setPage }: {
+  page: number; pageCount: number; filteredCount: number; totalCount: number;
+  setPage: (v: number | ((p: number) => number)) => void;
+}) {
+  return (
+    <div class="catalog-pagination">
+      <span class="catalog-pagination-count">
+        {totalCount === 0 ? "Loading..." : `${filteredCount.toLocaleString()} model${filteredCount !== 1 ? "s" : ""}`}
+      </span>
+      <Button variant="ghost" class="pagination-button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
+      <span class="catalog-pagination-text">{page} / {pageCount}</span>
+      <Button variant="ghost" class="pagination-button" disabled={page >= pageCount} onClick={() => setPage((p) => p + 1)}>Next</Button>
+    </div>
+  );
+}
+
 export default function CatalogBrowser() {
   const initial = readCatalogParams();
   const [allModels, setAllModels] = createSignal<Model[]>([]);
@@ -615,70 +699,12 @@ export default function CatalogBrowser() {
         </div>
       </div>
 
-      <div class="catalog-toolbar">
-        <div class="catalog-search-field">
-          <span class="material-symbols-outlined catalog-search-icon">search</span>
-          <TextField
-            class="catalog-search-input"
-            value={query()}
-            placeholder="Search model aliases..."
-            onChange={(v: string) => { setQuery(v); setPage(1); }}
-          />
-        </div>
-        <div class="catalog-filter-group">
-          <details class="catalog-filter">
-            <summary class={`catalog-filter-trigger ${prefixes().size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
-              <span class="catalog-filter-label">Prefix</span>
-              <span class="catalog-filter-value">{prefixButtonLabel()}</span>
-              <Show when={prefixes().size > 0}>
-                <span class="catalog-filter-count">{prefixes().size}</span>
-              </Show>
-              <span class="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
-            </summary>
-            <div class="catalog-filter-menu" role="group" aria-label="Filter by prefix">
-              <For each={prefixCounts()}>
-                {([pfx, count]) => (
-                  <label class={`catalog-filter-option ${prefixes().has(pfx) ? "is-active" : ""}`}>
-                    <input
-                      type="checkbox"
-                      checked={prefixes().has(pfx)}
-                      onChange={() => togglePrefix(pfx)}
-                      data-sound="interaction.toggle"
-                    />
-                    <span class="catalog-filter-option-name">{pfx}/*</span>
-                    <span class="catalog-filter-option-count">{count}</span>
-                  </label>
-                )}
-              </For>
-            </div>
-          </details>
-          <details class="catalog-filter">
-            <summary class={`catalog-filter-trigger ${typeFilters().size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
-              <span class="catalog-filter-label">Capability</span>
-              <span class="catalog-filter-value">{typeButtonLabel()}</span>
-              <Show when={typeFilters().size > 0}>
-                <span class="catalog-filter-count">{typeFilters().size}</span>
-              </Show>
-              <span class="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
-            </summary>
-            <div class="catalog-filter-menu" role="group" aria-label="Filter by capability">
-              <For each={visibleTypeOptions()}>
-                {(key) => (
-                  <label class={`catalog-filter-option ${typeFilters().has(key) ? "is-active" : ""}`}>
-                    <input
-                      type="checkbox"
-                      checked={typeFilters().has(key)}
-                      onChange={() => toggleType(key)}
-                      data-sound="interaction.toggle"
-                    />
-                    <span class="catalog-filter-option-name">{FILTER_LABELS[key]}</span>
-                  </label>
-                )}
-              </For>
-            </div>
-          </details>
-        </div>
-      </div>
+      <CatalogFiltersToolbar
+        query={query()} setQuery={setQuery} setPage={setPage}
+        prefixes={prefixes()} togglePrefix={togglePrefix} prefixCounts={prefixCounts()}
+        typeFilters={typeFilters()} toggleType={toggleType} visibleTypeOptions={visibleTypeOptions()}
+        prefixButtonLabel={prefixButtonLabel()} typeButtonLabel={typeButtonLabel()}
+      />
 
       <Show when={hasGatedModel()}>
         <blockquote class="catalog-note">
@@ -714,32 +740,10 @@ export default function CatalogBrowser() {
         </Show>
       </div>
 
-      <div class="catalog-pagination">
-        <span class="catalog-pagination-count">
-          {allModels().length === 0
-            ? "Loading..."
-            : `${filteredModels().length.toLocaleString()} model${filteredModels().length !== 1 ? "s" : ""}`}
-        </span>
-        <Button
-          variant="ghost"
-          class="pagination-button"
-          disabled={page() <= 1}
-          onClick={() => setPage((p) => p - 1)}
-        >
-          Previous
-        </Button>
-        <span class="catalog-pagination-text">
-          {page()} / {pageCount()}
-        </span>
-        <Button
-          variant="ghost"
-          class="pagination-button"
-          disabled={page() >= pageCount()}
-          onClick={() => setPage((p) => p + 1)}
-        >
-          Next
-        </Button>
-      </div>
+      <CatalogPagination
+        page={page()} pageCount={pageCount()} filteredCount={filteredModels().length}
+        totalCount={allModels().length} setPage={setPage}
+      />
 
       <Show when={selected()}>
         {(model) => <ModelDetailModal model={model()} onClose={() => setSelected(null)} verifiedLabel={verifiedMemberLabel()} />}

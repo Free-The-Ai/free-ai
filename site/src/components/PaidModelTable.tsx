@@ -33,6 +33,60 @@ interface Row extends PaidModel {
 const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
 const formatCost = (cost: number) => Number.isInteger(cost) ? String(cost) : String(cost);
 
+// ── Paid Model Row sub-component ──
+
+function PaidModelRow({ model }: { model: PaidModel }) {
+  const ctx = model.context_window ?? model.max_input_tokens;
+  const out = model.max_output_tokens;
+  const hasMeta = ctx !== undefined || out !== undefined || model.supports_images;
+  const copyModel = (button: HTMLButtonElement) => {
+    navigator.clipboard.writeText(model.id).catch((error) => {
+      console.error("Failed to copy paid model alias", error);
+    });
+    const icon = button.querySelector(".material-symbols-outlined");
+    if (!icon) return;
+    icon.textContent = "check";
+    setTimeout(() => { icon.textContent = "content_copy"; }, 1500);
+  };
+  return (
+    <div class="paid-model-row" role="row">
+      <span class="paid-model-name">
+        <code>{model.id}</code>
+        {hasMeta && (
+          <span class="paid-model-meta">
+            {ctx !== undefined && (
+              <span class="model-chip" title="Total context window">
+                <span class="model-chip-label">Ctx</span>
+                <strong>{formatTokens(ctx)}</strong>
+              </span>
+            )}
+            {out !== undefined && (
+              <span class="model-chip" title="Maximum output tokens">
+                <span class="model-chip-label">Out</span>
+                <strong>{formatTokens(out)}</strong>
+              </span>
+            )}
+            {model.supports_images && (
+              <span class="model-chip is-images" title="Supports image inputs or generation">
+                <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
+                Images
+              </span>
+            )}
+          </span>
+        )}
+      </span>
+      <span class="pricing-route-pill">{model.prefix}/*</span>
+      <span class="pricing-route-pill">{model.route}</span>
+      <strong>{model.unit_label}</strong>
+      <button class="copy-btn pricing-model-copy" type="button" title={`Copy ${model.id}`}
+        onClick={(event) => copyModel(event.currentTarget)}>
+        <code class="sr-only">{model.id}</code>
+        <span class="material-symbols-outlined">content_copy</span>
+      </button>
+    </div>
+  );
+}
+
 export default function PaidModelTable(props: PaidModelTableProps) {
   const [query, setQuery] = createSignal("");
   const [prefix, setPrefix] = createSignal("all");
@@ -108,18 +162,6 @@ export default function PaidModelTable(props: PaidModelTableProps) {
     setCost("all");
   };
 
-  const copyModel = (id: string, button: HTMLButtonElement) => {
-    navigator.clipboard.writeText(id).catch((error) => {
-      console.error("Failed to copy paid model alias", error);
-    });
-    const icon = button.querySelector(".material-symbols-outlined");
-    if (!icon) return;
-    icon.textContent = "check";
-    setTimeout(() => {
-      icon.textContent = "content_copy";
-    }, 1500);
-  };
-
   return (
     <div class="paid-table-panel">
       <div class="paid-table-toolbar">
@@ -179,52 +221,7 @@ export default function PaidModelTable(props: PaidModelTableProps) {
           fallback={<div class="paid-model-empty">No paid aliases match your filters.</div>}
         >
           <For each={filteredRows()}>
-            {(model) => {
-              const ctx = model.context_window ?? model.max_input_tokens;
-              const out = model.max_output_tokens;
-              const hasMeta = ctx !== undefined || out !== undefined || model.supports_images;
-              return (
-                <div class="paid-model-row" role="row">
-                  <span class="paid-model-name">
-                    <code>{model.id}</code>
-                    {hasMeta && (
-                      <span class="paid-model-meta">
-                        {ctx !== undefined && (
-                          <span class="model-chip" title="Total context window">
-                            <span class="model-chip-label">Ctx</span>
-                            <strong>{formatTokens(ctx)}</strong>
-                          </span>
-                        )}
-                        {out !== undefined && (
-                          <span class="model-chip" title="Maximum output tokens">
-                            <span class="model-chip-label">Out</span>
-                            <strong>{formatTokens(out)}</strong>
-                          </span>
-                        )}
-                        {model.supports_images && (
-                          <span class="model-chip is-images" title="Supports image inputs or generation">
-                            <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
-                            Images
-                          </span>
-                        )}
-                      </span>
-                    )}
-                  </span>
-                  <span class="pricing-route-pill">{model.prefix}/*</span>
-                  <span class="pricing-route-pill">{model.route}</span>
-                  <strong>{model.unit_label}</strong>
-                  <button
-                    class="copy-btn pricing-model-copy"
-                    type="button"
-                    title={`Copy ${model.id}`}
-                    onClick={(event) => copyModel(model.id, event.currentTarget)}
-                  >
-                    <code class="sr-only">{model.id}</code>
-                    <span class="material-symbols-outlined">content_copy</span>
-                  </button>
-                </div>
-              );
-            }}
+            {(model) => <PaidModelRow model={model} />}
           </For>
         </Show>
       </div>

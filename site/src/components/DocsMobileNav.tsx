@@ -1,4 +1,5 @@
 import { createSignal, createEffect, onCleanup, For, Show } from "solid-js";
+import { disconnectPointerDrag, lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
 
 const SECTIONS = [
   { id: "auth", label: "Auth" },
@@ -15,7 +16,6 @@ export default function DocsMobileNav() {
   const [activeId, setActiveId] = createSignal("");
   const [dragY, setDragY] = createSignal(0);
 
-  let lockedScrollY = 0;
   let sheetEl: HTMLDivElement | undefined;
   let dragStartY = 0;
   let dragStartOffset = 0;
@@ -29,25 +29,8 @@ export default function DocsMobileNav() {
     unlockScroll();
   };
 
-  const lockScroll = () => {
-    if (typeof document === "undefined") return;
-    if (document.body.classList.contains("docs-toc-open")) return;
-    lockedScrollY = window.scrollY;
-    document.documentElement.classList.add("docs-toc-open");
-    document.body.classList.add("docs-toc-open");
-    document.body.style.top = `-${lockedScrollY}px`;
-  };
-
-  const unlockScroll = () => {
-    if (typeof document === "undefined") return;
-    if (!document.body.classList.contains("docs-toc-open")) return;
-    const y = lockedScrollY;
-    document.documentElement.classList.remove("docs-toc-open");
-    document.body.classList.remove("docs-toc-open");
-    document.body.style.top = "";
-    lockedScrollY = 0;
-    window.scrollTo(0, y);
-  };
+  const lockScroll = () => lockBodyScroll("docs-toc-open");
+  const unlockScroll = () => unlockBodyScroll("docs-toc-open");
 
   createEffect(() => {
     if (typeof window === "undefined") return;
@@ -119,13 +102,8 @@ export default function DocsMobileNav() {
     if (!isDragging) return;
     isDragging = false;
     e.preventDefault();
-    if (boundMove) document.removeEventListener("pointermove", boundMove);
-    if (boundUp) {
-      document.removeEventListener("pointerup", boundUp);
-      document.removeEventListener("pointercancel", boundUp);
-    }
-    boundMove = null;
-    boundUp = null;
+    disconnectPointerDrag(boundMove, boundUp);
+    boundMove = boundUp = null;
     const sheet = sheetEl;
     if (!sheet) { setDragY(0); return; }
     const threshold = sheet.offsetHeight * 0.3;

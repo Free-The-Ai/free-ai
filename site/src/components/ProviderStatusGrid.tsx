@@ -302,6 +302,58 @@ const CSS = `
 }
 `;
 
+// ── StatusCard sub-component ──
+
+function StatusCard({ provider, isSelected, onSelect, closePopover }: {
+  provider: ProviderHealth;
+  isSelected: boolean;
+  onSelect: () => void;
+  closePopover: () => void;
+}) {
+  const isAffected = provider.status === "degraded" || provider.status === "down";
+  const modelCount = provider.model_count;
+  const showBlast = isAffected && modelCount > 0;
+  const handleClick = () => (isSelected ? closePopover() : onSelect());
+  return (
+    <article
+      class={`status-card is-${provider.status}${isSelected ? " is-selected" : ""}`}
+      tabindex="0"
+      role="button"
+      aria-label={`${provider.prefix} provider status ${provider.status}`}
+      data-sound="interaction.tap"
+      onClick={handleClick}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") { e.preventDefault(); handleClick(); }
+      }}
+    >
+      <div class="status-card-top">
+        <span class="status-dot" />
+        <strong>{provider.prefix}/</strong>
+        <span>{provider.status}</span>
+      </div>
+      <div class="status-card-main">
+        <span>{modelCount.toLocaleString()}</span>
+        <small>{modelCount === 1 ? "model" : "models"}</small>
+      </div>
+      <div class="status-card-blast-slot">
+        {showBlast && (
+          <span class="status-card-blast">
+            {provider.status === "down" ? "Affected" : "At risk"}
+            {" "}<strong>{modelCount.toLocaleString()}</strong>
+            {" "}{modelCount === 1 ? "model" : "models"}
+          </span>
+        )}
+      </div>
+      <div class="status-card-meta">
+        <span>30m errors</span>
+        <strong>{formatPercent(provider.error_rate_30m)}</strong>
+        <span>requests</span>
+        <strong>{provider.requests_30m.toLocaleString()}</strong>
+      </div>
+    </article>
+  );
+}
+
 export default function ProviderStatusGrid() {
     const [health, setHealth] = createSignal<HealthPayload | null>(null);
     const [loadedAt, setLoadedAt] = createSignal<Date | null>(null);
@@ -499,87 +551,14 @@ export default function ProviderStatusGrid() {
                         }
                     >
                         <For each={filteredProviders()}>
-                            {(provider) => {
-                                const isSelected = () =>
-                                    selectedPrefix() === provider.prefix;
-                                const isAffected =
-                                    provider.status === "degraded" ||
-                                    provider.status === "down";
-                                const modelCount = provider.model_count;
-                                const showBlast = isAffected && modelCount > 0;
-
-                                return (
-                                    <article
-                                        class={`status-card is-${provider.status}${isSelected() ? " is-selected" : ""}`}
-                                        tabindex="0"
-                                        role="button"
-                                        aria-label={`${provider.prefix} provider status ${provider.status}`}
-                                        data-sound="interaction.tap"
-                                        onClick={() =>
-                                            isSelected()
-                                                ? closePopover()
-                                                : openPopover(provider.prefix)
-                                        }
-                                        onKeyDown={(e) => {
-                                            if (
-                                                e.key === "Enter" ||
-                                                e.key === " "
-                                            ) {
-                                                e.preventDefault();
-                                                isSelected()
-                                                    ? closePopover()
-                                                    : openPopover(provider.prefix);
-                                            }
-                                        }}
-                                    >
-                                        <div class="status-card-top">
-                                            <span class="status-dot" />
-                                            <strong>{provider.prefix}/</strong>
-                                            <span>{provider.status}</span>
-                                        </div>
-
-                                        <div class="status-card-main">
-                                            <span>
-                                                {modelCount.toLocaleString()}
-                                            </span>
-                                            <small>
-                                                {modelCount === 1
-                                                    ? "model"
-                                                    : "models"}
-                                            </small>
-                                        </div>
-
-                                        <div class="status-card-blast-slot">
-                                            {showBlast && (
-                                                <span class="status-card-blast">
-                                                    {provider.status === "down"
-                                                        ? "Affected"
-                                                        : "At risk"}{" "}
-                                                    <strong>
-                                                        {modelCount.toLocaleString()}
-                                                    </strong>{" "}
-                                                    {modelCount === 1
-                                                        ? "model"
-                                                        : "models"}
-                                                </span>
-                                            )}
-                                        </div>
-
-                                        <div class="status-card-meta">
-                                            <span>30m errors</span>
-                                            <strong>
-                                                {formatPercent(
-                                                    provider.error_rate_30m,
-                                                )}
-                                            </strong>
-                                            <span>requests</span>
-                                            <strong>
-                                                {provider.requests_30m.toLocaleString()}
-                                            </strong>
-                                        </div>
-                                    </article>
-                                );
-                            }}
+                            {(provider) => (
+                                <StatusCard
+                                    provider={provider}
+                                    isSelected={selectedPrefix() === provider.prefix}
+                                    onSelect={() => openPopover(provider.prefix)}
+                                    closePopover={closePopover}
+                                />
+                            )}
                         </For>
                     </Show>
                 </div>

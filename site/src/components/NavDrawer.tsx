@@ -1,6 +1,7 @@
 import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 import { siteConfig } from "../config/site";
+import { lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
 
 const LINKS: [string, string, boolean][] = [
   ["/home", "Home", false],
@@ -23,27 +24,9 @@ export default function NavDrawer(props: NavDrawerProps) {
   let dragStartX = 0;
   let dragCurrentX = 0;
   let isDragging = false;
-  let lockedScrollY = 0;
 
-  const lockPageScroll = () => {
-    if (typeof document === "undefined") return;
-    if (document.body.classList.contains("nav-drawer-open")) return;
-    lockedScrollY = window.scrollY;
-    document.documentElement.classList.add("nav-drawer-open");
-    document.body.classList.add("nav-drawer-open");
-    document.body.style.top = `-${lockedScrollY}px`;
-  };
-
-  const unlockPageScroll = () => {
-    if (typeof document === "undefined") return;
-    if (!document.body.classList.contains("nav-drawer-open")) return;
-    const restoreY = lockedScrollY;
-    document.documentElement.classList.remove("nav-drawer-open");
-    document.body.classList.remove("nav-drawer-open");
-    document.body.style.top = "";
-    lockedScrollY = 0;
-    window.scrollTo(0, restoreY);
-  };
+  const lockPageScroll = () => lockBodyScroll("nav-drawer-open");
+  const unlockPageScroll = () => unlockBodyScroll("nav-drawer-open");
 
   const closeDrawer = () => {
     setOpen(false);

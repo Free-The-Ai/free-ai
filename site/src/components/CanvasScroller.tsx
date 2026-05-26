@@ -37,6 +37,75 @@ const FRAGMENT = `
   }
 `;
 
+// ── Layer builders ──
+
+function createParticleLayer(): { points: THREE.Points; material: THREE.ShaderMaterial } {
+  const count = 350;
+  const positions = new Float32Array(count * 3);
+  const phases = new Float32Array(count);
+  const speeds = new Float32Array(count);
+  const sizes = new Float32Array(count);
+
+  for (let i = 0; i < count; i++) {
+    const i3 = i * 3;
+    positions[i3] = (Math.random() - 0.5) * 90;
+    positions[i3 + 1] = (Math.random() - 0.5) * 70;
+    positions[i3 + 2] = (Math.random() - 0.5) * 45;
+    phases[i] = Math.random() * Math.PI * 2;
+    speeds[i] = 0.2 + Math.random() * 1.5;
+    sizes[i] = 0.4 + Math.random() * 1.4;
+  }
+
+  const geometry = new THREE.BufferGeometry();
+  geometry.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geometry.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
+  geometry.setAttribute("aSpeed", new THREE.BufferAttribute(speeds, 1));
+  geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
+
+  const material = new THREE.ShaderMaterial({
+    vertexShader: VERTEX,
+    fragmentShader: FRAGMENT,
+    uniforms: { uScroll: { value: 0 }, uTime: { value: 0 } },
+    transparent: true,
+    depthWrite: false,
+    blending: THREE.AdditiveBlending,
+  });
+
+  return { points: new THREE.Points(geometry, material), material };
+}
+
+function createGridLayer(): THREE.Points {
+  const gridPos = new Float32Array(600 * 3);
+  for (let i = 0; i < 600; i++) {
+    gridPos[i * 3] = (Math.random() - 0.5) * 140;
+    gridPos[i * 3 + 1] = (Math.random() - 0.5) * 90;
+    gridPos[i * 3 + 2] = -18 - Math.random() * 30;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(gridPos, 3));
+  const mat = new THREE.PointsMaterial({
+    color: 0x2a2924, size: 0.06, transparent: true, opacity: 0.3,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  return new THREE.Points(geo, mat);
+}
+
+function createAccentLayer(): THREE.Points {
+  const accPos = new Float32Array(30 * 3);
+  for (let i = 0; i < 30; i++) {
+    accPos[i * 3] = (Math.random() - 0.5) * 60;
+    accPos[i * 3 + 1] = (Math.random() - 0.5) * 50;
+    accPos[i * 3 + 2] = (Math.random() - 0.5) * 25;
+  }
+  const geo = new THREE.BufferGeometry();
+  geo.setAttribute("position", new THREE.BufferAttribute(accPos, 3));
+  const mat = new THREE.PointsMaterial({
+    color: 0xee5e14, size: 0.12, transparent: true, opacity: 0.5,
+    blending: THREE.AdditiveBlending, depthWrite: false,
+  });
+  return new THREE.Points(geo, mat);
+}
+
 export default function CanvasScroller() {
     let container: HTMLDivElement | undefined;
 
@@ -44,99 +113,22 @@ export default function CanvasScroller() {
         if (!container || typeof window === "undefined") return;
 
         const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(
-            50,
-            window.innerWidth / window.innerHeight,
-            0.1,
-            100,
-        );
+        const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 100);
         camera.position.z = 38;
 
-        const renderer = new THREE.WebGLRenderer({
-            alpha: true,
-            antialias: true,
-        });
+        const renderer = new THREE.WebGLRenderer({ alpha: true, antialias: true });
         renderer.setSize(window.innerWidth, window.innerHeight);
         renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
         container.appendChild(renderer.domElement);
         renderer.domElement.style.pointerEvents = "none";
 
-        // Layer 1: floating particles
-        const count = 350;
-        const positions = new Float32Array(count * 3);
-        const phases = new Float32Array(count);
-        const speeds = new Float32Array(count);
-        const sizes = new Float32Array(count);
-
-        for (let i = 0; i < count; i++) {
-            const i3 = i * 3;
-            positions[i3] = (Math.random() - 0.5) * 90;
-            positions[i3 + 1] = (Math.random() - 0.5) * 70;
-            positions[i3 + 2] = (Math.random() - 0.5) * 45;
-            phases[i] = Math.random() * Math.PI * 2;
-            speeds[i] = 0.2 + Math.random() * 1.5;
-            sizes[i] = 0.4 + Math.random() * 1.4;
-        }
-
-        const geometry = new THREE.BufferGeometry();
-        geometry.setAttribute(
-            "position",
-            new THREE.BufferAttribute(positions, 3),
-        );
-        geometry.setAttribute("aPhase", new THREE.BufferAttribute(phases, 1));
-        geometry.setAttribute("aSpeed", new THREE.BufferAttribute(speeds, 1));
-        geometry.setAttribute("aSize", new THREE.BufferAttribute(sizes, 1));
-
-        const material = new THREE.ShaderMaterial({
-            vertexShader: VERTEX,
-            fragmentShader: FRAGMENT,
-            uniforms: { uScroll: { value: 0 }, uTime: { value: 0 } },
-            transparent: true,
-            depthWrite: false,
-            blending: THREE.AdditiveBlending,
-        });
-
-        const points = new THREE.Points(geometry, material);
+        const { points, material } = createParticleLayer();
         scene.add(points);
 
-        // Layer 2: distant grid
-        const gridGeo = new THREE.BufferGeometry();
-        const gridPos = new Float32Array(600 * 3);
-        for (let i = 0; i < 600; i++) {
-            gridPos[i * 3] = (Math.random() - 0.5) * 140;
-            gridPos[i * 3 + 1] = (Math.random() - 0.5) * 90;
-            gridPos[i * 3 + 2] = -18 - Math.random() * 30;
-        }
-        gridGeo.setAttribute("position", new THREE.BufferAttribute(gridPos, 3));
-        const gridMat = new THREE.PointsMaterial({
-            color: 0x2a2924,
-            size: 0.06,
-            transparent: true,
-            opacity: 0.3,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-        });
-        const grid = new THREE.Points(gridGeo, gridMat);
+        const grid = createGridLayer();
         scene.add(grid);
 
-        // Layer 3: accent dots scattered
-        const accGeo = new THREE.BufferGeometry();
-        const accPos = new Float32Array(30 * 3);
-        for (let i = 0; i < 30; i++) {
-            accPos[i * 3] = (Math.random() - 0.5) * 60;
-            accPos[i * 3 + 1] = (Math.random() - 0.5) * 50;
-            accPos[i * 3 + 2] = (Math.random() - 0.5) * 25;
-        }
-        accGeo.setAttribute("position", new THREE.BufferAttribute(accPos, 3));
-        const accMat = new THREE.PointsMaterial({
-            color: 0xee5e14,
-            size: 0.12,
-            transparent: true,
-            opacity: 0.5,
-            blending: THREE.AdditiveBlending,
-            depthWrite: false,
-        });
-        const accents = new THREE.Points(accGeo, accMat);
+        const accents = createAccentLayer();
         scene.add(accents);
 
         let frame: number;
@@ -177,12 +169,12 @@ export default function CanvasScroller() {
         onCleanup(() => {
             cancelAnimationFrame(frame);
             window.removeEventListener("resize", onResize);
-            geometry.dispose();
-            gridGeo.dispose();
-            accGeo.dispose();
+            points.geometry.dispose();
             material.dispose();
-            gridMat.dispose();
-            accMat.dispose();
+            grid.geometry.dispose();
+            (grid.material as THREE.Material).dispose();
+            accents.geometry.dispose();
+            (accents.material as THREE.Material).dispose();
             renderer.dispose();
             if (container) container.innerHTML = "";
         });

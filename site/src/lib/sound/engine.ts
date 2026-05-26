@@ -14,11 +14,13 @@ import type {
 
 let audioCtx: AudioContext | null = null;
 let resumePromise: Promise<void> | null = null;
+let resumed = false;
 
 export function getAudioContext(): AudioContext {
   if (!audioCtx || audioCtx.state === "closed") {
     audioCtx = new AudioContext();
     resumePromise = null;
+    resumed = audioCtx.state === "running";
   }
   return audioCtx;
 }
@@ -28,10 +30,14 @@ export function getAudioContext(): AudioContext {
  * on first interaction. Returns a promise that resolves when the context is ready.
  */
 export function ensureResumed(): Promise<void> {
+  if (resumed) return Promise.resolve();
   const ctx = getAudioContext();
-  if (ctx.state === "running") return Promise.resolve();
+  if (ctx.state === "running") {
+    resumed = true;
+    return Promise.resolve();
+  }
   if (!resumePromise) {
-    resumePromise = ctx.resume();
+    resumePromise = ctx.resume().then(() => { resumed = true; });
   }
   return resumePromise;
 }
@@ -94,11 +100,16 @@ export function playSound(
 
   const ctx = getAudioContext();
 
-  if (ctx.state === "suspended") {
+  // If AudioContext is suspended, queue playback for after resume.
+  // The warmup handler (capture phase) fires before this and calls
+  // ensureResumed(), so by the next microtask the context should be running.
+  if (!resumed && ctx.state !== "running") {
+    let stopped = false;
+    const placeholder: SoundPlayback = { stop() { stopped = true; } };
     ensureResumed().then(() => {
-      playSoundImmediate(source, options);
+      if (!stopped) playSoundImmediate(source, options);
     });
-    return { stop() {} };
+    return placeholder;
   }
 
   return playSoundImmediate(source, options);

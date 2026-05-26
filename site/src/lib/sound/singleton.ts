@@ -27,6 +27,7 @@ import {
   playSound as enginePlaySound,
   closeAudioContext,
   ensureResumed,
+  getAudioContext,
 } from "./engine";
 import { soundPacks } from "./packs";
 
@@ -197,6 +198,9 @@ export function initSoundSystem(): void {
   if (initialized) return;
   initialized = true;
 
+  // Eagerly create AudioContext so resume() is the only async step on first gesture
+  getAudioContext();
+
   // Reduced motion detection
   if (config.reducedMotion === "inherit" && typeof window !== "undefined") {
     const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -208,17 +212,19 @@ export function initSoundSystem(): void {
     reducedMotion = true;
   }
 
-  // Warm up AudioContext on first user gesture
+  // Warm up AudioContext on first user gesture.
+  // Uses capture phase to fire BEFORE click/pointer delegation handlers,
+  // ensuring AudioContext.resume() starts before soundPlay checks ctx.state.
   warmUpHandler = () => {
     ensureResumed();
-    document.removeEventListener("click", warmUpHandler!);
-    document.removeEventListener("keydown", warmUpHandler!);
-    document.removeEventListener("pointerdown", warmUpHandler!);
+    document.removeEventListener("click", warmUpHandler!, true);
+    document.removeEventListener("keydown", warmUpHandler!, true);
+    document.removeEventListener("pointerdown", warmUpHandler!, true);
     warmUpHandler = null;
   };
-  document.addEventListener("click", warmUpHandler, { passive: true });
-  document.addEventListener("keydown", warmUpHandler, { passive: true });
-  document.addEventListener("pointerdown", warmUpHandler, { passive: true });
+  document.addEventListener("click", warmUpHandler, { capture: true, passive: true });
+  document.addEventListener("keydown", warmUpHandler, { capture: true, passive: true });
+  document.addEventListener("pointerdown", warmUpHandler, { capture: true, passive: true });
 
   // data-sound event delegation
   document.addEventListener("click", handleClick, { passive: true });
@@ -236,9 +242,9 @@ export function destroySoundSystem(): void {
   initialized = false;
 
   if (warmUpHandler) {
-    document.removeEventListener("click", warmUpHandler);
-    document.removeEventListener("keydown", warmUpHandler);
-    document.removeEventListener("pointerdown", warmUpHandler);
+    document.removeEventListener("click", warmUpHandler, true);
+    document.removeEventListener("keydown", warmUpHandler, true);
+    document.removeEventListener("pointerdown", warmUpHandler, true);
     warmUpHandler = null;
   }
   document.removeEventListener("click", handleClick);

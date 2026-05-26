@@ -86,16 +86,16 @@ const modelSupportsAudio = (model: Model): boolean =>
 
 const modelContext = (model: Model): number => model.context_window ?? model.max_input_tokens ?? 0;
 
+const TYPE_PREDICATES: Record<FilterKey, (m: Model) => boolean> = {
+  chat: (m) => !modelSupportsAudio(m),
+  images: (m) => modelSupportsImages(m),
+  audio: (m) => modelSupportsAudio(m),
+  gated: (m) => m.requires_seems_legit,
+  long: (m) => modelContext(m) >= 128_000,
+};
+
 const matchesAnyType = (m: Model, types: Set<FilterKey>): boolean => {
-  for (const key of types) {
-    switch (key) {
-      case "chat": if (!modelSupportsAudio(m)) return true;
-      case "images": if (modelSupportsImages(m)) return true;
-      case "audio": if (modelSupportsAudio(m)) return true;
-      case "gated": if (m.requires_seems_legit) return true;
-      case "long": if (modelContext(m) >= 128_000) return true;
-    }
-  }
+  for (const key of types) { if (TYPE_PREDICATES[key](m)) return true; }
   return false;
 };
 

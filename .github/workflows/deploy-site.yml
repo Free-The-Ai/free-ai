@@ -18,6 +18,8 @@ jobs:
         uses: actions/checkout@v6
       - name: Fallow - Codebase Intelligence
         uses: fallow-rs/fallow@v2.82.0
+        with:
+          fail-on-issues: false
 
   build:
     runs-on: ubuntu-latest

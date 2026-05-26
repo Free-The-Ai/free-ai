@@ -6,14 +6,25 @@
  * so createContext/useContext fails across islands. A module-level singleton
  * shared via ES module cache works across all islands on the same page.
  *
- * This mirrors the existing haptics pattern (src/lib/haptics.ts).
+ * IMPORTANT: This component renders nothing (returns null). It is NOT a wrapper.
+ * It must be placed as a self-closing sibling element, NOT wrapping children.
+ * Wrapping children caused <astro-island> to enclose transition:persist elements,
+ * which breaks Astro View Transitions (elements persist across navigations but
+ * their parent island gets destroyed, leaving transitions stuck).
+ *
+ * Usage in Layout.astro:
+ *   <SoundProvider client:load config={{ volume: 0.3, theme: "aero" }} />
+ *
+ * The sound system persists across navigations because it uses module-level
+ * state that survives Solid.js component recreation.
+ * Lifecycle: initSoundSystem() is called on first mount. Event listeners
+ * on document/window survive navigation. The AudioContext persists.
+ * Only the beforeunload event tears everything down.
  */
 
-import { onMount, onCleanup } from "solid-js";
-import type { JSXElement } from "solid-js";
+import { onMount } from "solid-js";
 import {
   initSoundSystem,
-  destroySoundSystem,
   soundPlay,
   soundConfigure,
 } from "../lib/sound/singleton";
@@ -23,15 +34,16 @@ export { soundPlay, soundConfigure } from "../lib/sound/singleton";
 
 interface SoundProviderProps {
   config?: Partial<SensoryConfig>;
-  children: JSXElement;
 }
 
 export default function SoundProvider(props: SoundProviderProps) {
   onMount(() => {
     soundConfigure(props.config);
     initSoundSystem();
-    onCleanup(destroySoundSystem);
+    // Do NOT destroy on unmount — module-level state survives navigation.
+    // The sound system uses document/window event listeners that persist.
+    // Cleanup happens on tab close via beforeunload inside singleton.ts.
   });
 
-  return props.children;
+  return null;
 }

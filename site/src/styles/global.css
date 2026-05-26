@@ -112,17 +112,29 @@
     }
 }
 
-/* ── View Transitions — pure crossfade, zero transform ── */
-
-/* Root page content: fast opacity crossfade */
-::view-transition-old(root) {
-    animation: 100ms linear both vt-out;
-}
-::view-transition-new(root) {
-    animation: 100ms linear both vt-in;
+/* ── View Transitions ── */
+/* Only the main content area fades — header/footer snap instantly. */
+.site-main {
+    view-transition-name: main-content;
 }
 
-/* Header/footer use transition:persist — no animation needed */
+/* Header and footer snap instantly (no animation) */
+.site-header, .site-footer {
+    view-transition-name: none;
+}
+
+/* Main content crossfade: fast, smooth, GPU-composited */
+::view-transition-old(main-content) {
+    animation: 120ms cubic-bezier(0.22, 1, 0.36, 1) both vt-out;
+}
+::view-transition-new(main-content) {
+    animation: 120ms cubic-bezier(0.22, 1, 0.36, 1) both vt-in;
+}
+
+/* Root group: snap instantly (no animation on header/footer/shell) */
+::view-transition-group(root) {
+    animation-duration: 0.001s;
+}
 
 @keyframes vt-out {
     from { opacity: 1; }

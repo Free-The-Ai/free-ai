@@ -53,7 +53,9 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 		<ClientRouter />
 	</head>
 	<body>
-		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }}>
+		<!-- Sound system: module-level singleton, no DOM output, survives navigation -->
+		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }} />
+
 		<div id="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:1">
 			<Logo width={160} style="opacity:.4" />
 		</div>
@@ -76,8 +78,9 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				}
 			})();
 		</script>
+
 		<div class="page-shell">
-			<header class="site-header" transition:persist>
+			<header class="site-header">
 				<nav class="nav">
 					<a class="brand" href="/home"><Logo width={160} /></a>
 					<div class="nav-links">
@@ -155,7 +158,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				<slot />
 			</div>
 
-			<footer class="site-footer" transition:persist>
+			<footer class="site-footer">
 				<div class="footer-links">
 					<a href="/quickstart">Quickstart</a>
 					<a href="/setup">Setup guides</a>
@@ -306,6 +309,5 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 			}
 		})();
 	</script>
-	</SoundProvider>
 </body>
 </html>

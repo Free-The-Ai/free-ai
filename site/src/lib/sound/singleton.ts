@@ -234,9 +234,15 @@ export function initSoundSystem(): void {
   lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
   lastScrollTime = performance.now();
   window.addEventListener("scroll", handleScroll, { passive: true });
+
+  // Cleanup on tab close only — module-level state persists across navigations.
+  // Astro ClientRouter destroys and recreates client:load islands on each nav,
+  // so onCleanup would tear down the sound system unnecessarily. The singleton
+  // survives because all state is module-level in the ES module cache.
+  window.addEventListener("beforeunload", destroySoundSystem);
 }
 
-/** Destroy the sound system. Call from onCleanup in SoundProvider. */
+/** Destroy the sound system. Called automatically on beforeunload. */
 export function destroySoundSystem(): void {
   if (!initialized) return;
   initialized = false;
@@ -250,5 +256,6 @@ export function destroySoundSystem(): void {
   document.removeEventListener("click", handleClick);
   document.removeEventListener("pointerenter", handlePointerEnter);
   window.removeEventListener("scroll", handleScroll);
+  window.removeEventListener("beforeunload", destroySoundSystem);
   closeAudioContext();
 }

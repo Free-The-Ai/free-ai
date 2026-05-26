@@ -7,7 +7,7 @@ import {
 } from "solid-js";
 import type { ProviderHealth } from "./ProviderStatusGrid";
 import { formatPercent } from "../utils/format";
-import { disconnectPointerDrag } from "../lib/domUtils";
+import { disconnectPointerDrag, lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
 
 type ScrollRailMetrics = {
     scrollable: boolean;
@@ -525,7 +525,6 @@ export default function ProviderPopover(props: {
     onClose: () => void;
 }) {
     const [isMobile, setIsMobile] = createSignal(false);
-    let lockedScrollY = 0;
 
     const provider = () => props.provider;
     const closePopover = () => {
@@ -538,23 +537,9 @@ export default function ProviderPopover(props: {
     const rail = useScrollRail(provider);
     const drag = useDragToDismiss(isMobile, closePopover);
 
-    /* ── Body scroll lock ── */
-    const lockPageScroll = () => {
-        if (typeof document === "undefined" || document.body.classList.contains("popover-open")) return;
-        lockedScrollY = window.scrollY;
-        document.documentElement.classList.add("popover-open");
-        document.body.classList.add("popover-open");
-        document.body.style.top = `-${lockedScrollY}px`;
-    };
-    const unlockPageScroll = () => {
-        if (typeof document === "undefined" || !document.body.classList.contains("popover-open")) return;
-        const restoreY = lockedScrollY;
-        document.documentElement.classList.remove("popover-open");
-        document.body.classList.remove("popover-open");
-        document.body.style.top = "";
-        lockedScrollY = 0;
-        window.scrollTo(0, restoreY);
-    };
+    /* ── Body scroll lock (uses shared domUtils with "popover-open" class) ── */
+    const lockPageScroll = () => lockBodyScroll("popover-open");
+    const unlockPageScroll = () => unlockBodyScroll("popover-open");
 
     onMount(() => {
         lockPageScroll();

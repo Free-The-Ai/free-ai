@@ -147,6 +147,51 @@ function handlePointerEnter(e: Event) {
 
 let warmUpHandler: (() => void) | null = null;
 
+// ── Scroll sound throttling ──
+
+const SCROLL_PIXEL_INTERVAL = 80;
+const SCROLL_MIN_VELOCITY = 0.5;    // px/ms — ignore very slow scroll
+const SCROLL_MAX_VELOCITY_MULT = 1.5;
+let lastScrollY = 0;
+let lastScrollTime = 0;
+let scrollAccumulated = 0;
+
+function handleScroll() {
+  if (!soundEnabled() || reducedMotion) return;
+  const y = window.scrollY;
+  const now = performance.now();
+  const delta = Math.abs(y - lastScrollY);
+
+  // Reset on direction change or huge jumps (keyboard PgDn etc.)
+  if (delta > 400) {
+    lastScrollY = y;
+    lastScrollTime = now;
+    scrollAccumulated = 0;
+    return;
+  }
+
+  scrollAccumulated += delta;
+  lastScrollY = y;
+
+  if (scrollAccumulated < SCROLL_PIXEL_INTERVAL) return;
+
+  const elapsed = now - lastScrollTime;
+  const velocity = elapsed > 0 ? delta / elapsed : 0;
+  lastScrollTime = now;
+
+  // Ignore very slow scrolling
+  if (velocity < SCROLL_MIN_VELOCITY) {
+    scrollAccumulated = 0;
+    return;
+  }
+
+  scrollAccumulated = 0;
+
+  // Velocity-sensitive volume: faster = louder, capped
+  const velocityMult = Math.min(velocity / 2, SCROLL_MAX_VELOCITY_MULT);
+  soundPlay("navigation.scroll", { volume: 0.15 + velocityMult * 0.1 });
+}
+
 /** Initialize the sound system. Call from onMount in SoundProvider. */
 export function initSoundSystem(): void {
   if (initialized) return;
@@ -178,6 +223,11 @@ export function initSoundSystem(): void {
   // data-sound event delegation
   document.addEventListener("click", handleClick, { passive: true });
   document.addEventListener("pointerenter", handlePointerEnter, { passive: true });
+
+  // Scroll sound (throttled by distance, velocity-sensitive)
+  lastScrollY = typeof window !== "undefined" ? window.scrollY : 0;
+  lastScrollTime = performance.now();
+  window.addEventListener("scroll", handleScroll, { passive: true });
 }
 
 /** Destroy the sound system. Call from onCleanup in SoundProvider. */
@@ -193,5 +243,6 @@ export function destroySoundSystem(): void {
   }
   document.removeEventListener("click", handleClick);
   document.removeEventListener("pointerenter", handlePointerEnter);
+  window.removeEventListener("scroll", handleScroll);
   closeAudioContext();
 }

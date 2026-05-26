@@ -118,6 +118,14 @@ export const ROLE_TUNES: Record<SoundRole, BaseTune> = {
     attack: 0.002,
     decay: 0.035,
   },
+  "navigation.scroll": {
+    type: "tick",
+    duration: 0.005,
+    filterFreq: 5000,
+    filterQ: 1.5,
+    volume: 0.15,
+    meta: { decayConstant: 60 },
+  },
 
   // ── Notification (200–600 ms) ──
   "notification.info": {

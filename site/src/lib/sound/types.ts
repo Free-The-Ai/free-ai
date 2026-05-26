@@ -24,6 +24,7 @@ export type SoundRole =
   | "navigation.forward"
   | "navigation.backward"
   | "navigation.tab"
+  | "navigation.scroll"
   | "notification.info"
   | "notification.success"
   | "notification.warning"
@@ -43,6 +44,7 @@ export const ALL_SOUND_ROLES: SoundRole[] = [
   "navigation.forward",
   "navigation.backward",
   "navigation.tab",
+  "navigation.scroll",
   "notification.info",
   "notification.success",
   "notification.warning",

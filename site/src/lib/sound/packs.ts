@@ -73,6 +73,53 @@ function mergePlayback(...pbs: SoundPlayback[]): SoundPlayback {
   return { stop() { for (const p of pbs) try { p.stop(); } catch {} } };
 }
 
+/** Play a single note with envelope, returns the oscillator. */
+function playNote(ctx: AudioContext, t: number, freq: number, vol: number, dur: number,
+  instr: InstrumentConfig, cents = 0): OscillatorNode {
+  const o = createOscillator(ctx, freq * instr.pitchMult, { ...instr, pitchMult: 1 }, cents);
+  const g = createEnvelopedGain(ctx, t, vol, dur, instr);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(t); o.stop(t + dur + 0.3);
+  return o;
+}
+
+/** Play multiple simultaneous notes (chord). Returns oscillators. */
+function playChord(ctx: AudioContext, t: number, notes: number[], vol: number, dur: number,
+  instr: InstrumentConfig, detune?: number): OscillatorNode[] {
+  const oscs: OscillatorNode[] = [];
+  const centsList = detune ? [-detune, detune] : [0];
+  const factor = centsList.length;
+  for (const freq of notes) {
+    for (const cents of centsList) {
+      oscs.push(playNote(ctx, t, freq, vol / factor, dur, instr, cents));
+    }
+  }
+  return oscs;
+}
+
+/** Play a sequence of notes (arpeggio) starting at t+offset. Returns oscillators. */
+function playArp(ctx: AudioContext, offset: number, notes: number[], vol: number, dur: number,
+  gap: number, instr: InstrumentConfig): OscillatorNode[] {
+  const oscs: OscillatorNode[] = [];
+  for (let i = 0; i < notes.length; i++) {
+    oscs.push(playNote(ctx, offset + i * gap, notes[i], vol, dur, instr));
+  }
+  return oscs;
+}
+
+/** Single note with crisp envelope (fast attack + exponential decay). */
+function crispNote(ctx: AudioContext, t: number, freq: number, vol: number,
+  instr: InstrumentConfig, noteDur: number): OscillatorNode {
+  const o = createOscillator(ctx, freq * instr.pitchMult, { ...instr, pitchMult: 1 });
+  const g = ctx.createGain();
+  g.gain.setValueAtTime(0.001, t);
+  g.gain.linearRampToValueAtTime(Math.max(0.001, vol * instr.gainMult), t + 0.003);
+  g.gain.exponentialRampToValueAtTime(0.001, t + noteDur);
+  o.connect(g); g.connect(ctx.destination);
+  o.start(t); o.stop(t + noteDur + 0.03);
+  return o;
+}
+
 // ── Custom complex hero sound builders (keep as named for readability) ──
 
 function organicHeroComplete(instrument: InstrumentConfig): SoundSynthesizer {
@@ -81,10 +128,7 @@ function organicHeroComplete(instrument: InstrumentConfig): SoundSynthesizer {
     const vol = 0.35 * (options.volume ?? 1);
     const base = playSequence(ctx, time, vol,
       [261.63, 392.0, 329.63, 440.0, 523.25], instrument, { gap: 0.14, dur: 0.3 });
-    const body = createOscillator(ctx, 261.63 * 2.8 * instrument.pitchMult, { ...instrument, pitchMult: 1 });
-    const bodyGain = createEnvelopedGain(ctx, time, vol * 0.1, 0.6, instrument);
-    body.connect(bodyGain); bodyGain.connect(ctx.destination);
-    body.start(time); body.stop(time + 0.8);
+    const body = playNote(ctx, time, 261.63 * 2.8, vol * 0.1, 0.6, instrument);
     return mergePlayback(base, { stop() { try { body.stop(); } catch {} } });
   };
 }
@@ -93,24 +137,10 @@ function industrialHeroComplete(instrument: InstrumentConfig): SoundSynthesizer 
   return (ctx, options) => {
     const time = ctx.currentTime;
     const vol = 0.4 * (options.volume ?? 1);
-    const chordNotes = [164.81, 246.94, 329.63]; // E3 B3 E4
-    const arpNotes = [329.63, 392.0, 493.88, 659.25]; // E4 G4 B4 E5
-    const oscs: OscillatorNode[] = [];
-    for (const freq of chordNotes) {
-      const o = createOscillator(ctx, freq * instrument.pitchMult, { ...instrument, pitchMult: 1 });
-      const g = createEnvelopedGain(ctx, time, vol * 0.8, 0.5, { ...instrument, decayMult: 0.6 });
-      o.connect(g); g.connect(ctx.destination);
-      o.start(time); o.stop(time + 0.8);
-      oscs.push(o);
-    }
-    for (let i = 0; i < arpNotes.length; i++) {
-      const t = time + 0.3 + i * 0.08;
-      const o = createOscillator(ctx, arpNotes[i] * instrument.pitchMult, { ...instrument, pitchMult: 1 });
-      const g = createEnvelopedGain(ctx, t, vol, 0.15, { ...instrument, decayMult: 0.6 });
-      o.connect(g); g.connect(ctx.destination);
-      o.start(t); o.stop(t + 0.2);
-      oscs.push(o);
-    }
+    const oscs = [
+      ...playChord(ctx, time, [164.81, 246.94, 329.63], vol * 0.8, 0.5, instrument),
+      ...playArp(ctx, time + 0.3, [329.63, 392.0, 493.88, 659.25], vol, 0.15, 0.08, instrument),
+    ];
     return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
   };
 }
@@ -119,19 +149,10 @@ function industrialHeroMilestone(instrument: InstrumentConfig): SoundSynthesizer
   return (ctx, options) => {
     const time = ctx.currentTime;
     const vol = 0.35 * (options.volume ?? 1);
-    const oscs: OscillatorNode[] = [];
-    for (const freq of [164.81, 246.94]) { // E3 B3 fifth
-      const o = createOscillator(ctx, freq * instrument.pitchMult, { ...instrument, pitchMult: 1 });
-      const g = createEnvelopedGain(ctx, time, vol, 0.3, { ...instrument, decayMult: 0.6 });
-      o.connect(g); g.connect(ctx.destination);
-      o.start(time); o.stop(time + 0.5);
-      oscs.push(o);
-    }
-    const stab = createOscillator(ctx, 329.63 * instrument.pitchMult, { ...instrument, pitchMult: 1 });
-    const sg = createEnvelopedGain(ctx, time + 0.15, vol * 0.8, 0.2, { ...instrument, decayMult: 0.6 });
-    stab.connect(sg); sg.connect(ctx.destination);
-    stab.start(time + 0.15); stab.stop(time + 0.4);
-    oscs.push(stab);
+    const oscs = [
+      ...playChord(ctx, time, [164.81, 246.94], vol, 0.3, { ...instrument, decayMult: 0.6 }),
+      playNote(ctx, time + 0.15, 329.63, vol * 0.8, 0.2, { ...instrument, decayMult: 0.6 }),
+    ];
     return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
   };
 }
@@ -140,26 +161,10 @@ function retroHeroComplete(instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
     const time = ctx.currentTime;
     const vol = 0.35 * (options.volume ?? 1);
-    const chordNotes = [220.0, 261.63, 329.63]; // A3 C4 E4
-    const arpNotes = [440.0, 523.25, 659.25, 880.0]; // A4 C5 E5 A5
-    const oscs: OscillatorNode[] = [];
-    for (const freq of chordNotes) {
-      for (const cents of [-6, 6]) {
-        const o = createOscillator(ctx, freq * instrument.pitchMult, { ...instrument, pitchMult: 1 }, cents);
-        const g = createEnvelopedGain(ctx, time, vol * 0.5, 0.4, instrument);
-        o.connect(g); g.connect(ctx.destination);
-        o.start(time); o.stop(time + 0.8);
-        oscs.push(o);
-      }
-    }
-    for (let i = 0; i < arpNotes.length; i++) {
-      const t = time + 0.4 + i * 0.08;
-      const o = createOscillator(ctx, arpNotes[i] * instrument.pitchMult, { ...instrument, pitchMult: 1 });
-      const g = createEnvelopedGain(ctx, t, vol, 0.12, { ...instrument, decayMult: 1.1 });
-      o.connect(g); g.connect(ctx.destination);
-      o.start(t); o.stop(t + 0.2);
-      oscs.push(o);
-    }
+    const oscs = [
+      ...playChord(ctx, time, [220.0, 261.63, 329.63], vol * 0.5, 0.4, instrument, 6),
+      ...playArp(ctx, time + 0.4, [440.0, 523.25, 659.25, 880.0], vol, 0.12, 0.08, { ...instrument, decayMult: 1.1 }),
+    ];
     return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
   };
 }
@@ -168,22 +173,10 @@ function retroHeroMilestone(instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
     const time = ctx.currentTime;
     const vol = 0.3 * (options.volume ?? 1);
-    const chordNotes = [220.0, 261.63, 329.63];
-    const oscs: OscillatorNode[] = [];
-    for (const freq of chordNotes) {
-      for (const cents of [-6, 6]) {
-        const o = createOscillator(ctx, freq * instrument.pitchMult, { ...instrument, pitchMult: 1 }, cents);
-        const g = createEnvelopedGain(ctx, time, vol * 0.4, 0.25, instrument);
-        o.connect(g); g.connect(ctx.destination);
-        o.start(time); o.stop(time + 0.4);
-        oscs.push(o);
-      }
-    }
-    const res = createOscillator(ctx, 440.0 * instrument.pitchMult, { ...instrument, pitchMult: 1 });
-    const rg = createEnvelopedGain(ctx, time + 0.2, vol, 0.2, instrument);
-    res.connect(rg); rg.connect(ctx.destination);
-    res.start(time + 0.2); res.stop(time + 0.5);
-    oscs.push(res);
+    const oscs = [
+      ...playChord(ctx, time, [220.0, 261.63, 329.63], vol * 0.4, 0.25, instrument, 6),
+      playNote(ctx, time + 0.2, 440.0, vol, 0.2, instrument),
+    ];
     return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
   };
 }
@@ -195,15 +188,7 @@ function crispHeroComplete(instrument: InstrumentConfig): SoundSynthesizer {
     const notes = [523.25, 587.33, 659.25, 783.99, 880.0, 1046.5];
     const oscs: OscillatorNode[] = [];
     for (let i = 0; i < notes.length; i++) {
-      const t = time + i * 0.05;
-      const o = createOscillator(ctx, notes[i] * instrument.pitchMult, { ...instrument, pitchMult: 1 });
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.001, t);
-      g.gain.linearRampToValueAtTime(Math.max(0.001, vol * instrument.gainMult), t + 0.003);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.12);
-      o.connect(g); g.connect(ctx.destination);
-      o.start(t); o.stop(t + 0.15);
-      oscs.push(o);
+      oscs.push(crispNote(ctx, time + i * 0.05, notes[i], vol, instrument, 0.12));
     }
     return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
   };
@@ -216,15 +201,7 @@ function crispHeroMilestone(instrument: InstrumentConfig): SoundSynthesizer {
     const notes = [523.25, 587.33, 783.99, 1046.5];
     const oscs: OscillatorNode[] = [];
     for (let i = 0; i < notes.length; i++) {
-      const t = time + i * 0.06;
-      const o = createOscillator(ctx, notes[i] * instrument.pitchMult, { ...instrument, pitchMult: 1 });
-      const g = ctx.createGain();
-      g.gain.setValueAtTime(0.001, t);
-      g.gain.linearRampToValueAtTime(Math.max(0.001, vol * instrument.gainMult), t + 0.003);
-      g.gain.exponentialRampToValueAtTime(0.001, t + 0.1);
-      o.connect(g); g.connect(ctx.destination);
-      o.start(t); o.stop(t + 0.12);
-      oscs.push(o);
+      oscs.push(crispNote(ctx, time + i * 0.06, notes[i], vol, instrument, 0.1));
     }
     return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
   };

@@ -1,5 +1,6 @@
 import { createMemo, createSignal, For, Show } from "solid-js";
 import { Select, TextField } from "./ui";
+import { formatTokens } from "../utils/format";
 import type { SelectOption } from "./ui";
 
 interface PaidModel {
@@ -31,12 +32,6 @@ interface Row extends PaidModel {
 
 const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
 const formatCost = (cost: number) => Number.isInteger(cost) ? String(cost) : String(cost);
-
-const formatTokens = (n: number): string => {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
-  if (n >= 1_000) return `${Math.round(n / 1_000)}k`;
-  return String(n);
-};
 
 export default function PaidModelTable(props: PaidModelTableProps) {
   const [query, setQuery] = createSignal("");

@@ -1,5 +1,6 @@
 import { createSignal, createEffect, onMount, onCleanup, For, Show } from "solid-js";
 import { Button, Skeleton, TextField } from "./ui";
+import { formatTokens } from "../utils/format";
 
 interface AccessInfo {
   available?: boolean;
@@ -56,12 +57,6 @@ const SUPPORTED_ROUTES: Array<{
 const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
 const modelPrefix = (id: string): string => id.includes("/") ? id.slice(0, id.indexOf("/")) : "other";
 const modelSuffix = (id: string): string => id.includes("/") ? id.slice(id.indexOf("/") + 1) : id;
-
-const formatTokens = (n: number): string => {
-  if (n >= 1_000_000) return `${(n / 1_000_000).toFixed(n % 1_000_000 === 0 ? 0 : 1)}M`;
-  if (n >= 1_000) return `${Math.round(n / 1_000)}k`;
-  return String(n);
-};
 
 const formatTokensFull = (n: number): string => n.toLocaleString();
 

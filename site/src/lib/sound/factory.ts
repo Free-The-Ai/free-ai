@@ -72,8 +72,44 @@ function createNoiseBurstVoice(
   source.stop(time + duration + 0.01);
 }
 
-/** Create a harmonic overtone voice for sweep/rise/chime factories */
-function createHarmonicVoice(
+/** Create a fundamental sweep oscillator + harmonic voice */
+function createSweepVoices(
+  ctx: AudioContext,
+  time: number,
+  vol: number,
+  freq: number,
+  endFreq: number,
+  duration: number,
+  instrument: InstrumentConfig,
+  tune: BaseTune,
+  addClickLayer?: boolean,
+): { oscillators: OscillatorNode[]; gainNodes: GainNode[] } {
+  const oscillators: OscillatorNode[] = [];
+  const gainNodes: GainNode[] = [];
+
+  const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
+  osc.frequency.setValueAtTime(freq, time);
+  osc.frequency.exponentialRampToValueAtTime(endFreq, time + duration);
+  const gain = createEnvelopedGain(ctx, time, vol, duration, { ...instrument, decayMult: 1 });
+  osc.connect(gain); gain.connect(ctx.destination);
+  oscillators.push(osc); gainNodes.push(gain);
+
+  if (tune.harmonics && tune.harmonicRatio) {
+    createHarmonicVoiceInner(ctx, time, freq, endFreq, vol, duration, instrument, tune, oscillators, gainNodes);
+  }
+
+  if (addClickLayer && tune.meta?.clickLayer) {
+    createNoiseBurstVoice(ctx, 0.01, time, vol, instrument, {
+      decayConstant: 40, filterFreq: instrument.filterFreq, filterQ: instrument.q,
+    });
+  }
+
+  for (const o of oscillators) { o.start(time); o.stop(time + duration + 0.05); }
+  return { oscillators, gainNodes };
+}
+
+/** Create a harmonic overtone voice for sweep/rise factories */
+function createHarmonicVoiceInner(
   ctx: AudioContext,
   time: number,
   freq: number,
@@ -226,19 +262,7 @@ function sweepFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
     const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
     const freq = (tune.frequency ?? 280) * instrument.pitchMult;
     const endFreq = (tune.endFrequency ?? 440) * instrument.pitchMult;
-    const oscillators: OscillatorNode[] = [];
-    const gainNodes: GainNode[] = [];
-
-    const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
-    osc.frequency.setValueAtTime(freq, time);
-    osc.frequency.exponentialRampToValueAtTime(endFreq, time + duration);
-    const gain = createEnvelopedGain(ctx, time, vol, duration, { ...instrument, decayMult: 1 });
-    osc.connect(gain); gain.connect(ctx.destination);
-    oscillators.push(osc); gainNodes.push(gain);
-
-    createHarmonicVoice(ctx, time, freq, endFreq, vol, duration, instrument, tune, oscillators, gainNodes);
-
-    for (const o of oscillators) { o.start(time); o.stop(time + duration + 0.05); }
+    const { oscillators, gainNodes } = createSweepVoices(ctx, time, vol, freq, endFreq, duration, instrument, tune);
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
 }
@@ -250,26 +274,7 @@ function riseFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthes
     const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
     const freq = (tune.frequency ?? 320) * instrument.pitchMult;
     const endFreq = (tune.endFrequency ?? 480) * instrument.pitchMult;
-    const oscillators: OscillatorNode[] = [];
-    const gainNodes: GainNode[] = [];
-
-    const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
-    osc.frequency.setValueAtTime(freq, time);
-    osc.frequency.exponentialRampToValueAtTime(endFreq, time + duration);
-    const gain = createEnvelopedGain(ctx, time, vol, duration, { ...instrument, decayMult: 1 });
-    osc.connect(gain); gain.connect(ctx.destination);
-    oscillators.push(osc); gainNodes.push(gain);
-
-    createHarmonicVoice(ctx, time, freq, endFreq, vol, duration, instrument, tune, oscillators, gainNodes);
-
-    // Click layer
-    if (tune.meta?.clickLayer) {
-      createNoiseBurstVoice(ctx, 0.01, time, vol, instrument, {
-        decayConstant: 40, filterFreq: instrument.filterFreq, filterQ: instrument.q,
-      });
-    }
-
-    for (const o of oscillators) { o.start(time); o.stop(time + duration + 0.05); }
+    const { oscillators, gainNodes } = createSweepVoices(ctx, time, vol, freq, endFreq, duration, instrument, tune, true);
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
 }
@@ -287,22 +292,7 @@ function chimeFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
   return (ctx, options) => {
     const { time, vol, duration } = extractParams(ctx, tune, options, instrument, 0.3);
     const freq = (tune.frequency ?? 587.33) * instrument.pitchMult;
-    const oscillators: OscillatorNode[] = [];
-    const gainNodes: GainNode[] = [];
-
-    const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
-    const gain = createEnvelopedGain(ctx, time, vol, duration, { ...instrument, decayMult: 1 });
-    osc.connect(gain); gain.connect(ctx.destination);
-    oscillators.push(osc); gainNodes.push(gain);
-
-    if (tune.harmonics && tune.harmonicRatio) {
-      const harmOsc = createOscillator(ctx, freq * tune.harmonicRatio, { ...instrument, pitchMult: 1 });
-      const harmGain = createEnvelopedGain(ctx, time, (tune.harmonicVolume ?? 0.15) * vol, duration, { ...instrument, decayMult: 1 });
-      harmOsc.connect(harmGain); harmGain.connect(ctx.destination);
-      oscillators.push(harmOsc); gainNodes.push(harmGain);
-    }
-
-    for (const o of oscillators) { o.start(time); o.stop(time + duration + 0.05); }
+    const { oscillators, gainNodes } = createSweepVoices(ctx, time, vol, freq, freq, duration, instrument, tune);
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
 }

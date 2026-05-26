@@ -1,23 +1,9 @@
 ---
 import Layout from "../layouts/Layout.astro";
 import { siteConfig } from "../config/site";
-import {
-    buildWebsiteJsonLd,
-    buildOrganizationJsonLd,
-    buildSoftwareJsonLd,
-    buildWebApiJsonLd,
-    buildBreadcrumbJsonLd,
-} from "../utils/jsonLd";
+import { buildDefaultPageJsonLd } from "../utils/jsonLd";
 
-const jsonLd = [
-    buildWebsiteJsonLd(),
-    buildOrganizationJsonLd(),
-    buildSoftwareJsonLd(),
-    buildWebApiJsonLd(),
-    buildBreadcrumbJsonLd([
-        { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
-    ]),
-];
+const jsonLd = buildDefaultPageJsonLd();
 ---
 
 <Layout

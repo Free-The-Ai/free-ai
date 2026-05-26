@@ -218,6 +218,19 @@ export function buildMachineReadableResourcesJsonLd(
 	};
 }
 
+/** Default JSON-LD array used by most top-level pages. */
+export function buildDefaultPageJsonLd(): Record<string, unknown>[] {
+    return [
+        buildWebsiteJsonLd(),
+        buildOrganizationJsonLd(),
+        buildSoftwareJsonLd(),
+        buildWebApiJsonLd(),
+        buildBreadcrumbJsonLd([
+            { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
+        ]),
+    ];
+}
+
 export function buildBreadcrumbJsonLd(items: { name: string; url: string }[]) {
 	/**
 	 * var breadcrumbJsonLd

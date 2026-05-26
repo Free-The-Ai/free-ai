@@ -86,6 +86,19 @@ const modelSupportsAudio = (model: Model): boolean =>
 
 const modelContext = (model: Model): number => model.context_window ?? model.max_input_tokens ?? 0;
 
+const matchesAnyType = (m: Model, types: Set<FilterKey>): boolean => {
+  for (const key of types) {
+    switch (key) {
+      case "chat": if (!modelSupportsAudio(m)) return true;
+      case "images": if (modelSupportsImages(m)) return true;
+      case "audio": if (modelSupportsAudio(m)) return true;
+      case "gated": if (m.requires_seems_legit) return true;
+      case "long": if (modelContext(m) >= 128_000) return true;
+    }
+  }
+  return false;
+};
+
 const modelRoutes = (model: Model) => {
   const suffix = modelSuffix(model.id).toLowerCase();
   if (suffix.includes("stt") || suffix.includes("transcription")) {
@@ -135,20 +148,7 @@ const parseModel = (i: any): Model | null => {
 
 const filterModels = (models: Model[], prefixSet: Set<string>, typeSet: Set<FilterKey>, query: string): Model[] => {
   if (prefixSet.size > 0) models = models.filter((m) => prefixSet.has(m.prefix));
-  if (typeSet.size > 0) {
-    models = models.filter((m) => {
-      for (const key of typeSet) {
-        switch (key) {
-          case "chat": if (!modelSupportsAudio(m)) return true; break;
-          case "images": if (modelSupportsImages(m)) return true; break;
-          case "audio": if (modelSupportsAudio(m)) return true; break;
-          case "gated": if (m.requires_seems_legit) return true; break;
-          case "long": if (modelContext(m) >= 128_000) return true; break;
-        }
-      }
-      return false;
-    });
-  }
+  if (typeSet.size > 0) models = models.filter((m) => matchesAnyType(m, typeSet));
   const q = query.trim().toLowerCase();
   if (q) models = models.filter((m) => m.id.toLowerCase().includes(q));
   return [...models].sort((a, b) => {
@@ -177,24 +177,38 @@ const typeButtonLabel = (sel: Set<FilterKey>, labels: Record<FilterKey, string>)
   return `${sel.size} capabilities`;
 };
 
+const fetchModels = async (): Promise<{ payload: any; src: "live" | "snapshot" }> => {
+  try {
+    const res = await fetch(LIVE_ENDPOINT, {
+      headers: { Accept: "application/json", Authorization: `Bearer ${LIVE_KEY}` },
+    });
+    if (!res.ok) throw new Error(`Status ${res.status}`);
+    return { payload: await res.json(), src: "live" };
+  } catch (error) {
+    const res = await fetch("/models.json", { headers: { Accept: "application/json" } });
+    if (!res.ok) throw new Error(`Status ${res.status}`);
+    console.warn("Falling back to bundled model catalog snapshot.", error);
+    return { payload: await res.json(), src: "snapshot" };
+  }
+};
+
 const readCatalogParams = () => {
-    if (typeof window === "undefined") {
-      return { prefixes: [] as string[], types: [] as FilterKey[], query: "" };
-    }
-    const params = new URLSearchParams(window.location.search);
-    const rawPrefix = params.get("prefix")?.trim() || "";
-    const prefixes = rawPrefix && !/^(all|\*)$/.test(rawPrefix)
-      ? rawPrefix.split(",").map(p => p.trim()).filter(Boolean)
-      : [];
-    const legacyType = params.get("type")?.trim() ||
-      (params.get("images") === "1" ? "images" : "") ||
-      (params.get("seemslegit") === "1" ? "gated" : "");
-    const validKeys = new Set<string>(FILTER_OPTIONS);
-    const types = legacyType
-      ? legacyType.split(",").map(t => t.trim()).filter(t => validKeys.has(t))
-      : [];
-    return { prefixes, types: types as FilterKey[], query: params.get("q")?.trim() || "" };
+  if (typeof window === "undefined") return { prefixes: [] as string[], types: [] as FilterKey[], query: "" };
+  const params = new URLSearchParams(window.location.search);
+  const rawPrefix = params.get("prefix")?.trim() || "";
+  const prefixes = rawPrefix && !/^(all|\*)$/.test(rawPrefix)
+    ? rawPrefix.split(",").map(p => p.trim()).filter(Boolean)
+    : [];
+  const legacyType = params.get("type")?.trim() ||
+    (params.get("images") === "1" ? "images" : "") ||
+    (params.get("seemslegit") === "1" ? "gated" : "");
+  const validKeys = new Set<string>(FILTER_OPTIONS);
+  return {
+    prefixes,
+    types: legacyType ? legacyType.split(",").map(t => t.trim()).filter(t => validKeys.has(t)) as FilterKey[] : [],
+    query: params.get("q")?.trim() || "",
   };
+};
 
 // ── Model Card ──
 
@@ -583,58 +597,18 @@ export default function CatalogBrowser() {
     onCleanup(() => document.removeEventListener("keydown", handleKey));
   });
 
-  const parseModel = (i: any): Model | null => {
-    const _id = str(i?.id);
-    if (!_id) return null;
-    const pfx = str(i?.prefix) ?? modelPrefix(_id);
-    const access = (i?.access ?? {}) as AccessInfo;
-    const requiredRoles = Array.isArray(access.required_discord_roles)
-      ? access.required_discord_roles.filter((r): r is string => typeof r === "string")
-      : [];
-    const requiresSeemsLegit =
-      i?.requires_seems_legit === true ||
-      access.requires_seems_legit === true ||
-      requiredRoles.includes("seems_legit");
-    const out: Model = { id: _id, prefix: pfx, required_roles: requiredRoles };
-    for (const f of [["visibility", str], ["context_window", posInt], ["max_input_tokens", posInt], ["max_output_tokens", posInt]] as [string, typeof str][]) {
-      const v = f[1]((i as any)[f[0]]);
-      if (v) (out as any)[f[0]] = v;
-    }
-    for (const k of ["supports_images", "supports_audio"]) {
-      if (typeof (i as any)[k] === "boolean") (out as any)[k] = (i as any)[k];
-    }
-    if (requiresSeemsLegit) out.requires_seems_legit = true;
-    return out;
-  };
-
   onMount(async () => {
     try {
-      let payload: any;
-      let src: "live" | "snapshot" = "live";
-      try {
-        const res = await fetch(LIVE_ENDPOINT, {
-          headers: { Accept: "application/json", Authorization: `Bearer ${LIVE_KEY}` },
-        });
-        if (!res.ok) throw new Error(`Status ${res.status}`);
-        payload = await res.json();
-      } catch (error) {
-        src = "snapshot";
-        const res = await fetch("/models.json", {
-          headers: { Accept: "application/json" },
-        });
-        if (!res.ok) throw new Error(`Status ${res.status}`);
-        payload = await res.json();
-        console.warn("Falling back to bundled model catalog snapshot.", error);
-      }
+      const { payload, src } = await fetchModels();
       const items = Array.isArray(payload?.data) ? payload.data : [];
-      const models: Model[] = items
-        .map(parseModel)
-        .filter((m: Model | null): m is Model => m !== null)
-        .filter((m: Model) => !DISABLED.has(m.prefix));
-      setAllModels([...models].sort((a, b) => collator.compare(a.id, b.id)));
-      if (payload?.policy && typeof payload.policy === "object") {
-        setPolicy(payload.policy as Policy);
-      }
+      setAllModels(
+        items
+          .map(parseModel)
+          .filter((m: Model | null): m is Model => m !== null)
+          .filter((m: Model) => !DISABLED.has(m.prefix))
+          .sort((a, b) => collator.compare(a.id, b.id))
+      );
+      if (payload?.policy && typeof payload.policy === "object") setPolicy(payload.policy as Policy);
       setSource(src);
     } catch (err) {
       setSource("error");

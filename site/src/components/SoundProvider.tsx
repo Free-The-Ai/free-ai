@@ -25,12 +25,9 @@
 import { onMount } from "solid-js";
 import {
   initSoundSystem,
-  soundPlay,
   soundConfigure,
 } from "../lib/sound/singleton";
 import type { SensoryConfig } from "../lib/sound/types";
-
-export { soundPlay, soundConfigure } from "../lib/sound/singleton";
 
 interface SoundProviderProps {
   config?: Partial<SensoryConfig>;

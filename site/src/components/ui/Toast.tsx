@@ -13,9 +13,6 @@ const VARIANT_ROLES: Record<ToastVariant, SoundRole> = {
   error: "notification.error",
 };
 
-/** @deprecated Use soundPlay directly. Kept for backward compat. */
-export const configureToastSound = () => {};
-
 export function showToast(title: string, description?: string, variant: ToastVariant = "info") {
   if (soundEnabled()) {
     soundPlay(VARIANT_ROLES[variant]);

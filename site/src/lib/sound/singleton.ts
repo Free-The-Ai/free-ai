@@ -90,7 +90,7 @@ export function soundConfigure(partial?: Partial<SensoryConfig>): void {
 }
 
 /** Get current config (for Toast and other module-level consumers). */
-export function soundConfig(): SensoryConfig & { reducedMotion: boolean } {
+function soundConfig(): SensoryConfig & { reducedMotion: boolean } {
   return { ...config, reducedMotion };
 }
 
@@ -100,12 +100,12 @@ export function soundEnabled(): boolean {
 }
 
 /** Check if the user has manually muted. */
-export function soundIsMuted(): boolean {
+function soundIsMuted(): boolean {
   return !config.enabled;
 }
 
 /** Toggle mute state. Returns the new muted state. */
-export function soundToggleMute(): boolean {
+function soundToggleMute(): boolean {
   config = { ...config, enabled: !config.enabled };
   return !config.enabled;
 }
@@ -261,7 +261,7 @@ export function initSoundSystem(): void {
 }
 
 /** Destroy the sound system. Called automatically on beforeunload. */
-export function destroySoundSystem(): void {
+function destroySoundSystem(): void {
   if (!initialized) return;
   initialized = false;
 

@@ -235,6 +235,11 @@ export function initSoundSystem(): void {
   lastScrollTime = performance.now();
   window.addEventListener("scroll", handleScroll, { passive: true });
 
+  // Expose soundPlay globally for Layout.astro scripts (page navigation sounds, etc.)
+  if (typeof window !== "undefined") {
+    (window as any).__soundPlay = soundPlay;
+  }
+
   // Cleanup on tab close only — module-level state persists across navigations.
   // Astro ClientRouter destroys and recreates client:load islands on each nav,
   // so onCleanup would tear down the sound system unnecessarily. The singleton
@@ -257,5 +262,8 @@ export function destroySoundSystem(): void {
   document.removeEventListener("pointerenter", handlePointerEnter);
   window.removeEventListener("scroll", handleScroll);
   window.removeEventListener("beforeunload", destroySoundSystem);
+  if (typeof window !== "undefined") {
+    delete (window as any).__soundPlay;
+  }
   closeAudioContext();
 }

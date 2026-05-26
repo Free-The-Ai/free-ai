@@ -266,6 +266,12 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 			document.querySelector('.nav-dropdown')?.classList.toggle('is-active', isSetup);
 			document.querySelector('.nav-dropdown-trigger')?.classList.toggle('is-active', isSetup);
 		});
+		// Subtle navigation sound on each SPA page transition
+		document.addEventListener('astro:before-swap', function () {
+			if (typeof window.__soundPlay === 'function') {
+				window.__soundPlay('navigation.forward');
+			}
+		});
 	</script>
 	<script>
 		function closestFromEvent(e, selector) {

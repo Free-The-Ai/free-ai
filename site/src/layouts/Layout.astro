@@ -238,6 +238,20 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 		})();
 	</script>
 	<script>
+		// Update nav active state on SPA navigation (header is transition:persist)
+		document.addEventListener('astro:page-load', function updateNavActive() {
+			var path = location.pathname;
+			var navLinks = document.querySelectorAll('.nav-links > a[href]');
+			for (var i = 0; i < navLinks.length; i++) {
+				var link = navLinks[i];
+				link.classList.toggle('is-active', link.getAttribute('href') === path);
+			}
+			var isSetup = path === '/setup' || path.indexOf('/setup/') === 0;
+			document.querySelector('.nav-dropdown')?.classList.toggle('is-active', isSetup);
+			document.querySelector('.nav-dropdown-trigger')?.classList.toggle('is-active', isSetup);
+		});
+	</script>
+	<script>
 		function closestFromEvent(e, selector) {
 			if (e.target instanceof Element) return e.target.closest(selector);
 

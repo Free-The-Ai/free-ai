@@ -1,49 +1,5 @@
-import { Toast, toaster } from "@kobalte/core/toast";
+import { Toast } from "@kobalte/core/toast";
 import { Portal } from "solid-js/web";
-import { Match, Switch } from "solid-js";
-import { CheckmarkIcon } from "./icons";
-import type { SoundRole } from "../../lib/sound/types";
-import { soundPlay, soundEnabled } from "../../lib/sound/singleton";
-
-type ToastVariant = "info" | "success" | "error";
-
-const VARIANT_ROLES: Record<ToastVariant, SoundRole> = {
-  info: "notification.info",
-  success: "notification.success",
-  error: "notification.error",
-};
-
-export function showToast(title: string, description?: string, variant: ToastVariant = "info") {
-  if (soundEnabled()) {
-    soundPlay(VARIANT_ROLES[variant]);
-  }
-
-  return toaster.show((props) => (
-    <Toast toastId={props.toastId} class={`kb-toast kb-toast--${variant}`}>
-      <div class="kb-toast__content">
-        <span class="kb-toast__icon" aria-hidden="true">
-          <Switch>
-            <Match when={variant === "success"}>
-              <CheckmarkIcon />
-            </Match>
-            <Match when={variant === "error"}>!</Match>
-            <Match when={variant === "info"}>i</Match>
-          </Switch>
-        </span>
-        <div class="kb-toast__body">
-          <Toast.Title class="kb-toast__title">{title}</Toast.Title>
-          {description && (
-            <Toast.Description class="kb-toast__description">{description}</Toast.Description>
-          )}
-        </div>
-        <Toast.CloseButton class="kb-toast__close" aria-label="Dismiss">&times;</Toast.CloseButton>
-      </div>
-      <Toast.ProgressTrack class="kb-toast__progress-track">
-        <Toast.ProgressFill class="kb-toast__progress-fill" />
-      </Toast.ProgressTrack>
-    </Toast>
-  ));
-}
 
 export function ToastRegion() {
   return (

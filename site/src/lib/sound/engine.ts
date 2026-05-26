@@ -54,10 +54,6 @@ export function closeAudioContext(): void {
 
 const bufferCache = new Map<string, AudioBuffer>();
 
-export function clearBufferCache(): void {
-  bufferCache.clear();
-}
-
 async function decodeAudioData(source: string): Promise<AudioBuffer> {
   const cached = bufferCache.get(source);
   if (cached) return cached;

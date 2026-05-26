@@ -55,13 +55,7 @@ export const ALL_SOUND_ROLES: SoundRole[] = [
   "hero.milestone",
 ];
 
-export const SOUND_CATEGORIES: SoundCategory[] = [
-  "interaction",
-  "overlay",
-  "navigation",
-  "notification",
-  "hero",
-];
+
 
 // ── Sound Packs ──
 

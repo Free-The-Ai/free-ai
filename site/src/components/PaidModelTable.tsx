@@ -30,6 +30,16 @@ interface Row extends PaidModel {
   groupLabel: string;
 }
 
+function computeCounts<T>(
+  rows: Row[],
+  keyFn: (r: Row) => T,
+  sortFn: (a: [T, number], b: [T, number]) => number,
+): [T, number][] {
+  const counts = new Map<T, number>();
+  for (const row of rows) counts.set(keyFn(row), (counts.get(keyFn(row)) ?? 0) + 1);
+  return [...counts.entries()].sort(sortFn);
+}
+
 const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
 const formatCost = (cost: number) => Number.isInteger(cost) ? String(cost) : String(cost);
 
@@ -103,23 +113,9 @@ export default function PaidModelTable(props: PaidModelTableProps) {
     ),
   );
 
-  const prefixCounts = createMemo(() => {
-    const counts = new Map<string, number>();
-    for (const row of rows()) counts.set(row.prefix, (counts.get(row.prefix) ?? 0) + 1);
-    return [...counts.entries()].sort((a, b) => collator.compare(a[0], b[0]));
-  });
-
-  const routeCounts = createMemo(() => {
-    const counts = new Map<string, number>();
-    for (const row of rows()) counts.set(row.route, (counts.get(row.route) ?? 0) + 1);
-    return [...counts.entries()].sort((a, b) => collator.compare(a[0], b[0]));
-  });
-
-  const costCounts = createMemo(() => {
-    const counts = new Map<number, number>();
-    for (const row of rows()) counts.set(row.unit_cost, (counts.get(row.unit_cost) ?? 0) + 1);
-    return [...counts.entries()].sort((a, b) => a[0] - b[0]);
-  });
+  const prefixCounts = createMemo(() => computeCounts(rows(), (r) => r.prefix, (a, b) => collator.compare(a[0] as string, b[0] as string)));
+  const routeCounts = createMemo(() => computeCounts(rows(), (r) => r.route, (a, b) => collator.compare(a[0] as string, b[0] as string)));
+  const costCounts = createMemo(() => computeCounts(rows(), (r) => r.unit_cost, (a, b) => (a[0] as number) - (b[0] as number)));
 
   const filteredRows = createMemo(() => {
     const q = query().trim().toLowerCase();

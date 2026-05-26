@@ -17,13 +17,42 @@ type NavDrawerProps = {
   currentPath?: string;
 };
 
+/** Horizontal swipe-to-close handler. Returns pointer event handlers to spread on an element. */
+function useSwipeToClose(el: () => HTMLElement | undefined, onClose: () => void) {
+  let startX = 0, currentX = 0, dragging = false;
+  const start = (e: PointerEvent) => {
+    if (e.button !== 0 || (e.target as HTMLElement).closest("a, button")) return;
+    startX = currentX = e.clientX;
+    dragging = true;
+    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+    e.preventDefault();
+  };
+  const move = (e: PointerEvent) => {
+    if (!dragging) return;
+    currentX = e.clientX;
+    const elRef = el();
+    if (elRef) {
+      elRef.style.transform = `translateX(${Math.max(0, currentX - startX)}px)`;
+      elRef.style.transition = "none";
+    }
+    e.preventDefault();
+  };
+  const end = (e: PointerEvent) => {
+    if (!dragging) return;
+    dragging = false;
+    const delta = currentX - startX;
+    (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
+    const elRef = el();
+    if (elRef) { elRef.style.transition = ""; elRef.style.transform = ""; }
+    if (delta > (elRef?.offsetWidth ?? 280) * 0.3) onClose();
+  };
+  return { onPointerDown: start, onPointerMove: move, onPointerUp: end };
+}
+
 export default function NavDrawer(props: NavDrawerProps) {
   const [open, setOpen] = createSignal(false);
   let rootRef: HTMLDivElement | undefined;
   let drawerRef: HTMLElement | undefined;
-  let dragStartX = 0;
-  let dragCurrentX = 0;
-  let isDragging = false;
 
   const lockPageScroll = () => lockBodyScroll("nav-drawer-open");
   const unlockPageScroll = () => unlockBodyScroll("nav-drawer-open");
@@ -33,43 +62,7 @@ export default function NavDrawer(props: NavDrawerProps) {
     unlockPageScroll();
   };
 
-  const handleDragStart = (e: PointerEvent) => {
-    if (e.button !== 0) return;
-    const target = e.target as HTMLElement;
-    if (target.closest("a, button")) return;
-    dragStartX = e.clientX;
-    dragCurrentX = dragStartX;
-    isDragging = true;
-    (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
-    e.preventDefault();
-  };
-
-  const handleDragMove = (e: PointerEvent) => {
-    if (!isDragging) return;
-    dragCurrentX = e.clientX;
-    const delta = dragCurrentX - dragStartX;
-    if (drawerRef) {
-      const clamped = Math.max(0, delta);
-      drawerRef.style.transform = `translateX(${clamped}px)`;
-      drawerRef.style.transition = "none";
-    }
-    e.preventDefault();
-  };
-
-  const handleDragEnd = (e: PointerEvent) => {
-    if (!isDragging) return;
-    isDragging = false;
-    const delta = dragCurrentX - dragStartX;
-    const drawerWidth = drawerRef?.offsetWidth ?? 280;
-    (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    if (drawerRef) {
-      drawerRef.style.transition = "";
-      drawerRef.style.transform = "";
-    }
-    if (delta > drawerWidth * 0.3) {
-      closeDrawer();
-    }
-  };
+  const swipe = useSwipeToClose(() => drawerRef, closeDrawer);
 
   createEffect(() => {
     const nav = rootRef?.closest(".nav");
@@ -118,9 +111,9 @@ export default function NavDrawer(props: NavDrawerProps) {
             class="nav-drawer"
             ref={drawerRef}
             aria-label="Mobile navigation"
-            onPointerDown={handleDragStart}
-            onPointerMove={handleDragMove}
-            onPointerUp={handleDragEnd}
+            onPointerDown={swipe.onPointerDown}
+            onPointerMove={swipe.onPointerMove}
+            onPointerUp={swipe.onPointerUp}
           >
             <div class="nav-drawer__links">
               {LINKS.map(([href, label, external]) => (

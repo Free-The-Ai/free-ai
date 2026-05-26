@@ -90,40 +90,94 @@ const modelRoutes = (model: Model) => {
   const suffix = modelSuffix(model.id).toLowerCase();
   if (suffix.includes("stt") || suffix.includes("transcription")) {
     return [
-      {
-        path: "/v1/audio/transcriptions",
-        label: "Speech to text",
-        description: "OpenAI-compatible multipart audio transcription.",
-      },
+      { path: "/v1/audio/transcriptions", label: "Speech to text", description: "OpenAI-compatible multipart audio transcription." },
     ];
   }
   if (suffix.includes("tts") || suffix.includes("speech")) {
     return [
-      {
-        path: "/v1/audio/speech",
-        label: "Text to speech",
-        description: "OpenAI-compatible speech generation.",
-      },
+      { path: "/v1/audio/speech", label: "Text to speech", description: "OpenAI-compatible speech generation." },
     ];
   }
   if (model.prefix === "img" || model.prefix === "vhr" || /gpt-image|image/i.test(suffix)) {
     return [
-      {
-        path: "/v1/images/generations",
-        label: "Image generation",
-        description: "OpenAI-compatible image generation.",
-      },
-      {
-        path: "/v1/images/edits",
-        label: "Image edits",
-        description: "Image editing with an input image.",
-      },
+      { path: "/v1/images/generations", label: "Image generation", description: "OpenAI-compatible image generation." },
+      { path: "/v1/images/edits", label: "Image edits", description: "Image editing with an input image." },
     ];
   }
   return SUPPORTED_ROUTES;
 };
 
-  const readCatalogParams = () => {
+// ── Pure helpers extracted from CatalogBrowser ──
+
+const parseModel = (i: any): Model | null => {
+  const _id = str(i?.id);
+  if (!_id) return null;
+  const pfx = str(i?.prefix) ?? modelPrefix(_id);
+  const access = (i?.access ?? {}) as AccessInfo;
+  const requiredRoles = Array.isArray(access.required_discord_roles)
+    ? access.required_discord_roles.filter((r): r is string => typeof r === "string")
+    : [];
+  const requiresSeemsLegit =
+    i?.requires_seems_legit === true ||
+    access.requires_seems_legit === true ||
+    requiredRoles.includes("seems_legit");
+  const out: Model = { id: _id, prefix: pfx, required_roles: requiredRoles };
+  for (const f of [["visibility", str], ["context_window", posInt], ["max_input_tokens", posInt], ["max_output_tokens", posInt]] as [string, typeof str][]) {
+    const v = f[1]((i as any)[f[0]]);
+    if (v) (out as any)[f[0]] = v;
+  }
+  for (const k of ["supports_images", "supports_audio"]) {
+    if (typeof (i as any)[k] === "boolean") (out as any)[k] = (i as any)[k];
+  }
+  if (requiresSeemsLegit) out.requires_seems_legit = true;
+  return out;
+};
+
+const filterModels = (models: Model[], prefixSet: Set<string>, typeSet: Set<FilterKey>, query: string): Model[] => {
+  if (prefixSet.size > 0) models = models.filter((m) => prefixSet.has(m.prefix));
+  if (typeSet.size > 0) {
+    models = models.filter((m) => {
+      for (const key of typeSet) {
+        switch (key) {
+          case "chat": if (!modelSupportsAudio(m)) return true; break;
+          case "images": if (modelSupportsImages(m)) return true; break;
+          case "audio": if (modelSupportsAudio(m)) return true; break;
+          case "gated": if (m.requires_seems_legit) return true; break;
+          case "long": if (modelContext(m) >= 128_000) return true; break;
+        }
+      }
+      return false;
+    });
+  }
+  const q = query.trim().toLowerCase();
+  if (q) models = models.filter((m) => m.id.toLowerCase().includes(q));
+  return [...models].sort((a, b) => {
+    const access = Number(a.requires_seems_legit === true) - Number(b.requires_seems_legit === true);
+    if (access !== 0) return access;
+    const ctx = modelContext(b) - modelContext(a);
+    return ctx !== 0 ? ctx : collator.compare(a.id, b.id);
+  });
+};
+
+const prefixLabel = (sel: Set<string>): string => {
+  if (sel.size === 0) return "all providers";
+  if (sel.size === 1) { const [only] = sel; return `${only}/*`; }
+  return `${sel.size} providers`;
+};
+
+const prefixButtonLabel = (sel: Set<string>): string => {
+  if (sel.size === 0) return "All prefixes";
+  if (sel.size === 1) { const [only] = sel; return `${only}/*`; }
+  return `${sel.size} prefixes`;
+};
+
+const typeButtonLabel = (sel: Set<FilterKey>, labels: Record<FilterKey, string>): string => {
+  if (sel.size === 0) return "All capabilities";
+  if (sel.size === 1) { const [only] = sel; return labels[only]; }
+  return `${sel.size} capabilities`;
+};
+
+const readCatalogParams = () => {
     if (typeof window === "undefined") {
       return { prefixes: [] as string[], types: [] as FilterKey[], query: "" };
     }
@@ -471,49 +525,7 @@ export default function CatalogBrowser() {
   const hasAudioModel = () => allModels().some(modelSupportsAudio);
   const hasGatedModel = () => allModels().some((m) => m.requires_seems_legit);
 
-  const filteredModels = () => {
-    let models = allModels();
-    const pfxSet = prefixes();
-    if (pfxSet.size > 0) {
-      models = models.filter((m) => pfxSet.has(m.prefix));
-    }
-    const typeSet = typeFilters();
-    if (typeSet.size > 0) {
-      models = models.filter((m) => {
-        for (const key of typeSet) {
-          switch (key) {
-            case "chat":
-              if (!modelSupportsAudio(m)) return true;
-              break;
-            case "images":
-              if (modelSupportsImages(m)) return true;
-              break;
-            case "audio":
-              if (modelSupportsAudio(m)) return true;
-              break;
-            case "gated":
-              if (m.requires_seems_legit) return true;
-              break;
-            case "long":
-              if (modelContext(m) >= 128_000) return true;
-              break;
-          }
-        }
-        return false;
-      });
-    }
-    const q = query().trim().toLowerCase();
-    if (q) models = models.filter((m) => m.id.toLowerCase().includes(q));
-    const sorted = [...models];
-    sorted.sort((a, b) => {
-      const access = Number(a.requires_seems_legit === true) - Number(b.requires_seems_legit === true);
-      if (access !== 0) return access;
-      const contextDelta = modelContext(b) - modelContext(a);
-      if (contextDelta !== 0) return contextDelta;
-      return collator.compare(a.id, b.id);
-    });
-    return sorted;
-  };
+  const filteredModels = () => filterModels(allModels(), prefixes(), typeFilters(), query());
 
   const pageCount = () => Math.max(1, Math.ceil(filteredModels().length / PAGE_SIZE));
   const visibleModels = () => {
@@ -630,12 +642,8 @@ export default function CatalogBrowser() {
     }
   });
 
-  const providerLabel = () => {
-    const list = [...prefixes()];
-    if (list.length === 0) return "all providers";
-    if (list.length === 1) return `${list[0]}/*`;
-    return `${list.length} providers`;
-  };
+  const providerLabel = () => prefixLabel(prefixes());
+
   const resultLabel = () => {
     if (allModels().length === 0 && source() !== "error") return "Loading model catalog...";
     const count = filteredModels().length;
@@ -662,26 +670,6 @@ export default function CatalogBrowser() {
     return label;
   };
 
-  const prefixButtonLabel = () => {
-    const sel = prefixes();
-    if (sel.size === 0) return "All prefixes";
-    if (sel.size === 1) {
-      const [only] = sel;
-      return `${only}/*`;
-    }
-    return `${sel.size} prefixes`;
-  };
-
-  const typeButtonLabel = () => {
-    const sel = typeFilters();
-    if (sel.size === 0) return "All capabilities";
-    if (sel.size === 1) {
-      const [only] = sel;
-      return FILTER_LABELS[only];
-    }
-    return `${sel.size} capabilities`;
-  };
-
   const visibleTypeOptions = (): FilterKey[] => {
     const list: FilterKey[] = ["chat"];
     if (hasImageModel()) list.push("images");
@@ -703,7 +691,7 @@ export default function CatalogBrowser() {
         query={query()} setQuery={setQuery} setPage={setPage}
         prefixes={prefixes()} togglePrefix={togglePrefix} prefixCounts={prefixCounts()}
         typeFilters={typeFilters()} toggleType={toggleType} visibleTypeOptions={visibleTypeOptions()}
-        prefixButtonLabel={prefixButtonLabel()} typeButtonLabel={typeButtonLabel()}
+        prefixButtonLabel={prefixButtonLabel(prefixes())} typeButtonLabel={typeButtonLabel(typeFilters(), FILTER_LABELS)}
       />
 
       <Show when={hasGatedModel()}>

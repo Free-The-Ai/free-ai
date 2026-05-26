@@ -62,8 +62,6 @@
     --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-in-smooth: cubic-bezier(0.4, 0, 1, 1);
-    /* Extra-snappy for page transitions — faster decel than ease-out-smooth */
-    --ease-page: cubic-bezier(0.25, 1, 0.5, 1);
 
     /* Card resize */
     --resize-dur: 200ms;
@@ -86,9 +84,6 @@
     --panel-open-dur: 280ms;
     --panel-close-dur: 220ms;
     --panel-translate-y: 40px;
-    /* Page transition — fast and crisp */
-    --page-dur: 130ms;
-    --page-distance: 4px;
     /* Icon swap */
     --icon-swap-dur: 150ms;
     --icon-swap-start-scale: 0.5;
@@ -117,55 +112,32 @@
     }
 }
 
-/* ── View Transition animations — fast, no blur, minimal travel ── */
-@keyframes vt-page-in {
-    from {
-        opacity: 0;
-        transform: translateY(var(--page-distance));
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
+/* ── View Transitions — pure crossfade, zero transform, ultra-fast ── */
 
-@keyframes vt-page-out {
-    from {
-        opacity: 1;
-        transform: translateY(0);
-    }
-    to {
-        opacity: 0;
-        transform: translateY(calc(var(--page-distance) * -1));
-    }
-}
-
-@keyframes vt-fade-in {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes vt-fade-out {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
-
-/* Page transitions — snappy crossfade with micro-slide */
+/* Disable default animation — we control everything via CSS */
 ::view-transition-old(root) {
-    animation: vt-page-out var(--page-dur) var(--ease-page) both;
+    animation: 100ms linear both vt-out;
 }
 ::view-transition-new(root) {
-    animation: vt-page-in var(--page-dur) var(--ease-page) both;
+    animation: 100ms linear both vt-in;
 }
 
-/* Header/footer — instant crossfade */
 ::view-transition-old(site-header),
 ::view-transition-old(site-footer) {
-    animation: vt-fade-out 100ms var(--ease-page) both;
+    animation: 80ms linear both vt-out;
 }
 ::view-transition-new(site-header),
 ::view-transition-new(site-footer) {
-    animation: vt-fade-in 100ms var(--ease-page) both;
+    animation: 80ms linear both vt-in;
+}
+
+@keyframes vt-out {
+    from { opacity: 1; }
+    to   { opacity: 0; }
+}
+@keyframes vt-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
 }
 
 /* ── Micro-interaction keyframes — GPU-composited only (no filter) ── */

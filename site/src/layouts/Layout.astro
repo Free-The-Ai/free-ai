@@ -221,7 +221,6 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				'.donate-button': 'interaction.confirm',
 				'button:not([data-sound])': 'interaction.tap',
 				'a[href]:not([data-sound])': 'interaction.subtle',
-				'.copy-btn': 'interaction.confirm',
 				'.model-card': 'interaction.tap',
 				'.catalog-chip': 'interaction.subtle',
 				'select:not([data-sound])': 'interaction.subtle',
@@ -294,6 +293,9 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 			} catch (error) {
 				console.error("Failed to copy code sample", error);
 				return;
+			}
+			if (typeof window.__soundPlay === 'function') {
+				window.__soundPlay('interaction.confirm');
 			}
 			const icon = btn.querySelector(".material-symbols-outlined");
 			if (icon) {

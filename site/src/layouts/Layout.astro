@@ -56,7 +56,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 		<!-- Sound system: module-level singleton, no DOM output, survives navigation -->
 		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }} />
 
-<div id="loader" transition:persist="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:1">
+<div id="loader" transition:persist="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:1;pointer-events:auto">
 			<Logo width={160} style="opacity:.4" />
 		</div>
 		<script is:inline>
@@ -66,16 +66,15 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				var l=document.getElementById('loader');
 				if(!l)return;
 				function hide(){
-					l.style.transition='opacity 80ms linear';
+					l.style.transition='opacity 200ms linear';
 					l.style.opacity='0';
-					setTimeout(function(){l.remove()},120);
+					l.style.pointerEvents='none';
 				}
 				if(document.readyState==='loading'){
 					document.addEventListener('DOMContentLoaded',hide);
 				}else{
 					hide();
 				}
-				setTimeout(function(){if(l.parentNode)l.remove()},1500);
 			})();
 		</script>
 

@@ -123,11 +123,11 @@
 }
 
 ::view-transition-group(main-content) {
-    animation-duration: 70ms;
+    animation-duration: 35ms;
 }
 
 ::view-transition-old(main-content) {
-    animation: 70ms ease-out both vt-out;
+    animation: 35ms linear both vt-out;
 }
 
 ::view-transition-new(main-content) {

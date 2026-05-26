@@ -112,9 +112,9 @@
     }
 }
 
-/* ── View Transitions — pure crossfade, zero transform, ultra-fast ── */
+/* ── View Transitions — pure crossfade, zero transform ── */
 
-/* Disable default animation — we control everything via CSS */
+/* Root group: fast opacity crossfade for page content */
 ::view-transition-old(root) {
     animation: 100ms linear both vt-out;
 }
@@ -122,13 +122,12 @@
     animation: 100ms linear both vt-in;
 }
 
+/* Header/footer: instant swap — no animation, they're identical between pages */
 ::view-transition-old(site-header),
-::view-transition-old(site-footer) {
-    animation: 80ms linear both vt-out;
-}
 ::view-transition-new(site-header),
+::view-transition-old(site-footer),
 ::view-transition-new(site-footer) {
-    animation: 80ms linear both vt-in;
+    animation: none;
 }
 
 @keyframes vt-out {
@@ -330,7 +329,6 @@ pre {
     flex-direction: column;
     min-width: 0;
     min-height: 0;
-    view-transition-name: root;
 }
 
 .site-main > main {

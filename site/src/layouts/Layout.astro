@@ -346,5 +346,19 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 			}
 		})();
 	</script>
+	<script>
+		// M key toggles all sounds on/off with body flash indicator
+		document.addEventListener('keydown', function (e) {
+			if (e.key !== 'm' && e.key !== 'M') return;
+			if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
+			if (typeof window.__soundToggleMute !== 'function') return;
+			var muted = window.__soundToggleMute();
+			document.body.setAttribute('data-sound-muted', muted ? 'true' : 'false');
+			clearTimeout(document.body._soundFlash);
+			document.body._soundFlash = setTimeout(function () {
+				document.body.removeAttribute('data-sound-muted');
+			}, 1200);
+		});
+	</script>
 </body>
 </html>

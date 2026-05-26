@@ -32,6 +32,10 @@ const LIVE_KEY = "freetheai.xyz";
 const DISABLED = new Set<string>();
 const PAGE_SIZE = 80;
 
+// ── Field validation helpers ──
+const str = (v: unknown): string | undefined => typeof v === "string" && v.trim() ? v.trim() : undefined;
+const posInt = (v: unknown): number | undefined => typeof v === "number" && Number.isFinite(v) && v > 0 ? v : undefined;
+
 const SUPPORTED_ROUTES: Array<{
   path: string;
   label: string;
@@ -292,12 +296,9 @@ export default function CatalogBrowser() {
   });
 
   const parseModel = (i: any): Model | null => {
-    if (typeof i?.id !== "string" || !i.id.trim()) return null;
-    const id = i.id.trim();
-    const pfx =
-      typeof i?.prefix === "string" && i.prefix.trim()
-        ? i.prefix.trim()
-        : modelPrefix(id);
+    const _id = str(i?.id);
+    if (!_id) return null;
+    const pfx = str(i?.prefix) ?? modelPrefix(_id);
     const access = (i?.access ?? {}) as AccessInfo;
     const requiredRoles = Array.isArray(access.required_discord_roles)
       ? access.required_discord_roles.filter((r): r is string => typeof r === "string")
@@ -306,28 +307,14 @@ export default function CatalogBrowser() {
       i?.requires_seems_legit === true ||
       access.requires_seems_legit === true ||
       requiredRoles.includes("seems_legit");
-    const out: Model = { id, prefix: pfx, required_roles: requiredRoles };
-    if (typeof i.visibility === "string" && i.visibility.trim()) {
-      out.visibility = i.visibility.trim();
-    }
-    if (typeof i.context_window === "number" && Number.isFinite(i.context_window) && i.context_window > 0) {
-      out.context_window = i.context_window;
-    }
-    if (typeof i.max_input_tokens === "number" && Number.isFinite(i.max_input_tokens) && i.max_input_tokens > 0) {
-      out.max_input_tokens = i.max_input_tokens;
-    }
-    if (typeof i.max_output_tokens === "number" && Number.isFinite(i.max_output_tokens) && i.max_output_tokens > 0) {
-      out.max_output_tokens = i.max_output_tokens;
-    }
-    if (typeof i.supports_images === "boolean") {
-      out.supports_images = i.supports_images;
-    }
-    if (typeof i.supports_audio === "boolean") {
-      out.supports_audio = i.supports_audio;
-    }
-    if (requiresSeemsLegit) {
-      out.requires_seems_legit = true;
-    }
+    const out: Model = { id: _id, prefix: pfx, required_roles: requiredRoles };
+    const v = str(i.visibility); if (v) out.visibility = v;
+    const cw = posInt(i.context_window); if (cw) out.context_window = cw;
+    const mit = posInt(i.max_input_tokens); if (mit) out.max_input_tokens = mit;
+    const mot = posInt(i.max_output_tokens); if (mot) out.max_output_tokens = mot;
+    if (typeof i.supports_images === "boolean") out.supports_images = i.supports_images;
+    if (typeof i.supports_audio === "boolean") out.supports_audio = i.supports_audio;
+    if (requiresSeemsLegit) out.requires_seems_legit = true;
     return out;
   };
 

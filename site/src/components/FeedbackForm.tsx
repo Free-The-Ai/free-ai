@@ -1,6 +1,7 @@
 import { createSignal } from "solid-js";
 import { Button, TextField, Select, Switch, showToast } from "./ui";
 import type { SelectOption } from "./ui";
+import { soundPlay } from "../lib/sound/singleton";
 
 const TOPIC_OPTIONS: SelectOption[] = [
   { value: "bug", label: "Bug report" },
@@ -33,6 +34,7 @@ export default function FeedbackForm() {
       });
       await new Promise((resolve) => setTimeout(resolve, 600));
       showToast("Feedback sent", "Thanks for helping us improve.", "success");
+      soundPlay("interaction.confirm");
       setSubject("");
       setTopic("");
       setMessage("");

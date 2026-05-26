@@ -17,6 +17,7 @@ export type SoundRole =
   | "interaction.subtle"
   | "interaction.toggle"
   | "interaction.confirm"
+  | "interaction.typing"
   | "overlay.open"
   | "overlay.close"
   | "overlay.expand"
@@ -37,6 +38,7 @@ export const ALL_SOUND_ROLES: SoundRole[] = [
   "interaction.subtle",
   "interaction.toggle",
   "interaction.confirm",
+  "interaction.typing",
   "overlay.open",
   "overlay.close",
   "overlay.expand",

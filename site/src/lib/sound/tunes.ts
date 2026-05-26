@@ -41,6 +41,14 @@ export const ROLE_TUNES: Record<SoundRole, BaseTune> = {
     volume: 0.6,
     meta: { decayConstant: 55 },
   },
+  "interaction.typing": {
+    type: "click",
+    duration: 0.004,
+    filterFreq: 4000,
+    filterQ: 2,
+    volume: 0.10,
+    meta: { decayConstant: 20 },
+  },
 
   // ── Overlay (120–300 ms) ──
   "overlay.open": {

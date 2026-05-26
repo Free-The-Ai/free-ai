@@ -3,7 +3,6 @@ import BaseHead from '../components/BaseHead.astro';
 import Logo from '../components/Logo.astro';
 import NavDrawer from '../components/NavDrawer';
 import SmoothScroll from '../components/SmoothScroll';
-import HapticsInit from '../components/HapticsInit';
 import SoundProvider from '../components/SoundProvider';
 import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
@@ -195,27 +194,11 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 
 		<ToastRegion client:load />
 		<SmoothScroll client:load />
-		<HapticsInit client:load />
 	</div>
 
 	<script>
-		// Auto-decorate interactive elements with haptic and sound hints
+		// Auto-decorate interactive elements with sound hints
 		(function(){
-			const HAPTIC_MAP = {
-				'a[href]': 'tap',
-				'button:not([data-haptic])': 'tap',
-				'.primary-button': 'heavy',
-				'.discord-button': 'heavy',
-				'.nav-hamburger': 'press',
-				'.copy-btn': 'select',
-				'.model-card': 'tap',
-				'.status-card': 'tap',
-				'.catalog-chip': 'press',
-				'.kb-accordion__trigger': 'press',
-				'.docs-section-head': 'press',
-				'select:not([data-haptic])': 'select',
-				'input[type="checkbox"]:not([data-haptic])': 'select',
-			};
 			const SOUND_MAP = {
 				'.primary-button': 'interaction.confirm',
 				'.donate-button': 'interaction.confirm',
@@ -233,11 +216,6 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 						el.setAttribute('data-sound', 'navigation.forward');
 					}
 				});
-				for (const [sel, pattern] of Object.entries(HAPTIC_MAP)) {
-					root.querySelectorAll(sel).forEach(el => {
-						if (!el.hasAttribute('data-haptic')) el.setAttribute('data-haptic', pattern);
-					});
-				}
 				for (const [sel, role] of Object.entries(SOUND_MAP)) {
 					root.querySelectorAll(sel).forEach(el => {
 						if (!el.hasAttribute('data-sound')) el.setAttribute('data-sound', role);

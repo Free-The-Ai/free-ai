@@ -481,6 +481,45 @@ function formatTimestamp(iso: string | null | undefined): string {
     }
 }
 
+// ── Popover Body sub-component ──
+
+function ProviderPopoverBody({ provider }: { provider: () => ProviderHealth }) {
+  return (
+    <>
+      <dl class="detail-section">
+        <h4 class="detail-section-title">Reliability</h4>
+        <dt>60m error rate</dt>
+        <dd class={provider().error_rate_60m === 0 ? "zero" : ""}>{formatPercent(provider().error_rate_60m)}</dd>
+        <dt>30m errors</dt>
+        <dd>{provider().errors_30m.toLocaleString()}</dd>
+        <dt>60m errors</dt>
+        <dd>{provider().errors_60m.toLocaleString()}</dd>
+      </dl>
+      <dl class="detail-section">
+        <h4 class="detail-section-title">Throughput</h4>
+        <dt>60m requests</dt>
+        <dd>{provider().requests_60m.toLocaleString()}</dd>
+        <dt>30m successes</dt>
+        <dd>{provider().successes_30m.toLocaleString()}</dd>
+        <dt>60m successes</dt>
+        <dd>{provider().successes_60m.toLocaleString()}</dd>
+      </dl>
+      <dl class="detail-section">
+        <h4 class="detail-section-title">Activity</h4>
+        <dt>Last success</dt>
+        <dd>{formatTimestamp(provider().last_success_at)}</dd>
+        <dt>Last error</dt>
+        <dd class={!provider().last_error_at ? "zero" : ""}>{formatTimestamp(provider().last_error_at)}</dd>
+      </dl>
+      <Show when={provider().model_count > 0}>
+        <a class="catalog-link" href={`/models?prefix=${provider().prefix}`}>
+          View all in model catalog <span class="catalog-link-arrow">&rarr;</span>
+        </a>
+      </Show>
+    </>
+  );
+}
+
 export default function ProviderPopover(props: {
     provider: ProviderHealth;
     onClose: () => void;
@@ -608,75 +647,7 @@ export default function ProviderPopover(props: {
                                 ref={rail.setBodyRef}
                                 onScroll={rail.metrics.scrollable ? rail.queueUpdate : undefined}
                             >
-                            <dl class="detail-section">
-                                <h4 class="detail-section-title">Reliability</h4>
-                                <dt>60m error rate</dt>
-                                <dd
-                                    class={
-                                        provider().error_rate_60m === 0
-                                            ? "zero"
-                                            : ""
-                                    }
-                                >
-                                    {formatPercent(provider().error_rate_60m)}
-                                </dd>
-                                <dt>30m errors</dt>
-                                <dd>
-                                    {provider().errors_30m.toLocaleString()}
-                                </dd>
-                                <dt>60m errors</dt>
-                                <dd>
-                                    {provider().errors_60m.toLocaleString()}
-                                </dd>
-                            </dl>
-
-                            <dl class="detail-section">
-                                <h4 class="detail-section-title">Throughput</h4>
-                                <dt>60m requests</dt>
-                                <dd>
-                                    {provider().requests_60m.toLocaleString()}
-                                </dd>
-                                <dt>30m successes</dt>
-                                <dd>
-                                    {provider().successes_30m.toLocaleString()}
-                                </dd>
-                                <dt>60m successes</dt>
-                                <dd>
-                                    {provider().successes_60m.toLocaleString()}
-                                </dd>
-                            </dl>
-
-                            <dl class="detail-section">
-                                <h4 class="detail-section-title">Activity</h4>
-                                <dt>Last success</dt>
-                                <dd>
-                                    {formatTimestamp(
-                                        provider().last_success_at,
-                                    )}
-                                </dd>
-                                <dt>Last error</dt>
-                                <dd
-                                    class={
-                                        !provider().last_error_at ? "zero" : ""
-                                    }
-                                >
-                                    {formatTimestamp(
-                                        provider().last_error_at,
-                                    )}
-                                </dd>
-                            </dl>
-
-                            <Show when={provider().model_count > 0}>
-                                <a
-                                    class="catalog-link"
-                                    href={`/models?prefix=${provider().prefix}`}
-                                >
-                                    View all in model catalog
-                                    <span class="catalog-link-arrow">
-                                        &rarr;
-                                    </span>
-                                </a>
-                            </Show>
+                                <ProviderPopoverBody provider={provider} />
                         </div>
 
                         <div

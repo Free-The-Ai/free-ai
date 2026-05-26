@@ -11,23 +11,65 @@ const SECTIONS = [
   { id: "errors", label: "Errors" },
 ];
 
-export default function DocsMobileNav() {
-  const [open, setOpen] = createSignal(false);
-  const [activeId, setActiveId] = createSignal("");
-  const [dragY, setDragY] = createSignal(0);
+// ── Sheet drag hook (reused pattern) ──
 
+function useSheetDrag(isOpen: () => boolean, onClose: () => void) {
+  const [dragY, setDragY] = createSignal(0);
   let sheetEl: HTMLDivElement | undefined;
-  let dragStartY = 0;
-  let dragStartOffset = 0;
+  let startY = 0;
+  let startOffset = 0;
   let isDragging = false;
   let boundMove: ((e: PointerEvent) => void) | null = null;
   let boundUp: ((e: PointerEvent) => void) | null = null;
 
+  const onDragStart = (e: PointerEvent) => {
+    const target = e.target as HTMLElement;
+    if (target.closest("button:not(.docs-mobile-toc__handle), a")) return;
+    e.preventDefault();
+    isDragging = true;
+    startY = e.clientY;
+    startOffset = dragY();
+    boundMove = onDragMove;
+    boundUp = onDragEnd;
+    document.addEventListener("pointermove", boundMove, { passive: false });
+    document.addEventListener("pointerup", boundUp, { passive: false });
+    document.addEventListener("pointercancel", boundUp, { passive: false });
+  };
+  const onDragMove = (e: PointerEvent) => {
+    if (!isDragging) return;
+    e.preventDefault();
+    setDragY(Math.max(0, startOffset + e.clientY - startY));
+  };
+  const onDragEnd = (e: PointerEvent) => {
+    if (!isDragging) return;
+    isDragging = false;
+    e.preventDefault();
+    disconnectPointerDrag(boundMove, boundUp);
+    boundMove = boundUp = null;
+    const sheet = sheetEl;
+    if (!sheet) { setDragY(0); return; }
+    if (dragY() > sheet.offsetHeight * 0.3) onClose();
+    else setDragY(0);
+  };
+
+  onCleanup(() => { disconnectPointerDrag(boundMove, boundUp); });
+
+  return {
+    dragY, setSheetRef: (el: HTMLDivElement) => { sheetEl = el; },
+    onDragStart, cleanup: () => disconnectPointerDrag(boundMove, boundUp),
+  };
+}
+
+export default function DocsMobileNav() {
+  const [open, setOpen] = createSignal(false);
+  const [activeId, setActiveId] = createSignal("");
+
   const close = () => {
     setOpen(false);
-    setDragY(0);
     unlockScroll();
   };
+
+  const drag = useSheetDrag(() => open, close);
 
   const lockScroll = () => lockBodyScroll("docs-toc-open");
   const unlockScroll = () => unlockBodyScroll("docs-toc-open");
@@ -64,62 +106,15 @@ export default function DocsMobileNav() {
   };
 
   const toggle = () => {
-    if (open()) {
-      close();
-    } else {
-      setOpen(true);
-      lockScroll();
-    }
+    if (open()) { close(); }
+    else { setOpen(true); lockScroll(); }
   };
 
   const handleKeyDown = (e: KeyboardEvent) => {
     if (e.key === "Escape") close();
   };
 
-  const handleDragStart = (e: PointerEvent) => {
-    const target = e.target as HTMLElement;
-    if (target.closest("button:not(.docs-mobile-toc__handle), a")) return;
-    e.preventDefault();
-    isDragging = true;
-    dragStartY = e.clientY;
-    dragStartOffset = dragY();
-    boundMove = handleDragMove;
-    boundUp = handleDragEnd;
-    document.addEventListener("pointermove", boundMove, { passive: false });
-    document.addEventListener("pointerup", boundUp, { passive: false });
-    document.addEventListener("pointercancel", boundUp, { passive: false });
-  };
-
-  const handleDragMove = (e: PointerEvent) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    const delta = e.clientY - dragStartY;
-    const next = Math.max(0, dragStartOffset + delta);
-    setDragY(next);
-  };
-
-  const handleDragEnd = (e: PointerEvent) => {
-    if (!isDragging) return;
-    isDragging = false;
-    e.preventDefault();
-    disconnectPointerDrag(boundMove, boundUp);
-    boundMove = boundUp = null;
-    const sheet = sheetEl;
-    if (!sheet) { setDragY(0); return; }
-    const threshold = sheet.offsetHeight * 0.3;
-    if (dragY() > threshold) {
-      close();
-    } else {
-      setDragY(0);
-    }
-  };
-
-  onCleanup(() => {
-    if (open()) unlockScroll();
-  });
-
-  const dy = dragY();
-  const sheetStyle = dy > 0 ? { transform: `translateY(${dy}px)`, transition: "none", "touch-action": "none" } : {};
+  onCleanup(() => { if (open()) unlockScroll(); });
 
   return (
     <div class="docs-mobile-toc" onKeyDown={handleKeyDown}>
@@ -137,9 +132,9 @@ export default function DocsMobileNav() {
         <div class="docs-mobile-toc__overlay" data-sound="overlay.close" onClick={close} />
         <div
           class="docs-mobile-toc__sheet"
-          ref={sheetEl}
-          style={sheetStyle}
-          onPointerDown={handleDragStart}
+          ref={drag.setSheetRef}
+          style={drag.dragY() > 0 ? { transform: `translateY(${drag.dragY()}px)`, transition: "none", "touch-action": "none" } : {}}
+          onPointerDown={drag.onDragStart}
         >
           <div class="docs-mobile-toc__handle" />
           <div class="docs-mobile-toc__label">On this page</div>

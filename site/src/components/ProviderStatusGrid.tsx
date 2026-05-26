@@ -302,7 +302,55 @@ const CSS = `
 }
 `;
 
-// ── StatusCard sub-component ──
+// ── Helper functions ──
+
+function StatusPills({ summary, statusFilter, toggleStatusFilter }: {
+  summary: () => { up: number; degraded: number; down: number; total: number; modelsAffected: number };
+  statusFilter: () => Set<ProviderStatus>;
+  toggleStatusFilter: (status: ProviderStatus) => void;
+}) {
+  return (
+    <div class="status-summary" role="group" aria-label="Filter providers by health">
+      <button type="button" class={`status-pill is-up${statusFilter().has("up") ? " is-active" : ""}`}
+        aria-pressed={statusFilter().has("up")} disabled={summary().up === 0}
+        data-sound="interaction.toggle" onClick={() => toggleStatusFilter("up")}
+      >{summary().up} up</button>
+      <button type="button" class={`status-pill is-degraded${statusFilter().has("degraded") ? " is-active" : ""}`}
+        aria-pressed={statusFilter().has("degraded")} disabled={summary().degraded === 0}
+        data-sound="interaction.toggle" onClick={() => toggleStatusFilter("degraded")}
+      >{summary().degraded} degraded</button>
+      <button type="button" class={`status-pill is-down${statusFilter().has("down") ? " is-active" : ""}`}
+        aria-pressed={statusFilter().has("down")} disabled={summary().down === 0}
+        data-sound="interaction.toggle" onClick={() => toggleStatusFilter("down")}
+      >{summary().down} down</button>
+    </div>
+  );
+}
+
+function SkeletonCard() {
+  return (
+    <div class="status-grid">
+      <article class="status-card is-unknown" aria-live="polite">
+        <div class="status-card-top">
+          <span class="status-dot" />
+          <strong>providers/</strong>
+          <span>loading</span>
+        </div>
+        <div class="status-card-main">
+          <span>...</span>
+          <small>models</small>
+        </div>
+        <div class="status-card-blast-slot" />
+        <div class="status-card-meta">
+          <span>30m errors</span>
+          <strong>...</strong>
+          <span>requests</span>
+          <strong>...</strong>
+        </div>
+      </article>
+    </div>
+  );
+}
 
 function StatusCard({ provider, isSelected, onSelect, closePopover }: {
   provider: ProviderHealth;
@@ -459,42 +507,7 @@ export default function ProviderStatusGrid() {
                 <div>
                     <h1>Status</h1>
                 </div>
-                <div
-                    class="status-summary"
-                    role="group"
-                    aria-label="Filter providers by health"
-                >
-                    <button
-                        type="button"
-                        class={`status-pill is-up${statusFilter().has("up") ? " is-active" : ""}`}
-                        aria-pressed={statusFilter().has("up")}
-                        disabled={summary().up === 0}
-                        data-sound="interaction.toggle"
-                        onClick={() => toggleStatusFilter("up")}
-                    >
-                        {summary().up} up
-                    </button>
-                    <button
-                        type="button"
-                        class={`status-pill is-degraded${statusFilter().has("degraded") ? " is-active" : ""}`}
-                        aria-pressed={statusFilter().has("degraded")}
-                        disabled={summary().degraded === 0}
-                        data-sound="interaction.toggle"
-                        onClick={() => toggleStatusFilter("degraded")}
-                    >
-                        {summary().degraded} degraded
-                    </button>
-                    <button
-                        type="button"
-                        class={`status-pill is-down${statusFilter().has("down") ? " is-active" : ""}`}
-                        aria-pressed={statusFilter().has("down")}
-                        disabled={summary().down === 0}
-                        data-sound="interaction.toggle"
-                        onClick={() => toggleStatusFilter("down")}
-                    >
-                        {summary().down} down
-                    </button>
-                </div>
+                <StatusPills summary={summary} statusFilter={statusFilter} toggleStatusFilter={toggleStatusFilter} />
             </div>
 
             <Show when={failed()}>
@@ -505,31 +518,7 @@ export default function ProviderStatusGrid() {
 
             <Show
                 when={providers().length > 0}
-                fallback={
-                    <div class="status-grid">
-                        <article
-                            class="status-card is-unknown"
-                            aria-live="polite"
-                        >
-                            <div class="status-card-top">
-                                <span class="status-dot" />
-                                <strong>providers/</strong>
-                                <span>loading</span>
-                            </div>
-                            <div class="status-card-main">
-                                <span>...</span>
-                                <small>models</small>
-                            </div>
-                            <div class="status-card-blast-slot" />
-                            <div class="status-card-meta">
-                                <span>30m errors</span>
-                                <strong>...</strong>
-                                <span>requests</span>
-                                <strong>...</strong>
-                            </div>
-                        </article>
-                    </div>
-                }
+                fallback={<SkeletonCard />}
             >
                 <div class="status-grid">
                     <Show

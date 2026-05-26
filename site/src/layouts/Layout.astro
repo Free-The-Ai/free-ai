@@ -56,7 +56,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 		<!-- Sound system: module-level singleton, no DOM output, survives navigation -->
 		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }} />
 
-<div id="loader" transition:persist="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:1;pointer-events:auto">
+<div id="loader" transition:persist="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none">
 			<Logo width={160} style="opacity:.4" />
 		</div>
 		<script is:inline>
@@ -72,22 +72,24 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				}
 				function show(){
 					if(hideTimer){clearTimeout(hideTimer);hideTimer=null}
-					l.style.transition='opacity 80ms ease-out';
+					l.style.transition='opacity 40ms ease-out';
 					l.style.opacity='1';
 					l.style.pointerEvents='auto';
 				}
 				/* Initial full-page load: show logo at least 400ms */
 				if(!window.__loaderDismissed){
 					window.__loaderDismissed=true;
+					show();
 					var ready=function(){setTimeout(hide,400)};
 					if(document.readyState==='loading'){
 						document.addEventListener('DOMContentLoaded',ready);
 					}else{ready()}
 				}
-				/* SPA navigation: smooth logo flash between pages */
-				document.addEventListener('astro:before-preparation',show);
-				document.addEventListener('astro:page-load',function(){
-					hideTimer=setTimeout(hide,120);
+				/* SPA navigation: show loader while new page loads */
+				document.addEventListener('astro:before-preparation',function(){
+					if(!window.__loaderDismissed)return;
+					show();
+					hideTimer=setTimeout(hide,300);
 				});
 			})();
 		</script>

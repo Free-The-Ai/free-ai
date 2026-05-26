@@ -56,26 +56,26 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 		<!-- Sound system: module-level singleton, no DOM output, survives navigation -->
 		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }} />
 
-		<div id="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:1">
+<div id="loader" transition:persist="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:1">
 			<Logo width={160} style="opacity:.4" />
 		</div>
-		<script>
+		<script is:inline>
 			(function(){
+				if(window.__loaderDismissed)return;
+				window.__loaderDismissed=true;
 				var l=document.getElementById('loader');
-				if(!l) return;
-				var done=false;
+				if(!l)return;
 				function hide(){
-					if(done)return;done=true;
-					l.style.transition='opacity 120ms ease-out';l.style.opacity='0';
-					setTimeout(function(){l.remove()},150);
+					l.style.transition='opacity 80ms linear';
+					l.style.opacity='0';
+					setTimeout(function(){l.remove()},120);
 				}
-				/* Dismiss as soon as the browser paints */
-				if(document.readyState==='complete'){hide()}
-				else{
-					requestAnimationFrame(function(){requestAnimationFrame(hide)});
-					/* Hard fallback: under 2.5s no matter what */
-					setTimeout(hide,2500);
+				if(document.readyState==='loading'){
+					document.addEventListener('DOMContentLoaded',hide);
+				}else{
+					hide();
 				}
+				setTimeout(function(){if(l.parentNode)l.remove()},1500);
 			})();
 		</script>
 

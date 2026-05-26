@@ -63,27 +63,32 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 			(function(){
 				var l=document.getElementById('loader');
 				if(!l)return;
+				var hideTimer=null;
 				function hide(){
-					l.style.transition='opacity 300ms ease-out';
+					if(hideTimer){clearTimeout(hideTimer);hideTimer=null}
+					l.style.transition='opacity 200ms ease-out';
 					l.style.opacity='0';
 					l.style.pointerEvents='none';
 				}
 				function show(){
-					l.style.transition='none';
+					if(hideTimer){clearTimeout(hideTimer);hideTimer=null}
+					l.style.transition='opacity 80ms ease-out';
 					l.style.opacity='1';
 					l.style.pointerEvents='auto';
 				}
-				/* Initial full-page load: show logo at least 700ms */
+				/* Initial full-page load: show logo at least 400ms */
 				if(!window.__loaderDismissed){
 					window.__loaderDismissed=true;
-					var ready=function(){setTimeout(hide,700)};
+					var ready=function(){setTimeout(hide,400)};
 					if(document.readyState==='loading'){
 						document.addEventListener('DOMContentLoaded',ready);
 					}else{ready()}
 				}
-				/* SPA navigation: flash loader between pages */
+				/* SPA navigation: smooth logo flash between pages */
 				document.addEventListener('astro:before-preparation',show);
-				document.addEventListener('astro:page-load',function(){setTimeout(hide,250)});
+				document.addEventListener('astro:page-load',function(){
+					hideTimer=setTimeout(hide,120);
+				});
 			})();
 		</script>
 

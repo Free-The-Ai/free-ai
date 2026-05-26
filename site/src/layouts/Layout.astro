@@ -7,6 +7,7 @@ import HapticsInit from '../components/HapticsInit';
 import SoundProvider from '../components/SoundProvider';
 import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
+import { ClientRouter } from 'astro:transitions';
 import {
 	SETUP_GUIDES,
 	CATEGORY_ORDER,
@@ -49,6 +50,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 <html lang="en">
 	<head>
 		<BaseHead title={title} description={description} image={image} jsonLd={jsonLd} keywords={keywords} />
+		<ClientRouter />
 	</head>
 	<body>
 		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }}>
@@ -77,7 +79,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 			})();
 		</script>
 		<div class="page-shell">
-			<header class="site-header">
+			<header class="site-header" transition:animate="fade">
 				<nav class="nav">
 					<a class="brand" href="/home"><Logo width={160} /></a>
 					<div class="nav-links">
@@ -151,11 +153,11 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				</nav>
 			</header>
 
-			<div class="site-main">
+			<div class="site-main" transition:animate="slide">
 				<slot />
 			</div>
 
-			<footer class="site-footer">
+			<footer class="site-footer" transition:animate="fade">
 				<div class="footer-links">
 					<a href="/quickstart">Quickstart</a>
 					<a href="/setup">Setup guides</a>

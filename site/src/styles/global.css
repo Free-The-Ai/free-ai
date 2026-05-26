@@ -56,6 +56,53 @@
         0 0.5px 0 rgba(255, 255, 255, 0.31), 0 2px 6px rgba(0, 0, 0, 0.56) inset;
     --sk-accent-glow:
         0 0 0 1px rgba(238, 93, 32, 0.18), 0 0 16px rgba(238, 93, 32, 0.16);
+
+    /* ── Motion system (transitions.dev-inspired) ── */
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+    --ease-in-smooth: cubic-bezier(0.4, 0, 1, 1);
+
+    /* Card resize */
+    --resize-dur: 300ms;
+    /* Number pop-in */
+    --digit-dur: 500ms;
+    --digit-distance: 8px;
+    --digit-stagger: 70ms;
+    --digit-blur: 2px;
+    /* Text state swap */
+    --text-swap-dur: 150ms;
+    --text-swap-translate-y: 4px;
+    --text-swap-blur: 2px;
+    /* Dropdown / popover */
+    --dropdown-open-dur: 250ms;
+    --dropdown-close-dur: 150ms;
+    --dropdown-pre-scale: 0.97;
+    /* Modal */
+    --modal-open-dur: 250ms;
+    --modal-close-dur: 150ms;
+    --modal-scale: 0.96;
+    /* Panel reveal */
+    --panel-open-dur: 400ms;
+    --panel-close-dur: 350ms;
+    --panel-translate-y: 100px;
+    --panel-blur: 2px;
+    /* Page transition */
+    --page-slide-dur: 200ms;
+    --page-slide-distance: 8px;
+    --page-blur: 3px;
+    /* Icon swap */
+    --icon-swap-dur: 200ms;
+    --icon-swap-blur: 2px;
+    --icon-swap-start-scale: 0.25;
+    /* Button press */
+    --press-dur: 120ms;
+    --press-scale: 0.97;
+    /* Hover lift */
+    --hover-lift: -2px;
+    --hover-dur: 200ms;
+    /* Focus ring */
+    --focus-dur: 150ms;
 }
 
 @media (prefers-color-scheme: light) {
@@ -73,8 +120,126 @@
     }
 }
 
+/* ── View Transition animations ── */
+@keyframes vt-slide-in {
+    from {
+        opacity: 0;
+        transform: translateY(var(--page-slide-distance));
+        filter: blur(var(--page-blur));
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+}
+
+@keyframes vt-slide-out {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+        filter: blur(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(calc(var(--page-slide-distance) * -1));
+        filter: blur(var(--page-blur));
+    }
+}
+
+@keyframes vt-fade-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes vt-fade-out {
+    from { opacity: 1; }
+    to { opacity: 0; }
+}
+
+/* Astro slide override — transitions.dev-quality easing */
+::view-transition-old(root) {
+    animation: vt-slide-out var(--page-slide-dur) var(--ease-out-smooth);
+}
+::view-transition-new(root) {
+    animation: vt-slide-in var(--page-slide-dur) var(--ease-out-smooth);
+}
+
+/* Per-element view transitions remain fade (header, footer) */
+::view-transition-old(site-header),
+::view-transition-old(site-footer) {
+    animation: vt-fade-out var(--page-slide-dur) var(--ease-out-smooth);
+}
+::view-transition-new(site-header),
+::view-transition-new(site-footer) {
+    animation: vt-fade-in var(--page-slide-dur) var(--ease-out-smooth);
+}
+
+/* ── Micro-interaction keyframes ── */
+@keyframes press-down {
+    0%   { transform: scale(1); }
+    100% { transform: scale(var(--press-scale)); }
+}
+@keyframes press-up {
+    0%   { transform: scale(var(--press-scale)); }
+    100% { transform: scale(1); }
+}
+@keyframes modal-enter {
+    0%   { opacity: 0; transform: scale(var(--modal-scale)) translateY(8px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes modal-exit {
+    0%   { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(var(--modal-scale)); }
+}
+@keyframes dropdown-open {
+    0%   { opacity: 0; transform: scale(var(--dropdown-pre-scale)) translateY(-4px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+}
+@keyframes dropdown-close {
+    0%   { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(0.97) translateY(-4px); }
+}
+@keyframes digit-pop {
+    0%   { opacity: 0; transform: translateY(var(--digit-distance)); filter: blur(var(--digit-blur)); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes text-swap-out {
+    0%   { opacity: 1; transform: translateY(0); filter: blur(0); }
+    100% { opacity: 0; transform: translateY(calc(var(--text-swap-translate-y) * -1)); filter: blur(var(--text-swap-blur)); }
+}
+@keyframes text-swap-in {
+    0%   { opacity: 0; transform: translateY(var(--text-swap-translate-y)); filter: blur(var(--text-swap-blur)); }
+    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+}
+@keyframes icon-swap-out {
+    0%   { opacity: 1; transform: scale(1); filter: blur(0); }
+    100% { opacity: 0; transform: scale(var(--icon-swap-start-scale)); filter: blur(var(--icon-swap-blur)); }
+}
+@keyframes icon-swap-in {
+    0%   { opacity: 0; transform: scale(var(--icon-swap-start-scale)); filter: blur(var(--icon-swap-blur)); }
+    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+}
+@keyframes check-stroke {
+    0%   { stroke-dashoffset: 24; }
+    100% { stroke-dashoffset: 0; }
+}
+
 * {
     box-sizing: border-box;
+}
+
+/* ── Global focus ring (transitions.dev-quality) ── */
+a:focus-visible,
+button:focus-visible,
+[role="button"]:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: var(--radius-sm);
+    transition: outline-color var(--focus-dur) var(--ease-out-smooth), box-shadow var(--focus-dur) var(--ease-out-smooth);
 }
 
 html {
@@ -249,8 +414,8 @@ pre {
     font-size: 0.9rem;
     font-weight: 500;
     transition:
-        color 150ms ease,
-        background 150ms ease;
+        color 150ms var(--ease-out-smooth),
+        background 150ms var(--ease-out-smooth);
 }
 
 .nav-links a:hover,
@@ -292,7 +457,7 @@ pre {
     font-size: 0.9rem;
     font-weight: 500;
     cursor: pointer;
-    transition: color 150ms ease, background 150ms ease;
+    transition: color 150ms var(--ease-out-smooth), background 150ms var(--ease-out-smooth);
 }
 
 .nav-dropdown-trigger:hover,
@@ -310,7 +475,7 @@ pre {
     border-right: 1.5px solid var(--dim);
     border-bottom: 1.5px solid var(--dim);
     transform: rotate(45deg) translateY(-1px);
-    transition: transform 200ms ease, border-color 150ms ease;
+    transition: transform 200ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
 }
 
 .nav-dropdown:hover .nav-dropdown-caret,
@@ -355,11 +520,12 @@ pre {
     background: var(--sk-shell-bg);
     box-shadow: var(--sk-raised-crisp-shadow), 0 18px 36px rgba(0, 0, 0, 0.5);
     background-clip: padding-box;
+    transform-origin: top center;
     opacity: 0;
     pointer-events: none;
     visibility: hidden;
-    transform: translateY(6px);
-    transition: opacity 160ms ease, transform 200ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 200ms;
+    transform: translateY(6px) scale(var(--dropdown-pre-scale));
+    transition: opacity var(--dropdown-open-dur) var(--ease-out-smooth), transform var(--dropdown-open-dur) var(--ease-out-expo), visibility 0s linear var(--dropdown-close-dur);
 }
 
 .nav-dropdown:hover .nav-dropdown-panel,
@@ -370,8 +536,8 @@ pre {
     opacity: 1;
     pointer-events: auto;
     visibility: visible;
-    transform: translateY(0);
-    transition: opacity 160ms ease, transform 220ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0s;
+    transform: translateY(0) scale(1);
+    transition: opacity var(--dropdown-open-dur) var(--ease-out-smooth), transform var(--dropdown-open-dur) var(--ease-out-expo), visibility 0s linear 0s;
 }
 
 .nav-dropdown-head {
@@ -387,7 +553,7 @@ pre {
     text-decoration: none;
     background: var(--sk-inset-bg);
     border: 1px solid var(--sk-border);
-    transition: border-color 150ms ease;
+    transition: border-color 150ms var(--ease-out-smooth);
 }
 
 .nav-dropdown-head-link:hover {
@@ -431,7 +597,7 @@ pre {
     border-radius: var(--radius-sm);
     background: var(--sk-inset-bg);
     text-decoration: none;
-    transition: border-color 150ms ease, background 150ms ease, transform 150ms ease;
+    transition: border-color 150ms var(--ease-out-smooth), background 150ms var(--ease-out-smooth), transform 150ms var(--ease-out-smooth);
 }
 
 .nav-dropdown-item:hover {
@@ -491,9 +657,15 @@ pre {
     font-weight: 600;
     cursor: pointer;
     transition:
-        background 200ms ease,
-        border-color 200ms ease,
-        color 200ms ease;
+        background 200ms var(--ease-out-smooth),
+        border-color 200ms var(--ease-out-smooth),
+        color 200ms var(--ease-out-smooth),
+        transform var(--press-dur) var(--ease-out-smooth);
+}
+.discord-button:active,
+.primary-button:active,
+.ghost-button:active {
+    transform: scale(var(--press-scale));
 }
 
 .discord-button {
@@ -562,6 +734,11 @@ pre {
 
 .primary-button:hover {
     background: #e84d0a;
+    transform: translateY(var(--hover-lift));
+}
+
+.primary-button:active {
+    transform: scale(var(--press-scale));
 }
 
 .home-hero .primary-button {
@@ -569,11 +746,11 @@ pre {
     isolation: isolate;
     overflow: hidden;
     transition:
-        background 200ms ease,
-        border-color 200ms ease,
-        box-shadow 200ms ease,
-        filter 200ms ease,
-        transform 160ms ease;
+        background 200ms var(--ease-out-smooth),
+        border-color 200ms var(--ease-out-smooth),
+        box-shadow 200ms var(--ease-out-smooth),
+        filter 200ms var(--ease-out-smooth),
+        transform 160ms var(--ease-out-smooth);
 }
 
 .home-hero .primary-button::before {
@@ -593,8 +770,8 @@ pre {
     opacity: 0;
     transform: skewX(-18deg) translateX(0);
     transition:
-        opacity 180ms ease,
-        transform 620ms cubic-bezier(0.16, 1, 0.3, 1);
+        opacity 180ms var(--ease-out-smooth),
+        transform 620ms var(--ease-out-expo);
     pointer-events: none;
 }
 
@@ -815,8 +992,8 @@ h3 {
     border-radius: var(--radius);
     background: var(--surface);
     transition:
-        border-color 200ms ease,
-        background 200ms ease;
+        border-color 200ms var(--ease-out-smooth),
+        background 200ms var(--ease-out-smooth);
 }
 
 .proof-card:hover,
@@ -1004,7 +1181,7 @@ h3 {
     color: var(--muted);
     cursor: pointer;
     opacity: 0;
-    transition: opacity 150ms ease;
+    transition: opacity 150ms var(--ease-out-smooth);
 }
 .copy-btn:hover {
     color: var(--text);
@@ -1087,8 +1264,8 @@ h3 {
     color: var(--text);
     text-decoration: none;
     transition:
-        border-color 200ms ease,
-        background 200ms ease;
+        border-color 200ms var(--ease-out-smooth),
+        background 200ms var(--ease-out-smooth);
 }
 
 .docs-start-card:hover {
@@ -1520,8 +1697,8 @@ h3 {
     font-weight: 500;
     text-decoration: none;
     transition:
-        color 150ms ease,
-        background 150ms ease;
+        color 150ms var(--ease-out-smooth),
+        background 150ms var(--ease-out-smooth);
 }
 
 .docs-sidebar a:hover {
@@ -1890,9 +2067,9 @@ h3 {
     font-size: 0.78rem;
     cursor: pointer;
     transition:
-        border-color 150ms ease,
-        background 150ms ease,
-        box-shadow 150ms ease;
+        border-color 150ms var(--ease-out-smooth),
+        background 150ms var(--ease-out-smooth),
+        box-shadow 150ms var(--ease-out-smooth);
 }
 
 .catalog-filter-trigger:hover {
@@ -1952,7 +2129,7 @@ h3 {
 .catalog-filter-caret {
     font-size: 16px;
     color: var(--dim);
-    transition: transform 200ms ease, color 150ms ease;
+    transition: transform 200ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth);
 }
 
 .catalog-filter[open] .catalog-filter-caret {
@@ -1977,7 +2154,7 @@ h3 {
     box-shadow:
         var(--sk-raised-crisp-shadow),
         0 18px 36px rgba(0, 0, 0, 0.5);
-    animation: catalogFilterFade 160ms ease;
+    animation: catalogFilterFade 160ms var(--ease-out-smooth);
 }
 
 @keyframes catalogFilterFade {
@@ -1996,7 +2173,7 @@ h3 {
     font-family: var(--font-mono);
     font-size: 0.78rem;
     cursor: pointer;
-    transition: background 120ms ease, color 120ms ease;
+    transition: background 120ms var(--ease-out-smooth), color 120ms var(--ease-out-smooth);
     user-select: none;
 }
 
@@ -2020,7 +2197,7 @@ h3 {
     border-radius: 3px;
     background: var(--bg);
     cursor: pointer;
-    transition: border-color 120ms ease, background 120ms ease;
+    transition: border-color 120ms var(--ease-out-smooth), background 120ms var(--ease-out-smooth);
     position: relative;
 }
 
@@ -2087,9 +2264,9 @@ h3 {
     font-size: 0.76rem;
     cursor: pointer;
     transition:
-        border-color 150ms ease,
-        background 150ms ease,
-        color 150ms ease;
+        border-color 150ms var(--ease-out-smooth),
+        background 150ms var(--ease-out-smooth),
+        color 150ms var(--ease-out-smooth);
     white-space: nowrap;
 }
 
@@ -2128,9 +2305,9 @@ h3 {
     border-color: var(--border-strong);
     cursor: pointer;
     transition:
-        border-color 150ms ease,
-        color 150ms ease,
-        background 150ms ease;
+        border-color 150ms var(--ease-out-smooth),
+        color 150ms var(--ease-out-smooth),
+        background 150ms var(--ease-out-smooth);
 }
 
 .catalog-summary button:hover {
@@ -2333,7 +2510,7 @@ h3 {
     padding: 16px;
     background: rgba(0, 0, 0, 0.55);
     backdrop-filter: blur(4px);
-    animation: model-modal-fade 150ms ease;
+    animation: model-modal-fade 150ms var(--ease-out-smooth);
 }
 
 @keyframes model-modal-fade {
@@ -2353,7 +2530,7 @@ h3 {
     border-radius: var(--radius);
     background: var(--sk-shell-bg);
     box-shadow: var(--sk-raised-crisp-shadow), 0 24px 56px rgba(0, 0, 0, 0.65);
-    animation: model-modal-rise 200ms cubic-bezier(0.16, 1, 0.3, 1);
+    animation: model-modal-rise 200ms var(--ease-out-expo);
 }
 
 @keyframes model-modal-rise {
@@ -2403,7 +2580,7 @@ h3 {
     background: var(--sk-inset-bg);
     color: var(--muted);
     cursor: pointer;
-    transition: border-color 150ms ease, color 150ms ease;
+    transition: border-color 150ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth);
 }
 
 .model-modal-close:hover {
@@ -2537,7 +2714,7 @@ h3 {
     text-transform: uppercase;
     cursor: pointer;
     text-shadow: var(--accent-text-glow);
-    transition: border-color 150ms ease;
+    transition: border-color 150ms var(--ease-out-smooth);
 }
 
 .model-modal-copy:hover {
@@ -2569,13 +2746,17 @@ h3 {
     border-radius: var(--radius);
     background: var(--surface);
     transition:
-        border-color 150ms ease,
-        background 150ms ease;
+        border-color 150ms var(--ease-out-smooth),
+        background 150ms var(--ease-out-smooth),
+        transform var(--hover-dur) var(--ease-out-smooth),
+        box-shadow var(--hover-dur) var(--ease-out-smooth);
 }
 
 .model-card:hover {
     border-color: var(--border-strong);
     background: var(--bg);
+    transform: translateY(var(--hover-lift));
+    box-shadow: var(--sk-raised-shadow);
 }
 
 .model-card.is-image {
@@ -2645,9 +2826,9 @@ h3 {
     font-size: 14px;
     opacity: 0;
     transition:
-        opacity 150ms ease,
-        color 150ms ease,
-        border-color 150ms ease;
+        opacity 150ms var(--ease-out-smooth),
+        color 150ms var(--ease-out-smooth),
+        border-color 150ms var(--ease-out-smooth);
 }
 .model-card:hover .model-copy {
     opacity: 1;
@@ -2905,7 +3086,7 @@ h3 {
     overscroll-behavior: contain;
     touch-action: pan-y;
     will-change: transform;
-    transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 280ms var(--ease-out-expo);
 }
 
 html.nav-drawer-open {
@@ -2947,8 +3128,8 @@ body.nav-drawer-open {
     font-size: 1.05rem;
     font-weight: 600;
     transition:
-        background 150ms ease,
-        border-color 150ms ease;
+        background 150ms var(--ease-out-smooth),
+        border-color 150ms var(--ease-out-smooth);
 }
 .nav-drawer__link:hover {
     background: var(--control-bg);
@@ -2977,7 +3158,7 @@ body.nav-drawer-open {
     text-shadow: var(--accent-text-glow);
     font-size: 0.95rem;
     font-weight: 600;
-    transition: background 150ms ease;
+    transition: background 150ms var(--ease-out-smooth);
 }
 .nav-drawer__discord:hover {
     background: rgba(255, 107, 0, 0.05);
@@ -2996,7 +3177,7 @@ body.nav-drawer-open {
     color: var(--donate-text);
     font-size: 0.95rem;
     font-weight: 600;
-    transition: background 150ms ease, border-color 150ms ease;
+    transition: background 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
 }
 .nav-drawer__donate:hover {
     background: var(--donate-muted);
@@ -3021,9 +3202,9 @@ body.nav-drawer-open {
     color: var(--muted);
     cursor: pointer;
     transition:
-        background 150ms ease,
-        color 150ms ease,
-        border-color 150ms ease;
+        background 150ms var(--ease-out-smooth),
+        color 150ms var(--ease-out-smooth),
+        border-color 150ms var(--ease-out-smooth);
 }
 .nav-drawer__close:hover {
     background: var(--control-bg);
@@ -3083,7 +3264,7 @@ body.nav-drawer-open {
     color: var(--muted);
     font-size: 0.82rem;
     text-decoration: none;
-    transition: color 150ms ease;
+    transition: color 150ms var(--ease-out-smooth);
 }
 
 .footer-links a:hover {
@@ -3239,10 +3420,10 @@ body.nav-drawer-open {
 .docs-sidebar a {
     border: 1px solid transparent;
     transition:
-        border-color 150ms ease,
-        color 150ms ease,
-        background 150ms ease,
-        box-shadow 150ms ease;
+        border-color 150ms var(--ease-out-smooth),
+        color 150ms var(--ease-out-smooth),
+        background 150ms var(--ease-out-smooth),
+        box-shadow 150ms var(--ease-out-smooth);
 }
 
 .docs-content .kb-accordion {
@@ -3344,8 +3525,8 @@ body.nav-drawer-open {
 .model-card {
     background: var(--sk-shell-bg);
     transition:
-        border-color 150ms ease,
-        box-shadow 150ms ease;
+        border-color 150ms var(--ease-out-smooth),
+        box-shadow 150ms var(--ease-out-smooth);
 }
 
 .model-card:hover {
@@ -3563,8 +3744,8 @@ body.nav-drawer-open {
         background: var(--sk-shell-bg);
         position: relative;
         transition:
-            border-radius 220ms cubic-bezier(0.16, 1, 0.3, 1),
-            border-bottom-color 220ms cubic-bezier(0.16, 1, 0.3, 1);
+            border-radius 220ms var(--ease-out-expo),
+            border-bottom-color 220ms var(--ease-out-expo);
     }
 
     .nav.has-open-drawer {
@@ -3645,8 +3826,8 @@ body.nav-drawer-open {
         cursor: pointer;
         justify-self: end;
         transition:
-            border-color 200ms ease,
-            background 200ms ease;
+            border-color 200ms var(--ease-out-smooth),
+            background 200ms var(--ease-out-smooth);
     }
 
     .nav-hamburger:hover {
@@ -3661,8 +3842,8 @@ body.nav-drawer-open {
         background: var(--text);
         border-radius: 1px;
         transition:
-            transform 200ms ease,
-            opacity 200ms ease;
+            transform 200ms var(--ease-out-smooth),
+            opacity 200ms var(--ease-out-smooth);
     }
 
     .nav-hamburger[aria-expanded="true"] .hamburger-bar:nth-child(1),
@@ -3719,8 +3900,8 @@ body.nav-drawer-open {
         box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4);
         cursor: pointer;
         transition:
-            background 150ms ease,
-            border-color 150ms ease;
+            background 150ms var(--ease-out-smooth),
+            border-color 150ms var(--ease-out-smooth);
         -webkit-tap-highlight-color: transparent;
     }
 
@@ -3754,9 +3935,9 @@ body.nav-drawer-open {
         max-height: 70vh;
         overflow-y: auto;
         overscroll-behavior: contain;
-        animation: toc-sheet-up 250ms cubic-bezier(0.16, 1, 0.3, 1);
+        animation: toc-sheet-up 250ms var(--ease-out-expo);
         will-change: transform;
-        transition: transform 280ms cubic-bezier(0.16, 1, 0.3, 1);
+        transition: transform 280ms var(--ease-out-expo);
         touch-action: pan-y;
     }
 
@@ -3819,9 +4000,9 @@ body.nav-drawer-open {
         text-align: left;
         cursor: pointer;
         transition:
-            background 150ms ease,
-            color 150ms ease,
-            border-color 150ms ease;
+            background 150ms var(--ease-out-smooth),
+            color 150ms var(--ease-out-smooth),
+            border-color 150ms var(--ease-out-smooth);
         -webkit-tap-highlight-color: transparent;
     }
 
@@ -3913,7 +4094,7 @@ body.nav-drawer-open {
         border: 1px solid var(--border);
         border-right: 0;
         border-radius: var(--radius) 0 0 var(--radius);
-        animation: nav-drawer-slide-in 280ms cubic-bezier(0.16, 1, 0.3, 1);
+        animation: nav-drawer-slide-in 280ms var(--ease-out-expo);
     }
 
     @keyframes nav-drawer-slide-in {
@@ -4287,6 +4468,88 @@ body.nav-drawer-open {
 
 .haptic-active {
     animation: haptic-press 120ms ease-out;
+}
+
+/* ── Micro-interaction utilities (transitions.dev-inspired) ── */
+
+/* Button press — scale down on active, spring back on release */
+.t-press {
+    transition: transform var(--press-dur) var(--ease-out-smooth);
+}
+.t-press:active {
+    transform: scale(var(--press-scale));
+}
+
+/* Card hover lift with shadow growth */
+.t-card {
+    transition:
+        transform var(--hover-dur) var(--ease-out-smooth),
+        box-shadow var(--hover-dur) var(--ease-out-smooth);
+}
+.t-card:hover {
+    transform: translateY(var(--hover-lift));
+    box-shadow: var(--sk-raised-shadow);
+}
+
+/* Text swap — exit up with blur, enter from below with blur */
+.t-text-exit {
+    animation: text-swap-out var(--text-swap-dur) var(--ease-out-smooth) forwards;
+}
+.t-text-enter {
+    animation: text-swap-in var(--text-swap-dur) var(--ease-out-smooth) forwards;
+}
+
+/* Icon swap — exit shrinks with blur, enter grows from blur */
+.t-icon-exit {
+    animation: icon-swap-out var(--icon-swap-dur) var(--ease-out-smooth) forwards;
+}
+.t-icon-enter {
+    animation: icon-swap-in var(--icon-swap-dur) var(--ease-out-smooth) forwards;
+}
+
+/* Modal enter/exit with scale */
+.t-modal-enter {
+    animation: modal-enter var(--modal-open-dur) var(--ease-out-smooth) forwards;
+}
+.t-modal-exit {
+    animation: modal-exit var(--modal-close-dur) var(--ease-in-smooth) forwards;
+}
+
+/* Dropdown enter/exit */
+.t-dropdown-enter {
+    animation: dropdown-open var(--dropdown-open-dur) var(--ease-out-smooth) forwards;
+    transform-origin: top center;
+}
+.t-dropdown-exit {
+    animation: dropdown-close var(--dropdown-close-dur) var(--ease-in-smooth) forwards;
+    transform-origin: top center;
+}
+
+/* Digit pop-in — staggered entrance for number animations */
+.t-digit-pop {
+    animation: digit-pop var(--digit-dur) var(--ease-spring) backwards;
+}
+
+/* Focus ring transition */
+.t-focus {
+    transition: box-shadow var(--focus-dur) var(--ease-out-smooth), outline var(--focus-dur) var(--ease-out-smooth);
+}
+.t-focus:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    box-shadow: var(--sk-accent-glow);
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+        scroll-behavior: auto !important;
+    }
+    .t-card:hover { transform: none; }
+    .t-press:active { transform: none; }
 }
 
 /* ── Shiki syntax highlighting ── */

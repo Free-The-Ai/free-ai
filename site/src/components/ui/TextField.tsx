@@ -1,6 +1,6 @@
 import { TextField as KTextField } from "@kobalte/core/text-field";
 import { splitProps } from "solid-js";
-import type { ComponentProps, JSXElement } from "solid-js";
+import type { ComponentProps } from "solid-js";
 import { soundPlay, soundEnabled } from "../../lib/sound/singleton";
 
 const TYPING_THROTTLE_MS = 120;
@@ -18,6 +18,7 @@ interface TextFieldProps extends ComponentProps<typeof KTextField> {
 export default function TextField(props: TextFieldProps) {
   const [local, rest] = splitProps(props, [
     "label", "description", "error", "multiline", "class", "sound",
+    "value", "onChange", "placeholder",
   ]);
 
   const handleInput = () => {
@@ -31,7 +32,13 @@ export default function TextField(props: TextFieldProps) {
   };
 
   return (
-    <KTextField {...rest} class={`kb-text-field ${local.class ?? ""}`} validationState={local.error ? "invalid" : "valid"}>
+    <KTextField
+      {...rest}
+      value={local.value}
+      onChange={(v: string) => local.onChange?.(v)}
+      class={`kb-text-field ${local.class ?? ""}`}
+      validationState={local.error ? "invalid" : "valid"}
+    >
       {local.label && (
         <KTextField.Label class="kb-text-field__label">
           {local.label}
@@ -40,11 +47,16 @@ export default function TextField(props: TextFieldProps) {
       {local.multiline ? (
         <KTextField.TextArea
           class="kb-text-field__textarea"
+          placeholder={local.placeholder}
           autoResize
           onInput={handleInput}
         />
       ) : (
-        <KTextField.Input class="kb-text-field__input" onInput={handleInput} />
+        <KTextField.Input
+          class="kb-text-field__input"
+          placeholder={local.placeholder}
+          onInput={handleInput}
+        />
       )}
       {local.description && (
         <KTextField.Description class="kb-text-field__description">

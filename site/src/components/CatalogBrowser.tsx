@@ -415,7 +415,7 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
 
 // ── Catalog Filters Toolbar sub-component ──
 
-function CatalogFiltersToolbar({ query, setQuery, setPage, prefixes, togglePrefix, prefixCounts, typeFilters, toggleType, visibleTypeOptions, prefixButtonLabel, typeButtonLabel }: {
+function CatalogFiltersToolbar(props: {
   query: string; setQuery: (v: string) => void; setPage: (v: number | ((p: number) => number)) => void;
   prefixes: Set<string>; togglePrefix: (p: string) => void; prefixCounts: [string, number][];
   typeFilters: Set<FilterKey>; toggleType: (k: FilterKey) => void; visibleTypeOptions: FilterKey[];
@@ -427,26 +427,26 @@ function CatalogFiltersToolbar({ query, setQuery, setPage, prefixes, togglePrefi
         <span class="material-symbols-outlined catalog-search-icon">search</span>
         <TextField
           class="catalog-search-input"
-          value={query}
+          value={props.query}
           placeholder="Search model aliases..."
-          onChange={(v: string) => { setQuery(v); setPage(1); }}
+          onChange={(v: string) => { props.setQuery(v); props.setPage(1); }}
         />
       </div>
       <div class="catalog-filter-group">
         <details class="catalog-filter">
-          <summary class={`catalog-filter-trigger ${prefixes.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
+          <summary class={`catalog-filter-trigger ${props.prefixes.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
             <span class="catalog-filter-label">Prefix</span>
-            <span class="catalog-filter-value">{prefixButtonLabel}</span>
-            <Show when={prefixes.size > 0}>
-              <span class="catalog-filter-count">{prefixes.size}</span>
+            <span class="catalog-filter-value">{props.prefixButtonLabel}</span>
+            <Show when={props.prefixes.size > 0}>
+              <span class="catalog-filter-count">{props.prefixes.size}</span>
             </Show>
             <span class="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
           </summary>
           <div class="catalog-filter-menu" role="group" aria-label="Filter by prefix">
-            <For each={prefixCounts}>
+            <For each={props.prefixCounts}>
               {([pfx, count]) => (
-                <label class={`catalog-filter-option ${prefixes.has(pfx) ? "is-active" : ""}`}>
-                  <input type="checkbox" checked={prefixes.has(pfx)} onChange={() => togglePrefix(pfx)} data-sound="interaction.toggle" />
+                <label class={`catalog-filter-option ${props.prefixes.has(pfx) ? "is-active" : ""}`}>
+                  <input name="prefix-filter" type="checkbox" checked={props.prefixes.has(pfx)} onChange={() => props.togglePrefix(pfx)} data-sound="interaction.toggle" />
                   <span class="catalog-filter-option-name">{pfx}/*</span>
                   <span class="catalog-filter-option-count">{count}</span>
                 </label>
@@ -455,19 +455,19 @@ function CatalogFiltersToolbar({ query, setQuery, setPage, prefixes, togglePrefi
           </div>
         </details>
         <details class="catalog-filter">
-          <summary class={`catalog-filter-trigger ${typeFilters.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
+          <summary class={`catalog-filter-trigger ${props.typeFilters.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
             <span class="catalog-filter-label">Capability</span>
-            <span class="catalog-filter-value">{typeButtonLabel}</span>
-            <Show when={typeFilters.size > 0}>
-              <span class="catalog-filter-count">{typeFilters.size}</span>
+            <span class="catalog-filter-value">{props.typeButtonLabel}</span>
+            <Show when={props.typeFilters.size > 0}>
+              <span class="catalog-filter-count">{props.typeFilters.size}</span>
             </Show>
             <span class="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
           </summary>
           <div class="catalog-filter-menu" role="group" aria-label="Filter by capability">
-            <For each={visibleTypeOptions}>
+            <For each={props.visibleTypeOptions}>
               {(key) => (
-                <label class={`catalog-filter-option ${typeFilters.has(key) ? "is-active" : ""}`}>
-                  <input type="checkbox" checked={typeFilters.has(key)} onChange={() => toggleType(key)} data-sound="interaction.toggle" />
+                <label class={`catalog-filter-option ${props.typeFilters.has(key) ? "is-active" : ""}`}>
+                  <input name="capability-filter" type="checkbox" checked={props.typeFilters.has(key)} onChange={() => props.toggleType(key)} data-sound="interaction.toggle" />
                   <span class="catalog-filter-option-name">{FILTER_LABELS[key]}</span>
                 </label>
               )}
@@ -498,13 +498,12 @@ function CatalogPagination({ page, pageCount, filteredCount, totalCount, setPage
 }
 
 export default function CatalogBrowser() {
-  const initial = readCatalogParams();
   const [allModels, setAllModels] = createSignal<Model[]>([]);
   const [policy, setPolicy] = createSignal<Policy | null>(null);
-  const [query, setQuery] = createSignal(initial.query);
+  const [query, setQuery] = createSignal("");
   const [page, setPage] = createSignal(1);
-  const [prefixes, setPrefixes] = createSignal<Set<string>>(new Set(initial.prefixes));
-  const [typeFilters, setTypeFilters] = createSignal<Set<FilterKey>>(new Set(initial.types));
+  const [prefixes, setPrefixes] = createSignal<Set<string>>(new Set());
+  const [typeFilters, setTypeFilters] = createSignal<Set<FilterKey>>(new Set());
   const [source, setSource] = createSignal<"live" | "snapshot" | "error">("live");
   const [loadError, setLoadError] = createSignal("");
   const [selected, setSelected] = createSignal<Model | null>(null);
@@ -590,6 +589,11 @@ export default function CatalogBrowser() {
   });
 
   onMount(() => {
+    const params = readCatalogParams();
+    if (params.query) setQuery(params.query);
+    if (params.prefixes.length > 0) setPrefixes(new Set(params.prefixes));
+    if (params.types.length > 0) setTypeFilters(new Set(params.types));
+
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape" && selected()) setSelected(null);
     };

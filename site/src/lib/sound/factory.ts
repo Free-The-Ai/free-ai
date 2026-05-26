@@ -18,26 +18,84 @@ import {
   createOscillator,
 } from "./instruments";
 
-// ── Helpers ──
+// ── Shared helpers ──
 
-function scheduleStop(
-  nodes: AudioNode[],
-  oscillators: OscillatorNode[],
+/** Extract common params from tune, options, instrument */
+function extractParams(
+  ctx: AudioContext,
+  tune: BaseTune,
+  options: PlaySoundOptions,
+  instrument: InstrumentConfig,
+  defaultVolume = 0.35,
+) {
+  return {
+    time: ctx.currentTime,
+    vol: (tune.volume ?? defaultVolume) * (options.volume ?? 1),
+    duration: tune.duration * instrument.decayMult,
+  };
+}
+
+/** Create a noise-burst voice with filter and gain envelope */
+function createNoiseBurstVoice(
+  ctx: AudioContext,
+  duration: number,
   time: number,
-  onEnd?: () => void,
+  vol: number,
+  instrument: InstrumentConfig,
+  config: {
+    decayConstant?: number;
+    filterFreq?: number;
+    filterQ?: number;
+    filterType?: BiquadFilterType;
+    filterSweep?: { start: number; end: number };
+  } = {},
 ): void {
-  for (const osc of oscillators) {
-    osc.start(time);
-    osc.stop(time + 0.001);
+  const d = config.decayConstant ?? 35;
+  const noiseBuffer = createNoiseBuffer(ctx, duration + 0.01);
+  applyDecayToBuffer(noiseBuffer, d);
+  const source = ctx.createBufferSource();
+  source.buffer = noiseBuffer;
+  const fFreq = config.filterFreq ?? instrument.filterFreq;
+  const fQ = config.filterQ ?? instrument.q;
+  const filter = createFilter(ctx, fFreq, fQ, config.filterType);
+  if (config.filterSweep) {
+    filter.frequency.setValueAtTime(config.filterSweep.start, time);
+    filter.frequency.exponentialRampToValueAtTime(config.filterSweep.end, time + duration);
   }
-  // Cleanup after all sounds end
-  const endTime = time + 0.05;
-  setTimeout(() => {
-    for (const node of nodes) {
-      try { node.disconnect(); } catch { /* already disconnected */ }
-    }
-    onEnd?.();
-  }, (endTime - performance.now() / 1000) * 1000 + 100);
+  const gain = ctx.createGain();
+  gain.gain.setValueAtTime(Math.max(0.001, vol * instrument.gainMult), time);
+  gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
+  source.connect(filter);
+  filter.connect(gain);
+  gain.connect(ctx.destination);
+  source.start(time);
+  source.stop(time + duration + 0.01);
+}
+
+/** Create a harmonic overtone voice for sweep/rise/chime factories */
+function createHarmonicVoice(
+  ctx: AudioContext,
+  time: number,
+  freq: number,
+  endFreq: number,
+  vol: number,
+  duration: number,
+  instrument: InstrumentConfig,
+  tune: BaseTune,
+  oscillators: OscillatorNode[],
+  gainNodes: GainNode[],
+): void {
+  if (!tune.harmonics || !tune.harmonicRatio) return;
+  const hFreq = freq * tune.harmonicRatio;
+  const hEndFreq = endFreq * tune.harmonicRatio;
+  const harmOsc = createOscillator(ctx, hFreq, { ...instrument, pitchMult: 1 });
+  harmOsc.frequency.setValueAtTime(hFreq, time);
+  harmOsc.frequency.exponentialRampToValueAtTime(hEndFreq, time + duration);
+  const harmGain = createEnvelopedGain(ctx, time, (tune.harmonicVolume ?? 0.1) * vol, duration, { ...instrument, decayMult: 1 });
+  harmOsc.connect(harmGain);
+  harmGain.connect(ctx.destination);
+  oscillators.push(harmOsc);
+  gainNodes.push(harmGain);
 }
 
 function makePlayback(
@@ -65,31 +123,15 @@ function makePlayback(
 
 function clickFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.5) * (options.volume ?? 1);
-    const duration = tune.duration * instrument.decayMult;
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument, 0.5);
     const decayConstant = (tune.meta?.decayConstant as number) ?? 35;
     const filterFreq = (tune.filterFreq ?? 3800) * instrument.pitchMult;
     const filterQ = tune.filterQ ?? 2.5;
-
-    const noiseBuffer = createNoiseBuffer(ctx, duration + 0.01);
-    applyDecayToBuffer(noiseBuffer, decayConstant);
-
-    const source = ctx.createBufferSource();
-    source.buffer = noiseBuffer;
-
-    const filter = createFilter(ctx, filterFreq * instrument.filterFreq / 3800, filterQ * instrument.q / 2.5);
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(Math.max(0.001, vol * instrument.gainMult), time);
-    gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(ctx.destination);
-
-    source.start(time);
-    source.stop(time + duration + 0.01);
-
+    createNoiseBurstVoice(ctx, duration, time, vol, instrument, {
+      decayConstant,
+      filterFreq: filterFreq * instrument.filterFreq / 3800,
+      filterQ: filterQ * instrument.q / 2.5,
+    });
     return makePlayback([], [], options.onEnd);
   };
 }
@@ -98,9 +140,7 @@ function clickFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
 
 function popFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.35) * (options.volume ?? 1);
-    const duration = tune.duration * instrument.decayMult;
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
     const freq = (tune.frequency ?? 680) * instrument.pitchMult;
     const endFreq = (tune.endFrequency ?? 880) * instrument.pitchMult;
     const attack = tune.attack ?? 0.002;
@@ -128,27 +168,24 @@ function popFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesi
 
 function toggleFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.4) * (options.volume ?? 1);
-    const duration = tune.duration * instrument.decayMult;
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument, 0.4);
     const freq = (tune.frequency ?? 700) * instrument.pitchMult;
     const endFreq = (tune.endFrequency ?? 480) * instrument.pitchMult;
     const noiseGain = (tune.meta?.noiseGain as number) ?? 0.2;
     const toneGain = (tune.meta?.toneGain as number) ?? 0.22;
 
     // Layer 1: noise transient
-    const noiseBuffer = createNoiseBuffer(ctx, 0.012);
-    applyDecayToBuffer(noiseBuffer, 80);
-    const noiseSource = ctx.createBufferSource();
-    noiseSource.buffer = noiseBuffer;
-    const noiseFilter = createFilter(ctx, instrument.filterFreq, instrument.q);
-    const noiseGainNode = ctx.createGain();
-    noiseGainNode.gain.value = noiseGain * instrument.gainMult;
-    noiseSource.connect(noiseFilter);
-    noiseFilter.connect(noiseGainNode);
-    noiseGainNode.connect(ctx.destination);
-    noiseSource.start(time);
-    noiseSource.stop(time + 0.015);
+    {
+      const buf = createNoiseBuffer(ctx, 0.012);
+      applyDecayToBuffer(buf, 80);
+      const ns = ctx.createBufferSource();
+      ns.buffer = buf;
+      const nf = createFilter(ctx, instrument.filterFreq, instrument.q);
+      const ng = ctx.createGain();
+      ng.gain.value = noiseGain * instrument.gainMult;
+      ns.connect(nf); nf.connect(ng); ng.connect(ctx.destination);
+      ns.start(time); ns.stop(time + 0.015);
+    }
 
     // Layer 2: tonal glide
     const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
@@ -171,25 +208,13 @@ function toggleFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynth
 
 function tickFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.3) * (options.volume ?? 1);
-    const duration = tune.duration * instrument.decayMult;
-
-    const noiseBuffer = createNoiseBuffer(ctx, duration + 0.01);
-    applyDecayToBuffer(noiseBuffer, 50);
-    const source = ctx.createBufferSource();
-    source.buffer = noiseBuffer;
-    const filter = createFilter(ctx, instrument.filterFreq * 1.5, instrument.q, "highpass");
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(Math.max(0.001, vol * instrument.gainMult), time);
-    gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(ctx.destination);
-    source.start(time);
-    source.stop(time + duration + 0.01);
-
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument, 0.3);
+    createNoiseBurstVoice(ctx, duration, time, vol, instrument, {
+      decayConstant: 50,
+      filterFreq: instrument.filterFreq * 1.5,
+      filterQ: instrument.q,
+      filterType: "highpass",
+    });
     return makePlayback([], [], options.onEnd);
   };
 }
@@ -198,42 +223,22 @@ function tickFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthes
 
 function sweepFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.35) * (options.volume ?? 1);
-    const duration = tune.duration * instrument.decayMult;
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
     const freq = (tune.frequency ?? 280) * instrument.pitchMult;
     const endFreq = (tune.endFrequency ?? 440) * instrument.pitchMult;
-
     const oscillators: OscillatorNode[] = [];
     const gainNodes: GainNode[] = [];
 
-    // Fundamental
     const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
     osc.frequency.setValueAtTime(freq, time);
     osc.frequency.exponentialRampToValueAtTime(endFreq, time + duration);
     const gain = createEnvelopedGain(ctx, time, vol, duration, { ...instrument, decayMult: 1 });
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    oscillators.push(osc);
-    gainNodes.push(gain);
+    osc.connect(gain); gain.connect(ctx.destination);
+    oscillators.push(osc); gainNodes.push(gain);
 
-    // Optional harmonic layer
-    if (tune.harmonics && tune.harmonicRatio) {
-      const harmOsc = createOscillator(ctx, freq * tune.harmonicRatio, { ...instrument, pitchMult: 1 });
-      harmOsc.frequency.setValueAtTime(freq * tune.harmonicRatio, time);
-      harmOsc.frequency.exponentialRampToValueAtTime(endFreq * tune.harmonicRatio, time + duration);
-      const harmGain = createEnvelopedGain(ctx, time, (tune.harmonicVolume ?? 0.1) * vol, duration, { ...instrument, decayMult: 1 });
-      harmOsc.connect(harmGain);
-      harmGain.connect(ctx.destination);
-      oscillators.push(harmOsc);
-      gainNodes.push(harmGain);
-    }
+    createHarmonicVoice(ctx, time, freq, endFreq, vol, duration, instrument, tune, oscillators, gainNodes);
 
-    for (const osc of oscillators) {
-      osc.start(time);
-      osc.stop(time + duration + 0.05);
-    }
-
+    for (const o of oscillators) { o.start(time); o.stop(time + duration + 0.05); }
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
 }
@@ -242,61 +247,29 @@ function sweepFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
 
 function riseFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.35) * (options.volume ?? 1);
-    const duration = tune.duration * instrument.decayMult;
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
     const freq = (tune.frequency ?? 320) * instrument.pitchMult;
     const endFreq = (tune.endFrequency ?? 480) * instrument.pitchMult;
-
     const oscillators: OscillatorNode[] = [];
     const gainNodes: GainNode[] = [];
 
-    // Fundamental
     const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
     osc.frequency.setValueAtTime(freq, time);
     osc.frequency.exponentialRampToValueAtTime(endFreq, time + duration);
     const gain = createEnvelopedGain(ctx, time, vol, duration, { ...instrument, decayMult: 1 });
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    oscillators.push(osc);
-    gainNodes.push(gain);
+    osc.connect(gain); gain.connect(ctx.destination);
+    oscillators.push(osc); gainNodes.push(gain);
 
-    // Harmonic
-    if (tune.harmonics && tune.harmonicRatio) {
-      const hFreq = freq * tune.harmonicRatio;
-      const hEndFreq = endFreq * tune.harmonicRatio;
-      const harmOsc = createOscillator(ctx, hFreq, { ...instrument, pitchMult: 1 });
-      harmOsc.frequency.setValueAtTime(hFreq, time);
-      harmOsc.frequency.exponentialRampToValueAtTime(hEndFreq, time + duration);
-      const harmGain = createEnvelopedGain(ctx, time, (tune.harmonicVolume ?? 0.12) * vol, duration, { ...instrument, decayMult: 1 });
-      harmOsc.connect(harmGain);
-      harmGain.connect(ctx.destination);
-      oscillators.push(harmOsc);
-      gainNodes.push(harmGain);
-    }
+    createHarmonicVoice(ctx, time, freq, endFreq, vol, duration, instrument, tune, oscillators, gainNodes);
 
     // Click layer
     if (tune.meta?.clickLayer) {
-      const clickBuffer = createNoiseBuffer(ctx, 0.008);
-      applyDecayToBuffer(clickBuffer, 40);
-      const clickSource = ctx.createBufferSource();
-      clickSource.buffer = clickBuffer;
-      const clickFilter = createFilter(ctx, instrument.filterFreq, instrument.q);
-      const clickGain = ctx.createGain();
-      clickGain.gain.setValueAtTime(0.15 * instrument.gainMult, time);
-      clickGain.gain.exponentialRampToValueAtTime(0.001, time + 0.01);
-      clickSource.connect(clickFilter);
-      clickFilter.connect(clickGain);
-      clickGain.connect(ctx.destination);
-      clickSource.start(time);
-      clickSource.stop(time + 0.012);
+      createNoiseBurstVoice(ctx, 0.01, time, vol, instrument, {
+        decayConstant: 40, filterFreq: instrument.filterFreq, filterQ: instrument.q,
+      });
     }
 
-    for (const o of oscillators) {
-      o.start(time);
-      o.stop(time + duration + 0.05);
-    }
-
+    for (const o of oscillators) { o.start(time); o.stop(time + duration + 0.05); }
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
 }
@@ -312,35 +285,24 @@ function dropFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthes
 
 function chimeFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.3) * (options.volume ?? 1);
-    const duration = tune.duration * instrument.decayMult;
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument, 0.3);
     const freq = (tune.frequency ?? 587.33) * instrument.pitchMult;
-
     const oscillators: OscillatorNode[] = [];
     const gainNodes: GainNode[] = [];
 
     const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
     const gain = createEnvelopedGain(ctx, time, vol, duration, { ...instrument, decayMult: 1 });
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-    oscillators.push(osc);
-    gainNodes.push(gain);
+    osc.connect(gain); gain.connect(ctx.destination);
+    oscillators.push(osc); gainNodes.push(gain);
 
     if (tune.harmonics && tune.harmonicRatio) {
       const harmOsc = createOscillator(ctx, freq * tune.harmonicRatio, { ...instrument, pitchMult: 1 });
       const harmGain = createEnvelopedGain(ctx, time, (tune.harmonicVolume ?? 0.15) * vol, duration, { ...instrument, decayMult: 1 });
-      harmOsc.connect(harmGain);
-      harmGain.connect(ctx.destination);
-      oscillators.push(harmOsc);
-      gainNodes.push(harmGain);
+      harmOsc.connect(harmGain); harmGain.connect(ctx.destination);
+      oscillators.push(harmOsc); gainNodes.push(harmGain);
     }
 
-    for (const o of oscillators) {
-      o.start(time);
-      o.stop(time + duration + 0.05);
-    }
-
+    for (const o of oscillators) { o.start(time); o.stop(time + duration + 0.05); }
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
 }
@@ -349,56 +311,40 @@ function chimeFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
 
 function arpeggioFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.35) * (options.volume ?? 1);
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
     const notes = (tune.notes ?? [523.25, 659.25]).map((n) => n * instrument.pitchMult);
     const noteDuration = (tune.noteDuration ?? 0.1) * instrument.decayMult;
     const noteGap = tune.noteGap ?? 0.12;
     const finalRing = (tune.meta?.finalRing as number) ?? 0.25;
     const shimmerCents = (tune.meta?.shimmerCents as number) ?? 0;
-
     const oscillators: OscillatorNode[] = [];
     const gainNodes: GainNode[] = [];
 
     for (let i = 0; i < notes.length; i++) {
       const noteTime = time + i * (noteDuration + noteGap);
-      const freq = notes[i];
-
-      const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
       const ring = i === notes.length - 1 ? finalRing : noteDuration;
+      const osc = createOscillator(ctx, notes[i], { ...instrument, pitchMult: 1 });
       const gain = createEnvelopedGain(ctx, noteTime, vol, ring, { ...instrument, decayMult: 1 });
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(noteTime);
-      osc.stop(noteTime + ring + 0.05);
-      oscillators.push(osc);
-      gainNodes.push(gain);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(noteTime); osc.stop(noteTime + ring + 0.05);
+      oscillators.push(osc); gainNodes.push(gain);
 
-      // Harmonic per note
       if (tune.harmonics && tune.harmonicRatio) {
-        const harmOsc = createOscillator(ctx, freq * tune.harmonicRatio, { ...instrument, pitchMult: 1 });
+        const harmOsc = createOscillator(ctx, notes[i] * tune.harmonicRatio, { ...instrument, pitchMult: 1 });
         const harmGain = createEnvelopedGain(ctx, noteTime, (tune.harmonicVolume ?? 0.1) * vol, ring, { ...instrument, decayMult: 1 });
-        harmOsc.connect(harmGain);
-        harmGain.connect(ctx.destination);
-        harmOsc.start(noteTime);
-        harmOsc.stop(noteTime + ring + 0.05);
-        oscillators.push(harmOsc);
-        gainNodes.push(harmGain);
+        harmOsc.connect(harmGain); harmGain.connect(ctx.destination);
+        harmOsc.start(noteTime); harmOsc.stop(noteTime + ring + 0.05);
+        oscillators.push(harmOsc); gainNodes.push(harmGain);
       }
 
-      // Shimmer on final note
       if (shimmerCents > 0 && i === notes.length - 1) {
-        const shimmerOsc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 }, shimmerCents);
+        const shimmerOsc = createOscillator(ctx, notes[i], { ...instrument, pitchMult: 1 }, shimmerCents);
         const shimmerGain = createEnvelopedGain(ctx, noteTime, vol * 0.25, ring, { ...instrument, decayMult: 1 });
-        shimmerOsc.connect(shimmerGain);
-        shimmerGain.connect(ctx.destination);
-        shimmerOsc.start(noteTime);
-        shimmerOsc.stop(noteTime + ring + 0.05);
-        oscillators.push(shimmerOsc);
-        gainNodes.push(shimmerGain);
+        shimmerOsc.connect(shimmerGain); shimmerGain.connect(ctx.destination);
+        shimmerOsc.start(noteTime); shimmerOsc.stop(noteTime + ring + 0.05);
+        oscillators.push(shimmerOsc); gainNodes.push(shimmerGain);
       }
     }
-
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
 }
@@ -407,26 +353,19 @@ function arpeggioFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSyn
 
 function chordFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.35) * (options.volume ?? 1);
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
     const notes = (tune.notes ?? [261.63, 329.63, 392.0]).map((n) => n * instrument.pitchMult);
-    const duration = tune.duration * instrument.decayMult;
     const normFactor = 1 / Math.sqrt(notes.length);
-
     const oscillators: OscillatorNode[] = [];
     const gainNodes: GainNode[] = [];
 
     for (const freq of notes) {
       const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
       const gain = createEnvelopedGain(ctx, time, vol * normFactor, duration, { ...instrument, decayMult: 1 });
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(time);
-      osc.stop(time + duration + 0.05);
-      oscillators.push(osc);
-      gainNodes.push(gain);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(time); osc.stop(time + duration + 0.05);
+      oscillators.push(osc); gainNodes.push(gain);
     }
-
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
 }
@@ -435,29 +374,13 @@ function chordFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
 
 function burstFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.5) * (options.volume ?? 1);
-    const duration = tune.duration * instrument.decayMult;
-
-    const noiseBuffer = createNoiseBuffer(ctx, duration + 0.01);
-    applyDecayToBuffer(noiseBuffer, 30);
-    const source = ctx.createBufferSource();
-    source.buffer = noiseBuffer;
-
-    const filter = createFilter(ctx, instrument.filterFreq, instrument.q);
-    filter.frequency.setValueAtTime(instrument.filterFreq, time);
-    filter.frequency.exponentialRampToValueAtTime(instrument.filterFreq * 0.3, time + duration);
-
-    const gain = ctx.createGain();
-    gain.gain.setValueAtTime(Math.max(0.001, vol * instrument.gainMult), time);
-    gain.gain.exponentialRampToValueAtTime(0.001, time + duration);
-
-    source.connect(filter);
-    filter.connect(gain);
-    gain.connect(ctx.destination);
-    source.start(time);
-    source.stop(time + duration + 0.01);
-
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument, 0.5);
+    createNoiseBurstVoice(ctx, duration, time, vol, instrument, {
+      decayConstant: 30,
+      filterFreq: instrument.filterFreq,
+      filterQ: instrument.q,
+      filterSweep: { start: instrument.filterFreq, end: instrument.filterFreq * 0.3 },
+    });
     return makePlayback([], [], options.onEnd);
   };
 }
@@ -466,12 +389,10 @@ function burstFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
 
 function pulseFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.35) * (options.volume ?? 1);
+    const { time, vol } = extractParams(ctx, tune, options, instrument);
     const freq = (tune.frequency ?? 440) * instrument.pitchMult;
     const count = tune.pulseCount ?? 3;
     const pulseDur = tune.duration / count;
-
     const oscillators: OscillatorNode[] = [];
     const gainNodes: GainNode[] = [];
 
@@ -479,14 +400,10 @@ function pulseFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
       const t = time + i * pulseDur;
       const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
       const gain = createEnvelopedGain(ctx, t, vol, pulseDur * 0.6, { ...instrument, decayMult: 1 });
-      osc.connect(gain);
-      gain.connect(ctx.destination);
-      osc.start(t);
-      osc.stop(t + pulseDur);
-      oscillators.push(osc);
-      gainNodes.push(gain);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(t); osc.stop(t + pulseDur);
+      oscillators.push(osc); gainNodes.push(gain);
     }
-
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
 }
@@ -495,9 +412,7 @@ function pulseFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
 
 function wobbleFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
-    const time = ctx.currentTime;
-    const vol = (tune.volume ?? 0.35) * (options.volume ?? 1);
-    const duration = tune.duration * instrument.decayMult;
+    const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
     const freq = (tune.frequency ?? 440) * instrument.pitchMult;
     const modFreq = tune.modFreq ?? 8;
     const modDepth = tune.modDepth ?? 30;

@@ -181,9 +181,9 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 	</div>
 
 	<script>
-		// Auto-decorate interactive elements with haptic hints
+		// Auto-decorate interactive elements with haptic and sound hints
 		(function(){
-			const MAP = {
+			const HAPTIC_MAP = {
 				'a[href]': 'tap',
 				'button:not([data-haptic])': 'tap',
 				'.primary-button': 'heavy',
@@ -198,10 +198,24 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				'select:not([data-haptic])': 'select',
 				'input[type="checkbox"]:not([data-haptic])': 'select',
 			};
+			const SOUND_MAP = {
+				'button:not([data-sound])': 'interaction.tap',
+				'a[href]:not([data-sound])': 'interaction.subtle',
+				'.copy-btn': 'interaction.confirm',
+				'.model-card': 'interaction.tap',
+				'.catalog-chip': 'interaction.subtle',
+				'select:not([data-sound])': 'interaction.subtle',
+				'input[type="checkbox"]:not([data-sound])': 'interaction.toggle',
+			};
 			function decorate(root) {
-				for (const [sel, pattern] of Object.entries(MAP)) {
+				for (const [sel, pattern] of Object.entries(HAPTIC_MAP)) {
 					root.querySelectorAll(sel).forEach(el => {
 						if (!el.hasAttribute('data-haptic')) el.setAttribute('data-haptic', pattern);
+					});
+				}
+				for (const [sel, role] of Object.entries(SOUND_MAP)) {
+					root.querySelectorAll(sel).forEach(el => {
+						if (!el.hasAttribute('data-sound')) el.setAttribute('data-sound', role);
 					});
 				}
 			}
@@ -212,6 +226,12 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 						if (n.nodeType === 1 && typeof n.querySelectorAll === 'function') decorate(n);
 					});
 				}).observe(document.body, { childList: true, subtree: true });
+			}
+			// Re-scan after Solid.js hydration modifies existing DOM (attributes change, no childList)
+			if (typeof requestIdleCallback === 'function') {
+				requestIdleCallback(() => decorate(document), { timeout: 2000 });
+			} else {
+				setTimeout(() => decorate(document), 1500);
 			}
 		})();
 	</script>

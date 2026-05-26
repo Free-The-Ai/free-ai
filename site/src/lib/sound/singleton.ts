@@ -109,8 +109,7 @@ export function soundPlay(
   if (!soundEnabled()) return null;
   const source = resolveRole(role);
   if (!source) return null;
-  const effectiveVolume = (options.volume ?? 1) * config.volume;
-  return enginePlaySound(source, { ...options, volume: effectiveVolume });
+  return enginePlaySound(source, { ...options, volume: (options.volume ?? 1) * config.volume });
 }
 
 // ── Delegation ──

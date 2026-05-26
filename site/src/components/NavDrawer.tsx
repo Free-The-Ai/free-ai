@@ -120,6 +120,7 @@ export default function NavDrawer(props: NavDrawerProps) {
         aria-label={open() ? "Close navigation menu" : "Open navigation menu"}
         aria-expanded={open()}
         aria-controls="mobile-navigation-menu"
+        data-sound={open() ? "overlay.close" : "overlay.open"}
         onClick={() => setOpen((value) => !value)}
       >
         <span class="hamburger-bar" />
@@ -128,7 +129,7 @@ export default function NavDrawer(props: NavDrawerProps) {
       </button>
       <Show when={open()}>
         <Portal mount={document.body}>
-          <div class="nav-drawer-overlay" onClick={closeDrawer} />
+          <div class="nav-drawer-overlay" onClick={closeDrawer} data-sound="overlay.close" />
           <nav
             id="mobile-navigation-menu"
             class="nav-drawer"

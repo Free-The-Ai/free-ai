@@ -94,12 +94,10 @@ export function playSound(
 
   const ctx = getAudioContext();
 
-  // If context is suspended (autoplay policy), resume first then play
   if (ctx.state === "suspended") {
     ensureResumed().then(() => {
       playSoundImmediate(source, options);
     });
-    // Return a no-op playback since we can't control deferred sounds easily
     return { stop() {} };
   }
 

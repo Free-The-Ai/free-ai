@@ -468,6 +468,7 @@ export default function CatalogBrowser() {
                       type="checkbox"
                       checked={prefixes().has(pfx)}
                       onChange={() => togglePrefix(pfx)}
+                      data-sound="interaction.toggle"
                     />
                     <span class="catalog-filter-option-name">{pfx}/*</span>
                     <span class="catalog-filter-option-count">{count}</span>
@@ -493,6 +494,7 @@ export default function CatalogBrowser() {
                       type="checkbox"
                       checked={typeFilters().has(key)}
                       onChange={() => toggleType(key)}
+                      data-sound="interaction.toggle"
                     />
                     <span class="catalog-filter-option-name">{FILTER_LABELS[key]}</span>
                   </label>
@@ -512,7 +514,7 @@ export default function CatalogBrowser() {
       <div class="catalog-summary" aria-live="polite">
         <span>{resultLabel()}</span>
         <Show when={filtersActive()}>
-          <button type="button" onClick={clearFilters}>
+          <button type="button" onClick={clearFilters} data-sound="interaction.subtle">
             Clear filters
           </button>
         </Show>
@@ -542,6 +544,7 @@ export default function CatalogBrowser() {
                   tabindex="0"
                   aria-haspopup="dialog"
                   aria-label={`Open details for ${model.id}`}
+                  data-sound="interaction.tap"
                   onClick={(e) => {
                     if ((e.target as HTMLElement).closest(".model-copy")) return;
                     setSelected(model);
@@ -585,6 +588,7 @@ export default function CatalogBrowser() {
                     class="model-copy"
                     title="Copy model alias"
                     aria-label={"Copy " + model.id}
+                    data-sound="interaction.confirm"
                     onClick={(e) => {
                       e.preventDefault();
                       e.stopPropagation();
@@ -642,6 +646,7 @@ export default function CatalogBrowser() {
             role="dialog"
             aria-modal="true"
             aria-label={`${model().id} details`}
+            data-sound="overlay.close"
             onClick={() => setSelected(null)}
           >
             <article
@@ -657,6 +662,7 @@ export default function CatalogBrowser() {
                   type="button"
                   class="model-modal-close"
                   aria-label="Close"
+                  data-sound="overlay.close"
                   onClick={() => setSelected(null)}
                 >
                   <span class="material-symbols-outlined" aria-hidden="true">close</span>
@@ -740,6 +746,7 @@ export default function CatalogBrowser() {
                 <button
                   type="button"
                   class="model-modal-copy"
+                  data-sound="interaction.confirm"
                   onClick={(e) => {
                     navigator.clipboard.writeText(model().id).catch((error) => {
                       console.error("Failed to copy model alias", error);

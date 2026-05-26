@@ -1110,6 +1110,7 @@ export default function ProviderStatusGrid() {
                         class={`status-pill is-up${statusFilter().has("up") ? " is-active" : ""}`}
                         aria-pressed={statusFilter().has("up")}
                         disabled={summary().up === 0}
+                        data-sound="interaction.toggle"
                         onClick={() => toggleStatusFilter("up")}
                     >
                         {summary().up} up
@@ -1119,6 +1120,7 @@ export default function ProviderStatusGrid() {
                         class={`status-pill is-degraded${statusFilter().has("degraded") ? " is-active" : ""}`}
                         aria-pressed={statusFilter().has("degraded")}
                         disabled={summary().degraded === 0}
+                        data-sound="interaction.toggle"
                         onClick={() => toggleStatusFilter("degraded")}
                     >
                         {summary().degraded} degraded
@@ -1128,6 +1130,7 @@ export default function ProviderStatusGrid() {
                         class={`status-pill is-down${statusFilter().has("down") ? " is-active" : ""}`}
                         aria-pressed={statusFilter().has("down")}
                         disabled={summary().down === 0}
+                        data-sound="interaction.toggle"
                         onClick={() => toggleStatusFilter("down")}
                     >
                         {summary().down} down
@@ -1178,6 +1181,7 @@ export default function ProviderStatusGrid() {
                                 <button
                                     type="button"
                                     class="status-grid-empty-clear"
+                                    data-sound="interaction.subtle"
                                     onClick={() =>
                                         setStatusFilter(new Set())
                                     }
@@ -1203,6 +1207,7 @@ export default function ProviderStatusGrid() {
                                         tabindex="0"
                                         role="button"
                                         aria-label={`${provider.prefix} provider status ${provider.status}`}
+                                        data-sound="interaction.tap"
                                         onClick={() =>
                                             isSelected()
                                                 ? closePopover()
@@ -1298,7 +1303,7 @@ export default function ProviderStatusGrid() {
                     };
 
                     return (
-                        <div class="popover-backdrop" onClick={closePopover}>
+                        <div class="popover-backdrop" onClick={closePopover} data-sound="overlay.close">
                             <div
                                 ref={sheetEl}
                                 class={`popover is-${provider().status} is-open`}
@@ -1331,6 +1336,7 @@ export default function ProviderStatusGrid() {
                                     <button
                                         class="popover-close"
                                         onClick={closePopover}
+                                        data-sound="overlay.close"
                                         aria-label="Close"
                                     >
                                         &times;

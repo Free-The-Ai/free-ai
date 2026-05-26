@@ -80,7 +80,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 		</script>
 
 		<div class="page-shell">
-			<header class="site-header">
+			<header class="site-header" transition:persist>
 				<nav class="nav">
 					<a class="brand" href="/home"><Logo width={160} /></a>
 					<div class="nav-links">
@@ -158,7 +158,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				<slot />
 			</div>
 
-			<footer class="site-footer">
+			<footer class="site-footer" transition:persist>
 				<div class="footer-links">
 					<a href="/quickstart">Quickstart</a>
 					<a href="/setup">Setup guides</a>

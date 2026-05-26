@@ -2,6 +2,8 @@ import { Select as KSelect } from "@kobalte/core/select";
 import { splitProps } from "solid-js";
 import type { ComponentProps } from "solid-js";
 import { CheckmarkIcon, ChevronDownIcon } from "./icons";
+import type { SoundRole } from "../../lib/sound/types";
+import { soundPlay } from "../../lib/sound/singleton";
 
 export interface SelectOption {
   value: string;
@@ -20,15 +22,25 @@ interface SelectProps
   value?: string;
   defaultValue?: string;
   onChange?: (value: string) => void;
+  sound?: SoundRole | false;
+  volume?: number;
 }
 
 export default function Select(props: SelectProps) {
   const [local, rest] = splitProps(props, [
     "label", "placeholder", "options", "class", "value", "defaultValue", "onChange",
+    "sound", "volume",
   ]);
 
   const findOption = (value: string | undefined) =>
     value === undefined ? undefined : local.options.find((option) => option.value === value);
+
+  const handleChange = (option: SelectOption | null) => {
+    if (local.sound !== false) {
+      soundPlay(local.sound ?? "interaction.subtle", { volume: local.volume });
+    }
+    local.onChange?.(option?.value ?? "");
+  };
 
   return (
     <KSelect<SelectOption>
@@ -41,7 +53,7 @@ export default function Select(props: SelectProps) {
       placeholder={local.placeholder}
       value={findOption(local.value)}
       defaultValue={findOption(local.defaultValue)}
-      onChange={(option) => local.onChange?.(option?.value ?? "")}
+      onChange={handleChange}
       itemComponent={(itemProps) => (
         <KSelect.Item item={itemProps.item} class="kb-select__item">
           <KSelect.ItemLabel>{itemProps.item.rawValue.label}</KSelect.ItemLabel>

@@ -1,21 +1,36 @@
 import { Dialog as KDialog } from "@kobalte/core/dialog";
 import { splitProps } from "solid-js";
 import type { ComponentProps, JSXElement } from "solid-js";
+import type { SoundRole } from "../../lib/sound/types";
+import { soundPlay } from "../../lib/sound/singleton";
 
 interface DialogProps extends ComponentProps<typeof KDialog> {
   trigger?: JSXElement;
   title?: string;
   description?: string;
   children?: JSXElement;
+  sound?: SoundRole | false;
+  closeSound?: SoundRole | false;
+  volume?: number;
 }
 
 export default function Dialog(props: DialogProps) {
   const [local, rest] = splitProps(props, [
     "trigger", "title", "description", "children", "class",
+    "sound", "closeSound", "volume", "onOpenChange",
   ]);
 
+  const handleOpenChange = (open: boolean) => {
+    if (open && local.sound !== false) {
+      soundPlay(local.sound ?? "overlay.open", { volume: local.volume });
+    } else if (!open && local.closeSound !== false) {
+      soundPlay(local.closeSound ?? "overlay.close", { volume: local.volume });
+    }
+    local.onOpenChange?.(open);
+  };
+
   return (
-    <KDialog {...rest} class={`kb-dialog ${local.class ?? ""}`}>
+    <KDialog {...rest} class={`kb-dialog ${local.class ?? ""}`} onOpenChange={handleOpenChange}>
       {local.trigger && (
         <KDialog.Trigger as="div" class="kb-dialog__trigger">
           {local.trigger}

@@ -18,4 +18,4 @@ export type { Tab } from "./Tabs";
 export { default as TextField } from "./TextField";
 export { default as Tooltip } from "./Tooltip";
 export { CheckmarkIcon, ChevronDownIcon } from "./icons";
-export { showToast, ToastRegion } from "./Toast";
+export { showToast, ToastRegion, configureToastSound } from "./Toast";

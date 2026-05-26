@@ -2,10 +2,25 @@ import { Toast, toaster } from "@kobalte/core/toast";
 import { Portal } from "solid-js/web";
 import { Match, Switch } from "solid-js";
 import { CheckmarkIcon } from "./icons";
+import type { SoundRole } from "../../lib/sound/types";
+import { soundPlay, soundEnabled } from "../../lib/sound/singleton";
 
 type ToastVariant = "info" | "success" | "error";
 
+const VARIANT_ROLES: Record<ToastVariant, SoundRole> = {
+  info: "notification.info",
+  success: "notification.success",
+  error: "notification.error",
+};
+
+/** @deprecated Use soundPlay directly. Kept for backward compat. */
+export const configureToastSound = () => {};
+
 export function showToast(title: string, description?: string, variant: ToastVariant = "info") {
+  if (soundEnabled()) {
+    soundPlay(VARIANT_ROLES[variant]);
+  }
+
   return toaster.show((props) => (
     <Toast toastId={props.toastId} class={`kb-toast kb-toast--${variant}`}>
       <div class="kb-toast__content">

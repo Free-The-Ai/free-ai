@@ -217,6 +217,8 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				'input[type="checkbox"]:not([data-haptic])': 'select',
 			};
 			const SOUND_MAP = {
+				'.primary-button': 'interaction.confirm',
+				'.donate-button': 'interaction.confirm',
 				'button:not([data-sound])': 'interaction.tap',
 				'a[href]:not([data-sound])': 'interaction.subtle',
 				'.copy-btn': 'interaction.confirm',

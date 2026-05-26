@@ -47,6 +47,16 @@ const jsonLd = [
     </main>
 </Layout>
 
+<script>
+	(function poll(attempts) {
+		if (typeof window.__soundPlay === 'function') {
+			window.__soundPlay('notification.error');
+		} else if (attempts > 0) {
+			setTimeout(function () { poll(attempts - 1); }, 100);
+		}
+	})(50);
+</script>
+
 <style is:global>
     .not-found-main {
         display: grid;

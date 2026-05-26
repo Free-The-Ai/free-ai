@@ -113,25 +113,28 @@
 }
 
 /* ── View Transitions ── */
-/* Only the main content area fades — header/footer snap instantly. */
+/* Snap: old fades out fast, new appears instantly — no double-vision. */
 .site-main {
     view-transition-name: main-content;
 }
 
-/* Header and footer snap instantly (no animation) */
 .site-header, .site-footer {
     view-transition-name: none;
 }
 
-/* Main content crossfade: fast, smooth, GPU-composited */
-::view-transition-old(main-content) {
-    animation: 120ms cubic-bezier(0.22, 1, 0.36, 1) both vt-out;
-}
-::view-transition-new(main-content) {
-    animation: 120ms cubic-bezier(0.22, 1, 0.36, 1) both vt-in;
+::view-transition-group(main-content) {
+    animation-duration: 70ms;
 }
 
-/* Root group: snap instantly (no animation on header/footer/shell) */
+::view-transition-old(main-content) {
+    animation: 70ms ease-out both vt-out;
+}
+
+::view-transition-new(main-content) {
+    animation: none;
+    opacity: 1;
+}
+
 ::view-transition-group(root) {
     animation-duration: 0.001s;
 }
@@ -139,10 +142,6 @@
 @keyframes vt-out {
     from { opacity: 1; }
     to   { opacity: 0; }
-}
-@keyframes vt-in {
-    from { opacity: 0; }
-    to   { opacity: 1; }
 }
 
 /* ── Micro-interaction keyframes — GPU-composited only (no filter) ── */
@@ -3299,6 +3298,8 @@ body.nav-drawer-open {
 .nav {
     border-bottom: 1px solid var(--sk-border);
     backdrop-filter: blur(10px);
+    isolation: isolate;
+    contain: layout style;
 }
 
 .nav-links a:hover,

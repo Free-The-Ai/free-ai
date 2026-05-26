@@ -227,6 +227,12 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				'input[type="checkbox"]:not([data-sound])': 'interaction.toggle',
 			};
 			function decorate(root) {
+				// External links: leaving the domain gets navigation.forward
+				root.querySelectorAll('a[href^="http"]').forEach(el => {
+					if (el.hostname && el.hostname !== location.hostname && !el.hasAttribute('data-sound')) {
+						el.setAttribute('data-sound', 'navigation.forward');
+					}
+				});
 				for (const [sel, pattern] of Object.entries(HAPTIC_MAP)) {
 					root.querySelectorAll(sel).forEach(el => {
 						if (!el.hasAttribute('data-haptic')) el.setAttribute('data-haptic', pattern);

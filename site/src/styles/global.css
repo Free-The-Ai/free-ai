@@ -195,6 +195,27 @@ textarea:focus-visible {
     transition: outline-color var(--focus-dur) var(--ease-out-smooth), box-shadow var(--focus-dur) var(--ease-out-smooth);
 }
 
+/* ── Skip-to-content link ── */
+.skip-link {
+    position: fixed;
+    top: -100%;
+    left: 16px;
+    z-index: 10000;
+    padding: 8px 16px;
+    background: var(--accent);
+    color: #fff;
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    transition: top 0.2s var(--ease-out-smooth);
+}
+.skip-link:focus {
+    top: 8px;
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+}
+
 html {
     scroll-padding-top: 96px;
     scrollbar-width: thin;
@@ -2816,6 +2837,26 @@ h3 {
 .status-main {
     width: 100%;
     padding: 84px 0 96px;
+}
+
+.status-hero {
+    max-width: 680px;
+    margin-bottom: 40px;
+}
+
+.status-hero h1 {
+    font-family: var(--font-serif);
+    font-size: clamp(2rem, 4.5vw, 3.2rem);
+    font-weight: 700;
+    line-height: 1.15;
+    margin: 12px 0;
+}
+
+.status-hero p {
+    color: var(--muted);
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 520px;
 }
 
 .status-board {

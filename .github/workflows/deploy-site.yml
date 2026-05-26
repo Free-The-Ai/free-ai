@@ -11,6 +11,14 @@ permissions:
   id-token: write
 
 jobs:
+  fallow:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Fallow - Codebase Intelligence
+        uses: fallow-rs/fallow@v2.82.0
+
   build:
     runs-on: ubuntu-latest
     defaults:

@@ -1,5 +1,6 @@
 import { splitProps, type JSXElement } from "solid-js";
 import { ChevronDownIcon } from "./icons";
+import { soundPlay } from "../../lib/sound/singleton";
 
 interface CollapsibleProps {
   title: string;
@@ -11,9 +12,25 @@ interface CollapsibleProps {
 export default function Collapsible(props: CollapsibleProps) {
   const [local] = splitProps(props, ["title", "children", "class", "open"]);
 
+  let detailsRef: HTMLDetailsElement | undefined;
+
+  function handleToggle() {
+    if (!detailsRef) return;
+    if (detailsRef.open) {
+      soundPlay("overlay.expand");
+    } else {
+      soundPlay("overlay.collapse");
+    }
+  }
+
   return (
-    <details class={`kb-collapsible ${local.class ?? ""}`} open={local.open}>
-      <summary class="kb-collapsible__trigger">
+    <details
+      class={`kb-collapsible ${local.class ?? ""}`}
+      open={local.open}
+      ref={detailsRef}
+      onToggle={handleToggle}
+    >
+      <summary class="kb-collapsible__trigger" data-sound="">
         <span class="kb-collapsible__title">{local.title}</span>
         <ChevronDownIcon class="kb-collapsible__chevron" />
       </summary>

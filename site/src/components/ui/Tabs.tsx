@@ -34,6 +34,7 @@ export default function Tabs(props: TabsProps) {
             class="kb-tabs__trigger"
             value={tab.value}
             disabled={tab.disabled}
+            data-sound=""
           >
             {tab.label}
           </KTabs.Trigger>

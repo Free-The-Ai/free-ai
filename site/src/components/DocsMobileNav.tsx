@@ -156,7 +156,7 @@ export default function DocsMobileNav() {
       </button>
 
       <Show when={open()}>
-        <div class="docs-mobile-toc__overlay" onClick={close} />
+        <div class="docs-mobile-toc__overlay" data-sound="overlay.close" onClick={close} />
         <div
           class="docs-mobile-toc__sheet"
           ref={sheetEl}

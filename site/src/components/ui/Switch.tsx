@@ -20,7 +20,7 @@ export default function Switch(props: SwitchProps) {
   };
 
   return (
-    <KSwitch {...rest} class={`kb-switch ${local.class ?? ""}`} onChange={handleChange}>
+    <KSwitch {...rest} class={`kb-switch ${local.class ?? ""}`} onChange={handleChange} data-sound="">
       <KSwitch.Input />
       <KSwitch.Control class="kb-switch__control">
         <KSwitch.Thumb class="kb-switch__thumb" />

@@ -30,6 +30,7 @@ export default function Checkbox(props: CheckboxProps) {
       class={`kb-checkbox ${local.class ?? ""}`}
       validationState={local.error ? "invalid" : "valid"}
       onChange={handleChange}
+      data-sound=""
     >
       <KCheckbox.Input />
       <KCheckbox.Control class="kb-checkbox__control">

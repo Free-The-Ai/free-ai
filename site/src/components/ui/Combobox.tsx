@@ -1,5 +1,6 @@
 import { Combobox as KCombobox } from "@kobalte/core/combobox";
 import { CheckmarkIcon, ChevronDownIcon } from "./icons";
+import { soundPlay } from "../../lib/sound/singleton";
 
 interface ComboboxProps {
   options: string[];
@@ -13,16 +14,21 @@ interface ComboboxProps {
 }
 
 export default function Combobox(props: ComboboxProps) {
+  const handleChange = (value: string) => {
+    soundPlay("interaction.subtle");
+    props.onChange(value);
+  };
+
   return (
     <KCombobox
       options={props.options}
       value={props.value}
-      onChange={props.onChange}
+      onChange={handleChange}
       onInputChange={props.onInputChange}
       allowsCustomValue={props.allowsCustomValue}
       placeholder={props.placeholder}
       itemComponent={(ip) => (
-        <KCombobox.Item item={ip.item} class="kb-combobox__item">
+        <KCombobox.Item item={ip.item} class="kb-combobox__item" data-sound="">
           <KCombobox.ItemLabel class="kb-combobox__item-label">
             {ip.item.rawValue}
           </KCombobox.ItemLabel>

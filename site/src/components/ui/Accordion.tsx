@@ -65,6 +65,7 @@ export default function Accordion(props: {
             <summary
               class="kb-accordion__trigger"
               aria-disabled={item.disabled ? "true" : undefined}
+              data-sound=""
               onClick={(event) => toggleItem(item, event)}
             >
               <span class="kb-accordion__trigger-content">

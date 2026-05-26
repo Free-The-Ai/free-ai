@@ -452,7 +452,7 @@ export default function CatalogBrowser() {
         </div>
         <div class="catalog-filter-group">
           <details class="catalog-filter">
-            <summary class={`catalog-filter-trigger ${prefixes().size > 0 ? "is-active" : ""}`}>
+            <summary class={`catalog-filter-trigger ${prefixes().size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
               <span class="catalog-filter-label">Prefix</span>
               <span class="catalog-filter-value">{prefixButtonLabel()}</span>
               <Show when={prefixes().size > 0}>
@@ -478,7 +478,7 @@ export default function CatalogBrowser() {
             </div>
           </details>
           <details class="catalog-filter">
-            <summary class={`catalog-filter-trigger ${typeFilters().size > 0 ? "is-active" : ""}`}>
+            <summary class={`catalog-filter-trigger ${typeFilters().size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
               <span class="catalog-filter-label">Capability</span>
               <span class="catalog-filter-value">{typeButtonLabel()}</span>
               <Show when={typeFilters().size > 0}>

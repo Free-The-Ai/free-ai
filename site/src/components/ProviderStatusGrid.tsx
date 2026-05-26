@@ -1322,6 +1322,7 @@ export default function ProviderStatusGrid() {
                                 <Show when={isMobile()}>
                                     <div
                                         class="popover-drag-handle"
+                                        data-sound="overlay.close"
                                         onPointerDown={handleDragStart}
                                     />
                                 </Show>

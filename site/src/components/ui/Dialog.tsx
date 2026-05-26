@@ -30,7 +30,7 @@ export default function Dialog(props: DialogProps) {
   };
 
   return (
-    <KDialog {...rest} class={`kb-dialog ${local.class ?? ""}`} onOpenChange={handleOpenChange}>
+    <KDialog {...rest} class={`kb-dialog ${local.class ?? ""}`} onOpenChange={handleOpenChange} data-sound="">
       {local.trigger && (
         <KDialog.Trigger as="div" class="kb-dialog__trigger">
           {local.trigger}
@@ -48,7 +48,7 @@ export default function Dialog(props: DialogProps) {
             </KDialog.Description>
           )}
           {local.children}
-          <KDialog.CloseButton class="kb-dialog__close">
+          <KDialog.CloseButton class="kb-dialog__close" data-sound="">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
               <path d="M5 5l10 10M15 5L5 15" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
             </svg>

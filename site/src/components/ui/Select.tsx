@@ -66,7 +66,7 @@ export default function Select(props: SelectProps) {
       {local.label && (
         <KSelect.Label class="kb-select__label">{local.label}</KSelect.Label>
       )}
-      <KSelect.Trigger class="kb-select__trigger" aria-label={local.label}>
+      <KSelect.Trigger class="kb-select__trigger" aria-label={local.label} data-sound="">
         <KSelect.Value<SelectOption> class="kb-select__value">
           {(state) => state.selectedOption()?.label ?? local.placeholder ?? "Select..."}
         </KSelect.Value>

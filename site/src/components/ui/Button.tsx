@@ -36,6 +36,7 @@ export default function Button(props: ButtonProps) {
       class={classes()}
       data-variant={local.variant ?? "ghost"}
       data-size={sizeMap[local.size ?? "md"]}
+      data-sound=""
       {...rest}
       onClick={handleClick}
     />

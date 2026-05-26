@@ -11,11 +11,9 @@ import {
     buildBreadcrumbJsonLd,
 } from "../utils/jsonLd";
 import modelSnapshot from "../../public/models.json";
+import { modelPrefix } from "../utils/format";
 
 const DISABLED_PREFIXES = new Set(["vhr"]);
-
-const modelPrefix = (id: string): string =>
-    id.includes("/") ? id.slice(0, id.indexOf("/")) : "other";
 
 const snapshotModels = Array.isArray(modelSnapshot.data)
     ? modelSnapshot.data

@@ -1,6 +1,6 @@
 import { createSignal, createEffect, onMount, onCleanup, For, Show } from "solid-js";
 import { Button, Skeleton, TextField } from "./ui";
-import { formatTokens } from "../utils/format";
+import { formatTokens, modelPrefix, modelSuffix } from "../utils/format";
 
 interface AccessInfo {
   available?: boolean;
@@ -59,8 +59,6 @@ const SUPPORTED_ROUTES: Array<{
 ];
 
 const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
-const modelPrefix = (id: string): string => id.includes("/") ? id.slice(0, id.indexOf("/")) : "other";
-const modelSuffix = (id: string): string => id.includes("/") ? id.slice(id.indexOf("/") + 1) : id;
 
 const formatTokensFull = (n: number): string => n.toLocaleString();
 
@@ -143,6 +141,209 @@ const modelRoutes = (model: Model) => {
       : [];
     return { prefixes, types: types as FilterKey[], query: params.get("q")?.trim() || "" };
   };
+
+// ── Model Card ──
+
+function ModelCard({ model, onSelect }: { model: Model; onSelect: (m: Model) => void }) {
+    const ctx = modelContext(model);
+    const out = model.max_output_tokens;
+    return (
+        <article
+            class={`model-card${model.requires_seems_legit ? " is-gated" : ""}`}
+            role="button"
+            tabindex="0"
+            aria-haspopup="dialog"
+            aria-label={`Open details for ${model.id}`}
+            data-sound="interaction.tap"
+            onClick={(e) => {
+                if ((e.target as HTMLElement).closest(".model-copy")) return;
+                onSelect(model);
+            }}
+            onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    onSelect(model);
+                }
+            }}
+        >
+            <div class="model-card-top">
+                <span class="model-prefix">{model.prefix}/*</span>
+            </div>
+            <code class="model-id">{model.id}</code>
+            <div class="model-meta">
+                {ctx > 0 && (
+                    <span class="model-chip" title="Total context window">
+                        <strong>{formatTokens(ctx)}</strong> ctx
+                    </span>
+                )}
+                {out !== undefined && (
+                    <span class="model-chip" title="Maximum output tokens">
+                        <strong>{formatTokens(out)}</strong> out
+                    </span>
+                )}
+                {modelSupportsImages(model) && (
+                    <span class="model-chip is-images" title="Supports image inputs or generation">
+                        <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
+                        Images
+                    </span>
+                )}
+                {modelSupportsAudio(model) && (
+                    <span class="model-chip is-audio" title="Supports an audio route">
+                        <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">graphic_eq</span>
+                        Audio
+                    </span>
+                )}
+            </div>
+            <button
+                class="model-copy"
+                title="Copy model alias"
+                aria-label={"Copy " + model.id}
+                data-sound="interaction.confirm"
+                onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    navigator.clipboard.writeText(model.id).catch((error) => {
+                        console.error("Failed to copy model alias", error);
+                    });
+                    const btn = e.currentTarget as HTMLElement;
+                    const icon = btn.querySelector(".material-symbols-outlined");
+                    if (icon) {
+                        icon.textContent = "check";
+                        setTimeout(() => { icon.textContent = "content_copy"; }, 1500);
+                    }
+                }}
+            >
+                <span class="material-symbols-outlined">content_copy</span>
+            </button>
+        </article>
+    );
+}
+
+// ── Model Detail Modal ──
+
+function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onClose: () => void; verifiedLabel: string }) {
+    return (
+        <div
+            class="model-modal-backdrop"
+            role="dialog"
+            aria-modal="true"
+            aria-label={`${model.id} details`}
+            data-sound="overlay.close"
+            onClick={onClose}
+        >
+            <article
+                class={`model-modal${model.requires_seems_legit ? " is-gated" : ""}`}
+                onClick={(e) => e.stopPropagation()}
+            >
+                <header class="model-modal-head">
+                    <div>
+                        <span class="model-modal-prefix">{model.prefix}/*</span>
+                        <code class="model-modal-id">{model.id}</code>
+                    </div>
+                    <button
+                        type="button"
+                        class="model-modal-close"
+                        aria-label="Close"
+                        data-sound="overlay.close"
+                        onClick={onClose}
+                    >
+                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                    </button>
+                </header>
+
+                <section class="model-modal-meta">
+                    {model.context_window !== undefined && (
+                        <div>
+                            <span>Context window</span>
+                            <strong>{formatTokensFull(model.context_window)} tokens</strong>
+                        </div>
+                    )}
+                    {model.max_input_tokens !== undefined && model.max_input_tokens !== model.context_window && (
+                        <div>
+                            <span>Max input</span>
+                            <strong>{formatTokensFull(model.max_input_tokens)} tokens</strong>
+                        </div>
+                    )}
+                    {model.max_output_tokens !== undefined && (
+                        <div>
+                            <span>Max output</span>
+                            <strong>{formatTokensFull(model.max_output_tokens)} tokens</strong>
+                        </div>
+                    )}
+                    <div>
+                        <span>Provider prefix</span>
+                        <strong>{model.prefix}/*</strong>
+                    </div>
+                    <div>
+                        <span>Image support</span>
+                        <strong>{modelSupportsImages(model) ? "Yes" : "No"}</strong>
+                    </div>
+                    <div>
+                        <span>Audio route</span>
+                        <strong>{modelSupportsAudio(model) ? "Yes" : "No"}</strong>
+                    </div>
+                    <Show when={model.visibility}>
+                        <div>
+                            <span>Visibility</span>
+                            <strong>{model.visibility === "role_gated" ? "Verified members" : "Public catalog"}</strong>
+                        </div>
+                    </Show>
+                    <Show when={model.requires_seems_legit}>
+                        <div>
+                            <span>Access</span>
+                            <strong>Verified members only</strong>
+                        </div>
+                    </Show>
+                </section>
+
+                <Show when={model.requires_seems_legit}>
+                    <p class="model-modal-gate">
+                        <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
+                        <span>
+                            This model is available to {verifiedLabel} on the FreeTheAi Discord server.
+                            Run <code>/checkin</code> daily once you have access.
+                        </span>
+                    </p>
+                </Show>
+
+                <section class="model-modal-routes">
+                    <h4>Supported API routes</h4>
+                    <p>Use the same API key and model alias on the supported route for this model.</p>
+                    <ul>
+                        <For each={modelRoutes(model)}>
+                            {(route) => (
+                                <li>
+                                    <code>POST {route.path}</code>
+                                    <span>{route.description}</span>
+                                </li>
+                            )}
+                        </For>
+                    </ul>
+                </section>
+
+                <footer class="model-modal-foot">
+                    <button
+                        type="button"
+                        class="model-modal-copy"
+                        data-sound="interaction.confirm"
+                        onClick={(e) => {
+                            navigator.clipboard.writeText(model.id).catch((error) => {
+                                console.error("Failed to copy model alias", error);
+                            });
+                            const btn = e.currentTarget as HTMLButtonElement;
+                            const original = btn.textContent;
+                            btn.textContent = "Copied";
+                            setTimeout(() => { btn.textContent = original; }, 1500);
+                        }}
+                    >
+                        Copy alias
+                    </button>
+                    <a class="model-modal-docs" href="/docs#compatibility">View API docs</a>
+                </footer>
+            </article>
+        </div>
+    );
+}
 
 export default function CatalogBrowser() {
   const initial = readCatalogParams();
@@ -508,80 +709,7 @@ export default function CatalogBrowser() {
           }
         >
           <For each={visibleModels()}>
-            {(model) => {
-              const ctx = modelContext(model);
-              const out = model.max_output_tokens;
-              return (
-                <article
-                  class={`model-card${model.requires_seems_legit ? " is-gated" : ""}`}
-                  role="button"
-                  tabindex="0"
-                  aria-haspopup="dialog"
-                  aria-label={`Open details for ${model.id}`}
-                  data-sound="interaction.tap"
-                  onClick={(e) => {
-                    if ((e.target as HTMLElement).closest(".model-copy")) return;
-                    setSelected(model);
-                  }}
-                  onKeyDown={(e) => {
-                    if (e.key === "Enter" || e.key === " ") {
-                      e.preventDefault();
-                      setSelected(model);
-                    }
-                  }}
-                >
-                  <div class="model-card-top">
-                    <span class="model-prefix">{model.prefix}/*</span>
-                  </div>
-                  <code class="model-id">{model.id}</code>
-                  <div class="model-meta">
-                    {ctx > 0 && (
-                      <span class="model-chip" title="Total context window">
-                        <strong>{formatTokens(ctx)}</strong> ctx
-                      </span>
-                    )}
-                    {out !== undefined && (
-                      <span class="model-chip" title="Maximum output tokens">
-                        <strong>{formatTokens(out)}</strong> out
-                      </span>
-                    )}
-                    {modelSupportsImages(model) && (
-                      <span class="model-chip is-images" title="Supports image inputs or generation">
-                        <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
-                        Images
-                      </span>
-                    )}
-                    {modelSupportsAudio(model) && (
-                      <span class="model-chip is-audio" title="Supports an audio route">
-                        <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">graphic_eq</span>
-                        Audio
-                      </span>
-                    )}
-                  </div>
-                  <button
-                    class="model-copy"
-                    title="Copy model alias"
-                    aria-label={"Copy " + model.id}
-                    data-sound="interaction.confirm"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      navigator.clipboard.writeText(model.id).catch((error) => {
-                        console.error("Failed to copy model alias", error);
-                      });
-                      const btn = e.currentTarget as HTMLElement;
-                      const icon = btn.querySelector(".material-symbols-outlined");
-                      if (icon) {
-                        icon.textContent = "check";
-                        setTimeout(() => { icon.textContent = "content_copy"; }, 1500);
-                      }
-                    }}
-                  >
-                    <span class="material-symbols-outlined">content_copy</span>
-                  </button>
-                </article>
-              );
-            }}
+            {(model) => <ModelCard model={model} onSelect={setSelected} />}
           </For>
         </Show>
       </div>
@@ -614,130 +742,7 @@ export default function CatalogBrowser() {
       </div>
 
       <Show when={selected()}>
-        {(model) => (
-          <div
-            class="model-modal-backdrop"
-            role="dialog"
-            aria-modal="true"
-            aria-label={`${model().id} details`}
-            data-sound="overlay.close"
-            onClick={() => setSelected(null)}
-          >
-            <article
-              class={`model-modal${model().requires_seems_legit ? " is-gated" : ""}`}
-              onClick={(e) => e.stopPropagation()}
-            >
-              <header class="model-modal-head">
-                <div>
-                  <span class="model-modal-prefix">{model().prefix}/*</span>
-                  <code class="model-modal-id">{model().id}</code>
-                </div>
-                <button
-                  type="button"
-                  class="model-modal-close"
-                  aria-label="Close"
-                  data-sound="overlay.close"
-                  onClick={() => setSelected(null)}
-                >
-                  <span class="material-symbols-outlined" aria-hidden="true">close</span>
-                </button>
-              </header>
-
-              <section class="model-modal-meta">
-                {model().context_window !== undefined && (
-                  <div>
-                    <span>Context window</span>
-                    <strong>{formatTokensFull(model().context_window!)} tokens</strong>
-                  </div>
-                )}
-                {model().max_input_tokens !== undefined &&
-                  model().max_input_tokens !== model().context_window && (
-                    <div>
-                      <span>Max input</span>
-                      <strong>{formatTokensFull(model().max_input_tokens!)} tokens</strong>
-                    </div>
-                  )}
-                {model().max_output_tokens !== undefined && (
-                  <div>
-                    <span>Max output</span>
-                    <strong>{formatTokensFull(model().max_output_tokens!)} tokens</strong>
-                  </div>
-                )}
-                <div>
-                  <span>Provider prefix</span>
-                  <strong>{model().prefix}/*</strong>
-                </div>
-                <div>
-                  <span>Image support</span>
-                  <strong>{modelSupportsImages(model()) ? "Yes" : "No"}</strong>
-                </div>
-                <div>
-                  <span>Audio route</span>
-                  <strong>{modelSupportsAudio(model()) ? "Yes" : "No"}</strong>
-                </div>
-                <Show when={model().visibility}>
-                  <div>
-                    <span>Visibility</span>
-                    <strong>{model().visibility === "role_gated" ? "Verified members" : "Public catalog"}</strong>
-                  </div>
-                </Show>
-                <Show when={model().requires_seems_legit}>
-                  <div>
-                    <span>Access</span>
-                    <strong>Verified members only</strong>
-                  </div>
-                </Show>
-              </section>
-
-              <Show when={model().requires_seems_legit}>
-                <p class="model-modal-gate">
-                  <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
-                  <span>
-                    This model is available to {verifiedMemberLabel()} on the FreeTheAi Discord server.
-                    Run <code>/checkin</code> daily once you have access.
-                  </span>
-                </p>
-              </Show>
-
-              <section class="model-modal-routes">
-                <h4>Supported API routes</h4>
-                <p>
-                  Use the same API key and model alias on the supported route for this model.
-                </p>
-                <ul>
-                  <For each={modelRoutes(model())}>
-                    {(route) => (
-                      <li>
-                        <code>POST {route.path}</code>
-                        <span>{route.description}</span>
-                      </li>
-                    )}
-                  </For>
-                </ul>
-              </section>
-
-              <footer class="model-modal-foot">
-                <button
-                  type="button"
-                  class="model-modal-copy"
-                  data-sound="interaction.confirm"
-                  onClick={(e) => {
-                    navigator.clipboard.writeText(model().id).catch((error) => {
-                      console.error("Failed to copy model alias", error);
-                    });
-                    const btn = e.currentTarget as HTMLButtonElement;
-                    const original = btn.textContent;
-                    btn.textContent = "Copied";
-                    setTimeout(() => { btn.textContent = original; }, 1500);
-                  }}
-                >
-                  Copy alias
-                </button>
-                <a class="model-modal-docs" href="/docs#compatibility">View API docs</a>
-              </footer>
-            </article>
-          </div>
-        )}
+        {(model) => <ModelDetailModal model={model()} onClose={() => setSelected(null)} verifiedLabel={verifiedMemberLabel()} />}
       </Show>
     </div>
   );

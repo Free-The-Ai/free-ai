@@ -134,6 +134,21 @@ function createHarmonicVoiceInner(
   gainNodes.push(harmGain);
 }
 
+/** Connect an oscillator through an enveloped gain to destination and start it */
+function connectOscVoice(
+  ctx: AudioContext,
+  osc: OscillatorNode,
+  time: number,
+  vol: number,
+  duration: number,
+  instrument: InstrumentConfig,
+): GainNode {
+  const gain = createEnvelopedGain(ctx, time, vol, duration, { ...instrument, decayMult: 1 });
+  osc.connect(gain); gain.connect(ctx.destination);
+  osc.start(time); osc.stop(time + duration + 0.05);
+  return gain;
+}
+
 function makePlayback(
   oscillators: OscillatorNode[],
   gainNodes: GainNode[],
@@ -299,6 +314,12 @@ function chimeFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
 
 // ── Arpeggio ── (sequential notes with optional shimmer)
 
+function addArpNote(ctx: AudioContext, noteTime: number, freq: number, vol: number, ring: number, instrument: InstrumentConfig, oscillators: OscillatorNode[], gainNodes: GainNode[], cents?: number) {
+  const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 }, cents);
+  gainNodes.push(connectOscVoice(ctx, osc, noteTime, vol, ring, instrument));
+  oscillators.push(osc);
+}
+
 function arpeggioFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
   return (ctx, options) => {
     const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
@@ -313,26 +334,13 @@ function arpeggioFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSyn
     for (let i = 0; i < notes.length; i++) {
       const noteTime = time + i * (noteDuration + noteGap);
       const ring = i === notes.length - 1 ? finalRing : noteDuration;
-      const osc = createOscillator(ctx, notes[i], { ...instrument, pitchMult: 1 });
-      const gain = createEnvelopedGain(ctx, noteTime, vol, ring, { ...instrument, decayMult: 1 });
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(noteTime); osc.stop(noteTime + ring + 0.05);
-      oscillators.push(osc); gainNodes.push(gain);
-
+      const freq = notes[i];
+      addArpNote(ctx, noteTime, freq, vol, ring, instrument, oscillators, gainNodes);
       if (tune.harmonics && tune.harmonicRatio) {
-        const harmOsc = createOscillator(ctx, notes[i] * tune.harmonicRatio, { ...instrument, pitchMult: 1 });
-        const harmGain = createEnvelopedGain(ctx, noteTime, (tune.harmonicVolume ?? 0.1) * vol, ring, { ...instrument, decayMult: 1 });
-        harmOsc.connect(harmGain); harmGain.connect(ctx.destination);
-        harmOsc.start(noteTime); harmOsc.stop(noteTime + ring + 0.05);
-        oscillators.push(harmOsc); gainNodes.push(harmGain);
+        addArpNote(ctx, noteTime, freq * tune.harmonicRatio, (tune.harmonicVolume ?? 0.1) * vol, ring, instrument, oscillators, gainNodes);
       }
-
       if (shimmerCents > 0 && i === notes.length - 1) {
-        const shimmerOsc = createOscillator(ctx, notes[i], { ...instrument, pitchMult: 1 }, shimmerCents);
-        const shimmerGain = createEnvelopedGain(ctx, noteTime, vol * 0.25, ring, { ...instrument, decayMult: 1 });
-        shimmerOsc.connect(shimmerGain); shimmerGain.connect(ctx.destination);
-        shimmerOsc.start(noteTime); shimmerOsc.stop(noteTime + ring + 0.05);
-        oscillators.push(shimmerOsc); gainNodes.push(shimmerGain);
+        addArpNote(ctx, noteTime, freq, vol * 0.25, ring, instrument, oscillators, gainNodes, shimmerCents);
       }
     }
     return makePlayback(oscillators, gainNodes, options.onEnd);
@@ -351,10 +359,8 @@ function chordFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthe
 
     for (const freq of notes) {
       const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
-      const gain = createEnvelopedGain(ctx, time, vol * normFactor, duration, { ...instrument, decayMult: 1 });
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(time); osc.stop(time + duration + 0.05);
-      oscillators.push(osc); gainNodes.push(gain);
+      gainNodes.push(connectOscVoice(ctx, osc, time, vol * normFactor, duration, instrument));
+      oscillators.push(osc);
     }
     return makePlayback(oscillators, gainNodes, options.onEnd);
   };
@@ -416,12 +422,7 @@ function wobbleFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynth
     lfo.connect(lfoGain);
     lfoGain.connect(osc.frequency);
 
-    const gain = createEnvelopedGain(ctx, time, vol, duration, { ...instrument, decayMult: 1 });
-    osc.connect(gain);
-    gain.connect(ctx.destination);
-
-    osc.start(time);
-    osc.stop(time + duration + 0.05);
+    const gain = connectOscVoice(ctx, osc, time, vol, duration, instrument);
     lfo.start(time);
     lfo.stop(time + duration + 0.05);
 

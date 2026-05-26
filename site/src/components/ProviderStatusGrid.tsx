@@ -8,6 +8,7 @@ import {
 } from "solid-js";
 import ProviderPopover from "./ProviderPopover";
 import { siteConfig } from "../config/site";
+import { formatPercent } from "../utils/format";
 
 type ProviderStatus = "up" | "degraded" | "down" | "unknown";
 
@@ -608,7 +609,3 @@ export default function ProviderStatusGrid() {
     );
 }
 
-function formatPercent(value: number): string {
-    if (!Number.isFinite(value)) return "\u2014";
-    return `${Math.round(value * 100)}%`;
-}

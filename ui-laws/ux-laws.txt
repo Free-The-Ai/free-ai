@@ -1,0 +1,50 @@
+﻿25 Design Concepts to Learn
+By @teagan_talks on IG
+* Aesthetic-Usability Effect
+People tend to perceive visually appealing designs as easier to use, even if they aren’t actually more functional.
+* Peak-End Rule
+Users evaluate a product based on the emotional high point and the final interaction.
+* Jakob’s Law
+Users expect your product to work like other products they already know and prefer familiar patterns over new ones.
+* Miller’s Law
+The average person can only hold about 7 items (plus or minus 2) in their working memory at once.
+* Occam’s Razor
+The simplest solution is usually the best, so unnecessary complexity should be removed.
+   * Hick’s Law
+The more choices you give users, the longer it takes them to make a decision.
+   * Fitts’s Law
+The bigger and closer a button is, the easier and faster it is to click.
+   * Law of Proximity
+Objects placed near each other are perceived as related.
+   * Law of Similarity
+Elements that look alike are assumed to have the same function.
+   * Law of Common Region
+Items within the same boundary are seen as grouped together.
+      * Von Restorff Effect (Isolation Effect)
+Items that stand out visually are more likely to be remembered.
+      * Serial Position Effect
+People remember the first and last items in a sequence best.
+      * Doherty Threshold
+Users feel most engaged when systems respond within about 400 milliseconds.
+      * Zeigarnik Effect
+People remember unfinished tasks better than completed ones.
+         * Progressive Disclosure
+Show only the necessary information first, revealing more as needed.
+         * Law of Prägnanz
+People interpret complex visuals in the simplest way possible.
+         * Selective Attention
+Users focus only on what feels relevant and ignore everything else.
+         * Recognition Over Recall
+It’s easier for users to recognize options than remember them from scratch.
+         * Chunking
+Breaking information into smaller groups makes it easier to process.
+            * Feedback Loop
+Users need immediate feedback after actions to understand what happened.
+            * Affordance
+Design elements should suggest how they are meant to be used.
+            * Pareto Principle (80/20 Rule)
+Most results come from a small portion of inputs, so focus on what matters most.
+            * Aesthetic Integrity
+The design should match the purpose and tone of the product.
+            * Postel’s Law
+Be flexible in what you accept from users, but strict in what you output.

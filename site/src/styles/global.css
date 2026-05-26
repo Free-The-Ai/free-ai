@@ -57,52 +57,49 @@
     --sk-accent-glow:
         0 0 0 1px rgba(238, 93, 32, 0.18), 0 0 16px rgba(238, 93, 32, 0.16);
 
-    /* ── Motion system (transitions.dev-inspired) ── */
+    /* ── Motion system — fast, crisp, responsive ── */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1);
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-in-smooth: cubic-bezier(0.4, 0, 1, 1);
+    /* Extra-snappy for page transitions — faster decel than ease-out-smooth */
+    --ease-page: cubic-bezier(0.25, 1, 0.5, 1);
 
     /* Card resize */
-    --resize-dur: 300ms;
+    --resize-dur: 200ms;
     /* Number pop-in */
-    --digit-dur: 500ms;
-    --digit-distance: 8px;
-    --digit-stagger: 70ms;
-    --digit-blur: 2px;
+    --digit-dur: 400ms;
+    --digit-distance: 6px;
+    --digit-stagger: 50ms;
     /* Text state swap */
-    --text-swap-dur: 150ms;
-    --text-swap-translate-y: 4px;
-    --text-swap-blur: 2px;
+    --text-swap-dur: 120ms;
+    --text-swap-translate-y: 3px;
     /* Dropdown / popover */
-    --dropdown-open-dur: 250ms;
-    --dropdown-close-dur: 150ms;
-    --dropdown-pre-scale: 0.97;
+    --dropdown-open-dur: 180ms;
+    --dropdown-close-dur: 120ms;
+    --dropdown-pre-scale: 0.98;
     /* Modal */
-    --modal-open-dur: 250ms;
-    --modal-close-dur: 150ms;
-    --modal-scale: 0.96;
+    --modal-open-dur: 200ms;
+    --modal-close-dur: 120ms;
+    --modal-scale: 0.97;
     /* Panel reveal */
-    --panel-open-dur: 400ms;
-    --panel-close-dur: 350ms;
-    --panel-translate-y: 100px;
-    --panel-blur: 2px;
-    /* Page transition */
-    --page-slide-dur: 200ms;
-    --page-slide-distance: 8px;
-    --page-blur: 3px;
+    --panel-open-dur: 280ms;
+    --panel-close-dur: 220ms;
+    --panel-translate-y: 40px;
+    /* Page transition — fast and crisp */
+    --page-dur: 130ms;
+    --page-distance: 4px;
     /* Icon swap */
-    --icon-swap-dur: 200ms;
-    --icon-swap-blur: 2px;
-    --icon-swap-start-scale: 0.25;
+    --icon-swap-dur: 150ms;
+    --icon-swap-start-scale: 0.5;
     /* Button press */
-    --press-dur: 120ms;
+    --press-dur: 100ms;
     --press-scale: 0.97;
-    /* Hover lift */
-    --hover-lift: -2px;
-    --hover-dur: 200ms;
+    /* Hover — fast response */
+    --hover-lift: -1px;
+    --hover-dur: 140ms;
     /* Focus ring */
-    --focus-dur: 150ms;
+    --focus-dur: 120ms;
 }
 
 @media (prefers-color-scheme: light) {
@@ -120,30 +117,26 @@
     }
 }
 
-/* ── View Transition animations ── */
-@keyframes vt-slide-in {
+/* ── View Transition animations — fast, no blur, minimal travel ── */
+@keyframes vt-page-in {
     from {
         opacity: 0;
-        transform: translateY(var(--page-slide-distance));
-        filter: blur(var(--page-blur));
+        transform: translateY(var(--page-distance));
     }
     to {
         opacity: 1;
         transform: translateY(0);
-        filter: blur(0);
     }
 }
 
-@keyframes vt-slide-out {
+@keyframes vt-page-out {
     from {
         opacity: 1;
         transform: translateY(0);
-        filter: blur(0);
     }
     to {
         opacity: 0;
-        transform: translateY(calc(var(--page-slide-distance) * -1));
-        filter: blur(var(--page-blur));
+        transform: translateY(calc(var(--page-distance) * -1));
     }
 }
 
@@ -157,25 +150,25 @@
     to { opacity: 0; }
 }
 
-/* Astro slide override — transitions.dev-quality easing */
+/* Page transitions — snappy crossfade with micro-slide */
 ::view-transition-old(root) {
-    animation: vt-slide-out var(--page-slide-dur) var(--ease-out-smooth);
+    animation: vt-page-out var(--page-dur) var(--ease-page) both;
 }
 ::view-transition-new(root) {
-    animation: vt-slide-in var(--page-slide-dur) var(--ease-out-smooth);
+    animation: vt-page-in var(--page-dur) var(--ease-page) both;
 }
 
-/* Per-element view transitions remain fade (header, footer) */
+/* Header/footer — instant crossfade */
 ::view-transition-old(site-header),
 ::view-transition-old(site-footer) {
-    animation: vt-fade-out var(--page-slide-dur) var(--ease-out-smooth);
+    animation: vt-fade-out 100ms var(--ease-page) both;
 }
 ::view-transition-new(site-header),
 ::view-transition-new(site-footer) {
-    animation: vt-fade-in var(--page-slide-dur) var(--ease-out-smooth);
+    animation: vt-fade-in 100ms var(--ease-page) both;
 }
 
-/* ── Micro-interaction keyframes ── */
+/* ── Micro-interaction keyframes — GPU-composited only (no filter) ── */
 @keyframes press-down {
     0%   { transform: scale(1); }
     100% { transform: scale(var(--press-scale)); }
@@ -185,7 +178,7 @@
     100% { transform: scale(1); }
 }
 @keyframes modal-enter {
-    0%   { opacity: 0; transform: scale(var(--modal-scale)) translateY(8px); }
+    0%   { opacity: 0; transform: scale(var(--modal-scale)) translateY(6px); }
     100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 @keyframes modal-exit {
@@ -193,32 +186,32 @@
     100% { opacity: 0; transform: scale(var(--modal-scale)); }
 }
 @keyframes dropdown-open {
-    0%   { opacity: 0; transform: scale(var(--dropdown-pre-scale)) translateY(-4px); }
+    0%   { opacity: 0; transform: scale(var(--dropdown-pre-scale)) translateY(-3px); }
     100% { opacity: 1; transform: scale(1) translateY(0); }
 }
 @keyframes dropdown-close {
     0%   { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.97) translateY(-4px); }
+    100% { opacity: 0; transform: scale(0.98) translateY(-3px); }
 }
 @keyframes digit-pop {
-    0%   { opacity: 0; transform: translateY(var(--digit-distance)); filter: blur(var(--digit-blur)); }
-    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+    0%   { opacity: 0; transform: translateY(var(--digit-distance)) scale(0.92); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes text-swap-out {
-    0%   { opacity: 1; transform: translateY(0); filter: blur(0); }
-    100% { opacity: 0; transform: translateY(calc(var(--text-swap-translate-y) * -1)); filter: blur(var(--text-swap-blur)); }
+    0%   { opacity: 1; transform: translateY(0); }
+    100% { opacity: 0; transform: translateY(calc(var(--text-swap-translate-y) * -1)) scale(0.97); }
 }
 @keyframes text-swap-in {
-    0%   { opacity: 0; transform: translateY(var(--text-swap-translate-y)); filter: blur(var(--text-swap-blur)); }
-    100% { opacity: 1; transform: translateY(0); filter: blur(0); }
+    0%   { opacity: 0; transform: translateY(var(--text-swap-translate-y)) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes icon-swap-out {
-    0%   { opacity: 1; transform: scale(1); filter: blur(0); }
-    100% { opacity: 0; transform: scale(var(--icon-swap-start-scale)); filter: blur(var(--icon-swap-blur)); }
+    0%   { opacity: 1; transform: scale(1); }
+    100% { opacity: 0; transform: scale(var(--icon-swap-start-scale)); }
 }
 @keyframes icon-swap-in {
-    0%   { opacity: 0; transform: scale(var(--icon-swap-start-scale)); filter: blur(var(--icon-swap-blur)); }
-    100% { opacity: 1; transform: scale(1); filter: blur(0); }
+    0%   { opacity: 0; transform: scale(var(--icon-swap-start-scale)); }
+    100% { opacity: 1; transform: scale(1); }
 }
 @keyframes check-stroke {
     0%   { stroke-dashoffset: 24; }
@@ -365,6 +358,7 @@ pre {
     flex-direction: column;
     min-width: 0;
     min-height: 0;
+    view-transition-name: root;
 }
 
 .site-main > main {
@@ -376,6 +370,7 @@ pre {
     top: 0;
     z-index: 30;
     padding-top: 10px;
+    view-transition-name: site-header;
 }
 
 .nav {
@@ -3232,6 +3227,7 @@ body.nav-drawer-open {
     border-top: 1px solid var(--border);
     display: grid;
     gap: 24px;
+    view-transition-name: site-footer;
 }
 
 .footer-top {
@@ -4491,7 +4487,7 @@ body.nav-drawer-open {
     box-shadow: var(--sk-raised-shadow);
 }
 
-/* Text swap — exit up with blur, enter from below with blur */
+/* Text swap — exit up with scale, enter from below */
 .t-text-exit {
     animation: text-swap-out var(--text-swap-dur) var(--ease-out-smooth) forwards;
 }
@@ -4499,7 +4495,7 @@ body.nav-drawer-open {
     animation: text-swap-in var(--text-swap-dur) var(--ease-out-smooth) forwards;
 }
 
-/* Icon swap — exit shrinks with blur, enter grows from blur */
+/* Icon swap — exit shrinks, enter grows */
 .t-icon-exit {
     animation: icon-swap-out var(--icon-swap-dur) var(--ease-out-smooth) forwards;
 }

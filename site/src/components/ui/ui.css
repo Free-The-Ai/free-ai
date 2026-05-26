@@ -410,7 +410,7 @@
   height: 2px;
   background: var(--accent);
   border-radius: 1px;
-  transition: all 200ms var(--ease-out-smooth);
+  transition: left 160ms var(--ease-out-expo), width 160ms var(--ease-out-expo);
 }
 
 .kb-tabs__content { padding-top: 20px; }
@@ -543,7 +543,7 @@
   background: var(--accent);
   height: 100%;
   width: var(--kb-toast-progress-fill-width);
-  transition: width 250ms linear;
+  transition: width 180ms linear;
 }
 
 @keyframes toastIn {
@@ -647,7 +647,7 @@
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  transition: transform 250ms var(--ease-out-smooth);
+  transition: transform 160ms var(--ease-out-expo);
 }
 .kb-collapsible[open] .kb-collapsible__chevron {
   transform: rotate(180deg);
@@ -815,7 +815,7 @@
   width: 18px;
   height: 18px;
   flex-shrink: 0;
-  transition: transform 250ms var(--ease-out-smooth);
+  transition: transform 160ms var(--ease-out-expo);
 }
 .kb-accordion__item[open] .kb-accordion__chevron {
   transform: rotate(180deg);

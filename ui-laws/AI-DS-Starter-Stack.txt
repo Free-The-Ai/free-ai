@@ -1,0 +1,791 @@
+AI
+
+DS
+
+Starter Stack
+
+Kickstart your Design System
+10x faster with AI
+
+designsystems.surf
+
+introduction
+
+designsystems.surf
+
+How to use this guide
+This guide is not about replacing designers with AI — it’s about learning to collaborate with it effectively.
+To get the most value, use the 4D Framework by Anthropic as your mindset for working with AI
+
+Delegation
+
+Know what to delegate. Be clear about your goal and decide which parts
+of the work are worth automating. AI is great at analysis, structure,
+and synthesis — but meaning, taste, and direction stay yours.
+
+Description
+
+Explain what needs to be done. Good output starts with a good prompt.
+Describe the context, goal, and constraints clearly. Add examples
+and criteria for success — clarity is creativity here.
+
+Discernment
+
+Evaluate the result critically. AI can generate fast, but only you can judge
+quality. Compare the outcome to your standards — consistency,
+accessibility, brand fit. Be the editor, not just the receiver.
+
+Diligence
+
+Stay responsible for the final outcome. AI supports you, but you own
+the result. Design decisions, documentation, and quality assurance
+remain your craft.
+
+introduction
+
+designsystems.surf
+
+From chaos to clarity with AI
+
+Use this guide to cut the noise, speed up key steps,  
+and keep a simple, consistent structure across tokens,  
+components, and documentation
+
+01
+
+02
+
+03
+
+Faster
+Generate tokens, components,
+and docs in minutes
+
+Clearer
+Turn messy notes into clear
+principles and names
+
+Systematic
+Connect tokens, components,
+and rules in one structure
+
+Define
+
+Create
+
+Adopt
+
+Evolve
+
+introduction
+
+designsystems.surf
+
+Design System Process
+
+Define
+
+Goals
+
+Create
+
+Foundations
+
+Adopt
+
+Documentation
+
+Evolve
+
+Quality
+
+Audit
+
+Approximate share of
+total design system work
+
+Principles
+
+Tokens
+
+Metrics
+
+Components
+
+Governance
+
+Integration
+
+Evolution
+
+A design system is not built in one step. It grows through clear phases
+
+from defining what matters to evolving what lasts
+
+Phase → 01
+
+Define
+Focus on clarity by aligning goals, identifying gaps,
+and defining the principles that will guide the system.  
+AI helps analyze existing designs, summarize team needs,
+and draft the first version of principles and scope
+
+designsystems.surf
+
+Phase → 01 Define
+
+Stage 1–1
+
+AI stack
+
+Goals
+
+NotebookLM
+
+Define why the design system is needed,
+who will use it, and what’s included in the MVP
+
+ChatGPT
+
+Workflow
+
+Brief & insights: collect internal materials with NotebookLM
+to generate a short brief and a list of open questions
+Define goals: use ChatGPT to draft the Problem and Value
+statements, create 2–3 alternative formulations, and propose initial
+OKRs, KPIs, and a Definition of Done
+Validate metrics: run Perplexity to validate metrics, benchmarks,
+and terminology, then refine OKRs if needed
+lign stakeholders: use Miro AI to map stakeholders and build
+a RACI chart, and Notion AI to compile everything into a clear doc
+A
+
+Perplexity
+
+Miro AI
+
+Notion AI
+
+designsystems.surf
+
+Phase → 01 Define
+
+Stage 1–2
+
+Audit
+Capture the current UI state, find inconsistencies
+and gaps, and build a prioritized coverage map
+
+Workflow
+
+AI stack
+
+designsystems.surf
+
+NotebookLM
+Upload past bug reports, retrospectives, or research
+documents to get a summary of recurring issues and their
+frequency
+ChatGPT
+Create the audit structure with categories and checklists,
+define consistency rules and evaluation criteria, help
+classify discovered patterns, and summarize findings
+Perplexity
+Compare your checklists with industry standards
+(accessibility, control states, tables, error formats)
+and find real examples and references
+
+Collect: gather screen previews, component snapshots, past bugs,
+and research notes. Use NotebookLM to summarize issues
+Audit structure: use ChatGPT to generate checklists for UI,
+accessibility, states, and localization. Validate them with Perplexity
+
+against industry standards
+
+Start broad, then refine. Let AI handle the structure
+and research so you can stay focused on design
+decisions that matter
+
+Phase → 01 Define
+
+Stage 1–3
+
+Principles
+Define clear principles, tone, and visual direction tied
+to speed, consistency, and accessibility
+Workflow
+
+upload research and briefs, then NotebookLM
+summarizes themes and brand attributes
+Synthesize inputs:
+
+ra t rinciples and voice: use ChatGPT to generate principles
+and a tone-of-voice matrix, while Perplexity checks them against
+industry and a11y standards
+
+D f p
+
+build moodboards in Midjourney or Recraft, explore
+palettes in hroma, group everything in Mixboard
+Visual check:
+K
+
+otion AI creates a one-pager and short posters with
+principle, rationale, do/don’t, and sample tone phrases
+
+Packaging: N
+
+AI stack
+
+designsystems.surf
+
+NotebookLM
+Summarize research and briefs into key user pains, brand
+traits, and UI issues
+ChatGPT
+Extract principles from research, rewrite them into
+a testable format, and create a tone-of-voice matrix
+Perplexity
+Check facts and collect references for design principles
+and accessibility standards
+Recraft
+Build moodboards showing iconography, style, and mood
+for each principle
+Use Khroma to explore color directions and check contrast
+and readability, organize visual references by theme in Mixboard.
+Finalize everything in Notion AI as a one-pager with principles
+and tone examples
+
+Phase → 02
+
+Create
+Turn definitions into foundations, tokens, and components that
+express the product’s logic with focus on consistency,
+hierarchy, and simplicity. AI helps generate tokens, document
+decisions, and create Figma components
+
+designsystems.surf
+
+Phase → 02 Create
+
+Stage 2–1
+
+AI stack
+
+Foundations
+Define layout, typography, color system, and spacing
+linked to core principles and future tokens
+Workflow
+Context → constraints: use NotebookLM to summarize findings
+from audits and principles, and list requirements
+
+hatG generates sets with grid,
+breakpoints, typography, colors, spacing, and motion
+Drafting options: C
+
+PT
+
+2–3
+
+designsystems.surf
+
+NotebookLM
+Summarize research and audits into clear constraints such
+as data density, localization, and content structure
+ChatGPT
+Generate several layout and type options with grids,
+typography, color, spacing, and motion, and explain
+selection criteria
+Perplexity
+Research industry benchmarks for line length, breakpoints,
+content widths, and motion or accessibility standards
+Notion AI
+
+erplexity compares results with industry benchmarks
+and checks the proposed rules for alignment with best practices
+Sanity check: P
+
+choose one set or a hybrid, document
+it in otion , create supporting diagrams in iro
+Guide assembly:
+N
+
+AI
+
+M
+
+Use Miro AI or Whimsical AI to visualize grids, breakpoints,
+and containers, and Khroma to explore color options and check
+text readability
+
+Phase → 02 Create
+
+Stage 2–2
+
+AI stack
+
+Tokens
+Convert foundations into tokens and variables, define
+modes and naming, and set their structure
+Workflow
+
+Extract context: use NotebookLM to summarize key constraints
+from Foundations such as breakpoints, type scale, contrast etc
+use ChatG T to generate a core and semantic
+structure, naming scheme, and modes
+Draft taxonomy:
+
+P
+
+e ne an a ate: use erplexity to check C G compliance,
+naming consistency, and alignment with industry practices
+R
+
+fi
+
+d v
+
+lid
+
+P
+
+W
+
+M
+
+N
+
+AI
+
+NotebookLM
+Summarize foundations and audits into key constraints
+for color, localization, and accessibility
+ChatGPT
+Generate a token taxonomy with naming, semantic layers,
+and links to foundations
+Perplexity
+Check token and theming practices for contrast, sizing,
+and motion accessibility
+Notion AI
+Create a short Token Guide with naming rules, core
+and semantic tables, examples, and mode descriptions
+
+A
+
+use otion to create a Token Guide with
+examples, and iro to visualize token structure and relationships
+Document and connect:
+
+designsystems.surf
+
+Miro AI
+
+Phase → 02 Create
+
+Stage 2–3
+
+Components
+Define core MVP components and their groups,
+set priorities, outline states, and identify patterns
+Workflow
+Collect common tasks: use NotebookLM to extract top user flows
+and recurring UI elements from audits and research
+Draft component model: use ChatGPT to generate grouped
+
+component lists and a prioritization formula
+
+Validate coverage: use Perplexity to compare with reference design
+
+systems and accessibility guides, adding missing components
+Map and document: use Miro or Whimsical to visualize the
+component map and Notion AI to compile the final table
+
+AI stack
+
+designsystems.surf
+
+NotebookLM
+Summarize audits, research, and bug reports into a list of
+recurring user tasks that define component usage weight
+ChatGPT
+Generate a component taxonomy, suggest a prioritization
+formula, and outline states, variants, shared patterns etc
+Perplexity
+Compare component coverage with major design systems
+and accessibility standards to ensure nothing is missed
+Figma AI
+Quickly prototype components and layouts from prompts,
+test structure, and identify missing variations
+Notion AI
+Assemble a final table showing each component with its
+priority, states, variants, and related tokens or patterns
+
+Phase → 03
+
+Adopt
+Make the system understandable and usable for everyone
+through clear communication and documentation.
+AI helps create guidelines, usage examples, and concise
+summaries of complex processes
+
+designsystems.surf
+
+Phase → 03 Adopt
+
+Stage 3–1
+
+Documentation
+Make the system easy to find and use with clear
+guides, examples, and well-structured docs
+Workflow
+
+Collect content: use NotebookLM to summarize all artifacts
+and Figma AI to list components, variants, and variables
+Plan structure: use ChatGPT to draft the documentation IA from
+Getting Started to Changelog, and visualize it in Miro
+Write pages: use the same LLMs to turn specs into short, examplebased guides while Perplexity adds best-practice references
+Assemble and style: use Notion AI to compile pages, unify tone
+and formatting, and include search and release note templates
+
+AI stack
+
+designsystems.surf
+
+NotebookLM
+Summarize vision, principles, foundations, tokens,
+and specs into a clear overview, highlighting gaps
+and duplicate content
+ChatGPT
+Turn specifications into practical guides with usage rules,
+accessibility notes, do’s and don’ts, decision trees,
+and FAQs
+Perplexity
+Fact-check accessibility and keyboard interaction best
+practices and collect reliable external references
+Notion AI
+Build the documentation structure, draft task-based
+guides, auto-generate summaries, changelogs,
+and release notes
+
+Phase → 03 Adopt
+
+Stage 3–2
+
+Governance
+Define ownership rules, change process, versioning
+policy, and documentation standards
+Workflow
+Define structure: use LLMs to create RACI roles, component
+lifecycle, and communication channels
+Create change templates: build RFC and ADR templates with clear
+
+criteria for when to use each
+
+Plan releases: define rules for libraries, docs, and tokens, add a
+
+AI stack
+
+designsystems.surf
+
+NotebookLM
+Summarize internal documents and past decisions into
+a decision log to serve as a base for future ADRs
+ChatGPT
+Draft RACI charts, contribution guides, RFC and ADR
+templates, versioning policies, and component status
+Perplexity
+Review governance and versioning practices from major
+design systems and collect relevant examples
+Notion AI
+Create a governance handbook with sections for process,
+roadmap, changelog, and auto-summaries decisions
+
+release calendar and a consistent release note format
+
+Publish and share: compile everything in a Notion Handbook
+
+and use Slack to summarize meetings and post updates
+
+Use Miro AI or Whimsical AI to visualize process flows from intake
+to release and communication, and Slack to summarize discussions,
+capture decisions, and extract action items for the gov-channel
+
+Phase → 03 Adopt
+
+Stage 3–3
+
+Integration
+Plan and launch migration to the design system,
+define pilots and priorities, prepare guides
+
+Workflow
+Map compatibility: use NotebookLM to create a table linking legacy
+components to DS equivalents and note potential risks
+Set strategy and priorities: use ChatGPT, Gemini, or Claude
+
+to define migration principles and decide what moves first based
+on usage and risk
+Pilot and document: use Perplexity to review best practices and
+Notion AI to compile migration playbooks with before-and-after
+
+examples and checklists
+
+AI stack
+
+designsystems.surf
+
+NotebookLM
+Summarize audits and legacy docs into maps linking
+old patterns to DS components and highlight risks
+ChatGPT
+Create a migration strategy with playbooks, prioritization
+criteria, and readiness checklists
+Perplexity
+Review public case studies on phased rollouts, theme
+compatibility, and accessibility pitfalls
+Notion AI
+Assemble short migration guides with before-and-after
+examples, checklists, risks, and owner contacts
+Use Miro AI or Whimsical AI to visualize migration decision
+trees, product roadmaps, and compatibility diagrams, and Slack
+to share weekly progress summaries and quick answers
+in the migration channel
+
+Phase
+
+→
+
+04
+
+Evolve
+Keep the system evolving as the product and team grow
+by learning from feedback, maintaining quality, and planning
+updates. AI helps analyze usage, group feedback, and suggest
+improvements
+
+designsystems.surf
+
+Phase → 04 Evolve
+
+Stage 4–1
+
+Quality
+Set quality gates for accessibility and consistency
+with simple reviews and feedback loops
+
+Workflow
+Define quality gates: use ChatGPT to generate WCAG and ARIA
+checklists, with Perplexity verifying against original sources
+
+use NotebookLM to summarize recurring issues
+from bugs and retros and add them to the checklist
+
+Learn from history:
+
+use Notion AI to build the Quality Handbook,
+iro to visualize the review flow, and Slack to share digests
+
+Document and apply:
+M
+
+AI stack
+
+designsystems.surf
+
+NotebookLM
+Summarize past bug reports and incidents to identify
+recurring accessibility issues and turn them into checklist
+ChatGPT
+Generate short WCAG and ARIA checklists, test case
+templates, and quality gates for design reviews
+Perplexity
+Fact-check WCAG standards and common practices
+for contrast, targets, motion, and forms with references
+Notion AI
+Build a Quality Handbook with thresholds, checklists,
+review scenarios, and compact one-screen versions
+Use Miro AI or Whimsical AI to visualize the review flow and team
+responsibilities, and Slack to share weekly summaries of recurring
+issues and weak spots across teams
+
+Phase → 04 Evolve
+
+Stage 4–2
+
+Metrics
+Track key metrics, combine data with feedback,
+and review regularly to guide improvements
+Workflow
+Define metrics: use ChatGPT to list key KPIs and formulas, and
+define tracking events such as DS component used or Library linked
+Connect data sources: use Figma Analytics for adoption, product
+analytics for reuse and retention, and NotebookLM to summarize
+
+qualitative feedback from forms and tickets
+
+Establish rhythm: use Slack for weekly summaries and Notion AI
+
+for monthly reports
+
+Close the loop: update roadmap priorities based on insights
+
+from reports
+
+AI stack
+
+designsystems.surf
+
+NotebookLM
+Summarize survey responses, support tickets, and design
+channel discussions into key themes and trends
+ChatGPT
+Define metrics and formulas, create feedback surveys,
+and prioritize insights by impact and frequency
+Perplexity
+Fact-check best practices and benchmarks for design
+system metrics
+Notion AI
+Compile a monthly report with metrics, highlights, risks,
+and decisions
+Track and share. Use Figma Analytics to see how the
+library grows and Slack AI to surface weekly actions that
+keep everyone aligned
+
+Phase → 04 Evolve
+
+Stage 4–3
+
+Evolution
+Keep the system up to date with regular releases,  
+and roadmap adjustments based on feedback
+
+Workflow
+Collect signals: use NotebookLM to summarize metrics, feedback,
+and tickets, and Perplexity to track updates in external standards
+
+use ChatGPT to propose improvement,
+deprecation, and spike initiatives with impact, effort, and risks
+
+Generate candidates:
+
+Plan the quarter:
+
+use Notion AI to compile a Quarterly Roadmap
+
+after releases, use Notion AI for post-mortems
+and summaries, then adjust priorities for the next cycle
+
+Close the loop:
+
+AI stack
+
+designsystems.surf
+
+NotebookLM
+Summarize monthly reports, feedback, and tickets into key
+themes, risks, and improvement ideas for the next quarter
+ChatGPT
+Generate and prioritize improvement ideas, deprecation
+plans, and design debt week scenarios
+Perplexity
+Track updates in design standards, accessibility guides,
+and case studies from major design systems
+Recraft
+Explore new visual directions, concepts, and illustrative
+styles to inspire future updates
+Keep evolving with intent. Let AI surface patterns
+and possibilities while you focus on what truly moves
+the system forward
+
+AI Tools Reference
+
+designsystems.surf
+
+Tool
+
+Primary use
+
+Advice
+
+NotebookLM
+
+Summarize research, briefs, and insights
+
+Feed it raw materials to reveal hidden patterns
+
+ChatGPT
+
+Structure ideas, draft principles, naming, docs
+
+Use it as a design partner, ask for iterations and comparisons
+
+Perplexity
+
+Fact-checking and finding reliable design system references
+
+Validate assumptions and fetch design-system benchmarks
+
+Notion AI
+
+Writing documentation, summaries, and changelogs
+
+Let it draft and summarize, but keep your judgment in the loop
+
+Mixboard
+
+Create visual boards from prompts, cluster references
+
+Good for visual ideation and grouping patterns
+
+Stitch
+
+Generate UI mockups and export code from prompts
+
+Use when bridging design and dev for rapid UI concepts
+
+Miro AI
+
+Clustering ideas and visualizing system architecture
+
+Use early to turn chaos into structure, then refine manually
+
+Recraft
+
+Generating visual styles, icons, and composition explorations
+
+Great for fast direction checks, not final visuals
+
+Khroma
+
+Generate colour palettes and check accessibility
+
+Focus on contrast and brand-ahead palettes with accessibility
+
+Conclusion
+
+designsystems.surf
+
+AI doesn’t replace design
+01
+
+02
+
+03
+
+Think systematically
+Build clarity before components
+
+Collaborate with AI
+Delegate structure, keep decisions
+
+Keep evolving
+Systems live, grow, and adapt
+
+Continue your workflow with
+AI DS System Playbook
+Practical frameworks, prompts, and templates to make
+AI part of your daily design workflow
+
+Check out Playbook
+
+

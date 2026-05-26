@@ -114,7 +114,7 @@
 
 /* ── View Transitions — pure crossfade, zero transform ── */
 
-/* Root group: fast opacity crossfade for page content */
+/* Root page content: fast opacity crossfade */
 ::view-transition-old(root) {
     animation: 100ms linear both vt-out;
 }
@@ -122,13 +122,7 @@
     animation: 100ms linear both vt-in;
 }
 
-/* Header/footer: instant swap — no animation, they're identical between pages */
-::view-transition-old(site-header),
-::view-transition-new(site-header),
-::view-transition-old(site-footer),
-::view-transition-new(site-footer) {
-    animation: none;
-}
+/* Header/footer use transition:persist — no animation needed */
 
 @keyframes vt-out {
     from { opacity: 1; }
@@ -340,7 +334,6 @@ pre {
     top: 0;
     z-index: 30;
     padding-top: 10px;
-    view-transition-name: site-header;
 }
 
 .nav {
@@ -3197,7 +3190,6 @@ body.nav-drawer-open {
     border-top: 1px solid var(--border);
     display: grid;
     gap: 24px;
-    view-transition-name: site-footer;
 }
 
 .footer-top {

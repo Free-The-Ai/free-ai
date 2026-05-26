@@ -54,20 +54,30 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 	</head>
 	<body>
 		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }}>
-		<div id="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center">
+		<div id="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:1">
 			<Logo width={160} style="opacity:.4" />
 		</div>
 		<script>
 			(function(){
 				var l=document.getElementById('loader');
 				if(!l) return;
-				function hide(){l.style.transition='opacity 120ms cubic-bezier(0.22,1,0.36,1)';l.style.opacity='0';setTimeout(function(){l.remove()},150)}
-				if(document.readyState==='interactive'||document.readyState==='complete'){hide()}
-				else{document.addEventListener('DOMContentLoaded',hide)}
+				var done=false;
+				function hide(){
+					if(done)return;done=true;
+					l.style.transition='opacity 120ms ease-out';l.style.opacity='0';
+					setTimeout(function(){l.remove()},150);
+				}
+				/* Dismiss as soon as the browser paints */
+				if(document.readyState==='complete'){hide()}
+				else{
+					requestAnimationFrame(function(){requestAnimationFrame(hide)});
+					/* Hard fallback: under 2.5s no matter what */
+					setTimeout(hide,2500);
+				}
 			})();
 		</script>
 		<div class="page-shell">
-			<header class="site-header">
+			<header class="site-header" transition:persist>
 				<nav class="nav">
 					<a class="brand" href="/home"><Logo width={160} /></a>
 					<div class="nav-links">
@@ -145,7 +155,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				<slot />
 			</div>
 
-			<footer class="site-footer">
+			<footer class="site-footer" transition:persist>
 				<div class="footer-links">
 					<a href="/quickstart">Quickstart</a>
 					<a href="/setup">Setup guides</a>

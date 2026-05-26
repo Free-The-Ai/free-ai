@@ -72,7 +72,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				}
 				function show(){
 					if(hideTimer){clearTimeout(hideTimer);hideTimer=null}
-					l.style.transition='opacity 40ms ease-out';
+					l.style.transition='none';
 					l.style.opacity='1';
 					l.style.pointerEvents='auto';
 				}

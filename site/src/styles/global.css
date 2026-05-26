@@ -112,13 +112,20 @@
     }
 }
 
-/* ── View Transitions (handled by loader element, no CSS animation) ── */
-::view-transition-group(root) {
-    animation-duration: 0.001s;
+/* ── View Transitions: COMPLETELY INVISIBLE — loader element handles masking ── */
+::view-transition-group(root),
+::view-transition-group(main-content) {
+    animation: none;
+    animation-duration: 0s;
 }
 ::view-transition-old(root),
-::view-transition-new(root) {
+::view-transition-old(main-content) {
+    display: none;
+}
+::view-transition-new(root),
+::view-transition-new(main-content) {
     animation: none;
+    animation-duration: 0s;
 }
 
 /* ── Micro-interaction keyframes — GPU-composited only (no filter) ── */

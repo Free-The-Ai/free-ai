@@ -182,10 +182,10 @@
         "required_discord_roles": [],
         "requires_seems_legit": false
       },
-      "context_window": 50000,
+      "context_window": 32768,
       "created": 1779665274,
       "id": "bbg/zai-org/GLM-5.1",
-      "max_input_tokens": 50000,
+      "max_input_tokens": 32768,
       "max_output_tokens": 32000,
       "object": "model",
       "owned_by": "gateway",

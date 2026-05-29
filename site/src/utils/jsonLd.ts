@@ -332,28 +332,61 @@ export function buildModelCatalogJsonLd(models: string[]) {
 	};
 }
 
-export function buildPaidPlanJsonLd(plan: { price: string; period: string; summary: string }) {
+export function buildPaidPlanJsonLd(
+	plan: { price: string; period: string; summary: string },
+	plans: { id: string; display_name: string; description?: string; model_count?: number }[] = [],
+) {
 	/**
 	 * var paidPlanJsonLd
 	 * type object
-	 * desc Structured data for the optional paid API launch plan.
+	 * desc Structured data for optional paid API plans and request-unit catalog offers.
 	 */
+	const planPrices: Record<string, string> = {
+		coding: '8',
+		roleplay: '5',
+	};
+	const visiblePlans = plans.length > 0
+		? plans
+		: [{ id: 'paid', display_name: 'Paid API', description: plan.summary }];
 	return {
 		'@context': 'https://schema.org',
 		'@type': 'Service',
 		name: 'FreeTheAi Paid API',
+		'@id': 'https://freetheai.xyz/pricing#paid-api',
 		url: 'https://freetheai.xyz/pricing',
 		description: plan.summary,
+		serviceType: 'OpenAI-compatible paid AI API',
+		areaServed: 'Worldwide',
 		provider: {
 			'@id': 'https://freetheai.xyz/#organization',
 		},
 		offers: {
-			'@type': 'Offer',
-			price: plan.price.replace(/[^0-9.]/g, ''),
-			priceCurrency: 'USD',
-			availability: 'https://schema.org/LimitedAvailability',
-			category: `${plan.period} subscription`,
-			url: 'https://freetheai.xyz/pricing',
+			'@type': 'OfferCatalog',
+			name: 'FreeTheAi paid API plans',
+			itemListElement: visiblePlans.map((paidPlan, index) => ({
+				'@type': 'Offer',
+				position: index + 1,
+				name: paidPlan.display_name,
+				description: paidPlan.description ?? plan.summary,
+				price: planPrices[paidPlan.id] ?? plan.price.replace(/[^0-9.]/g, ''),
+				priceCurrency: 'USD',
+				availability: 'https://schema.org/LimitedAvailability',
+				category: `${plan.period} subscription`,
+				url: `https://freetheai.xyz/pricing#${paidPlan.id}`,
+				itemOffered: {
+					'@type': 'Service',
+					name: `FreeTheAi ${paidPlan.display_name} plan`,
+					description: paidPlan.description ?? plan.summary,
+					serviceType: 'OpenAI-compatible paid AI API plan',
+					additionalProperty: paidPlan.model_count
+						? [{
+							'@type': 'PropertyValue',
+							name: 'Model aliases',
+							value: paidPlan.model_count,
+						}]
+						: undefined,
+				},
+			})),
 		},
 	};
 }

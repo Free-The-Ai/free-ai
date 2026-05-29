@@ -5,13 +5,18 @@ import type { SelectOption } from "./ui";
 
 interface PaidModel {
   id: string;
+  name?: string;
   unit_cost: number;
   unit_label: string;
   route: string;
+  plans?: string[];
   context_window?: number;
   max_input_tokens?: number;
   max_output_tokens?: number;
   supports_images?: boolean;
+  supports_streaming?: boolean;
+  supports_tool_call?: boolean;
+  supports_response_schema?: boolean;
 }
 
 interface PaidModelGroup {
@@ -23,6 +28,7 @@ interface PaidModelGroup {
 
 interface PaidModelTableProps {
   groups: PaidModelGroup[];
+  activePlan?: string;
 }
 
 interface Row extends PaidModel {
@@ -48,7 +54,7 @@ const formatCost = (cost: number) => Number.isInteger(cost) ? String(cost) : Str
 function PaidModelRow({ model }: { model: PaidModel }) {
   const ctx = model.context_window ?? model.max_input_tokens;
   const out = model.max_output_tokens;
-  const hasMeta = ctx !== undefined || out !== undefined || model.supports_images;
+  const hasMeta = ctx !== undefined || out !== undefined || model.supports_images || model.supports_tool_call || model.supports_response_schema;
   const copyModel = (button: HTMLButtonElement) => {
     navigator.clipboard.writeText(model.id).catch((error) => {
       console.error("Failed to copy paid model alias", error);
@@ -82,11 +88,26 @@ function PaidModelRow({ model }: { model: PaidModel }) {
                 Images
               </span>
             )}
+            {model.supports_tool_call && (
+              <span class="model-chip" title="Supports tool calling">
+                <span class="model-chip-label">Tools</span>
+              </span>
+            )}
+            {model.supports_response_schema && (
+              <span class="model-chip" title="Supports structured response schemas">
+                <span class="model-chip-label">JSON</span>
+              </span>
+            )}
           </span>
         )}
       </span>
       <span class="pricing-route-pill">{model.prefix}/*</span>
       <span class="pricing-route-pill">{model.route}</span>
+      <span class="paid-model-plans">
+        {(model.plans ?? []).map((plan) => (
+          <span class="pricing-route-pill">{plan}</span>
+        ))}
+      </span>
       <strong>{model.unit_label}</strong>
       <button class="copy-btn pricing-model-copy" type="button" title={`Copy ${model.id}`}
         onClick={(event) => copyModel(event.currentTarget)}>
@@ -105,11 +126,13 @@ export default function PaidModelTable(props: PaidModelTableProps) {
 
   const rows = createMemo<Row[]>(() =>
     props.groups.flatMap((group) =>
-      group.models.map((model) => ({
-        ...model,
-        prefix: group.id,
-        groupLabel: group.label,
-      })),
+      group.models
+        .filter((model) => !props.activePlan || (model.plans ?? []).includes(props.activePlan))
+        .map((model) => ({
+          ...model,
+          prefix: group.id,
+          groupLabel: group.label,
+        })),
     ),
   );
 
@@ -209,6 +232,7 @@ export default function PaidModelTable(props: PaidModelTableProps) {
           <span>Model</span>
           <span>Prefix</span>
           <span>Route</span>
+          <span>Plan</span>
           <span>Unit cost</span>
           <span>Copy</span>
         </div>

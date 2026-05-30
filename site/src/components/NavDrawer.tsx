@@ -8,6 +8,8 @@ const LINKS: [string, string, boolean][] = [
   ["/docs", "Docs", false],
   ["/models", "Models", false],
   ["/setup", "Setup", false],
+  ["/roleplay-api", "Roleplay API", false],
+  ["/coding-agent-api", "Coding API", false],
   ["/pricing", "Pricing", false],
   ["/status", "Status", false],
   [siteConfig.socials.github, "Repo", true],

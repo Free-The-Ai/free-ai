@@ -93,6 +93,31 @@ const setupKeywords = [
             </div>
         </section>
 
+        <section class="section shell setup-path-section">
+            <header class="setup-section-head">
+                <span class="eyebrow">Popular paths</span>
+                <h2>Start from what you are trying to connect.</h2>
+                <p>
+                    These pages group the setup guides by client type, so you can
+                    jump straight to the right base URL, route, and model setup.
+                </p>
+            </header>
+            <div class="setup-path-grid">
+                <a class="setup-path-card" href="/roleplay-api">
+                    <strong>Roleplay API</strong>
+                    <span>SillyTavern, Janitor AI, Chub AI, and RisuAI.</span>
+                </a>
+                <a class="setup-path-card" href="/coding-agent-api">
+                    <strong>Coding agent API</strong>
+                    <span>OpenCode, Cline, Roo Code, Kilo Code, Zed, and Aider.</span>
+                </a>
+                <a class="setup-path-card" href="/openai-compatible-api">
+                    <strong>OpenAI-compatible API</strong>
+                    <span>SDKs, custom clients, bots, and generic app integrations.</span>
+                </a>
+            </div>
+        </section>
+
         {CATEGORY_ORDER.flatMap((category) => {
             const guides = guidesByCategory[category];
             if (!guides || guides.length === 0) return [];
@@ -213,6 +238,49 @@ const setupKeywords = [
         display: grid;
         gap: 18px;
         padding: clamp(22px, 3.8vw, 36px);
+    }
+
+    .setup-path-section {
+        display: grid;
+        gap: 18px;
+        padding: clamp(22px, 3.8vw, 36px);
+    }
+
+    .setup-path-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 12px;
+    }
+
+    .setup-path-card {
+        display: grid;
+        gap: 8px;
+        min-height: 132px;
+        padding: 18px 20px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+        color: var(--text);
+        text-decoration: none;
+        transition: border-color 160ms ease, transform 160ms ease;
+    }
+
+    .setup-path-card:hover {
+        border-color: rgba(238, 93, 32, 0.42);
+        transform: translateY(-2px);
+    }
+
+    .setup-path-card strong {
+        font-family: var(--font-serif);
+        font-size: 1.15rem;
+        letter-spacing: -0.01em;
+    }
+
+    .setup-path-card span {
+        color: var(--muted);
+        font-size: 0.9rem;
+        line-height: 1.55;
     }
 
     .setup-section-head {

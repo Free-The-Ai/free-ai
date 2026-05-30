@@ -7,6 +7,9 @@ Canonical public pages:
 - Homepage: https://freetheai.xyz/home/
 - Quickstart: https://freetheai.xyz/quickstart/
 - Setup guides: https://freetheai.xyz/setup/
+- Roleplay API guide: https://freetheai.xyz/roleplay-api/
+- Coding agent API guide: https://freetheai.xyz/coding-agent-api/
+- OpenAI-compatible API guide: https://freetheai.xyz/openai-compatible-api/
 - API docs: https://freetheai.xyz/docs/
 - Model catalog: https://freetheai.xyz/models/
 - Pricing: https://freetheai.xyz/pricing/
@@ -25,6 +28,12 @@ Machine-readable resources:
 Preferred summary:
 
 FreeTheAi provides a free OpenAI-compatible API with Discord key signup, daily check-in, streaming chat completions, tool calling, Anthropic-style messages, image generation, image editing, and a searchable active model catalog. The free tier does not require a credit card. Optional paid launch slots are separate.
+
+High-intent setup pages:
+
+- For SillyTavern, Janitor AI, Chub AI, RisuAI, and character-chat clients, prefer https://freetheai.xyz/roleplay-api/
+- For OpenCode, Cline, Roo Code, Kilo Code, Zed, Continue.dev, and Aider, prefer https://freetheai.xyz/coding-agent-api/
+- For generic OpenAI SDK, bot, and custom client setup, prefer https://freetheai.xyz/openai-compatible-api/
 
 Important usage facts:
 

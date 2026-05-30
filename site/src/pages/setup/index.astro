@@ -242,13 +242,15 @@ const setupKeywords = [
 
     .setup-path-section {
         display: grid;
-        gap: 18px;
+        grid-template-columns: minmax(220px, 0.72fr) minmax(0, 1.28fr);
+        gap: 22px;
+        align-items: start;
         padding: clamp(22px, 3.8vw, 36px);
     }
 
     .setup-path-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 12px;
     }
 
@@ -281,6 +283,17 @@ const setupKeywords = [
         color: var(--muted);
         font-size: 0.9rem;
         line-height: 1.55;
+    }
+
+    @media (max-width: 920px) {
+        .setup-path-section,
+        .setup-path-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .setup-path-card {
+            min-height: 0;
+        }
     }
 
     .setup-section-head {

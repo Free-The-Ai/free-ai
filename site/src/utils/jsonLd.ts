@@ -9,7 +9,7 @@ export function buildWebsiteJsonLd() {
 		'@type': 'WebSite',
 		'@id': 'https://freetheai.xyz/#website',
 		name: 'FreeTheAi',
-		alternateName: ['Free The AI', 'FreeTheAI', 'FreeTheAi.xyz'],
+		alternateName: ['Free The AI', 'Free The Ai', 'FreeTheAI', 'FreeTheAi.xyz'],
 		url: 'https://freetheai.xyz',
 		description:
 			'Free OpenAI-compatible API with 50+ active models. Chat completions, streaming, tool calling, image generation, and image editing - all behind a single free key from Discord.',
@@ -61,7 +61,7 @@ export function buildOrganizationJsonLd() {
 		'@type': 'Organization',
 		'@id': 'https://freetheai.xyz/#organization',
 		name: 'FreeTheAi',
-		alternateName: ['Free The AI', 'FreeTheAI', 'FreeTheAi.xyz'],
+		alternateName: ['Free The AI', 'Free The Ai', 'FreeTheAI', 'FreeTheAi.xyz'],
 		legalName: 'FreeTheAi',
 		url: 'https://freetheai.xyz',
 		logo: 'https://freetheai.xyz/freetheai-transparent-logo-responsive-same-colors.png',

@@ -29,6 +29,7 @@ const baseKeywords = siteConfig.defaults.keywords.join(", ");
 const keywords = extraKeywords
     ? `${extraKeywords}, ${baseKeywords}`
     : baseKeywords;
+const brandAliases = siteConfig.aliases.join(", ");
 ---
 
 <meta charset="utf-8" />
@@ -50,6 +51,8 @@ const keywords = extraKeywords
 <meta name="applebot" content="all" />
 <meta name="application-name" content={siteConfig.title} />
 <meta name="apple-mobile-web-app-title" content={siteConfig.title} />
+<meta name="alternate-name" content={brandAliases} />
+<meta name="brand-aliases" content={brandAliases} />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link
@@ -76,6 +79,7 @@ const keywords = extraKeywords
 <meta name="keywords" content={keywords} />
 <meta name="author" content={siteConfig.author.name} />
 <meta name="publisher" content={siteConfig.title} />
+<meta name="DC.alternative" content={brandAliases} />
 <meta name="classification" content="Developer API, AI API Gateway" />
 <meta name="category" content="Developer Tools" />
 <meta name="coverage" content="Worldwide" />

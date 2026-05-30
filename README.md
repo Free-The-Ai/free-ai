@@ -9,6 +9,8 @@
 
 **Free OpenAI-compatible API - 50+ active models, zero billing**
 
+<sub>Also searched as <strong>Free The AI</strong>, <strong>Free The Ai</strong>, and <strong>FreeTheAI</strong>.</sub>
+
 Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 <br>
@@ -23,13 +25,17 @@ Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 [Website](https://freetheai.xyz) · [Quickstart](https://freetheai.xyz/quickstart) · [Setup Guides](https://freetheai.xyz/setup) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [Pricing](https://freetheai.xyz/pricing) · [Status](https://freetheai.xyz/status) · [API Health](https://api.freetheai.xyz/v1/health) · [Discord](https://discord.gg/secrets) · [Support](https://buymeacoffee.com/vibheksoni)
 
+<br>
+
+[Roleplay API](https://freetheai.xyz/roleplay-api) | [Coding Agent API](https://freetheai.xyz/coding-agent-api) | [OpenAI-Compatible API](https://freetheai.xyz/openai-compatible-api) | [What Is Free The AI](https://freetheai.xyz/what-is-free-the-ai)
+
 </div>
 
 ---
 
 ## Overview
 
-Free API gateway with 50+ active models behind a single key. OpenAI-compatible - if your SDK works with OpenAI, it works here. Full request docs live at [freetheai.xyz/docs](https://freetheai.xyz/docs).
+FreeTheAi, also searched as Free The AI or Free The Ai, is a free API gateway with 50+ active models behind a single key. OpenAI-compatible - if your SDK works with OpenAI, it works here. Full request docs live at [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
 - `POST /v1/chat/completions` — chat with streaming and tool calling
 - `POST /v1/messages` — Anthropic-style messages route

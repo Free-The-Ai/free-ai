@@ -22,6 +22,8 @@ The live catalog is the source of truth for public aliases. Currently exposed pr
 - [Model Catalog](https://freetheai.xyz/models): Live searchable model aliases, provider prefixes, and catalog filtering.
 - [Pricing](https://freetheai.xyz/pricing): Optional paid launch plan, request-unit costs, and paid model aliases.
 - [Status](https://freetheai.xyz/status): Public alias-prefix status for the free API.
+- [Privacy Policy](https://freetheai.xyz/privacy): Plain-English disclosure of content non-storage and security metadata logging.
+- [Terms of Use](https://freetheai.xyz/terms): Acceptable use, account rules, API limits, logging disclosure, and availability terms.
 - [Team](https://freetheai.xyz/team): The people behind FreeTheAi - founder Vibhek Soni, Dr. Vova, and Dysekt.
 - [What Is Free The AI](https://freetheai.xyz/what-is-free-the-ai): Brand disambiguation page for spaced and alternate-capitalization variants.
 
@@ -34,11 +36,15 @@ The live catalog is the source of truth for public aliases. Currently exposed pr
 
 ## Developer Resources
 
-- [GitHub Repository](https://github.com/vibheksoni/free-ai): Public website repository and examples.
+- [GitHub Repository](https://github.com/Free-The-Ai/free-ai): Public website repository and examples.
 - [GitHub Organization](https://github.com/Free-The-Ai): FreeTheAi GitHub organization (future home of additional public repos).
-- [Changelog](https://github.com/vibheksoni/free-ai/blob/master/CHANGELOG.md): Public docs and website update history.
-- [Growth Playbook](https://github.com/vibheksoni/free-ai/blob/master/docs/GROWTH.md): Release, SEO, and GitHub discoverability checklist for maintainers.
+- [Changelog](https://github.com/Free-The-Ai/free-ai/blob/master/CHANGELOG.md): Public docs and website update history.
+- [Growth Playbook](https://github.com/Free-The-Ai/free-ai/blob/master/docs/GROWTH.md): Release, SEO, and GitHub discoverability checklist for maintainers.
 - [Discord](https://discord.gg/secrets): Community signup and support. Users get keys with `/signup`, activate them with daily `/checkin`, and rotate lost keys with `/resetkey`.
+
+## Privacy Summary
+
+FreeTheAi does not store prompts, completions, uploaded media, or conversation history as operational logs. It does log security and usage metadata including IP address, account/key identifiers, Discord eligibility, public model alias, route, timestamp, status, token or request-unit counts, client metadata, rate-limit state, and error IDs to validate access, debug failures, secure the service, and fight abuse.
 
 ## Access Flow
 

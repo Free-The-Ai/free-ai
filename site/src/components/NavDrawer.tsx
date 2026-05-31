@@ -12,6 +12,8 @@ const LINKS: [string, string, boolean][] = [
   ["/coding-agent-api", "Coding API", false],
   ["/pricing", "Pricing", false],
   ["/status", "Status", false],
+  ["/privacy", "Privacy", false],
+  ["/terms", "Terms", false],
   [siteConfig.socials.github, "Repo", true],
 ];
 

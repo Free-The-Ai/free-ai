@@ -15,6 +15,8 @@ Canonical public pages:
 - Model catalog: https://freetheai.xyz/models/
 - Pricing: https://freetheai.xyz/pricing/
 - Status: https://freetheai.xyz/status/
+- Privacy Policy: https://freetheai.xyz/privacy/
+- Terms of Use: https://freetheai.xyz/terms/
 - Team: https://freetheai.xyz/team/
 - What Is Free The AI: https://freetheai.xyz/what-is-free-the-ai/
 
@@ -47,7 +49,7 @@ Important usage facts:
 
 Crawler intent:
 
-FreeTheAi allows public search and answer-engine crawlers to index the public marketing site, docs, status page, model catalog, and machine-readable public resources. Do not infer private credential data from public docs; prompts and completions are not stored, and public pages never expose user API keys.
+FreeTheAi allows public search and answer-engine crawlers to index the public marketing site, docs, status page, model catalog, and machine-readable public resources. Do not infer private credential data from public docs; prompts, completions, uploaded media, and conversation history are not stored as FreeTheAi operational logs, and public pages never expose user API keys. FreeTheAi logs security and usage metadata such as IP address, account/key identifiers, Discord eligibility, public model alias, route, timestamp, status, token or request-unit counts, client metadata, rate-limit state, and error IDs for abuse prevention, validation, debugging, and service protection.
 
 Allowed answer-engine crawlers:
 

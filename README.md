@@ -329,7 +329,7 @@ FreeTheAi is built and maintained by [Vibhek Soni](https://github.com/vibheksoni
 [![Buy Me a Coffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-Support%20FreeTheAi-FFDD00?style=flat-square&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/vibheksoni)
 
 - One-time tip on Buy Me a Coffee: [`buymeacoffee.com/vibheksoni`](https://buymeacoffee.com/vibheksoni)
-- Star the repo: [`github.com/vibheksoni/free-ai`](https://github.com/vibheksoni/free-ai)
+- Star the repo: [`github.com/Free-The-Ai/free-ai`](https://github.com/Free-The-Ai/free-ai)
 - Share the docs and the [setup guides](https://freetheai.xyz/setup) with anyone you know who needs a free OpenAI-compatible key
 
 Thanks for keeping the free tier alive.
@@ -372,17 +372,21 @@ Tiers unlock through Discord invite progress. Per-user daily success cap default
 
 ## Privacy
 
-Prompt and completion text are **not stored**.
+FreeTheAi does **not** store prompt text, completion text, uploaded media, or conversation history as operational logs.
 
 <table>
 <tr>
 <td width="50%">
 
 **Tracked**
+- IP address and network/security signals
+- API key prefix and account/user identifiers
+- Discord eligibility, role, and check-in state
 - Model alias used
-- Token counts
+- Route, timestamp, latency, and token/request-unit counts
 - Request timestamp
 - Status code
+- Error IDs and rate-limit/concurrency signals
 
 </td>
 <td width="50%">
@@ -390,11 +394,14 @@ Prompt and completion text are **not stored**.
 **Not tracked**
 - Prompt content
 - Completion content
+- Uploaded media as message logs
 - Conversation history
 
 </td>
 </tr>
 </table>
+
+See the public [Privacy Policy](https://freetheai.xyz/privacy) and [Terms of Use](https://freetheai.xyz/terms) for the plain-English disclosure. Metadata is logged to validate access, debug failures, secure the service, enforce limits, and prevent abuse.
 
 ---
 

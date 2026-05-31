@@ -10,7 +10,7 @@ export const siteConfig = {
     },
     socials: {
         discord: "https://discord.gg/secrets",
-        github: "https://github.com/vibheksoni/free-ai",
+        github: "https://github.com/Free-The-Ai/free-ai",
         api: "https://api.freetheai.xyz",
         donate: "https://buymeacoffee.com/vibheksoni",
     },

@@ -51,9 +51,9 @@ Long-tail capture per SDK / framework.
 
 The homepage says "no prompt storage" but there is no durable policy page.
 
-- [ ] `/privacy` — what is logged, retention windows, processor disclosures, upstream provider note
+- [x] `/privacy` — what is logged, retention windows, processor disclosures, upstream provider note
 - [ ] `/security` — abuse handling, IP blacklist policy, rate-limit posture
-- [ ] `/legal` — terms of use, acceptable use policy, contact
+- [x] `/terms` — terms of use, acceptable use policy, contact
 - [ ] `/changelog` — surface release momentum (currently only `CHANGELOG.md` in repo)
 
 ### Public packages
@@ -69,7 +69,7 @@ GitHub repo currently has 0 packages. Report flagged this as the #1 backlink fix
 
 - [ ] Set repo topics: `openai`, `openai-compatible`, `free-api`, `ai-api`, `llm-api`, `anthropic`, `discord-bot`, `image-generation`, `tool-calling`, `astro`, `solidjs`
 - [ ] Pin most-relevant issues (roadmap + good-first-issue)
-- [ ] Add a `vibheksoni/free-ai` social preview image (1280×640) so GitHub link previews look good
+- [ ] Add a `Free-The-Ai/free-ai` social preview image (1280×640) so GitHub link previews look good
 
 ## Medium-impact gaps
 

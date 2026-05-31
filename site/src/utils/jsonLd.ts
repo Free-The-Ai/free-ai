@@ -38,6 +38,16 @@ export function buildWebsiteJsonLd() {
 				name: 'FreeTheAi Status',
 				url: 'https://freetheai.xyz/status',
 			},
+			{
+				'@type': 'WebPage',
+				name: 'FreeTheAi Privacy Policy',
+				url: 'https://freetheai.xyz/privacy',
+			},
+			{
+				'@type': 'WebPage',
+				name: 'FreeTheAi Terms of Use',
+				url: 'https://freetheai.xyz/terms',
+			},
 		],
 		potentialAction: {
 			'@type': 'SearchAction',
@@ -69,7 +79,7 @@ export function buildOrganizationJsonLd() {
 			'Community-run free AI API project with 50+ active models, Discord signup, optional paid slots for higher-power models, and a public searchable model catalog.',
 		sameAs: [
 			'https://discord.gg/secrets',
-			'https://github.com/vibheksoni/free-ai',
+			'https://github.com/Free-The-Ai/free-ai',
 			'https://github.com/Free-The-Ai',
 			'https://api.freetheai.xyz',
 		],
@@ -93,7 +103,7 @@ export function buildSoftwareJsonLd() {
 		description:
 			'Free OpenAI-compatible AI API with 50+ active models, Discord key signup, streaming chat completions, tool calling, image generation, image editing, and a live searchable model catalog.',
 		url: 'https://freetheai.xyz',
-		downloadUrl: 'https://github.com/vibheksoni/free-ai',
+		downloadUrl: 'https://github.com/Free-The-Ai/free-ai',
 		isAccessibleForFree: true,
 		audience: {
 			'@type': 'Audience',
@@ -136,7 +146,7 @@ export function buildWebApiJsonLd() {
 		description:
 			'Free OpenAI-compatible REST API with chat completions, streaming, tool calling, image generation, image editing, and 50+ active models.',
 		documentation: 'https://freetheai.xyz',
-		termsOfService: 'https://freetheai.xyz/docs',
+		termsOfService: 'https://freetheai.xyz/terms',
 		isAccessibleForFree: true,
 		provider: {
 			'@id': 'https://freetheai.xyz/#organization',

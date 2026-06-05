@@ -7,7 +7,6 @@ const SECTIONS = [
   { id: "chat", label: "Chat" },
   { id: "messages", label: "Messages" },
   { id: "models", label: "Models" },
-  { id: "images", label: "Images" },
   { id: "errors", label: "Errors" },
 ];
 

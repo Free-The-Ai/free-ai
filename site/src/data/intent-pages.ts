@@ -216,7 +216,7 @@ export const INTENT_PAGES: Record<string, IntentPage> = {
         title: "Free OpenAI-Compatible API Gateway With No Credit Card",
         h1: "Drop-in OpenAI-compatible API access.",
         description:
-            "FreeTheAi is a free OpenAI-compatible API gateway with Discord key signup, chat completions, streaming, tool calling, Messages, Responses, image generation, and a live model catalog.",
+            "FreeTheAi is a free OpenAI-compatible API gateway with Discord key signup, chat completions, streaming, tool calling, Messages, Responses, and a live model catalog.",
         lede:
             "If your app, SDK, or AI client lets you set an OpenAI-compatible base URL, it can usually talk to FreeTheAi. Change the base URL, use your FreeTheAi key, and pick an exact model alias from the catalog.",
         keywords: [
@@ -256,7 +256,7 @@ export const INTENT_PAGES: Record<string, IntentPage> = {
             },
             {
                 title: "Multiple compatibility routes",
-                text: "Chat Completions, Messages, Responses, image generation, and image editing share one public gateway.",
+                text: "Chat Completions, Messages, and Responses share one public gateway.",
             },
             {
                 title: "No card to start",

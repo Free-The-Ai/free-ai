@@ -31,7 +31,7 @@ const snippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "bbg/moonshotai/Kimi-K2.5",
+    "model": "opc/deepseek-v4-flash-free",
     "messages": [{ "role": "user", "content": "Hello" }]
   }'`;
 const snippetHtml = await highlight(snippet, "bash");
@@ -39,7 +39,7 @@ const snippetHtml = await highlight(snippet, "bash");
 const pageTitle =
     "FreeTheAi (Free The AI) - Free OpenAI-Compatible AI API";
 const pageDescription =
-    "FreeTheAi, also searched as Free The AI, is a free OpenAI-compatible AI API with 50+ active models, Discord key signup, streaming chat, tool calling, image generation, and image editing. No credit card or billing.";
+    "FreeTheAi, also searched as Free The AI, is a free OpenAI-compatible AI API with 50+ active models, Discord key signup, streaming chat, tool calling, and Anthropic-style messages. No credit card or billing.";
 ---
 
 <Layout
@@ -201,16 +201,16 @@ const pageDescription =
                             <h3 class="diptych-label">API features</h3>
                             <p>
                                 Streaming chat, tool calling and structured
-                                outputs, Anthropic messages, image generation,
-                                and image editing — all OpenAI-compatible.
+                                outputs, and Anthropic messages - all
+                                OpenAI-compatible.
                             </p>
                         </div>
                         <div class="diptych-panel">
                             <h3 class="diptych-label">Use cases</h3>
                             <p>
                                 Chatbots, coding agents, content pipelines,
-                                image tools, and multi-model orchestrations.
-                                Students prototype, developers ship, researchers
+                                and multi-model orchestrations. Students
+                                prototype, developers ship, researchers
                                 evaluate — all against one free endpoint.
                             </p>
                         </div>

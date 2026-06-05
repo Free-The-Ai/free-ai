@@ -2,7 +2,7 @@ export const siteConfig = {
     title: "FreeTheAi",
     aliases: ["Free The AI", "Free The Ai", "FreeTheAI", "FreeTheAi.xyz"],
     description:
-        "FreeTheAi, also searched as Free The AI, is a free OpenAI-compatible AI API gateway with 50+ active models, Discord key signup, daily check-in, chat completions, streaming, tool calling, image generation, image editing, Anthropic messages, and optional paid slots.",
+        "FreeTheAi, also searched as Free The AI, is a free OpenAI-compatible AI API gateway with 50+ active models, Discord key signup, daily check-in, chat completions, streaming, tool calling, Anthropic messages, and optional paid slots.",
     site: "https://freetheai.xyz",
     author: {
         name: "FreeTheAi",
@@ -49,12 +49,7 @@ export const siteConfig = {
             "no billing ai api",
             "free streaming ai api",
             "free tool calling api",
-            "free image generation api",
-            "free image editing api",
-            "free gpt image api",
-            "gpt-image-2 free",
             "free ai api docs",
-            "free image generation api docs",
             "anthropic messages api free",
             "free ai gateway",
             "openai compatible api gateway",

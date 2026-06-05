@@ -20,14 +20,7 @@ interface DocsAccordionProps {
     modelListSnippetHtml?: string;
     fullModelListSnippet: string;
     fullModelListSnippetHtml?: string;
-    vhrImageSnippet: string;
-    vhrImageSnippetHtml?: string;
-    imageEditSnippet: string;
-    imageEditSnippetHtml?: string;
-    pythonImageSnippet: string;
-    pythonImageSnippetHtml?: string;
     endpoints: [string, string, string][];
-    imageModels: [string, string, string][];
 }
 
 function CodeBlock(props: { code: string; lang?: string; html?: string }) {
@@ -136,9 +129,9 @@ function DocsErrorsSection() {
 
 data: [DONE]`}</code></pre>
                 <p>
-                    Some <code>bbg/*</code> errors include a short public
+                    Some provider errors include a short public
                     diagnostic id you can quote in Discord support, for
-                    example <code>Error id: bbg-xxxxxxxxxxxx</code>.
+                    example <code>Error id: opc-xxxxxxxxxxxx</code>.
                 </p>
             </div>
             <div class="docs-errors-group">
@@ -165,7 +158,7 @@ data: [DONE]`}</code></pre>
             <div class="docs-errors-group">
                 <h3>Rate limits, daily caps, and concurrency</h3>
                 <DocsRowTable compact rows={[
-                    { code: "429 rate_limit_error", span: <>Per-minute, daily-success cap, image cap, image cooldown, upstream rate limit, or anti-abuse overlap block. Honor <code>Retry-After</code> when present and wait for the next UTC reset.</> },
+                    { code: "429 rate_limit_error", span: <>Per-minute, daily-success cap, upstream rate limit, or anti-abuse overlap block. Honor <code>Retry-After</code> when present and wait for the next UTC reset.</> },
                     { code: "429 concurrency_limit_error", span: "Already running the maximum allowed parallel requests. Wait for one to finish." },
                     { code: "429 glm_depleted", span: "GLM provider quota is depleted for the current 5-hour window. Retry later." },
                     { code: "499 client_canceled", span: "Client disconnected while the request was still running. Keep the connection open until the response completes." },
@@ -196,8 +189,6 @@ data: [DONE]`}</code></pre>
                     { code: "X-RateLimit-*", span: <><code>Limit</code>, <code>Remaining</code>, <code>Reset</code> for per-minute requests.</> },
                     { code: "X-Concurrency-*", span: <><code>Limit</code>, <code>Remaining</code>, <code>Reset</code> for parallel requests.</> },
                     { code: "X-DailyLimit-*", span: <><code>Limit</code>, <code>Remaining</code>, <code>Reset</code> for the daily success cap.</> },
-                    { code: "X-ImageDailyLimit-*", span: "Daily image-generation cap headers." },
-                    { code: "X-ImageGenerationCooldown-*", span: "Per-user image-generation cooldown headers." },
                 ]} />
             </div>
             <div class="docs-errors-group">
@@ -285,7 +276,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
                         { code: "POST /v1/messages", span: "Anthropic-compatible Messages route. System prompts, tool use, and the same content blocks Claude clients expect." },
                         { code: "POST /v1/responses", span: "Responses-style route. Same key, same model alias." },
                         { code: "GET /v1/models", span: "Authenticated client catalog." },
-                        { code: "GET /v1/models/full", span: "Catalog with context, output, image-support, and access metadata." },
+                        { code: "GET /v1/models/full", span: "Catalog with context, output, capability, and access metadata." },
                         { code: "POST /v1/audio/speech", span: "Text-to-speech route for supported role-gated voice aliases." },
                         { code: "POST /v1/audio/transcriptions", span: "Speech-to-text route for OpenAI-style multipart audio uploads." },
                     ]} />
@@ -347,44 +338,6 @@ export default function DocsAccordion(props: DocsAccordionProps) {
                         { title: "Client catalog", code: props.modelListSnippet, html: props.modelListSnippetHtml, lang: "bash" },
                         { title: "Full catalog", code: props.fullModelListSnippet, html: props.fullModelListSnippetHtml, lang: "bash" },
                     ]} />
-                </section>
-            ),
-        },
-        {
-            value: "images",
-            label: "Generate and edit images",
-            eyebrow: "Images",
-            children: (
-                <section class="docs-card">
-                    <p>
-                        Use <code>/v1/images/generations</code> for
-                        text-to-image. Use
-                        <code>/v1/images/edits</code> only with{" "}
-                        <code>img/gpt-image-2</code>. Generation responses may
-                        contain either <code>b64_json</code> or <code>url</code>
-                        , so robust clients should support both.
-                    </p>
-                    <div class="docs-table">
-                        <For each={props.imageModels}>
-                            {([model, support, desc]) => (
-                                <div class="docs-row">
-                                    <code>{model}</code>
-                                    <span>{support}</span>
-                                    <span>{desc}</span>
-                                </div>
-                            )}
-                        </For>
-                    </div>
-                    <DocsCodeGrid items={[
-                        { title: "Image generation", code: props.vhrImageSnippet, html: props.vhrImageSnippetHtml, lang: "bash" },
-                        { title: "Image edit", code: props.imageEditSnippet, html: props.imageEditSnippetHtml, lang: "bash" },
-                    ]} />
-                    <h3>Python save helper</h3>
-                    <CodeBlock
-                        code={props.pythonImageSnippet}
-                        html={props.pythonImageSnippetHtml}
-                        lang="python"
-                    />
                 </section>
             ),
         },

@@ -62,22 +62,15 @@ const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: tr
 
 const formatTokensFull = (n: number): string => n.toLocaleString();
 
-const FILTER_OPTIONS = ["chat", "images", "audio", "gated", "long"] as const;
+const FILTER_OPTIONS = ["chat", "audio", "gated", "long"] as const;
 type FilterKey = typeof FILTER_OPTIONS[number];
 
 const FILTER_LABELS: Record<FilterKey, string> = {
   chat: "Chat",
-  images: "Images",
   audio: "Audio",
   long: "128k+ context",
   gated: "Verified members",
 };
-
-const modelSupportsImages = (model: Model): boolean =>
-  model.supports_images === true ||
-  model.prefix === "img" ||
-  model.prefix === "vhr" ||
-  /image|vision|gpt-image/i.test(model.id);
 
 const modelSupportsAudio = (model: Model): boolean =>
   model.supports_audio === true ||
@@ -88,7 +81,6 @@ const modelContext = (model: Model): number => model.context_window ?? model.max
 
 const TYPE_PREDICATES: Record<FilterKey, (m: Model) => boolean> = {
   chat: (m) => !modelSupportsAudio(m),
-  images: (m) => modelSupportsImages(m),
   audio: (m) => modelSupportsAudio(m),
   gated: (m) => m.requires_seems_legit,
   long: (m) => modelContext(m) >= 128_000,
@@ -109,12 +101,6 @@ const modelRoutes = (model: Model) => {
   if (suffix.includes("tts") || suffix.includes("speech")) {
     return [
       { path: "/v1/audio/speech", label: "Text to speech", description: "OpenAI-compatible speech generation." },
-    ];
-  }
-  if (model.prefix === "img" || model.prefix === "vhr" || /gpt-image|image/i.test(suffix)) {
-    return [
-      { path: "/v1/images/generations", label: "Image generation", description: "OpenAI-compatible image generation." },
-      { path: "/v1/images/edits", label: "Image edits", description: "Image editing with an input image." },
     ];
   }
   return SUPPORTED_ROUTES;
@@ -200,7 +186,6 @@ const readCatalogParams = () => {
     ? rawPrefix.split(",").map(p => p.trim()).filter(Boolean)
     : [];
   const legacyType = params.get("type")?.trim() ||
-    (params.get("images") === "1" ? "images" : "") ||
     (params.get("seemslegit") === "1" ? "gated" : "");
   const validKeys = new Set<string>(FILTER_OPTIONS);
   return {
@@ -247,12 +232,6 @@ function ModelCard({ model, onSelect }: { model: Model; onSelect: (m: Model) => 
                 {out !== undefined && (
                     <span class="model-chip" title="Maximum output tokens">
                         <strong>{formatTokens(out)}</strong> out
-                    </span>
-                )}
-                {modelSupportsImages(model) && (
-                    <span class="model-chip is-images" title="Supports image inputs or generation">
-                        <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
-                        Images
                     </span>
                 )}
                 {modelSupportsAudio(model) && (
@@ -341,10 +320,6 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
                     <div>
                         <span>Provider prefix</span>
                         <strong>{model.prefix}/*</strong>
-                    </div>
-                    <div>
-                        <span>Image support</span>
-                        <strong>{modelSupportsImages(model) ? "Yes" : "No"}</strong>
                     </div>
                     <div>
                         <span>Audio route</span>
@@ -534,7 +509,6 @@ export default function CatalogBrowser() {
     return [...m.entries()].sort((a, b) => b[1] - a[1]);
   };
 
-  const hasImageModel = () => allModels().some(modelSupportsImages);
   const hasAudioModel = () => allModels().some(modelSupportsAudio);
   const hasGatedModel = () => allModels().some((m) => m.requires_seems_legit);
 
@@ -650,7 +624,6 @@ export default function CatalogBrowser() {
 
   const visibleTypeOptions = (): FilterKey[] => {
     const list: FilterKey[] = ["chat"];
-    if (hasImageModel()) list.push("images");
     if (hasAudioModel()) list.push("audio");
     list.push("long");
     if (hasGatedModel()) list.push("gated");

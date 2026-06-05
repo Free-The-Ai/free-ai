@@ -14,7 +14,7 @@ import {
 import { highlight } from "../lib/highlight";
 
 const pageDescription =
-    "FreeTheAi API docs for OpenAI-compatible chat completions, Anthropic-style messages, model listing, image generation, image editing, signup, check-in, and key reset.";
+    "FreeTheAi API docs for OpenAI-compatible chat completions, Anthropic-style messages, model listing, signup, check-in, and key reset.";
 
 const jsonLd = [
     buildWebsiteJsonLd(),
@@ -39,7 +39,7 @@ const chatCurlSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "bbg/moonshotai/Kimi-K2.5",
+    "model": "opc/deepseek-v4-flash-free",
     "messages": [
       { "role": "user", "content": "Write a tiny Flask route." }
     ],
@@ -55,7 +55,7 @@ const client = new OpenAI({
 });
 
 const res = await client.chat.completions.create({
-  model: "bbg/moonshotai/Kimi-K2.5",
+  model: "opc/deepseek-v4-flash-free",
   messages: [{ role: "user", content: "Reply with OK." }]
 });
 
@@ -66,7 +66,7 @@ const messagesSnippet = `curl https://api.freetheai.xyz/v1/messages \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "bbg/moonshotai/Kimi-K2.5",
+    "model": "opc/deepseek-v4-flash-free",
     "max_tokens": 256,
     "messages": [
       { "role": "user", "content": "Give me a short implementation plan." }
@@ -81,64 +81,6 @@ const modelListSnippetHtml = await highlight(modelListSnippet, "bash");
 const fullModelListSnippet = `curl "https://api.freetheai.xyz/v1/models/full" \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY"`;
 const fullModelListSnippetHtml = await highlight(fullModelListSnippet, "bash");
-
-const vhrImageSnippet = `curl https://api.freetheai.xyz/v1/images/generations \\
-  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "model": "img/gpt-image-2",
-    "prompt": "A cinematic neon sports car parked under rainy city lights"
-  }'`;
-const vhrImageSnippetHtml = await highlight(vhrImageSnippet, "bash");
-
-const imageEditSnippet = `curl https://api.freetheai.xyz/v1/images/edits \\
-  -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
-  -H "Content-Type: application/json" \\
-  -d '{
-    "model": "img/gpt-image-2",
-    "prompt": "Improve this logo and make it cleaner",
-    "image": "data:image/png;base64,BASE64_IMAGE_HERE"
-  }'`;
-const imageEditSnippetHtml = await highlight(imageEditSnippet, "bash");
-
-const pythonImageSnippet = `import base64
-import os
-from pathlib import Path
-
-import requests
-
-API_KEY = os.environ["FREETHEAI_API_KEY"]
-API_BASE = "https://api.freetheai.xyz/v1"
-
-
-def save_image_result(result, output_path):
-    item = (result.get("data") or [{}])[0]
-    if item.get("b64_json"):
-        Path(output_path).write_bytes(base64.b64decode(item["b64_json"]))
-        return
-    if item.get("url"):
-        image = requests.get(item["url"], timeout=120)
-        image.raise_for_status()
-        Path(output_path).write_bytes(image.content)
-        return
-    raise RuntimeError(f"No image found in response: {result}")
-
-
-res = requests.post(
-    f"{API_BASE}/images/generations",
-    headers={
-        "Authorization": f"Bearer {API_KEY}",
-        "Content-Type": "application/json",
-    },
-    json={
-        "model": "img/gpt-image-2",
-        "prompt": "A clean product mockup on a dark desk",
-    },
-    timeout=180,
-)
-res.raise_for_status()
-save_image_result(res.json(), "generated.png")`;
-const pythonImageSnippetHtml = await highlight(pythonImageSnippet, "python");
 
 const endpoints = [
     [
@@ -169,16 +111,6 @@ const endpoints = [
     ],
     [
         "POST",
-        "/v1/images/generations",
-        "Image generation with img/gpt-image-2.",
-    ],
-    [
-        "POST",
-        "/v1/images/edits",
-        "Image editing with img/gpt-image-2 and a base64 data URL input image.",
-    ],
-    [
-        "POST",
         "/v1/audio/speech",
         "Text-to-speech for role-gated voice aliases such as xai/grok-tts and mim/*tts*.",
     ],
@@ -189,18 +121,10 @@ const endpoints = [
     ],
     ["GET", "/v1/health", "Public API health and catalog status."],
 ];
-
-const imageModels = [
-    [
-        "img/gpt-image-2",
-        "Generation + editing",
-        "Returns base64 image data. Use this for edits.",
-    ],
-];
 ---
 
 <Layout
-    title="FreeTheAi API Docs - OpenAI-Compatible Chat, Images, Models"
+    title="FreeTheAi API Docs - OpenAI-Compatible Chat and Models"
     description={pageDescription}
     jsonLd={jsonLd}
     currentPath="/docs"
@@ -220,14 +144,13 @@ const imageModels = [
                 <a href="#chat">Chat</a>
                 <a href="#messages">Messages</a>
                 <a href="#models">Models</a>
-                <a href="#images">Images</a>
                 <a href="#errors">Errors</a>
             </aside>
 
             <div class="docs-content">
                 <div class="docs-content-head">
                     <h1>API Docs</h1>
-                    <p>Chat, models, images, signup, and check-in - one key, one base URL.</p>
+                    <p>Chat, models, signup, and check-in - one key, one base URL.</p>
                 </div>
                 <DocsAccordion
                     baseSnippet={baseSnippet}
@@ -241,14 +164,7 @@ const imageModels = [
                     modelListSnippetHtml={modelListSnippetHtml}
                     fullModelListSnippet={fullModelListSnippet}
                     fullModelListSnippetHtml={fullModelListSnippetHtml}
-                    vhrImageSnippet={vhrImageSnippet}
-                    vhrImageSnippetHtml={vhrImageSnippetHtml}
-                    imageEditSnippet={imageEditSnippet}
-                    imageEditSnippetHtml={imageEditSnippetHtml}
-                    pythonImageSnippet={pythonImageSnippet}
-                    pythonImageSnippetHtml={pythonImageSnippetHtml}
                     endpoints={endpoints}
-                    imageModels={imageModels}
                 />
             </div>
         </section>

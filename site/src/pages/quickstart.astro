@@ -92,7 +92,7 @@ client = OpenAI(
 )
 
 response = client.chat.completions.create(
-    model="bbg/deepseek-ai/DeepSeek-V3.2",
+    model="opc/deepseek-v4-flash-free",
     messages=[{"role": "user", "content": "Reply with OK."}],
 )
 
@@ -107,7 +107,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-    model: "bbg/deepseek-ai/DeepSeek-V3.2",
+    model: "opc/deepseek-v4-flash-free",
     messages: [{ role: "user", content: "Reply with OK." }],
 });
 
@@ -118,7 +118,7 @@ const curlSnippet = `curl https://api.freetheai.xyz/v1/chat/completions \\
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "bbg/deepseek-ai/DeepSeek-V3.2",
+    "model": "opc/deepseek-v4-flash-free",
     "messages": [{"role": "user", "content": "Reply with OK."}]
   }'
 `;

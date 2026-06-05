@@ -30,7 +30,7 @@ Machine-readable resources:
 
 Preferred summary:
 
-FreeTheAi, also searched as Free The AI or Free The Ai, provides a free OpenAI-compatible API with Discord key signup, daily check-in, streaming chat completions, tool calling, Anthropic-style messages, image generation, image editing, and a searchable active model catalog. The free tier does not require a credit card. Optional paid launch slots are separate.
+FreeTheAi, also searched as Free The AI or Free The Ai, provides a free OpenAI-compatible API with Discord key signup, daily check-in, streaming chat completions, tool calling, Anthropic-style messages, and a searchable active model catalog. The free tier does not require a credit card. Optional paid launch slots are separate.
 
 High-intent setup pages:
 

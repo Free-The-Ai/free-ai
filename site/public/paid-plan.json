@@ -1,17 +1,17 @@
-﻿{
-    "updated_at":  "2026-05-29",
-    "generated_at":  "2026-05-29T00:57:24Z",
+{
+    "updated_at":  "2026-06-05",
+    "generated_at":  "2026-06-05T20:40:40Z",
     "base_url":  "https://paid.freetheai.xyz/v1",
     "catalog_endpoint":  "https://paid.freetheai.xyz/v1/models/full",
     "plans_endpoint":  "https://paid.freetheai.xyz/v1/plans",
     "plan":  {
                  "name":  "Paid API slots",
-                 "price":  "$8",
+                 "price":  "$5",
                  "period":  "month",
-                 "summary":  "Choose Coding for the full paid model catalog at $8/month, or Roleplay for a smaller chat-focused catalog at $5/month. Usage is counted in request units, so lighter models cost less and heavier models cost more.",
+                 "summary":  "Current paid slots use request units. Roleplay is available at $5/month, and model unit costs are shown in the live catalog.",
                  "limits":  [
                                 {
-                                    "value":  "$8",
+                                    "value":  "$5",
                                     "label":  "per month"
                                 },
                                 {
@@ -19,8 +19,8 @@
                                     "label":  "usage meter"
                                 },
                                 {
-                                    "value":  "Coding or Roleplay",
-                                    "label":  "plan choice"
+                                    "value":  "Roleplay",
+                                    "label":  "available plan"
                                 }
                             ]
              },
@@ -30,82 +30,7 @@
                                       "description":  "Usage is measured in request units. Each model advertises its unit cost in the model catalog.",
                                       "unit":  "request_units"
                                   },
-                      "concurrency_limit":  3,
-                      "description":  "For coding agents, CLI tools, IDEs, and general assistant workloads.",
-                      "display_name":  "Coding",
-                      "family":  "coding",
-                      "highlights":  [
-                                         "Includes coding-focused and general assistant models.",
-                                         "Usage is tracked in request units instead of raw token prices."
-                                     ],
-                      "id":  "coding",
-                      "limits":  {
-                                     "daily":  {
-                                                   "limit":  30000,
-                                                   "limit_milli":  30000000,
-                                                   "unit":  "request_units"
-                                               },
-                                     "five_hour":  {
-                                                       "limit":  12000,
-                                                       "limit_milli":  12000000,
-                                                       "unit":  "request_units"
-                                                   },
-                                     "hourly":  {
-                                                    "limit":  12000,
-                                                    "limit_milli":  12000000,
-                                                    "unit":  "request_units"
-                                                },
-                                     "monthly":  {
-                                                     "limit":  60000,
-                                                     "limit_milli":  60000000,
-                                                     "unit":  "request_units"
-                                                 },
-                                     "weekly":  {
-                                                    "limit":  30000,
-                                                    "limit_milli":  30000000,
-                                                    "unit":  "request_units"
-                                                }
-                                 },
-                      "model_count":  24,
-                      "models":  [
-                                     "pbl/gpt-4.1",
-                                     "pbl/gpt-5-mini",
-                                     "pbl/gpt-5.1",
-                                     "pbl/gpt-5.4-mini",
-                                     "pbl/gpt-5.5-mini",
-                                     "pbl/deepseek-r1",
-                                     "pbl/deepseek-v3",
-                                     "pbl/gemini-2.5-flash",
-                                     "pbl/gemini-2.5-flash-lite",
-                                     "pbl/gemini-3.0-flash",
-                                     "pbl/gemini-3.5-flash",
-                                     "pbl/grok-4.1-fast-non-reasoning",
-                                     "frw/deepseek-v4-flash",
-                                     "frw/deepseek-v4-pro",
-                                     "frw/glm-5.1",
-                                     "frw/qwen3.6-plus",
-                                     "frw/gpt-oss-20b",
-                                     "frw/gpt-oss-120b",
-                                     "frw/kimi-k2.5",
-                                     "frw/kimi-k2.6",
-                                     "frw/minimax-m2.5",
-                                     "frw/minimax-m2.7",
-                                     "frw/qwen3-embedding-8b",
-                                     "frw/qwen3-reranker-8b"
-                                 ],
-                      "object":  "plan",
-                      "providers":  [
-                                        "frw",
-                                        "pbl"
-                                    ],
-                      "price":  "$8",
-                      "period":  "month"
-                  },
-                  {
-                      "billing":  {
-                                      "description":  "Usage is measured in request units. Each model advertises its unit cost in the model catalog.",
-                                      "unit":  "request_units"
-                                  },
+                      "billing_period":  "month",
                       "concurrency_limit":  2,
                       "description":  "For roleplay and chat clients that need a smaller curated model set.",
                       "display_name":  "Roleplay",
@@ -132,18 +57,37 @@
                                                     "unit":  "request_units"
                                                 },
                                      "monthly":  {
-                                                     "limit":  18000,
-                                                     "limit_milli":  18000000,
+                                                     "limit":  75000,
+                                                     "limit_milli":  75000000,
                                                      "unit":  "request_units"
                                                  },
                                      "weekly":  {
-                                                    "limit":  15000,
-                                                    "limit_milli":  15000000,
+                                                    "limit":  30000,
+                                                    "limit_milli":  30000000,
                                                     "unit":  "request_units"
                                                 }
                                  },
-                      "model_count":  8,
+                      "model_count":  40,
                       "models":  [
+                                     "cuh/claude-haiku-4.5",
+                                     "cuh/claude-opus-4.6",
+                                     "cuh/claude-opus-4.7",
+                                     "cuh/claude-opus-4.8",
+                                     "cuh/claude-sonnet-4.6",
+                                     "cuh/deepseek-v4-pro",
+                                     "cuh/gemini-2.5-flash",
+                                     "cuh/gemini-3.1-pro",
+                                     "cuh/gemini-3.5-flash",
+                                     "cuh/gemini-3-flash",
+                                     "cuh/gpt-5.2",
+                                     "cuh/gpt-5.4",
+                                     "cuh/gpt-5.4-mini",
+                                     "cuh/gpt-5.4-nano",
+                                     "cuh/gpt-5.5",
+                                     "cuh/grok-4.3",
+                                     "cuh/grok-build-0.1",
+                                     "cuh/kimi-k2.6",
+                                     "cuh/minimax-m2.5",
                                      "frw/deepseek-v4-flash",
                                      "frw/deepseek-v4-pro",
                                      "frw/glm-5.1",
@@ -151,93 +95,272 @@
                                      "frw/kimi-k2.5",
                                      "frw/kimi-k2.6",
                                      "frw/minimax-m2.5",
-                                     "frw/minimax-m2.7"
+                                     "frw/minimax-m2.7",
+                                     "sky/claude-haiku-4-5",
+                                     "sky/claude-opus-4-5",
+                                     "sky/claude-opus-4-6",
+                                     "sky/claude-opus-4-7",
+                                     "sky/claude-sonnet-4-5",
+                                     "sky/claude-sonnet-4-6",
+                                     "sky/gpt-4o",
+                                     "sky/gpt-4o-mini",
+                                     "sky/gpt-5-mini",
+                                     "sky/meta-llama/Llama-4-Maverick",
+                                     "sky/meta-llama/Llama-4-Scout",
+                                     "sky/mistral-small-2603",
+                                     "sky/tinfoil/gpt-oss-120b"
                                  ],
                       "object":  "plan",
+                      "price":  {
+                                    "amount":  5,
+                                    "amount_milli":  5000,
+                                    "currency":  "USD",
+                                    "period":  "month"
+                                },
+                      "price_usd":  5,
+                      "price_usd_milli":  5000,
                       "providers":  [
+                                        "sky",
+                                        "cuh",
                                         "frw"
                                     ],
-                      "price":  "$5",
-                      "period":  "month"
+                      "purchasable":  true
                   }
               ],
     "model_groups":  [
+                         {
+                             "id":  "cuh",
+                             "label":  "CUH models",
+                             "description":  "paid model pool",
+                             "models":  [
+                                            {
+                                                "id":  "cuh/gpt-5.4-mini",
+                                                "name":  "gpt-5.4-mini",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/gpt-5.4-nano",
+                                                "name":  "gpt-5.4-nano",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/gpt-5.2",
+                                                "name":  "gpt-5.2",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/gpt-5.4",
+                                                "name":  "gpt-5.4",
+                                                "unit_cost":  2,
+                                                "unit_label":  "2 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/gpt-5.5",
+                                                "name":  "gpt-5.5",
+                                                "unit_cost":  3,
+                                                "unit_label":  "3 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/kimi-k2.6",
+                                                "name":  "kimi-k2.6",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/minimax-m2.5",
+                                                "name":  "minimax-m2.5",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/grok-4.3",
+                                                "name":  "grok-4.3",
+                                                "unit_cost":  2,
+                                                "unit_label":  "2 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/grok-build-0.1",
+                                                "name":  "grok-build-0.1",
+                                                "unit_cost":  2,
+                                                "unit_label":  "2 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/gemini-3-flash",
+                                                "name":  "gemini-3-flash",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/claude-opus-4.7",
+                                                "name":  "claude-opus-4.7",
+                                                "unit_cost":  3,
+                                                "unit_label":  "3 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/claude-opus-4.8",
+                                                "name":  "claude-opus-4.8",
+                                                "unit_cost":  3,
+                                                "unit_label":  "3 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/claude-haiku-4.5",
+                                                "name":  "claude-haiku-4.5",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/claude-opus-4.6",
+                                                "name":  "claude-opus-4.6",
+                                                "unit_cost":  3,
+                                                "unit_label":  "3 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/claude-sonnet-4.6",
+                                                "name":  "claude-sonnet-4.6",
+                                                "unit_cost":  2,
+                                                "unit_label":  "2 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/gemini-3.1-pro",
+                                                "name":  "gemini-3.1-pro",
+                                                "unit_cost":  2,
+                                                "unit_label":  "2 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/gemini-3.5-flash",
+                                                "name":  "gemini-3.5-flash",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/deepseek-v4-pro",
+                                                "name":  "deepseek-v4-pro",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "cuh/gemini-2.5-flash",
+                                                "name":  "gemini-2.5-flash",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            }
+                                        ]
+                         },
                          {
                              "id":  "frw",
                              "label":  "FRW models",
                              "description":  "paid model pool",
                              "models":  [
                                             {
-                                                "id":  "frw/deepseek-v4-flash",
-                                                "name":  "DeepSeek V4 Flash",
+                                                "id":  "frw/kimi-k2.6",
+                                                "name":  "Kimi K2.6",
                                                 "unit_cost":  1,
-                                                "unit_label":  "1 request units",
+                                                "unit_label":  "1 request unit",
                                                 "route":  "chat",
                                                 "plans":  [
-                                                              "coding",
                                                               "roleplay"
                                                           ],
-                                                "context_window":  1048576,
-                                                "max_input_tokens":  1048576,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true
-                                            },
-                                            {
-                                                "id":  "frw/deepseek-v4-pro",
-                                                "name":  "DeepSeek V4 Pro",
-                                                "unit_cost":  1,
-                                                "unit_label":  "1 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding",
-                                                              "roleplay"
-                                                          ],
-                                                "context_window":  1048576,
-                                                "max_input_tokens":  1048576,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true
-                                            },
-                                            {
-                                                "id":  "frw/glm-5.1",
-                                                "name":  "GLM 5.1",
-                                                "unit_cost":  1,
-                                                "unit_label":  "1 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding",
-                                                              "roleplay"
-                                                          ],
-                                                "context_window":  202752,
-                                                "max_input_tokens":  202752,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true
-                                            },
-                                            {
-                                                "id":  "frw/gpt-oss-120b",
-                                                "name":  "GPT OSS 120B",
-                                                "unit_cost":  1,
-                                                "unit_label":  "1 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding",
-                                                              "roleplay"
-                                                          ],
-                                                "context_window":  131072,
-                                                "max_input_tokens":  131072,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true
-                                            },
-                                            {
-                                                "id":  "frw/gpt-oss-20b",
-                                                "name":  "GPT OSS 20B",
-                                                "unit_cost":  1,
-                                                "unit_label":  "1 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  131072,
-                                                "max_input_tokens":  131072,
+                                                "context_window":  262144,
+                                                "max_input_tokens":  262144,
+                                                "supports_images":  true,
                                                 "supports_streaming":  true,
                                                 "supports_tool_call":  true
                                             },
@@ -245,46 +368,14 @@
                                                 "id":  "frw/kimi-k2.5",
                                                 "name":  "Kimi K2.5",
                                                 "unit_cost":  1,
-                                                "unit_label":  "1 request units",
+                                                "unit_label":  "1 request unit",
                                                 "route":  "chat",
                                                 "plans":  [
-                                                              "coding",
                                                               "roleplay"
                                                           ],
                                                 "context_window":  262144,
                                                 "max_input_tokens":  262144,
                                                 "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true
-                                            },
-                                            {
-                                                "id":  "frw/kimi-k2.6",
-                                                "name":  "Kimi K2.6",
-                                                "unit_cost":  1,
-                                                "unit_label":  "1 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding",
-                                                              "roleplay"
-                                                          ],
-                                                "context_window":  262144,
-                                                "max_input_tokens":  262144,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true
-                                            },
-                                            {
-                                                "id":  "frw/minimax-m2.5",
-                                                "name":  "MiniMax M2.5",
-                                                "unit_cost":  1,
-                                                "unit_label":  "1 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding",
-                                                              "roleplay"
-                                                          ],
-                                                "context_window":  196608,
-                                                "max_input_tokens":  196608,
                                                 "supports_streaming":  true,
                                                 "supports_tool_call":  true
                                             },
@@ -292,10 +383,9 @@
                                                 "id":  "frw/minimax-m2.7",
                                                 "name":  "MiniMax M2.7",
                                                 "unit_cost":  1,
-                                                "unit_label":  "1 request units",
+                                                "unit_label":  "1 request unit",
                                                 "route":  "chat",
                                                 "plans":  [
-                                                              "coding",
                                                               "roleplay"
                                                           ],
                                                 "context_window":  196608,
@@ -304,252 +394,224 @@
                                                 "supports_tool_call":  true
                                             },
                                             {
-                                                "id":  "frw/qwen3-embedding-8b",
-                                                "name":  "Qwen3 Embedding 8B",
+                                                "id":  "frw/minimax-m2.5",
+                                                "name":  "MiniMax M2.5",
                                                 "unit_cost":  1,
-                                                "unit_label":  "1 request units",
-                                                "route":  "embeddings",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  40960,
-                                                "max_input_tokens":  40960
-                                            },
-                                            {
-                                                "id":  "frw/qwen3-reranker-8b",
-                                                "name":  "Qwen3 Reranker 8B",
-                                                "unit_cost":  1,
-                                                "unit_label":  "1 request units",
-                                                "route":  "rerank",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  40960,
-                                                "max_input_tokens":  40960
-                                            },
-                                            {
-                                                "id":  "frw/qwen3.6-plus",
-                                                "name":  "Qwen3.6 Plus",
-                                                "unit_cost":  1,
-                                                "unit_label":  "1 request units",
+                                                "unit_label":  "1 request unit",
                                                 "route":  "chat",
                                                 "plans":  [
-                                                              "coding"
+                                                              "roleplay"
                                                           ],
-                                                "supports_images":  true,
+                                                "context_window":  196608,
+                                                "max_input_tokens":  196608,
+                                                "supports_streaming":  true,
+                                                "supports_tool_call":  true
+                                            },
+                                            {
+                                                "id":  "frw/deepseek-v4-pro",
+                                                "name":  "DeepSeek V4 Pro",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "context_window":  1048576,
+                                                "max_input_tokens":  1048576,
+                                                "supports_streaming":  true,
+                                                "supports_tool_call":  true
+                                            },
+                                            {
+                                                "id":  "frw/deepseek-v4-flash",
+                                                "name":  "DeepSeek V4 Flash",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "context_window":  1048576,
+                                                "max_input_tokens":  1048576,
+                                                "supports_streaming":  true,
+                                                "supports_tool_call":  true
+                                            },
+                                            {
+                                                "id":  "frw/gpt-oss-120b",
+                                                "name":  "GPT OSS 120B",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "context_window":  131072,
+                                                "max_input_tokens":  131072,
+                                                "supports_streaming":  true,
+                                                "supports_tool_call":  true
+                                            },
+                                            {
+                                                "id":  "frw/glm-5.1",
+                                                "name":  "GLM 5.1",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "context_window":  202752,
+                                                "max_input_tokens":  202752,
                                                 "supports_streaming":  true,
                                                 "supports_tool_call":  true
                                             }
                                         ]
                          },
                          {
-                             "id":  "pbl",
-                             "label":  "PBL models",
+                             "id":  "sky",
+                             "label":  "SKY models",
                              "description":  "paid model pool",
                              "models":  [
                                             {
-                                                "id":  "pbl/deepseek-v3",
-                                                "name":  "DeepSeek V3",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  50000,
-                                                "max_input_tokens":  50000,
-                                                "max_output_tokens":  10000,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/gemini-2.5-flash",
-                                                "name":  "Gemini 2.5 Flash",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  1048576,
-                                                "max_input_tokens":  1048576,
-                                                "max_output_tokens":  65536,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/gemini-2.5-flash-lite",
-                                                "name":  "Gemini 2.5 Flash Lite",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  524288,
-                                                "max_input_tokens":  524288,
-                                                "max_output_tokens":  65536,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/gemini-3.0-flash",
-                                                "name":  "Gemini 3.0 Flash",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  1048576,
-                                                "max_input_tokens":  1048576,
-                                                "max_output_tokens":  65536,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/gemini-3.5-flash",
-                                                "name":  "Gemini 3.5 Flash",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  1048576,
-                                                "max_input_tokens":  1048576,
-                                                "max_output_tokens":  65536,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/gpt-4.1",
-                                                "name":  "GPT-4.1",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  1047576,
-                                                "max_input_tokens":  1047576,
-                                                "max_output_tokens":  32768,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/gpt-5-mini",
-                                                "name":  "GPT-5 Mini",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  400000,
-                                                "max_input_tokens":  400000,
-                                                "max_output_tokens":  128000,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/gpt-5.4-mini",
-                                                "name":  "GPT-5.4 Mini",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  400000,
-                                                "max_input_tokens":  400000,
-                                                "max_output_tokens":  128000,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/gpt-5.5-mini",
-                                                "name":  "GPT-5.5 Mini",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  400000,
-                                                "max_input_tokens":  400000,
-                                                "max_output_tokens":  128000,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/grok-4.1-fast-non-reasoning",
-                                                "name":  "Grok 4.1 Fast Non-Reasoning",
-                                                "unit_cost":  0.5,
-                                                "unit_label":  "0.5 request units",
-                                                "route":  "chat",
-                                                "plans":  [
-                                                              "coding"
-                                                          ],
-                                                "context_window":  2000000,
-                                                "max_input_tokens":  2000000,
-                                                "max_output_tokens":  30000,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
-                                            },
-                                            {
-                                                "id":  "pbl/deepseek-r1",
-                                                "name":  "DeepSeek R1",
+                                                "id":  "sky/meta-llama/Llama-4-Maverick",
+                                                "name":  "meta-llama/Llama-4-Maverick",
                                                 "unit_cost":  1,
-                                                "unit_label":  "1 request units",
+                                                "unit_label":  "1 request unit",
                                                 "route":  "chat",
                                                 "plans":  [
-                                                              "coding"
+                                                              "roleplay"
                                                           ],
-                                                "context_window":  50000,
-                                                "max_input_tokens":  50000,
-                                                "max_output_tokens":  10000,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
+                                                "supports_streaming":  true
                                             },
                                             {
-                                                "id":  "pbl/gpt-5.1",
-                                                "name":  "GPT-5.1",
+                                                "id":  "sky/gpt-5-mini",
+                                                "name":  "gpt-5-mini",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/gpt-4o-mini",
+                                                "name":  "gpt-4o-mini",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/tinfoil/gpt-oss-120b",
+                                                "name":  "tinfoil/gpt-oss-120b",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/mistral-small-2603",
+                                                "name":  "mistral-small-2603",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/meta-llama/Llama-4-Scout",
+                                                "name":  "meta-llama/Llama-4-Scout",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/gpt-4o",
+                                                "name":  "gpt-4o",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/claude-opus-4-6",
+                                                "name":  "claude-opus-4-6",
+                                                "unit_cost":  3,
+                                                "unit_label":  "3 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/claude-opus-4-5",
+                                                "name":  "claude-opus-4-5",
+                                                "unit_cost":  3,
+                                                "unit_label":  "3 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/claude-haiku-4-5",
+                                                "name":  "claude-haiku-4-5",
+                                                "unit_cost":  1,
+                                                "unit_label":  "1 request unit",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/claude-sonnet-4-6",
+                                                "name":  "claude-sonnet-4-6",
                                                 "unit_cost":  2,
                                                 "unit_label":  "2 request units",
                                                 "route":  "chat",
                                                 "plans":  [
-                                                              "coding"
+                                                              "roleplay"
                                                           ],
-                                                "context_window":  400000,
-                                                "max_input_tokens":  400000,
-                                                "max_output_tokens":  128000,
-                                                "supports_images":  true,
-                                                "supports_streaming":  true,
-                                                "supports_tool_call":  true,
-                                                "supports_response_schema":  true
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/claude-sonnet-4-5",
+                                                "name":  "claude-sonnet-4-5",
+                                                "unit_cost":  2,
+                                                "unit_label":  "2 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
+                                            },
+                                            {
+                                                "id":  "sky/claude-opus-4-7",
+                                                "name":  "claude-opus-4-7",
+                                                "unit_cost":  3,
+                                                "unit_label":  "3 request units",
+                                                "route":  "chat",
+                                                "plans":  [
+                                                              "roleplay"
+                                                          ],
+                                                "supports_streaming":  true
                                             }
                                         ]
                          }

@@ -31,9 +31,9 @@ const jsonLd = [
 ---
 
 <Layout
-    title="FreeTheAi Paid API Plans - Coding and Roleplay Request-Unit Pricing"
-    description="Compare FreeTheAi paid API Coding and Roleplay plans, request-unit limits, live model counts, context windows, and current paid model aliases."
-    keywords="FreeTheAi paid API, paid AI API pricing, OpenAI compatible paid API, coding AI API plan, roleplay AI API plan, request unit pricing, paid model catalog"
+    title="FreeTheAi Paid API Plans - Request-Unit Pricing"
+    description="Compare currently available FreeTheAi paid API plans, request-unit limits, live model counts, context windows, and current paid model aliases."
+    keywords="FreeTheAi paid API, paid AI API pricing, OpenAI compatible paid API, roleplay AI API plan, request unit pricing, paid model catalog"
     jsonLd={jsonLd}
     currentPath="/pricing"
 >
@@ -42,27 +42,10 @@ const jsonLd = [
             <div class="pricing-hero-copy">
                 <h1>Paid slots without token math.</h1>
                 <p class="hero-text">
-                    Compare the Coding and Roleplay plans, then pick the lane
+                    Compare currently available paid plans, then pick the lane
                     that fits your client, context size, and usage pattern.
                 </p>
             </div>
-
-            <article class="pricing-card pricing-plan-card">
-                <div class="pricing-price">
-                    <strong>{paidPlan.plan.price}</strong>
-                    <span>/ {paidPlan.plan.period}</span>
-                </div>
-                <p class="pricing-plan-tag">Billed monthly. Cancel anytime.</p>
-                <a
-                    class="primary-button pricing-plan-cta"
-                    href={siteConfig.socials.discord}
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    <span>Get a paid key</span>
-                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                </a>
-            </article>
         </section>
 
         <PaidPlanExplorer snapshot={paidPlan} discordUrl={siteConfig.socials.discord} client:load />
@@ -77,7 +60,7 @@ const jsonLd = [
 
     .pricing-hero {
         display: grid;
-        grid-template-columns: minmax(0, 1fr) minmax(280px, 380px);
+        grid-template-columns: minmax(0, 1fr);
         gap: clamp(24px, 5vw, 72px);
         align-items: center;
         min-height: auto;
@@ -257,6 +240,11 @@ const jsonLd = [
         display: grid;
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 14px;
+    }
+
+    .paid-plan-options.is-single {
+        grid-template-columns: minmax(0, min(100%, 520px));
+        justify-content: center;
     }
 
     .paid-plan-option {

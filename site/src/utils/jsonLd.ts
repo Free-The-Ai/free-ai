@@ -344,19 +344,56 @@ export function buildModelCatalogJsonLd(models: string[]) {
 
 export function buildPaidPlanJsonLd(
 	plan: { price: string; period: string; summary: string },
-	plans: { id: string; display_name: string; description?: string; model_count?: number }[] = [],
+	plans: {
+		id: string;
+		display_name: string;
+		description?: string;
+		model_count?: number;
+		price?: string | { amount?: number; amount_milli?: number; currency?: string; period?: string };
+		price_usd?: number;
+		price_usd_milli?: number;
+		billing_period?: string;
+		period?: string;
+		display?: boolean;
+		visible?: boolean;
+		purchasable?: boolean;
+	}[] = [],
 ) {
 	/**
 	 * var paidPlanJsonLd
 	 * type object
 	 * desc Structured data for optional paid API plans and request-unit catalog offers.
 	 */
-	const planPrices: Record<string, string> = {
-		coding: '8',
-		roleplay: '5',
+	const priceForPlan = (paidPlan: (typeof plans)[number]): string => {
+		if (typeof paidPlan.price_usd_milli === 'number' && paidPlan.price_usd_milli > 0) {
+			return String(paidPlan.price_usd_milli / 1000);
+		}
+		if (typeof paidPlan.price_usd === 'number' && paidPlan.price_usd > 0) {
+			return String(paidPlan.price_usd);
+		}
+		if (typeof paidPlan.price === 'string') {
+			const cleaned = paidPlan.price.replace(/[^0-9.]/g, '');
+			if (cleaned) return cleaned;
+		}
+		if (paidPlan.price && typeof paidPlan.price === 'object') {
+			if (typeof paidPlan.price.amount_milli === 'number' && paidPlan.price.amount_milli > 0) {
+				return String(paidPlan.price.amount_milli / 1000);
+			}
+			if (typeof paidPlan.price.amount === 'number' && paidPlan.price.amount > 0) {
+				return String(paidPlan.price.amount);
+			}
+		}
+		return plan.price.replace(/[^0-9.]/g, '');
 	};
-	const visiblePlans = plans.length > 0
-		? plans
+	const periodForPlan = (paidPlan: (typeof plans)[number]): string =>
+		paidPlan.billing_period
+		?? paidPlan.period
+		?? (typeof paidPlan.price === 'object' ? paidPlan.price?.period : undefined)
+		?? plan.period;
+	const visiblePlans = plans
+		.filter((paidPlan) => paidPlan.display !== false && paidPlan.visible !== false && paidPlan.purchasable !== false);
+	const offerPlans = visiblePlans.length > 0
+		? visiblePlans
 		: [{ id: 'paid', display_name: 'Paid API', description: plan.summary }];
 	return {
 		'@context': 'https://schema.org',
@@ -373,15 +410,15 @@ export function buildPaidPlanJsonLd(
 		offers: {
 			'@type': 'OfferCatalog',
 			name: 'FreeTheAi paid API plans',
-			itemListElement: visiblePlans.map((paidPlan, index) => ({
+			itemListElement: offerPlans.map((paidPlan, index) => ({
 				'@type': 'Offer',
 				position: index + 1,
 				name: paidPlan.display_name,
 				description: paidPlan.description ?? plan.summary,
-				price: planPrices[paidPlan.id] ?? plan.price.replace(/[^0-9.]/g, ''),
+				price: priceForPlan(paidPlan),
 				priceCurrency: 'USD',
 				availability: 'https://schema.org/LimitedAvailability',
-				category: `${plan.period} subscription`,
+				category: `${periodForPlan(paidPlan)} subscription`,
 				url: `https://freetheai.xyz/pricing#${paidPlan.id}`,
 				itemOffered: {
 					'@type': 'Service',

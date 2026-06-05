@@ -1,9 +1,16 @@
-import { createEffect, createMemo, createSignal, For, onMount } from "solid-js";
+import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js";
 import PaidModelTable from "./PaidModelTable";
 
 interface PaidLimit {
   limit?: number;
   unit?: string;
+}
+
+interface PaidPrice {
+  amount?: number;
+  amount_milli?: number;
+  currency?: string;
+  period?: string;
 }
 
 interface PaidPlan {
@@ -16,6 +23,11 @@ interface PaidPlan {
   concurrency_limit?: number;
   providers?: string[];
   models?: string[];
+  billing_period?: string;
+  price?: string | PaidPrice;
+  price_usd?: number;
+  price_usd_milli?: number;
+  purchasable?: boolean;
 }
 
 interface PaidModel {
@@ -79,12 +91,12 @@ const PLAN_COPY: Record<string, { tag: string; bestFor: string; accent: string }
   },
 };
 
-const PLAN_PRICES: Record<string, string> = {
+const PLAN_PRICE_FALLBACKS: Record<string, string> = {
   coding: "$8",
   roleplay: "$5",
 };
 
-const PLAN_ORDER = ["coding", "roleplay"];
+const PLAN_ORDER = ["roleplay", "coding"];
 const LIMIT_ORDER = ["five_hour", "hourly", "daily", "weekly", "monthly"];
 const LIMIT_LABELS: Record<string, string> = {
   five_hour: "5-hour units",
@@ -105,6 +117,30 @@ const formatNumber = (value: number): string => value.toLocaleString();
 const formatUnitCost = (value: number): string =>
   Number.isInteger(value) ? String(value) : String(value);
 
+const formatUSD = (value: number): string =>
+  `$${Number.isInteger(value) ? value.toLocaleString() : value.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
+
+const formatPlanPrice = (plan: PaidPlan): string => {
+  const milli = num(plan.price_usd_milli);
+  if (milli !== undefined) return formatUSD(milli / 1000);
+  const usd = num(plan.price_usd);
+  if (usd !== undefined) return formatUSD(usd);
+  if (typeof plan.price === "string" && plan.price.trim()) return plan.price.trim();
+  if (typeof plan.price === "object" && plan.price !== null) {
+    const amount = num(plan.price.amount);
+    const amountMilli = num(plan.price.amount_milli);
+    if (amount !== undefined) return formatUSD(amount);
+    if (amountMilli !== undefined) return formatUSD(amountMilli / 1000);
+  }
+  return PLAN_PRICE_FALLBACKS[plan.id] ?? "Paid";
+};
+
+const planPeriod = (plan: PaidPlan, fallback?: string): string | undefined => {
+  if (plan.billing_period) return plan.billing_period;
+  if (typeof plan.price === "object" && plan.price !== null && plan.price.period) return plan.price.period;
+  return fallback;
+};
+
 const modelPrefix = (id: string): string => id.includes("/") ? id.slice(0, id.indexOf("/")) : "other";
 
 const routeForModel = (id: string): string => {
@@ -124,6 +160,9 @@ const limitEntries = (plan: PaidPlan) =>
 const normalizePlan = (raw: any): PaidPlan | null => {
   const id = str(raw?.id);
   if (!id) return null;
+  if (raw?.display === false || raw?.visible === false || raw?.purchasable === false) return null;
+  const rawPrice = raw?.price;
+  const price = typeof rawPrice === "string" || (rawPrice && typeof rawPrice === "object") ? rawPrice : undefined;
   return {
     id,
     display_name: str(raw?.display_name) ?? id,
@@ -134,6 +173,11 @@ const normalizePlan = (raw: any): PaidPlan | null => {
     concurrency_limit: num(raw?.concurrency_limit),
     providers: Array.isArray(raw?.providers) ? raw.providers.filter((item: unknown): item is string => typeof item === "string") : [],
     models: Array.isArray(raw?.models) ? raw.models.filter((item: unknown): item is string => typeof item === "string") : [],
+    billing_period: str(raw?.billing_period) ?? str(raw?.period) ?? str(raw?.price?.period),
+    price,
+    price_usd: num(raw?.price_usd),
+    price_usd_milli: num(raw?.price_usd_milli),
+    purchasable: raw?.purchasable !== false,
   };
 };
 
@@ -221,8 +265,8 @@ function PlanCard(props: {
       <div class="paid-plan-option-top">
         <span class="pricing-route-pill">{copy.tag}</span>
         <span class="paid-plan-option-price">
-          {PLAN_PRICES[props.plan.id] ?? "Paid"}
-          <small>{props.period ? ` / ${props.period}` : ""}</small>
+          {formatPlanPrice(props.plan)}
+          <small>{planPeriod(props.plan, props.period) ? ` / ${planPeriod(props.plan, props.period)}` : ""}</small>
         </span>
       </div>
       <h3>{props.plan.display_name}</h3>
@@ -261,8 +305,9 @@ function PlanCard(props: {
 }
 
 export default function PaidPlanExplorer(props: PaidPlanExplorerProps) {
-  const [catalog, setCatalog] = createSignal<CatalogState>(snapshotState(props.snapshot));
-  const [selectedPlan, setSelectedPlan] = createSignal(PLAN_ORDER[0]);
+  const initialCatalog = snapshotState(props.snapshot);
+  const [catalog, setCatalog] = createSignal<CatalogState>(initialCatalog);
+  const [selectedPlan, setSelectedPlan] = createSignal(initialCatalog.plans[0]?.id ?? PLAN_ORDER[0]);
 
   onMount(() => {
     fetchLiveCatalog()
@@ -310,13 +355,18 @@ export default function PaidPlanExplorer(props: PaidPlanExplorerProps) {
         <div class="paid-plan-chooser-copy">
           <span class="eyebrow">Paid plans</span>
           <h2 id="paid-plan-title">Pick the lane that matches how you use the API.</h2>
-          <p>
-            Both plans use request units. Choose Coding for the widest catalog and agent workloads,
-            or Roleplay for a smaller chat-focused lane.
-          </p>
+          <Show
+            when={plans().length > 1}
+            fallback={<p>{selected()?.description ?? "Available paid plans use request units and refresh from the live paid API catalog."}</p>}
+          >
+            <p>
+              Available plans use request units. Pick the lane that matches your client, context size,
+              and usage pattern.
+            </p>
+          </Show>
         </div>
 
-        <div class="paid-plan-options">
+        <div class={`paid-plan-options${plans().length === 1 ? " is-single" : ""}`}>
           <For each={plans()}>
             {(plan) => (
               <PlanCard

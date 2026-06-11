@@ -356,7 +356,7 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
             },
         ],
         gotchas: [
-            "Janitor AI sometimes shows a `Failed to fetch (unk)` error. That is upstream Janitor instability, not FreeTheAi - try Chub or SillyTavern instead, or wait it out.",
+            "Janitor AI sometimes shows a `Failed to fetch (unk)` error. That is usually Janitor-side instability, not FreeTheAi - try Chub or SillyTavern instead, or wait it out.",
             "401 means the key is wrong. Use `/resetkey` in the FreeTheAi Discord and paste only the key value, no quotes or markdown.",
             "Some models do not work for Janitor RP - try `bbl/gpt-5.4-mini` or `glm/glm-5.1` for the most reliable responses.",
         ],

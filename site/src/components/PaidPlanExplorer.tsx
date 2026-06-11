@@ -1,5 +1,6 @@
 import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js";
 import PaidModelTable from "./PaidModelTable";
+import { siteModelContextWindow } from "../utils/format";
 
 interface PaidLimit {
   limit?: number;
@@ -186,7 +187,7 @@ const normalizeModel = (raw: any): PaidModel | null => {
   if (!id) return null;
   const unit = num(raw?.pricing_units) ?? num(raw?.pricing?.unit_cost) ?? num(raw?.unit_cost) ?? 1;
   const display = str(raw?.pricing?.display) ?? str(raw?.unit_label) ?? `${formatUnitCost(unit)} request units`;
-  return {
+  const model = {
     id,
     name: str(raw?.name),
     unit_cost: unit,
@@ -201,6 +202,12 @@ const normalizeModel = (raw: any): PaidModel | null => {
     supports_tool_call: raw?.supports_tool_call === true,
     supports_response_schema: raw?.supports_response_schema === true,
   };
+  const context = siteModelContextWindow(model);
+  if (context > 0) {
+    model.context_window = context;
+    model.max_input_tokens = context;
+  }
+  return model;
 };
 
 const groupModels = (models: PaidModel[]): PaidModelGroup[] => {

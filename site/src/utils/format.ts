@@ -20,3 +20,16 @@ export function modelPrefix(id: string): string {
 export function modelSuffix(id: string): string {
   return id.includes("/") ? id.slice(id.indexOf("/") + 1) : id;
 }
+
+const SKY_SITE_CONTEXT_WINDOW = 100_000;
+
+/** Return the site-facing context window, including public display overrides. */
+export function siteModelContextWindow(model: {
+  id?: string;
+  prefix?: string;
+  context_window?: number;
+  max_input_tokens?: number;
+}): number {
+  if (model.prefix === "sky" || model.id?.startsWith("sky/")) return SKY_SITE_CONTEXT_WINDOW;
+  return model.context_window ?? model.max_input_tokens ?? 0;
+}

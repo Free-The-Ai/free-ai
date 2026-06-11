@@ -1,6 +1,6 @@
 import { createMemo, createSignal, For, Show } from "solid-js";
 import { Select, TextField } from "./ui";
-import { formatTokens } from "../utils/format";
+import { formatTokens, siteModelContextWindow } from "../utils/format";
 import type { SelectOption } from "./ui";
 
 interface PaidModel {
@@ -52,9 +52,9 @@ const formatCost = (cost: number) => Number.isInteger(cost) ? String(cost) : Str
 // ── Paid Model Row sub-component ──
 
 function PaidModelRow({ model }: { model: PaidModel }) {
-  const ctx = model.context_window ?? model.max_input_tokens;
+  const ctx = siteModelContextWindow(model);
   const out = model.max_output_tokens;
-  const hasMeta = ctx !== undefined || out !== undefined || model.supports_images || model.supports_tool_call || model.supports_response_schema;
+  const hasMeta = ctx > 0 || out !== undefined || model.supports_images || model.supports_tool_call || model.supports_response_schema;
   const copyModel = (button: HTMLButtonElement) => {
     navigator.clipboard.writeText(model.id).catch((error) => {
       console.error("Failed to copy paid model alias", error);
@@ -70,7 +70,7 @@ function PaidModelRow({ model }: { model: PaidModel }) {
         <code>{model.id}</code>
         {hasMeta && (
           <span class="paid-model-meta">
-            {ctx !== undefined && (
+            {ctx > 0 && (
               <span class="model-chip" title="Total context window">
                 <span class="model-chip-label">Ctx</span>
                 <strong>{formatTokens(ctx)}</strong>

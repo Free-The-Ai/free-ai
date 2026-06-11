@@ -51,7 +51,7 @@ Long-tail capture per SDK / framework.
 
 The homepage says "no prompt storage" but there is no durable policy page.
 
-- [x] `/privacy` — what is logged, retention windows, processor disclosures, upstream provider note
+- [x] `/privacy` — what is logged, retention windows, processor disclosures, third-party processor note
 - [ ] `/security` — abuse handling, IP blacklist policy, rate-limit posture
 - [x] `/terms` — terms of use, acceptable use policy, contact
 - [ ] `/changelog` — surface release momentum (currently only `CHANGELOG.md` in repo)

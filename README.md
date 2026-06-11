@@ -352,7 +352,7 @@ Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.x
 | `img/*` | Image generation and editing |
 
 > [!NOTE]
-> Use exact alias IDs from `GET /v1/models`. Model availability updates automatically as upstream catalogs change.
+> Use exact alias IDs from `GET /v1/models`. Model availability updates automatically as the service catalog changes.
 
 ---
 

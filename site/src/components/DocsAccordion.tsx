@@ -125,7 +125,7 @@ function DocsErrorsSection() {
                     connection has already opened. In that case the API
                     sends an error event followed by <code>data: [DONE]</code>:
                 </p>
-                <pre><code>{`data: {"error":{"message":"upstream provider temporarily unavailable","type":"provider_error"}}
+                <pre><code>{`data: {"error":{"message":"provider temporarily unavailable","type":"provider_error"}}
 
 data: [DONE]`}</code></pre>
                 <p>
@@ -149,7 +149,7 @@ data: [DONE]`}</code></pre>
             <div class="docs-errors-group">
                 <h3>Request validation</h3>
                 <DocsRowTable compact rows={[
-                    { code: "400 invalid_request_error", span: <>Bad JSON, missing field, unknown alias, or unsupported route. Common messages: <em>invalid json payload</em>, <em>missing model</em>, <em>missing prompt</em>, <em>unknown aliased model</em>, <em>unsupported responses input shape</em>, <em>upstream rejected the request payload</em>. Use a model from <code>GET /v1/models</code>.</> },
+                    { code: "400 invalid_request_error", span: <>Bad JSON, missing field, unknown alias, or unsupported route. Common messages: <em>invalid json payload</em>, <em>missing model</em>, <em>missing prompt</em>, <em>unknown aliased model</em>, <em>unsupported responses input shape</em>, <em>provider rejected the request payload</em>. Use a model from <code>GET /v1/models</code>.</> },
                     { code: "400 context_length_exceeded", span: "Prompt or request is too large. Reduce context, attachments, message history, or requested output tokens." },
                     { code: "400 content_policy_violation", span: "Blocked by moderation/safety filters. Change the prompt content." },
                     { code: "404 invalid_request_error", span: "Currently used for deferred video lookup when the request id is unknown." },
@@ -158,7 +158,7 @@ data: [DONE]`}</code></pre>
             <div class="docs-errors-group">
                 <h3>Rate limits, daily caps, and concurrency</h3>
                 <DocsRowTable compact rows={[
-                    { code: "429 rate_limit_error", span: <>Per-minute, daily-success cap, upstream rate limit, or anti-abuse overlap block. Honor <code>Retry-After</code> when present and wait for the next UTC reset.</> },
+                    { code: "429 rate_limit_error", span: <>Per-minute, daily-success cap, provider rate limit, or anti-abuse overlap block. Honor <code>Retry-After</code> when present and wait for the next UTC reset.</> },
                     { code: "429 concurrency_limit_error", span: "Already running the maximum allowed parallel requests. Wait for one to finish." },
                     { code: "429 glm_depleted", span: "GLM provider quota is depleted for the current 5-hour window. Retry later." },
                     { code: "499 client_canceled", span: "Client disconnected while the request was still running. Keep the connection open until the response completes." },
@@ -168,7 +168,7 @@ data: [DONE]`}</code></pre>
                 <h3>Provider and gateway</h3>
                 <DocsRowTable compact rows={[
                     { code: "502 provider_error", span: "Provider call/read/translation failed. Retry, or try another model. If it persists, report the model and timestamp." },
-                    { code: "503 provider_unavailable", span: <>Provider account pool is cooling down, busy, or upstream returned 5xx. Retry after <code>Retry-After</code> (typically 30s).</> },
+                    { code: "503 provider_unavailable", span: <>Provider capacity is cooling down, busy, or temporarily unhealthy. Retry after <code>Retry-After</code> (typically 30s).</> },
                     { code: "504 provider_timeout", span: "Provider took too long. Retry with smaller context/output or use streaming." },
                     { code: "500 server_error", span: "Internal gateway error. Not user-fixable. Retry once, then report it." },
                     { code: "503 server_error", span: "Internal dependency unavailable (DB, store, handler). Retry shortly." },

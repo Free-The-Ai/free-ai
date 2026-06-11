@@ -1,6 +1,6 @@
 import { createSignal, createEffect, onMount, onCleanup, For, Show } from "solid-js";
 import { Button, Skeleton, TextField } from "./ui";
-import { formatTokens, modelPrefix, modelSuffix } from "../utils/format";
+import { formatTokens, modelPrefix, modelSuffix, siteModelContextWindow } from "../utils/format";
 
 interface AccessInfo {
   available?: boolean;
@@ -77,7 +77,7 @@ const modelSupportsAudio = (model: Model): boolean =>
   /(^|\/)(grok-stt|grok-tts)$/i.test(model.id) ||
   /tts|stt|speech|transcription/i.test(model.id);
 
-const modelContext = (model: Model): number => model.context_window ?? model.max_input_tokens ?? 0;
+const modelContext = (model: Model): number => siteModelContextWindow(model);
 
 const TYPE_PREDICATES: Record<FilterKey, (m: Model) => boolean> = {
   chat: (m) => !modelSupportsAudio(m),
@@ -269,6 +269,8 @@ function ModelCard({ model, onSelect }: { model: Model; onSelect: (m: Model) => 
 // ── Model Detail Modal ──
 
 function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onClose: () => void; verifiedLabel: string }) {
+    const ctx = modelContext(model);
+    const maxInput = model.prefix === "sky" ? ctx : model.max_input_tokens;
     return (
         <div
             class="model-modal-backdrop"
@@ -299,16 +301,16 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
                 </header>
 
                 <section class="model-modal-meta">
-                    {model.context_window !== undefined && (
+                    {ctx > 0 && (
                         <div>
                             <span>Context window</span>
-                            <strong>{formatTokensFull(model.context_window)} tokens</strong>
+                            <strong>{formatTokensFull(ctx)} tokens</strong>
                         </div>
                     )}
-                    {model.max_input_tokens !== undefined && model.max_input_tokens !== model.context_window && (
+                    {maxInput !== undefined && maxInput !== ctx && (
                         <div>
                             <span>Max input</span>
-                            <strong>{formatTokensFull(model.max_input_tokens)} tokens</strong>
+                            <strong>{formatTokensFull(maxInput)} tokens</strong>
                         </div>
                     )}
                     {model.max_output_tokens !== undefined && (

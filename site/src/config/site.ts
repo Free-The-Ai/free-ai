@@ -11,6 +11,7 @@ export const siteConfig = {
     socials: {
         discord: "https://discord.gg/secrets",
         github: "https://github.com/Free-The-Ai/free-ai",
+        linkedin: "https://www.linkedin.com/in/vibheksoni/",
         api: "https://api.freetheai.xyz",
         donate: "https://buymeacoffee.com/vibheksoni",
         supportEmail: "complex.hummingbird.nliw@masked.me",

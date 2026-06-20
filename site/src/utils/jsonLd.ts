@@ -48,6 +48,11 @@ export function buildWebsiteJsonLd() {
 				name: 'FreeTheAi Terms of Use',
 				url: 'https://freetheai.xyz/terms',
 			},
+			{
+				'@type': 'WebPage',
+				name: 'FreeTheAi Support',
+				url: 'https://freetheai.xyz/support',
+			},
 		],
 		potentialAction: {
 			'@type': 'SearchAction',

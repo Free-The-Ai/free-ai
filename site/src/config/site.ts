@@ -13,6 +13,7 @@ export const siteConfig = {
         github: "https://github.com/Free-The-Ai/free-ai",
         api: "https://api.freetheai.xyz",
         donate: "https://buymeacoffee.com/vibheksoni",
+        supportEmail: "complex.hummingbird.nliw@masked.me",
     },
     defaults: {
         locale: "en_US",

@@ -1,0 +1,185 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { siteConfig } from "../config/site";
+import {
+    buildBreadcrumbJsonLd,
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebsiteJsonLd,
+    buildWebApiJsonLd,
+} from "../utils/jsonLd";
+
+const pageTitle = "Support | FreeTheAi";
+const pageDescription =
+    "FreeTheAi support, issue reporting, and policy contact page for Discord users, developers, and app reviewers.";
+const jsonLd = [
+    buildWebsiteJsonLd(),
+    buildOrganizationJsonLd(),
+    buildSoftwareJsonLd(),
+    buildWebApiJsonLd(),
+    {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        name: "FreeTheAi Support",
+        url: "https://freetheai.xyz/support",
+        description: pageDescription,
+        isPartOf: {
+            "@id": "https://freetheai.xyz/#website",
+        },
+    },
+    buildBreadcrumbJsonLd([
+        { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
+        { name: "Support", url: "https://freetheai.xyz/support" },
+    ]),
+];
+---
+
+<Layout
+    title={pageTitle}
+    description={pageDescription}
+    jsonLd={jsonLd}
+    currentPath="/support"
+    keywords="FreeTheAi support, FreeTheAi report issue, Discord app support, API help"
+>
+    <main class="support-main">
+        <section class="support-hero shell">
+            <span class="eyebrow">Support</span>
+            <h1>Report issues, get help, or contact the team.</h1>
+            <p class="hero-text">
+                If something is broken, unsafe, or unclear, use one of the
+                public support paths below. This page exists so Discord users
+                and app reviewers have a clear way to contact us about the
+                application and its use.
+            </p>
+        </section>
+
+        <section class="section shell support-grid-section">
+            <div class="support-grid">
+                <article class="panel support-card">
+                    <span class="eyebrow">Email contact</span>
+                    <h2>Private support mailbox</h2>
+                    <p>
+                        Use this address for account issues, app-review contact,
+                        policy questions, or abuse reports that should not be
+                        posted publicly.
+                    </p>
+                    <a class="support-link" href={`mailto:${siteConfig.socials.supportEmail}`}>
+                        {siteConfig.socials.supportEmail}
+                    </a>
+                </article>
+
+                <article class="panel support-card">
+                    <span class="eyebrow">Community help</span>
+                    <h2>Discord and GitHub</h2>
+                    <p>
+                        For general help, use the Discord server. For public bugs
+                        or feature requests, use GitHub issues or pull requests.
+                    </p>
+                    <div class="support-links">
+                        <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+                            <span>Join Discord</span>
+                            <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+                        </a>
+                        <a class="support-secondary" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
+                            GitHub repo
+                        </a>
+                    </div>
+                </article>
+            </div>
+        </section>
+
+        <section class="section shell support-section">
+            <header class="section-head">
+                <span class="eyebrow">What to include</span>
+                <h2>Send enough detail to reproduce the problem.</h2>
+                <p>
+                    Include the affected page or route, the time the issue
+                    happened, the Discord user id or key prefix if relevant, the
+                    exact error text, and any screenshots or request ids that
+                    help us trace it.
+                </p>
+            </header>
+            <div class="support-notes">
+                <article class="panel support-note">
+                    <h3>For policy or safety issues</h3>
+                    <p>
+                        Send the exact behavior, the channel or surface it
+                        happened on, and why you think it violates the terms or
+                        developer policy.
+                    </p>
+                </article>
+                <article class="panel support-note">
+                    <h3>For app review</h3>
+                    <p>
+                        Use the site links to privacy and terms. Discord app
+                        review can also use this page as the public contact point
+                        for follow-up questions.
+                    </p>
+                </article>
+            </div>
+        </section>
+    </main>
+</Layout>
+
+<style>
+    .support-main {
+        gap: 28px;
+        padding: 22px 0 64px;
+    }
+
+    .support-hero {
+        display: grid;
+        gap: 14px;
+        padding: clamp(28px, 4.6vw, 52px);
+    }
+
+    .support-grid-section,
+    .support-section {
+        margin-top: -18px;
+        padding: clamp(22px, 3.8vw, 36px);
+    }
+
+    .support-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+    }
+
+    .support-card,
+    .support-note {
+        display: grid;
+        gap: 12px;
+        min-height: 100%;
+    }
+
+    .support-link {
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        word-break: break-word;
+    }
+
+    .support-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+        align-items: center;
+    }
+
+    .support-secondary {
+        color: var(--muted);
+        text-decoration: none;
+        border-bottom: 1px solid var(--sk-border);
+        padding-bottom: 2px;
+    }
+
+    .support-secondary:hover {
+        color: var(--accent-text);
+        border-color: rgba(238, 93, 32, 0.42);
+    }
+
+    .support-notes {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 16px;
+    }
+</style>

@@ -5,6 +5,8 @@ import NavDrawer from '../components/NavDrawer';
 import SmoothScroll from '../components/SmoothScroll';
 import SoundProvider from '../components/SoundProvider';
 import MotionProvider from '../components/MotionProvider';
+import ThemeProvider from '../components/ThemeProvider';
+import { themeInlineBootstrap } from '../lib/theme/singleton';
 import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
 import { ClientRouter } from 'astro:transitions';
@@ -44,6 +46,7 @@ const navLinks: [string, string][] = [
 const setupCategories = setupGuidesByCategory();
 const setupGuideCount = SETUP_GUIDES.length;
 const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup/');
+const themeBootstrap = themeInlineBootstrap();
 ---
 
 <!doctype html>
@@ -51,12 +54,16 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 	<head>
 		<BaseHead title={title} description={description} image={image} jsonLd={jsonLd} keywords={keywords} />
 		<ClientRouter />
+		<!-- Flash-free theme bootstrap: applies persisted/system scheme before paint -->
+		<script is:inline set:html={themeBootstrap} />
 	</head>
 	<body>
 		<!-- Sound system: module-level singleton, no DOM output, survives navigation -->
 		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }} />
 		<!-- Adaptive motion system: tracks pointer/scroll velocity + reduced-motion -->
 		<MotionProvider client:load config={{ speedScale: 1, reducedMotion: "inherit" }} />
+		<!-- Runtime theme system: scheme/density/typography/scale tokens on :root -->
+		<ThemeProvider client:load config={{ scheme: 'dark', density: 'comfortable', typography: 'standard' }} />
 
 <div id="loader" transition:persist="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none">
 			<Logo width={160} style="opacity:.4" />
@@ -155,6 +162,15 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 						<a href={siteConfig.socials.github} target="_blank" rel="noreferrer">GitHub</a>
 					</div>
 					<div class="nav-actions">
+						<button
+							type="button"
+							class="theme-toggle"
+							aria-label="Toggle color scheme"
+							title="Toggle theme"
+							onclick="if(window.__themeToggle){const s=window.__themeToggle();this.setAttribute('data-scheme',s);}"
+						>
+							<span class="theme-toggle-icon" aria-hidden="true">◎</span>
+						</button>
 						<a class="discord-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
 							Join Discord
 						</a>

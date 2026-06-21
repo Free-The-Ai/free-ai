@@ -1,5 +1,6 @@
 import { createSignal, createEffect, onCleanup, For, Show } from "solid-js";
 import { disconnectPointerDrag, lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
+import { motionFor, motionApply } from "../lib/motion";
 
 const SECTIONS = [
   { id: "auth", label: "Auth" },
@@ -70,6 +71,13 @@ export default function DocsMobileNav() {
 
   const drag = useSheetDrag(() => open, close);
 
+  // Sheet mounts fresh on every open (via <Show>), so the ref callback fires
+  // each open — apply adaptive motion params sized to the sheet height there.
+  const setSheetRef = (el: HTMLDivElement) => {
+    drag.setSheetRef(el);
+    motionApply(el, motionFor("panel", "enter", { size: el.offsetHeight }));
+  };
+
   const lockScroll = () => lockBodyScroll("docs-toc-open");
   const unlockScroll = () => unlockBodyScroll("docs-toc-open");
 
@@ -131,7 +139,7 @@ export default function DocsMobileNav() {
         <div class="docs-mobile-toc__overlay" data-sound="overlay.close" onClick={close} />
         <div
           class="docs-mobile-toc__sheet"
-          ref={drag.setSheetRef}
+          ref={setSheetRef}
           style={drag.dragY() > 0 ? { transform: `translateY(${drag.dragY()}px)`, transition: "none", "touch-action": "none" } : {}}
           onPointerDown={drag.onDragStart}
         >

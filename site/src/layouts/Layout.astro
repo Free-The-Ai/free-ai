@@ -68,7 +68,8 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				var hideTimer=null;
 				function hide(){
 					if(hideTimer){clearTimeout(hideTimer);hideTimer=null}
-					l.style.transition='opacity 200ms ease-out';
+					var dur = getComputedStyle(document.documentElement).getPropertyValue('--motion-duration').trim() || '200ms';
+				l.style.transition='opacity ' + dur + ' ease-out';
 					l.style.opacity='0';
 					l.style.pointerEvents='none';
 				}

@@ -3081,7 +3081,7 @@ h3 {
     overscroll-behavior: contain;
     touch-action: pan-y;
     will-change: transform;
-    transition: transform 280ms var(--ease-out-expo);
+    transition: transform var(--motion-duration, 280ms) var(--motion-easing, var(--ease-out-expo));
 }
 
 html.nav-drawer-open {
@@ -3932,9 +3932,9 @@ body.nav-drawer-open {
         max-height: 70vh;
         overflow-y: auto;
         overscroll-behavior: contain;
-        animation: toc-sheet-up 250ms var(--ease-out-expo);
+        animation: toc-sheet-up var(--motion-duration, 250ms) var(--motion-easing, var(--ease-out-expo));
         will-change: transform;
-        transition: transform 280ms var(--ease-out-expo);
+        transition: transform var(--motion-duration, 280ms) var(--motion-easing, var(--ease-out-expo));
         touch-action: pan-y;
     }
 
@@ -4091,7 +4091,7 @@ body.nav-drawer-open {
         border: 1px solid var(--border);
         border-right: 0;
         border-radius: var(--radius) 0 0 var(--radius);
-        animation: nav-drawer-slide-in 280ms var(--ease-out-expo);
+        animation: nav-drawer-slide-in var(--motion-duration, 280ms) var(--motion-easing, var(--ease-out-expo));
     }
 
     @keyframes nav-drawer-slide-in {
@@ -4506,41 +4506,41 @@ body[data-sound-muted="false"]::after {
 
 /* Text swap — exit up with scale, enter from below */
 .t-text-exit {
-    animation: text-swap-out var(--text-swap-dur) var(--ease-out-smooth) forwards;
+    animation: text-swap-out var(--motion-duration, var(--text-swap-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
 }
 .t-text-enter {
-    animation: text-swap-in var(--text-swap-dur) var(--ease-out-smooth) forwards;
+    animation: text-swap-in var(--motion-duration, var(--text-swap-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
 }
 
 /* Icon swap — exit shrinks, enter grows */
 .t-icon-exit {
-    animation: icon-swap-out var(--icon-swap-dur) var(--ease-out-smooth) forwards;
+    animation: icon-swap-out var(--motion-duration, var(--icon-swap-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
 }
 .t-icon-enter {
-    animation: icon-swap-in var(--icon-swap-dur) var(--ease-out-smooth) forwards;
+    animation: icon-swap-in var(--motion-duration, var(--icon-swap-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
 }
 
 /* Modal enter/exit with scale */
 .t-modal-enter {
-    animation: modal-enter var(--modal-open-dur) var(--ease-out-smooth) forwards;
+    animation: modal-enter var(--motion-duration, var(--modal-open-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
 }
 .t-modal-exit {
-    animation: modal-exit var(--modal-close-dur) var(--ease-in-smooth) forwards;
+    animation: modal-exit var(--motion-duration, var(--modal-close-dur)) var(--motion-easing, var(--ease-in-smooth)) forwards;
 }
 
 /* Dropdown enter/exit */
 .t-dropdown-enter {
-    animation: dropdown-open var(--dropdown-open-dur) var(--ease-out-smooth) forwards;
+    animation: dropdown-open var(--motion-duration, var(--dropdown-open-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
     transform-origin: top center;
 }
 .t-dropdown-exit {
-    animation: dropdown-close var(--dropdown-close-dur) var(--ease-in-smooth) forwards;
+    animation: dropdown-close var(--motion-duration, var(--dropdown-close-dur)) var(--motion-easing, var(--ease-in-smooth)) forwards;
     transform-origin: top center;
 }
 
 /* Digit pop-in — staggered entrance for number animations */
 .t-digit-pop {
-    animation: digit-pop var(--digit-dur) var(--ease-spring) backwards;
+    animation: digit-pop var(--motion-duration, var(--digit-dur)) var(--motion-easing, var(--ease-spring)) backwards;
 }
 
 /* Focus ring transition */

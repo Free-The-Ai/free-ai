@@ -2,6 +2,7 @@ import { createEffect, createSignal, onCleanup, Show } from "solid-js";
 import { Portal } from "solid-js/web";
 import { siteConfig } from "../config/site";
 import { lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
+import { motionFor, motionApply } from "../lib/motion";
 
 const LINKS: [string, string, boolean][] = [
   ["/home", "Home", false],
@@ -24,15 +25,23 @@ type NavDrawerProps = {
 /** Horizontal swipe-to-close handler. Returns pointer event handlers to spread on an element. */
 function useSwipeToClose(el: () => HTMLElement | undefined, onClose: () => void) {
   let startX = 0, currentX = 0, dragging = false;
+  let lastX = 0, lastT = 0, releaseVelocity = 0;
   const start = (e: PointerEvent) => {
     if (e.button !== 0 || (e.target as HTMLElement).closest("a, button")) return;
-    startX = currentX = e.clientX;
+    startX = currentX = lastX = e.clientX;
+    lastT = performance.now();
+    releaseVelocity = 0;
     dragging = true;
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     e.preventDefault();
   };
   const move = (e: PointerEvent) => {
     if (!dragging) return;
+    const now = performance.now();
+    const dt = now - lastT;
+    if (dt > 0) releaseVelocity = (e.clientX - lastX) / dt;
+    lastX = e.clientX;
+    lastT = now;
     currentX = e.clientX;
     const elRef = el();
     if (elRef) {
@@ -50,7 +59,7 @@ function useSwipeToClose(el: () => HTMLElement | undefined, onClose: () => void)
     if (elRef) { elRef.style.transition = ""; elRef.style.transform = ""; }
     if (delta > (elRef?.offsetWidth ?? 280) * 0.3) onClose();
   };
-  return { onPointerDown: start, onPointerMove: move, onPointerUp: end };
+  return { onPointerDown: start, onPointerMove: move, onPointerUp: end, getVelocity: () => releaseVelocity };
 }
 
 export default function NavDrawer(props: NavDrawerProps) {
@@ -113,7 +122,15 @@ export default function NavDrawer(props: NavDrawerProps) {
           <nav
             id="mobile-navigation-menu"
             class="nav-drawer"
-            ref={drawerRef}
+            ref={(el) => {
+              drawerRef = el;
+              const distance = el.offsetWidth || 320;
+              motionApply(el, motionFor("panel", "enter", {
+                distance,
+                size: distance,
+                pointerVelocity: swipe.getVelocity(),
+              }));
+            }}
             aria-label="Mobile navigation"
             onPointerDown={swipe.onPointerDown}
             onPointerMove={swipe.onPointerMove}

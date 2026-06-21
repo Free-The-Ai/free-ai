@@ -8,6 +8,7 @@ import {
 import type { ProviderHealth } from "./ProviderStatusGrid";
 import { formatPercent } from "../utils/format";
 import { disconnectPointerDrag, lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
+import { motionApply, motionFor } from "../lib/motion";
 
 type ScrollRailMetrics = {
     scrollable: boolean;
@@ -56,8 +57,8 @@ const POPOVER_CSS = `
   box-shadow: var(--sk-raised-crisp-shadow), 0 32px 64px rgba(0, 0, 0, 0.7);
   opacity: 0;
   transform: translateY(16px) scale(0.98);
-  transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1),
-              transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: opacity var(--motion-duration, 200ms) var(--motion-easing, cubic-bezier(0.16, 1, 0.3, 1)),
+              transform var(--motion-duration, 250ms) var(--motion-easing, cubic-bezier(0.16, 1, 0.3, 1));
 }
 .popover.is-open {
   opacity: 1;
@@ -306,7 +307,7 @@ const POPOVER_CSS = `
     border-radius: 14px 14px 0 0;
     border-bottom: none;
     transform: translateY(100%);
-    transition: transform 0.3s cubic-bezier(0.32, 0.72, 0, 1);
+    transition: transform var(--motion-duration, 300ms) var(--motion-easing, cubic-bezier(0.32, 0.72, 0, 1));
     box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.5);
   }
   .popover.is-open { transform: translateY(0); }
@@ -527,6 +528,7 @@ export default function ProviderPopover(props: {
     const [isMobile, setIsMobile] = createSignal(false);
 
     const provider = () => props.provider;
+    let sheetEl: HTMLDivElement | undefined;
     const closePopover = () => {
         unlockPageScroll();
         props.onClose();
@@ -543,6 +545,13 @@ export default function ProviderPopover(props: {
 
     onMount(() => {
         lockPageScroll();
+        // Adaptive motion: compute open params from live pointer velocity + size,
+        // then expose them as --motion-* CSS vars consumed by .popover.
+        if (sheetEl) {
+            motionApply(sheetEl, motionFor("popover", "enter", {
+                size: sheetEl.offsetHeight,
+            }));
+        }
         if (typeof window === "undefined") return;
         setIsMobile(window.innerWidth <= 640);
         const onResize = () => { setIsMobile(window.innerWidth <= 640); rail.queueUpdate(); };
@@ -565,7 +574,7 @@ export default function ProviderPopover(props: {
                     data-sound="overlay.close"
                 >
                     <div
-                        ref={drag.setSheetRef}
+                        ref={(el) => { sheetEl = el; drag.setSheetRef(el); }}
                         class={`popover is-${provider().status} is-open`}
                         style={{
                             transform: sheetTransform(),

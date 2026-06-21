@@ -4,6 +4,7 @@ import Logo from '../components/Logo.astro';
 import NavDrawer from '../components/NavDrawer';
 import SmoothScroll from '../components/SmoothScroll';
 import SoundProvider from '../components/SoundProvider';
+import MotionProvider from '../components/MotionProvider';
 import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
 import { ClientRouter } from 'astro:transitions';
@@ -54,6 +55,8 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 	<body>
 		<!-- Sound system: module-level singleton, no DOM output, survives navigation -->
 		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }} />
+		<!-- Adaptive motion system: tracks pointer/scroll velocity + reduced-motion -->
+		<MotionProvider client:load config={{ speedScale: 1, reducedMotion: "inherit" }} />
 
 <div id="loader" transition:persist="loader" style="position:fixed;inset:0;z-index:9999;background:#0f0f0f;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none">
 			<Logo width={160} style="opacity:.4" />

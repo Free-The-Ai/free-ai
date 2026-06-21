@@ -611,13 +611,12 @@ export default function ProviderPopover(props: {
                             <h3 class="popover-heading">
                                 <span
                                     class={`status-dot is-${provider().status}`}
-                                    style="display:inline-block;margin-right:8px;vertical-align:middle"
                                 />{" "}
                                 {provider().prefix}/
                             </h3>
                             <p class="popover-sub">
                                 Status:{" "}
-                                <strong style="color:var(--text)">
+                                <strong>
                                     {provider().status}
                                 </strong>{" "}
                                 &middot;{" "}

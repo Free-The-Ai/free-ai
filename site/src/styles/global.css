@@ -909,6 +909,33 @@ h3 {
     gap: clamp(10px, 2vw, 18px);
 }
 
+.stat-card {
+    text-align: center;
+    padding: 12px 20px;
+}
+
+.stat-value {
+    font-size: clamp(1.5rem, 2.5vw, 2rem);
+    font-weight: 600;
+    font-family: var(--font-serif);
+    line-height: 1;
+    color: var(--text);
+}
+
+.stat-label {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 4px;
+}
+
+.canvas-scroller-bg {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.55;
+}
+
 .home-client-strip {
     display: flex;
     flex-wrap: wrap;
@@ -2995,8 +3022,11 @@ h3 {
 }
 
 .status-dot {
+    display: inline-block;
     width: 9px;
     height: 9px;
+    margin-right: 8px;
+    vertical-align: middle;
     border-radius: 50%;
     background: var(--dim);
 }
@@ -4571,7 +4601,7 @@ body[data-sound-muted="false"]::after {
 }
 
 .shiki-wrapper .shiki {
-    background: var(--code-bg) !important;
+    background: var(--code-bg);
     padding: 18px 20px;
     border-radius: var(--radius);
     overflow-x: auto;

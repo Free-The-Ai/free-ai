@@ -5,6 +5,18 @@
  */
 import { codeToHtml } from "shiki";
 
+/** Strips Shiki's inline background-color so our --code-bg CSS var applies without !important. */
+const stripPreBackground = {
+	name: "strip-pre-background",
+	pre(node) {
+		if (typeof node.properties?.style === "string") {
+			node.properties.style = node.properties.style
+				.replace(/background-color\s*:[^;]+;?/gi, "")
+				.trim();
+		}
+	},
+};
+
 type HighlightLang =
 	| "bash"
 	| "javascript"
@@ -39,5 +51,6 @@ export async function highlight(
 	return codeToHtml(code, {
 		lang: grammar,
 		theme: "dark-plus",
+		transformers: [stripPreBackground],
 	});
 }

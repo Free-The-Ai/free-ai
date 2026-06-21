@@ -204,16 +204,6 @@ const CSS = `
   flex-shrink: 0;
 }
 
-.status-dot {
-  width: 9px; height: 9px;
-  border-radius: 50%;
-  background: var(--dim);
-  flex-shrink: 0;
-}
-.is-up .status-dot    { background: #2ea043; }
-.is-degraded .status-dot { background: var(--amber); }
-.is-down .status-dot  { background: var(--danger); }
-
 .status-card-main {
   display: flex;
   align-items: baseline;

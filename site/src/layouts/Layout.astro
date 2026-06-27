@@ -4,7 +4,6 @@ import Logo from '../components/Logo.astro';
 import NavDrawer from '../components/NavDrawer';
 import SmoothScroll from '../components/SmoothScroll';
 import SoundProvider from '../components/SoundProvider';
-import DitherShader from '../components/DitherShader';
 import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
 import { ClientRouter } from 'astro:transitions';
@@ -53,18 +52,6 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 		<ClientRouter />
 	</head>
 	<body>
-		<!-- Dither background on every page -->
-		<div style="position:fixed;inset:0;z-index:-1">
-			<DitherShader
-				client:load
-				w={80}
-				h={50}
-				amplitude={0.22}
-				speed={0.5}
-				interval={280}
-			/>
-		</div>
-
 		<!-- Sound system: module-level singleton, no DOM output, survives navigation -->
 		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }} />
 

@@ -1,5 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
+import DitherShader from "../components/DitherShader";
 import LiveStats from "../components/DiscordStats";
 import { highlight } from "../lib/highlight";
 import Logo from "../components/Logo.astro";
@@ -48,8 +49,17 @@ const pageDescription =
     currentPath="/home"
 >
     <main>
-        <!-- Hero -->
+        <!-- Hero with dither -->
         <section style="position:relative;overflow:hidden;padding:80px 16px 48px;text-align:center">
+            <div style="position:absolute;inset:0;z-index:0">
+                <DitherShader
+                    client:load
+                    w={120}
+                    h={75}
+                    speed={0.6}
+                    interval={200}
+                />
+            </div>
             <div style="position:relative;z-index:1;max-width:600px;margin:0 auto">
                 <h1 style="position:relative;margin:0">
                     <Logo

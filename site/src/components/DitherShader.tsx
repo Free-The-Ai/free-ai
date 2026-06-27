@@ -23,11 +23,11 @@ export default function DitherShader(props: DitherShaderProps) {
   let last = 0;
   let visible = true;
 
-  const W = () => props.w ?? 48;
-  const H = () => props.h ?? 30;
-  const amp = () => props.amplitude ?? 0.07;
+  const W = () => props.w ?? 60;
+  const H = () => props.h ?? 38;
+  const amp = () => props.amplitude ?? 0.32;
   const spd = () => props.speed ?? 1;
-  const ivl = () => props.interval ?? 320;
+  const ivl = () => props.interval ?? 200;
 
   onMount(() => {
     if (!canvas || typeof window === "undefined") return;
@@ -49,10 +49,15 @@ export default function DitherShader(props: DitherShaderProps) {
           const nx = x / w;
           const ny = y / h;
 
-          // Sparse starfield: no blob clustering, just random placement
-          const t = hash(x, y, seed + Math.floor(time * 10));
-          // Only 12% of cells lit, distributed randomly
-          const on = t > 0.88 ? 1 : 0;
+          // Sine waves create dramatic bright peaks and dark troughs
+          let n = Math.sin(nx * 3.7 + time) * Math.cos(ny * 3.3 - time * 0.7);
+          n += Math.sin(nx * 2.1 - ny * 2.9 + time * 0.5) * 0.5;
+          // Map to 0..1 with amplitude controlling spread
+          n = n * a + 0.5;
+
+          // Per-cell random threshold creates dither speckle
+          const threshold = hash(x, y, seed);
+          const on = n > threshold ? 1 : 0;
 
           if (!on) {
             const i = (y * w + x) * 4;
@@ -60,19 +65,19 @@ export default function DitherShader(props: DitherShaderProps) {
             continue;
           }
 
-          // Distant star ember: very dim warm speck
+          // Warm amber ember with variation
           const tint = hash(y, x, seed + 1);
-          const r = 20 + Math.floor(tint * 18);
-          const g = 8 + Math.floor(tint * 8);
-          const b = 2 + Math.floor(tint * 4);
+          const intensity = 0.5 + tint * 0.5;
+          const sparkle = tint > 0.94 ? 20 + hash(x + y, x, seed + 3) * 35 : 0;
 
-          // 2% chance of a slightly brighter "spark" star
-          const spark = tint > 0.98 ? 15 + Math.floor(hash(x + y, x, seed + 3) * 20) : 0;
+          const r = Math.min(255, Math.floor((65 + tint * 30) * intensity) + sparkle);
+          const g = Math.min(255, Math.floor((26 + tint * 14) * intensity) + Math.floor(sparkle * 0.4));
+          const b = Math.min(255, Math.floor((6 + tint * 6) * intensity) + Math.floor(sparkle * 0.1));
 
           const i = (y * w + x) * 4;
-          d[i] = r + spark;
-          d[i + 1] = g + Math.floor(spark * 0.4);
-          d[i + 2] = b + Math.floor(spark * 0.15);
+          d[i] = r;
+          d[i + 1] = g;
+          d[i + 2] = b;
           d[i + 3] = 255;
         }
       }

@@ -2762,7 +2762,6 @@ h3 {
 }
 
 .status-hero {
-    max-width: 680px;
     margin-bottom: 40px;
     padding: clamp(28px, 4.6vw, 52px);
 }

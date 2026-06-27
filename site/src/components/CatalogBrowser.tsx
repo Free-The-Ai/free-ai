@@ -662,7 +662,7 @@ export default function CatalogBrowser() {
         </Show>
       </div>
 
-      <div class={`catalog-results ${visibleModels().length <= 6 ? "is-short" : ""}`}>
+      <div class="catalog-results">
         <Show
           when={visibleModels().length > 0}
           fallback={

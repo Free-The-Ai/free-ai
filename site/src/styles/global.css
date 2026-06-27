@@ -63,30 +63,10 @@
     --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-in-smooth: cubic-bezier(0.4, 0, 1, 1);
 
-    /* Card resize */
-    --resize-dur: 200ms;
-    /* Number pop-in */
-    --digit-dur: 400ms;
-    --digit-distance: 6px;
-    --digit-stagger: 50ms;
-    /* Text state swap */
-    --text-swap-dur: 120ms;
-    --text-swap-translate-y: 3px;
     /* Dropdown / popover */
     --dropdown-open-dur: 180ms;
     --dropdown-close-dur: 120ms;
     --dropdown-pre-scale: 0.98;
-    /* Modal */
-    --modal-open-dur: 200ms;
-    --modal-close-dur: 120ms;
-    --modal-scale: 0.97;
-    /* Panel reveal */
-    --panel-open-dur: 280ms;
-    --panel-close-dur: 220ms;
-    --panel-translate-y: 40px;
-    /* Icon swap */
-    --icon-swap-dur: 150ms;
-    --icon-swap-start-scale: 0.5;
     /* Button press */
     --press-dur: 100ms;
     --press-scale: 0.96;
@@ -128,55 +108,6 @@
     animation-duration: 0s;
 }
 
-/* ── Micro-interaction keyframes — GPU-composited only (no filter) ── */
-@keyframes press-down {
-    0%   { transform: scale(1); }
-    100% { transform: scale(var(--press-scale)); }
-}
-@keyframes press-up {
-    0%   { transform: scale(var(--press-scale)); }
-    100% { transform: scale(1); }
-}
-@keyframes modal-enter {
-    0%   { opacity: 0; transform: scale(var(--modal-scale)) translateY(6px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-@keyframes modal-exit {
-    0%   { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(var(--modal-scale)); }
-}
-@keyframes dropdown-open {
-    0%   { opacity: 0; transform: scale(var(--dropdown-pre-scale)) translateY(-3px); }
-    100% { opacity: 1; transform: scale(1) translateY(0); }
-}
-@keyframes dropdown-close {
-    0%   { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(0.98) translateY(-3px); }
-}
-@keyframes digit-pop {
-    0%   { opacity: 0; transform: translateY(var(--digit-distance)) scale(0.92); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes text-swap-out {
-    0%   { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(calc(var(--text-swap-translate-y) * -1)) scale(0.96); }
-}
-@keyframes text-swap-in {
-    0%   { opacity: 0; transform: translateY(var(--text-swap-translate-y)) scale(0.96); }
-    100% { opacity: 1; transform: translateY(0) scale(1); }
-}
-@keyframes icon-swap-out {
-    0%   { opacity: 1; transform: scale(1); }
-    100% { opacity: 0; transform: scale(var(--icon-swap-start-scale)); }
-}
-@keyframes icon-swap-in {
-    0%   { opacity: 0; transform: scale(var(--icon-swap-start-scale)); }
-    100% { opacity: 1; transform: scale(1); }
-}
-@keyframes check-stroke {
-    0%   { stroke-dashoffset: 24; }
-    100% { stroke-dashoffset: 0; }
-}
 
 * {
     box-sizing: border-box;
@@ -960,10 +891,6 @@ h3 {
     perspective: 1200px;
 }
 
-.console-glow {
-    display: none;
-}
-
 .code-card,
 .step-card,
 .panel,
@@ -1437,15 +1364,6 @@ h3 {
     font-size: 0.8rem;
 }
 
-.leaderboard-placeholder {
-    padding: 16px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--bg);
-    color: var(--muted);
-    font-size: 0.9rem;
-}
-
 .section {
     display: grid;
     gap: 24px;
@@ -1580,10 +1498,6 @@ h3 {
 .models-cta {
     grid-template-columns: minmax(0, 1fr) auto;
     align-items: center;
-}
-
-.model-orbit {
-    display: none;
 }
 
 .cta-banner {
@@ -2320,11 +2234,6 @@ h3 {
     align-items: stretch;
     align-content: start;
     gap: 12px;
-}
-
-.catalog-results.is-short {
-    grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 360px));
-    justify-content: start;
 }
 
 .catalog-controls {
@@ -3238,23 +3147,6 @@ body.nav-drawer-open {
     gap: 24px;
 }
 
-.footer-top {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-}
-
-.footer-brand {
-    font-weight: 600;
-    font-size: 0.9rem;
-    color: var(--text);
-}
-
-.footer-tagline {
-    color: var(--dim);
-    font-size: 0.82rem;
-}
-
 .footer-links {
     display: flex;
     gap: 16px;
@@ -3343,7 +3235,6 @@ body.nav-drawer-open {
 .docs-sidebar,
 .docs-sidebar a:hover,
 .docs-content .kb-accordion__trigger:hover,
-.leaderboard-placeholder,
 .docs-code-bar,
 .docs-code-group pre,
 .docs-table,
@@ -4526,92 +4417,6 @@ body[data-sound-muted="false"]::after {
         opacity: 1;
         transform: none;
     }
-}
-
-/* Gate transform hover effects on touch devices */
-@media (hover: hover) and (pointer: fine) {
-    .t-card:hover {
-        transform: translateY(var(--hover-lift));
-        box-shadow: var(--sk-raised-shadow);
-    }
-}
-
-/* ── Micro-interaction utilities (transitions.dev-inspired) ── */
-
-/* Button press — scale down on active, spring back on release */
-.t-press {
-    transition: transform var(--press-dur) var(--ease-out-smooth);
-}
-.t-press:active {
-    transform: scale(var(--press-scale));
-}
-
-/* Card hover lift with shadow growth */
-.t-card {
-    transition:
-        transform var(--hover-dur) var(--ease-out-smooth),
-        box-shadow var(--hover-dur) var(--ease-out-smooth);
-}
-
-/* Text swap — exit up with scale, enter from below */
-.t-text-exit {
-    animation: text-swap-out var(--text-swap-dur) var(--ease-out-smooth) forwards;
-}
-.t-text-enter {
-    animation: text-swap-in var(--text-swap-dur) var(--ease-out-smooth) forwards;
-}
-
-/* Icon swap — exit shrinks, enter grows */
-.t-icon-exit {
-    animation: icon-swap-out var(--icon-swap-dur) var(--ease-out-smooth) forwards;
-}
-.t-icon-enter {
-    animation: icon-swap-in var(--icon-swap-dur) var(--ease-out-smooth) forwards;
-}
-
-/* Modal enter/exit with scale */
-.t-modal-enter {
-    animation: modal-enter var(--modal-open-dur) var(--ease-out-smooth) forwards;
-}
-.t-modal-exit {
-    animation: modal-exit var(--modal-close-dur) var(--ease-in-smooth) forwards;
-}
-
-/* Dropdown enter/exit */
-.t-dropdown-enter {
-    animation: dropdown-open var(--dropdown-open-dur) var(--ease-out-smooth) forwards;
-    transform-origin: top center;
-}
-.t-dropdown-exit {
-    animation: dropdown-close var(--dropdown-close-dur) var(--ease-in-smooth) forwards;
-    transform-origin: top center;
-}
-
-/* Digit pop-in — staggered entrance for number animations */
-.t-digit-pop {
-    animation: digit-pop var(--digit-dur) var(--ease-spring) backwards;
-}
-
-/* Focus ring transition */
-.t-focus {
-    transition: box-shadow var(--focus-dur) var(--ease-out-smooth), outline var(--focus-dur) var(--ease-out-smooth);
-}
-.t-focus:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-    box-shadow: var(--sk-accent-glow);
-}
-
-/* Respect reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-    }
-    .t-card:hover { transform: none; }
-    .t-press:active { transform: none; }
 }
 
 /* ── Shiki syntax highlighting ── */

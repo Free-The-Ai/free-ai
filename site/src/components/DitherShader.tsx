@@ -23,11 +23,11 @@ export default function DitherShader(props: DitherShaderProps) {
   let last = 0;
   let visible = true;
 
-  const W = () => props.w ?? 72;
-  const H = () => props.h ?? 45;
-  const amp = () => props.amplitude ?? 0.35;
+  const W = () => props.w ?? 48;
+  const H = () => props.h ?? 30;
+  const amp = () => props.amplitude ?? 0.07;
   const spd = () => props.speed ?? 1;
-  const ivl = () => props.interval ?? 220;
+  const ivl = () => props.interval ?? 320;
 
   onMount(() => {
     if (!canvas || typeof window === "undefined") return;
@@ -41,7 +41,7 @@ export default function DitherShader(props: DitherShaderProps) {
     const d = img.data;
 
     function draw(t: number) {
-      const time = t * 0.0002 * spd();
+      const time = t * 0.00018 * spd();
       const seed = Math.floor(t * 0.000001) | 0;
       const a = amp();
       for (let y = 0; y < h; y++) {
@@ -49,13 +49,10 @@ export default function DitherShader(props: DitherShaderProps) {
           const nx = x / w;
           const ny = y / h;
 
-          // Chaotic organic blobs
-          let n = Math.sin(nx * 3.7 + time) * Math.cos(ny * 3.3 - time * 0.7);
-          n += Math.sin(nx * 2.1 - ny * 2.9 + time * 0.5) * 0.5;
-          n = n * a + 0.5;
-
-          const threshold = hash(x, y, seed);
-          const on = n > threshold ? 1 : 0;
+          // Sparse starfield: no blob clustering, just random placement
+          const t = hash(x, y, seed + Math.floor(time * 10));
+          // Only 12% of cells lit, distributed randomly
+          const on = t > 0.88 ? 1 : 0;
 
           if (!on) {
             const i = (y * w + x) * 4;
@@ -63,19 +60,19 @@ export default function DitherShader(props: DitherShaderProps) {
             continue;
           }
 
-          // Ember glow: bright amber/orange with variation
+          // Distant star ember: very dim warm speck
           const tint = hash(y, x, seed + 1);
-          const intensity = 0.4 + tint * 0.6; // 0.4 to 1.0
-          const sparkle = tint > 0.92 ? 40 + hash(x + y, x, seed + 3) * 60 : 0;
+          const r = 20 + Math.floor(tint * 18);
+          const g = 8 + Math.floor(tint * 8);
+          const b = 2 + Math.floor(tint * 4);
 
-          const r = Math.min(255, Math.floor((55 + tint * 40) * intensity) + sparkle);
-          const g = Math.min(255, Math.floor((22 + tint * 18) * intensity) + Math.floor(sparkle * 0.4));
-          const b = Math.min(255, Math.floor((4 + tint * 8) * intensity) + Math.floor(sparkle * 0.1));
+          // 2% chance of a slightly brighter "spark" star
+          const spark = tint > 0.98 ? 15 + Math.floor(hash(x + y, x, seed + 3) * 20) : 0;
 
           const i = (y * w + x) * 4;
-          d[i] = r;
-          d[i + 1] = g;
-          d[i + 2] = b;
+          d[i] = r + spark;
+          d[i + 1] = g + Math.floor(spark * 0.4);
+          d[i + 2] = b + Math.floor(spark * 0.15);
           d[i + 3] = 255;
         }
       }
@@ -115,7 +112,7 @@ export default function DitherShader(props: DitherShaderProps) {
         inset: 0,
         width: "100%",
         height: "100%",
-        "image-rendering": "pixelated",
+        "image-rendering": "auto",
         "pointer-events": "none",
         opacity: 1,
       }}

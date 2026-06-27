@@ -153,7 +153,7 @@ export default function CanvasScroller() {
             accents.rotation.z += dt * 0.05;
 
             // Fade accent dots based on scroll
-            accMat.opacity = 0.2 + prevScroll * 0.4;
+            (accents.material as THREE.PointsMaterial).opacity = 0.2 + prevScroll * 0.4;
 
             renderer.render(scene, camera);
         }

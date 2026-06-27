@@ -96,7 +96,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<div class="page-shell">
 			<header class="site-header" transition:persist>
-				<nav class="nav">
+				<nav class="nav" aria-label="Main navigation">
 					<a class="brand" href="/home"><Logo width={160} /></a>
 					<div class="nav-links">
 						{navLinks.map(([href, label]) => (
@@ -173,7 +173,7 @@ const isSetupActive = currentPath === '/setup' || currentPath.startsWith('/setup
 				<slot />
 			</div>
 
-			<footer class="site-footer" transition:persist>
+			<footer class="site-footer" transition:persist aria-label="Site footer">
 				<div class="footer-links">
 					<a href="/quickstart">Quickstart</a>
 					<a href="/setup">Setup guides</a>

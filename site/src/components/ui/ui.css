@@ -163,11 +163,15 @@
   background: var(--sk-shell-bg);
   box-shadow: var(--sk-raised-shadow);
   overflow: hidden;
-  animation: selectOpen 150ms var(--ease-out-smooth);
+  transform-origin: top center;
+  opacity: 1;
+  transform: translateY(0) scale(1);
+  transition: opacity 150ms var(--ease-out-smooth), transform 150ms var(--ease-out-smooth);
 }
-@keyframes selectOpen {
-  from { opacity: 0; transform: translateY(-4px); }
-  to   { opacity: 1; transform: translateY(0); }
+.kb-select__content[data-entering],
+.kb-select__content[style*="display: none"] + .kb-select__content {
+  opacity: 0;
+  transform: translateY(-4px) scale(0.98);
 }
 .kb-select__listbox { padding: 6px; max-height: 280px; overflow-y: auto; }
 .kb-select__item {

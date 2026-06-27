@@ -54,7 +54,7 @@ const pageDescription =
         <!-- Hero Section -->
         <section
             class="home-hero"
-            style="max-width:600px;margin:0 auto;padding-top:120px;position:relative;z-index:1;text-align:center"
+            style="max-width:600px;margin:0 auto;padding-top:80px;position:relative;z-index:1;text-align:center"
             data-parallax="0.3"
         >
             <h1 data-parallax="0.2" style="position:relative">
@@ -63,10 +63,7 @@ const pageDescription =
                     label="FreeTheAi"
                     style="display:block;width:min(92vw,520px);height:auto;margin:0 auto"
                 />
-                <span class="sr-only"
-                    >FreeTheAi - Free The AI - Free OpenAI-compatible API with 50+
-                    active models</span
-                >
+                <span class="sr-only">FreeTheAi — free OpenAI-compatible API</span>
             </h1>
             <p
                 style="color:var(--muted);font-size:1.15rem;margin:20px auto 0;line-height:1.6;max-width:480px"
@@ -93,33 +90,19 @@ const pageDescription =
             >
                 <a
                     href="/models"
-                    style="color:var(--muted);font-size:0.9rem;text-decoration:underline;text-underline-offset:3px"
+                    class="hero-link"
                     >Browse Models</a
                 >
                 <a
                     href="/docs"
-                    style="color:var(--muted);font-size:0.9rem;text-decoration:underline;text-underline-offset:3px"
+                    class="hero-link"
                     >Read Docs</a
                 >
             </div>
 
             <div
-                style="margin-top:56px;display:flex;flex-direction:column;align-items:center"
-            >
-                <LiveStats client:load />
-                <a
-                    href={siteConfig.socials.discord}
-                    target="_blank"
-                    rel="noreferrer"
-                    style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:var(--accent-text);text-shadow:var(--accent-text-glow);font-size:0.85rem;text-decoration:none;font-weight:500"
-                >
-                    Join Discord <span style="font-size:1rem">&rarr;</span>
-                </a>
-            </div>
-
-            <div
                 class="code-card"
-                style="margin-top:64px;text-align:left"
+                style="margin-top:48px;text-align:left"
                 data-parallax="-0.4"
             >
                 <div class="card-head">
@@ -130,12 +113,26 @@ const pageDescription =
                 </div>
                 <div class="docs-code-group">
                     <div class="shiki-wrapper" set:html={snippetHtml} />
-                    <button class="copy-btn" type="button" title="Copy">
+                    <button class="copy-btn" type="button" aria-label="Copy code">
                         <span class="material-symbols-outlined"
                             >content_copy</span
                         >
                     </button>
                 </div>
+            </div>
+
+            <div
+                style="margin-top:48px;display:flex;flex-direction:column;align-items:center"
+            >
+                <LiveStats client:load />
+                <a
+                    href={siteConfig.socials.discord}
+                    target="_blank"
+                    rel="noreferrer"
+                    style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:var(--accent-text);text-shadow:var(--accent-text-glow);font-size:0.85rem;text-decoration:none;font-weight:500"
+                >
+                    Join Discord <span style="font-size:1rem">&rarr;</span>
+                </a>
             </div>
         </section>
 
@@ -148,7 +145,7 @@ const pageDescription =
                     frontends, coding agents, and regular SDK apps.
                 </p>
             </div>
-            <div class="home-path-grid">
+            <div class="home-path-grid stagger-children">
                 <a href="/roleplay-api">
                     <strong>Roleplay API</strong>
                     <span>SillyTavern, Janitor AI, Chub AI, RisuAI.</span>
@@ -176,7 +173,7 @@ const pageDescription =
         Script Architecture (Content System): Define → Show → Act
         -->
         <section class="home-content">
-            <div class="rhythm">
+            <div class="rhythm stagger-children">
                 <!-- ═══ Whisper — subtle anchor, establishes the pattern ═══ -->
                 <div class="beat whisper">
                     <h2 class="beat-heading">What Is FreeTheAi?</h2>
@@ -294,9 +291,10 @@ const pageDescription =
     </main>
 
     <script>
-        // Lightweight scroll parallax
-        const els = document.querySelectorAll("[data-parallax]");
+        // Lightweight scroll parallax with will-change management
+        const els = document.querySelectorAll<HTMLElement>("[data-parallax]");
         let ticking = false;
+        let willChangeTimer: ReturnType<typeof setTimeout> | null = null;
         window.addEventListener(
             "scroll",
             () => {
@@ -317,6 +315,13 @@ const pageDescription =
                     });
                     ticking = true;
                 }
+                // Release will-change after scrolling stops
+                if (willChangeTimer !== null) clearTimeout(willChangeTimer);
+                willChangeTimer = setTimeout(() => {
+                    els.forEach((el) => {
+                        el.style.willChange = "";
+                    });
+                }, 150);
             },
             { passive: true },
         );
@@ -470,7 +475,6 @@ const pageDescription =
 
     .home-path-grid a:hover {
         border-color: rgba(238, 93, 32, 0.42);
-        transform: translateY(-2px);
     }
 
     .home-path-grid strong {
@@ -485,6 +489,12 @@ const pageDescription =
         color: var(--muted);
         font-size: 0.9rem;
         line-height: 1.5;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .home-path-grid a:hover {
+            transform: translateY(-2px);
+        }
     }
 
     @media (max-width: 820px) {
@@ -687,4 +697,19 @@ const pageDescription =
             gap: 40px;
         }
     }
+
+    .hero-link {
+        color: var(--muted);
+        font-size: 0.9rem;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        transition: color 120ms ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .hero-link:hover {
+            color: var(--text);
+        }
+    }
+
 </style>

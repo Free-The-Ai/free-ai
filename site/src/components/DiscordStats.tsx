@@ -55,19 +55,19 @@ export default function LiveStats() {
     <div class="home-live-stats">
       <div class="home-live-metrics">
         <div class="shell" style={{"text-align": "center", padding: "12px 20px"}}>
-          <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
+          <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)", "font-variant-numeric": "tabular-nums" }}>
             {stats() ? stats()!.models.toLocaleString() : "..."}
           </div>
           <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>active models</div>
         </div>
         <div class="shell" style={{"text-align": "center", padding: "12px 20px"}}>
-          <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
+          <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)", "font-variant-numeric": "tabular-nums" }}>
             {stats() ? fmt(stats()!.tokens) : "..."}
           </div>
           <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>tokens served</div>
         </div>
         <div class="shell" style={{"text-align": "center", padding: "12px 20px"}}>
-          <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)" }}>
+          <div style={{ "font-size": "clamp(1.5rem,2.5vw,2rem)", "font-weight": "600", "font-family": "var(--font-serif)", "line-height": "1", color: "var(--text)", "font-variant-numeric": "tabular-nums" }}>
             {stats() ? stats()!.requests.toLocaleString() : "..."}
           </div>
           <div style={{ "font-size": "0.78rem", color: "var(--muted)", "margin-top": "4px" }}>requests</div>

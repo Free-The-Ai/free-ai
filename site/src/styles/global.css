@@ -89,7 +89,7 @@
     --icon-swap-start-scale: 0.5;
     /* Button press */
     --press-dur: 100ms;
-    --press-scale: 0.97;
+    --press-scale: 0.96;
     /* Hover — fast response */
     --hover-lift: -1px;
     --hover-dur: 140ms;
@@ -159,10 +159,10 @@
 }
 @keyframes text-swap-out {
     0%   { opacity: 1; transform: translateY(0); }
-    100% { opacity: 0; transform: translateY(calc(var(--text-swap-translate-y) * -1)) scale(0.97); }
+    100% { opacity: 0; transform: translateY(calc(var(--text-swap-translate-y) * -1)) scale(0.96); }
 }
 @keyframes text-swap-in {
-    0%   { opacity: 0; transform: translateY(var(--text-swap-translate-y)) scale(0.97); }
+    0%   { opacity: 0; transform: translateY(var(--text-swap-translate-y)) scale(0.96); }
     100% { opacity: 1; transform: translateY(0) scale(1); }
 }
 @keyframes icon-swap-out {
@@ -285,6 +285,11 @@ body > .page-shell {
     border-radius: var(--radius-sm);
     background: var(--sk-inset-bg);
     box-shadow: var(--sk-inset-shadow);
+}
+
+img {
+    outline: 1px solid rgba(255, 255, 255, 0.1);
+    outline-offset: -1px;
 }
 
 a {
@@ -826,6 +831,7 @@ h2,
 h3 {
     margin: 0;
     font-family: "STIX Two Text", "Georgia", serif;
+    text-wrap: balance;
 }
 
 h1 {
@@ -857,9 +863,12 @@ h3 {
 .capability-card p,
 .proof-card p,
 .models-cta p,
-.cta-banner p {
+.cta-banner p,
+.beat-prose,
+.diptych-panel p {
     color: var(--muted);
     line-height: 1.65;
+    text-wrap: pretty;
 }
 
 .hero-text {
@@ -1367,6 +1376,7 @@ h3 {
     font-size: clamp(2.5rem, 5vw, 4.6rem);
     line-height: 0.95;
     letter-spacing: -0.07em;
+    font-variant-numeric: tabular-nums;
 }
 
 .live-token-panel p {
@@ -3080,7 +3090,6 @@ h3 {
     overflow-y: auto;
     overscroll-behavior: contain;
     touch-action: pan-y;
-    will-change: transform;
     transition: transform 280ms var(--ease-out-expo);
 }
 
@@ -3616,6 +3625,7 @@ body.nav-drawer-open {
     font-family: var(--font-mono);
     font-size: clamp(1.55rem, 3vw, 2.15rem);
     letter-spacing: -0.05em;
+    font-variant-numeric: tabular-nums;
 }
 
 .status-card-meta {
@@ -3830,6 +3840,10 @@ body.nav-drawer-open {
     .nav-hamburger:hover {
         border-color: var(--border-strong);
         background: var(--control-bg);
+    }
+
+    .nav-hamburger:active {
+        transform: scale(0.95);
     }
 
     .hamburger-bar {
@@ -4483,6 +4497,45 @@ body[data-sound-muted="false"]::after {
     background: rgba(22, 163, 74, 0.85);
 }
 
+/* ── Stagger entrance animation — 40ms between items ── */
+@keyframes stagger-in {
+    from {
+        opacity: 0;
+        transform: translateY(12px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.stagger-children > * {
+    animation: stagger-in 350ms var(--ease-out-smooth) both;
+}
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 40ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 80ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 120ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 160ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 200ms; }
+
+/* Respect reduced motion for stagger */
+@media (prefers-reduced-motion: reduce) {
+    .stagger-children > * {
+        animation: none;
+        opacity: 1;
+        transform: none;
+    }
+}
+
+/* Gate transform hover effects on touch devices */
+@media (hover: hover) and (pointer: fine) {
+    .t-card:hover {
+        transform: translateY(var(--hover-lift));
+        box-shadow: var(--sk-raised-shadow);
+    }
+}
+
 /* ── Micro-interaction utilities (transitions.dev-inspired) ── */
 
 /* Button press — scale down on active, spring back on release */
@@ -4498,10 +4551,6 @@ body[data-sound-muted="false"]::after {
     transition:
         transform var(--hover-dur) var(--ease-out-smooth),
         box-shadow var(--hover-dur) var(--ease-out-smooth);
-}
-.t-card:hover {
-    transform: translateY(var(--hover-lift));
-    box-shadow: var(--sk-raised-shadow);
 }
 
 /* Text swap — exit up with scale, enter from below */
@@ -4596,3 +4645,4 @@ body[data-sound-muted="false"]::after {
 .docs-code-group:has(.shiki-wrapper):hover .copy-btn {
     opacity: 1;
 }
+/* trigger reload */

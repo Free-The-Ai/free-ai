@@ -32,13 +32,7 @@
     --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
     --font-serif: "STIX Two Text", "Georgia", serif;
     --font-mono: "JetBrains Mono", "IBM Plex Mono", "Consolas", monospace;
-    --sk-bg-gradient:
-        radial-gradient(
-            circle at 50% -12%,
-            rgba(238, 93, 32, 0.08),
-            transparent 34rem
-        ),
-        linear-gradient(180deg, #151515 0%, #0f0f0f 32%, #0b0b0b 100%);
+    --sk-bg-solid: #0c0c0c;
     --sk-shell-bg: linear-gradient(180deg, #202020 0%, #191919 100%);
     --sk-inset-bg: linear-gradient(180deg, #111111 0%, #181818 100%);
     --sk-border: rgba(255, 255, 255, 0.08);
@@ -179,7 +173,7 @@ body {
     margin: 0;
     min-height: 100vh;
     min-height: 100svh;
-    background: var(--sk-bg-gradient);
+    background: var(--sk-bg-solid);
     color: var(--text);
     font-family: var(--font-sans);
     overflow-x: hidden;

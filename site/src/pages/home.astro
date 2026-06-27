@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import CanvasScroller from "../components/CanvasScroller";
+import DitherBackground from "../components/DitherBackground";
 import LiveStats from "../components/DiscordStats";
 import { highlight } from "../lib/highlight";
 import Logo from "../components/Logo.astro";
@@ -49,7 +49,7 @@ const pageDescription =
     currentPath="/home"
 >
     <main>
-        <CanvasScroller client:load />
+        <DitherBackground client:load />
 
         <!-- Hero Section -->
         <section

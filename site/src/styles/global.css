@@ -173,7 +173,7 @@ body {
     margin: 0;
     min-height: 100vh;
     min-height: 100svh;
-    background: radial-gradient(ellipse at 50% 0%, #1a1008 0%, #0c0c0c 50%, #080808 100%);
+    background: transparent;
     color: var(--text);
     font-family: var(--font-sans);
     overflow-x: hidden;

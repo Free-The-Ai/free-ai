@@ -1,6 +1,6 @@
 ---
 import Layout from "../layouts/Layout.astro";
-import DitherBackground from "../components/DitherBackground";
+import DitherShader from "../components/DitherShader";
 import LiveStats from "../components/DiscordStats";
 import { highlight } from "../lib/highlight";
 import Logo from "../components/Logo.astro";
@@ -49,62 +49,50 @@ const pageDescription =
     currentPath="/home"
 >
     <main>
-        <DitherBackground client:load />
-
-        <!-- Hero Section -->
-        <section
-            class="home-hero"
-            style="max-width:600px;margin:0 auto;padding-top:80px;position:relative;z-index:1;text-align:center"
-            data-parallax="0.3"
-        >
-            <h1 data-parallax="0.2" style="position:relative">
-                <Logo
-                    width={520}
-                    label="FreeTheAi"
-                    style="display:block;width:min(92vw,520px);height:auto;margin:0 auto"
+        <!-- Hero with dither shader behind -->
+        <section style="position:relative;overflow:hidden;padding:80px 16px 48px;text-align:center">
+            <div style="position:absolute;inset:0;z-index:0">
+                <DitherShader
+                    client:load
+                    w={64}
+                    h={40}
+                    amplitude={0.35}
+                    speed={0.8}
                 />
-                <span class="sr-only">FreeTheAi — free OpenAI-compatible API</span>
-            </h1>
-            <p
-                style="color:var(--muted);font-size:1.15rem;margin:20px auto 0;line-height:1.6;max-width:480px"
-            >
-                OpenAI-compatible. 50+ active models.<br />No card. No catch.
-            </p>
-            <div
-                style="margin-top:40px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center"
-            >
-                <a
-                    class="primary-button"
-                    href={siteConfig.socials.discord}
-                    target="_blank"
-                    rel="noreferrer"
-                >
-                    <span>Get a free API key</span>
-                    <span style="opacity:0.6;font-size:0.85rem;margin-left:4px"
-                        >&rarr;</span
+            </div>
+            <div style="position:relative;z-index:1;max-width:600px;margin:0 auto">
+                <h1 style="position:relative;margin:0">
+                    <Logo
+                        width={520}
+                        label="FreeTheAi"
+                        style="display:block;width:min(92vw,520px);height:auto;margin:0 auto"
+                    />
+                    <span class="sr-only">FreeTheAi — free OpenAI-compatible API</span>
+                </h1>
+                <p style="color:var(--muted);font-size:1.15rem;margin:20px auto 0;line-height:1.6;max-width:480px;text-wrap:pretty">
+                    OpenAI-compatible. 50+ active models.<br />No card. No catch.
+                </p>
+                <div style="margin-top:40px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+                    <a
+                        class="primary-button"
+                        href={siteConfig.socials.discord}
+                        target="_blank"
+                        rel="noreferrer"
                     >
-                </a>
+                        <span>Get a free API key</span>
+                        <span style="opacity:0.6;font-size:0.85rem;margin-left:4px">&rarr;</span>
+                    </a>
+                </div>
+                <div style="display:flex;gap:16px;margin-top:16px;justify-content:center">
+                    <a href="/models" class="hero-link">Browse Models</a>
+                    <a href="/docs" class="hero-link">Read Docs</a>
+                </div>
             </div>
-            <div
-                style="display:flex;gap:16px;margin-top:16px;justify-content:center"
-            >
-                <a
-                    href="/models"
-                    class="hero-link"
-                    >Browse Models</a
-                >
-                <a
-                    href="/docs"
-                    class="hero-link"
-                    >Read Docs</a
-                >
-            </div>
+        </section>
 
-            <div
-                class="code-card"
-                style="margin-top:48px;text-align:left"
-                data-parallax="-0.4"
-            >
+        <!-- Code card -->
+        <section style="max-width:600px;margin:0 auto;padding:48px 16px 0;text-align:center">
+            <div class="code-card" style="text-align:left">
                 <div class="card-head">
                     <div class="dot-row">
                         <span></span><span></span><span></span>
@@ -114,16 +102,12 @@ const pageDescription =
                 <div class="docs-code-group">
                     <div class="shiki-wrapper" set:html={snippetHtml} />
                     <button class="copy-btn" type="button" aria-label="Copy code">
-                        <span class="material-symbols-outlined"
-                            >content_copy</span
-                        >
+                        <span class="material-symbols-outlined">content_copy</span>
                     </button>
                 </div>
             </div>
 
-            <div
-                style="margin-top:48px;display:flex;flex-direction:column;align-items:center"
-            >
+            <div style="margin-top:48px;display:flex;flex-direction:column;align-items:center">
                 <LiveStats client:load />
                 <a
                     href={siteConfig.socials.discord}
@@ -164,17 +148,9 @@ const pageDescription =
         <!--
         ── Content Section ──
         Visual crescendo: Whisper → Speak → Shout
-
-        Section 1 — Whisper: thin muted accent line, barely there
-        Section 2 — Speak:   diptych inset panels, carved into the page
-        Section 3 — Shout:   raised accent card, bold orange border
-
-        Three treatments, one system. Every token from SKILL.md.
-        Script Architecture (Content System): Define → Show → Act
         -->
         <section class="home-content">
             <div class="rhythm stagger-children">
-                <!-- ═══ Whisper — subtle anchor, establishes the pattern ═══ -->
                 <div class="beat whisper">
                     <h2 class="beat-heading">What Is FreeTheAi?</h2>
                     <p class="beat-prose">
@@ -189,10 +165,8 @@ const pageDescription =
                     </p>
                 </div>
 
-                <!-- ═══ Speak — diptych, combinatorial contrast ═══ -->
                 <div class="beat">
                     <h2 class="beat-heading">What Can You Build?</h2>
-
                     <div class="diptych">
                         <div class="diptych-panel">
                             <h3 class="diptych-label">API features</h3>
@@ -214,18 +188,12 @@ const pageDescription =
                     </div>
                 </div>
 
-                <!-- ═══ Shout — accent card, the bent rule ═══ -->
                 <div class="beat shout">
                     <h2 class="beat-heading">Getting Started</h2>
-
                     <ol class="steps">
                         <li>
                             Join the
-                            <a
-                                href={siteConfig.socials.discord}
-                                target="_blank"
-                                rel="noreferrer">FreeTheAi Discord</a
-                            >
+                            <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">FreeTheAi Discord</a>
                         </li>
                         <li>
                             Run <code>/signup</code> and complete the modal with your
@@ -247,14 +215,8 @@ const pageDescription =
                             <a href="/docs">API docs</a> for endpoint-specific examples
                         </li>
                     </ol>
-
                     <div class="cta-wrap">
-                        <a
-                            class="primary-button"
-                            href={siteConfig.socials.discord}
-                            target="_blank"
-                            rel="noreferrer"
-                        >
+                        <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
                             Get your free API key
                             <span class="cta-arrow">&rarr;</span>
                         </a>
@@ -279,7 +241,7 @@ const pageDescription =
                         target="_blank"
                         rel="noreferrer"
                     >
-                        <span aria-hidden="true">💗</span>
+                        <span aria-hidden="true">&#9825;</span>
                         <span>Donate</span>
                     </a>
                     <a class="home-support-link" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
@@ -289,43 +251,6 @@ const pageDescription =
             </div>
         </section>
     </main>
-
-    <script>
-        // Lightweight scroll parallax with will-change management
-        const els = document.querySelectorAll<HTMLElement>("[data-parallax]");
-        let ticking = false;
-        let willChangeTimer: ReturnType<typeof setTimeout> | null = null;
-        window.addEventListener(
-            "scroll",
-            () => {
-                if (!ticking) {
-                    requestAnimationFrame(() => {
-                        const maxY =
-                            document.documentElement.scrollHeight -
-                            window.innerHeight;
-                        const ratio = maxY > 0 ? window.scrollY / maxY : 0;
-                        els.forEach((el) => {
-                            const speed = parseFloat(
-                                el.getAttribute("data-parallax") || "0",
-                            );
-                            el.style.transform = `translateY(${-ratio * speed * 120}px)`;
-                            el.style.willChange = "transform";
-                        });
-                        ticking = false;
-                    });
-                    ticking = true;
-                }
-                // Release will-change after scrolling stops
-                if (willChangeTimer !== null) clearTimeout(willChangeTimer);
-                willChangeTimer = setTimeout(() => {
-                    els.forEach((el) => {
-                        el.style.willChange = "";
-                    });
-                }, 150);
-            },
-            { passive: true },
-        );
-    </script>
 </Layout>
 
 <style>
@@ -509,32 +434,6 @@ const pageDescription =
         }
     }
 
-    /*
-     * ═══════════════════════════════════════
-     * Content Section — Visual Crescendo
-     * ═══════════════════════════════════════
-     *
-     * Whisper → Speak → Shout
-     * Three beats, one rhythm, one system.
-     *
-     * Section 1 (Whisper): subtle muted left line
-     *   — Isolation (RabinnFX #1), First-Frame
-     *     Strategy (Content System #7). Establishes
-     *     the pattern without demanding attention.
-     *
-     * Section 2 (Speak): diptych inset panels
-     *   — Combinatorial Creativity (Creativity
-     *     System #3), A Diptych (RabinnFX #7).
-     *     Carved-in feel via sk-inset tokens.
-     *
-     * Section 3 (Shout): raised accent card
-     *   — Chaos/Order edge (Creativity System #5),
-     *     The Accent (RabinnFX #2), Von Restorff
-     *     Effect (UX Laws). The bent rule.
-     *
-     * All tokens from SKILL.md. Nothing is ad-hoc.
-     */
-
     .home-content {
         max-width: 720px;
         margin: 80px auto 0;
@@ -543,17 +442,11 @@ const pageDescription =
         z-index: 1;
     }
 
-    /* ── Rhythm grid: three beats, 48px gaps ── */
     .rhythm {
         display: grid;
         gap: 48px;
     }
 
-    .beat {
-        /* shared anchor for all three beats */
-    }
-
-    /* ── Shared heading ── */
     .beat-heading {
         margin: 0 0 16px;
         color: var(--text);
@@ -562,13 +455,6 @@ const pageDescription =
         font-weight: 600;
     }
 
-    /*
-     * ═══ Beat 1: Whisper ═══
-     * A 1px muted left border — barely there.
-     * Passes the Mute Test (Visual Identity System #1):
-     * even blurred, the vertical line anchors the section
-     * and connects it to the stronger accents below.
-     */
     .whisper {
         padding: 0 0 0 18px;
         border-left: 1px solid var(--border);
@@ -585,13 +471,6 @@ const pageDescription =
         color: var(--text);
     }
 
-    /*
-     * ═══ Beat 2: Speak ═══
-     * Diptych — two panels side by side.
-     * The 16px gap between them is where the
-     * meaning lives (RabinnFX #7: A Diptych).
-     * Inset surface tokens = carved into the page.
-     */
     .diptych {
         display: grid;
         grid-template-columns: 1fr 1fr;
@@ -621,17 +500,9 @@ const pageDescription =
         color: var(--muted);
         font-size: 0.95rem;
         line-height: 1.65;
+        text-wrap: pretty;
     }
 
-    /*
-     * ═══ Beat 3: Shout ═══
-     * Raised shell with 2px orange left border.
-     * The ONE bent rule in the system (Chaos/Order).
-     * Von Restorff: visually isolates from the
-     * descriptive sections above.
-     * Peak-End Rule: the CTA button closes the page
-     * inside the strongest visual container.
-     */
     .shout {
         padding: 24px 24px 24px 28px;
         border: 1px solid var(--sk-border);
@@ -645,7 +516,6 @@ const pageDescription =
         margin-bottom: 16px;
     }
 
-    /* ── Steps list ── */
     .steps {
         margin: 0 0 24px;
         padding-left: 24px;
@@ -666,7 +536,6 @@ const pageDescription =
         font-size: 0.9em;
     }
 
-    /* ── CTA ── */
     .cta-wrap {
         margin-top: 28px;
     }
@@ -677,10 +546,20 @@ const pageDescription =
         margin-left: 4px;
     }
 
-    /*
-     * ── Responsive ──
-     * Stack diptych, tighten rhythm and accent card.
-     */
+    .hero-link {
+        color: var(--muted);
+        font-size: 0.9rem;
+        text-decoration: underline;
+        text-underline-offset: 3px;
+        transition: color 120ms ease;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+        .hero-link:hover {
+            color: var(--text);
+        }
+    }
+
     @media (max-width: 640px) {
         .diptych {
             grid-template-columns: 1fr;
@@ -699,19 +578,4 @@ const pageDescription =
             gap: 40px;
         }
     }
-
-    .hero-link {
-        color: var(--muted);
-        font-size: 0.9rem;
-        text-decoration: underline;
-        text-underline-offset: 3px;
-        transition: color 120ms ease;
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-        .hero-link:hover {
-            color: var(--text);
-        }
-    }
-
 </style>

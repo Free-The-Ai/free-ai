@@ -1207,6 +1207,7 @@ h3 {
     color: var(--muted);
     font-size: 0.9rem;
     line-height: 1.45;
+    text-wrap: pretty;
 }
 
 .console-chip {
@@ -1778,6 +1779,7 @@ h3 {
     line-height: 1.6;
     margin: 0 0 12px;
     font-size: 0.9rem;
+    text-wrap: pretty;
 }
 
 .docs-content code {
@@ -1859,6 +1861,7 @@ h3 {
     color: var(--muted);
     font-size: 0.9rem;
     line-height: 1.6;
+    text-wrap: pretty;
 }
 
 .catalog-panel-head .eyebrow {
@@ -2777,6 +2780,7 @@ h3 {
     font-size: 1.05rem;
     line-height: 1.6;
     max-width: 520px;
+    text-wrap: pretty;
 }
 
 .status-board {

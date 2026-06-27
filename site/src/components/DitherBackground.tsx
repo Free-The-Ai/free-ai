@@ -1,15 +1,17 @@
 import { onMount, onCleanup } from "solid-js";
 
-// 4x4 Bayer ordered dither matrix
-const BAYER = [
-  [0, 8, 2, 10],
-  [12, 4, 14, 6],
-  [3, 11, 1, 9],
-  [15, 7, 13, 5],
-];
+const W = 52;
+const H = 32;
 
-const W = 128;
-const H = 80;
+// True chaotic hash — no sine gradients, just bit-mashing
+function hash(x: number, y: number, seed: number): number {
+  let h = (x * 374761393 + y * 668265263 + seed * 982451653) | 0;
+  h ^= h >>> 13;
+  h *= 1274126177;
+  h ^= h >>> 16;
+  // Normalize to 0..1 with full 32-bit precision
+  return (h >>> 0) / 4294967296;
+}
 
 export default function DitherBackground() {
   let canvas: HTMLCanvasElement | undefined;
@@ -27,25 +29,26 @@ export default function DitherBackground() {
 
     function draw(t: number) {
       const time = t * 0.0002;
+      const seed = Math.floor(t * 0.000001) | 0;
       for (let y = 0; y < H; y++) {
         for (let x = 0; x < W; x++) {
           const nx = x / W;
           const ny = y / H;
 
-          // Very subtle organic drift — two slow octaves
-          let n = Math.sin(nx * 6 + time) * Math.cos(ny * 6 - time * 0.7);
-          n += Math.sin(nx * 3 - ny * 4 + time * 0.3) * 0.5;
-          n = n * 0.08 + 0.5; // tiny amplitude
+          // Slow organic field — large blobs
+          let n = Math.sin(nx * 3.7 + time) * Math.cos(ny * 3.3 - time * 0.7);
+          n += Math.sin(nx * 2.1 - ny * 2.9 + time * 0.5) * 0.5;
+          n = n * 0.3 + 0.5;
 
-          // Bayer threshold
-          const threshold = BAYER[y % 4][x % 4] / 16;
+          // Per-cell chaotic threshold — completely independent per pixel
+          const threshold = hash(x, y, seed);
           const on = n > threshold ? 1 : 0;
 
-          // Subtle warm accent drift — barely visible
-          const drift = Math.sin(nx * 2 - time * 0.2) * 1.5;
-          const r = on ? 14 + drift : 12;
-          const g = on ? 11 + drift * 0.6 : 10;
-          const b = on ? 8 + drift * 0.4 : 7;
+          // Warm/cool per-cell tint
+          const tint = hash(y, x, seed + 1);
+          const r = on ? 24 + tint * 22 : 8 + tint * 6;
+          const g = on ? 12 + tint * 10 : 4 + tint * 4;
+          const b = on ? 6 + tint * 5 : 2 + tint * 3;
 
           const i = (y * W + x) * 4;
           d[i] = r;
@@ -59,7 +62,7 @@ export default function DitherBackground() {
 
     function loop(t: number) {
       raf = requestAnimationFrame(loop);
-      if (t - last > 300) {
+      if (t - last > 200) {
         last = t;
         draw(t);
       }
@@ -83,7 +86,7 @@ export default function DitherBackground() {
         "z-index": -1,
         "image-rendering": "pixelated",
         "pointer-events": "none",
-        opacity: 0.6,
+        opacity: 1,
       }}
     />
   );

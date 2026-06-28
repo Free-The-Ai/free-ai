@@ -16,7 +16,7 @@ curl -sS https://api.freetheai.xyz/v1/chat/completions \
     -H "Authorization: Bearer ${FREETHEAI_API_KEY}" \
     -H "Content-Type: application/json" \
     -d '{
-        "model": "bbg/zai-org/GLM-5.1",
+        "model": "glm/glm-5.1",
         "messages": [
             { "role": "user", "content": "Reply with exactly: OK" }
         ],

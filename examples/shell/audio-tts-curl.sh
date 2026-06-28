@@ -1,7 +1,6 @@
 #!/usr/bin/env bash
 # Text-to-speech against FreeTheAi with curl.
-# Voice aliases (xai/grok-tts, mim/mimo-v2.5-tts, etc.) are role-gated behind
-# the seems_legit Discord role.
+# xai/grok-tts is role-gated behind the seems_legit Discord role.
 #
 # Usage:
 #   export FREETHEAI_API_KEY=fta_...

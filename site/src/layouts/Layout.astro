@@ -7,6 +7,7 @@ import SoundProvider from '../components/SoundProvider';
 import MotionProvider from '../components/MotionProvider';
 import ThemeProvider from '../components/ThemeProvider';
 import { themeInlineBootstrap } from '../lib/theme/singleton';
+import DitherShader from '../components/DitherShader';
 import { ToastRegion } from '../components/ui';
 import { siteConfig } from '../config/site';
 import { ClientRouter } from 'astro:transitions';
@@ -58,6 +59,18 @@ const themeBootstrap = themeInlineBootstrap();
 		<script is:inline set:html={themeBootstrap} />
 	</head>
 	<body>
+		<!-- Full-page dither background -->
+		<div style="position:fixed;inset:0;z-index:-1">
+			<DitherShader
+				client:load
+				w={72}
+				h={45}
+				amplitude={0.32}
+				speed={0.6}
+				interval={220}
+			/>
+		</div>
+
 		<!-- Sound system: module-level singleton, no DOM output, survives navigation -->
 		<SoundProvider client:load config={{ volume: 0.3, theme: "aero" }} />
 		<!-- Adaptive motion system: tracks pointer/scroll velocity + reduced-motion -->
@@ -107,7 +120,7 @@ const themeBootstrap = themeInlineBootstrap();
 		<a class="skip-link" href="#main-content">Skip to content</a>
 		<div class="page-shell">
 			<header class="site-header" transition:persist>
-				<nav class="nav">
+				<nav class="nav" aria-label="Main navigation">
 					<a class="brand" href="/home"><Logo width={160} /></a>
 					<div class="nav-links">
 						{navLinks.map(([href, label]) => (
@@ -193,7 +206,7 @@ const themeBootstrap = themeInlineBootstrap();
 				<slot />
 			</div>
 
-			<footer class="site-footer" transition:persist>
+			<footer class="site-footer" transition:persist aria-label="Site footer">
 				<div class="footer-links">
 					<a href="/quickstart">Quickstart</a>
 					<a href="/setup">Setup guides</a>

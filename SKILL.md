@@ -59,9 +59,8 @@ Never generate or fake a key. Keys are issued by Discord `/signup`. The key must
 - `POST /v1/messages` - Anthropic-compatible Messages route.
 - `POST /v1/responses` - Responses-style route.
 - `POST /v1/images/generations` - image generation.
-- `POST /v1/images/edits` - image edits.
-- `POST /v1/audio/speech` - text-to-speech for supported role-gated voice aliases.
-- `POST /v1/audio/transcriptions` - speech-to-text for supported role-gated voice aliases.
+- `POST /v1/audio/speech` - text-to-speech for supported voice aliases.
+- `POST /v1/audio/transcriptions` - speech-to-text for supported voice aliases.
 - `GET /v1/models` - authenticated model catalog.
 - `GET /v1/models/full` - authenticated detailed catalog with capabilities and access metadata.
 - `GET /v1/health` - public API health.
@@ -70,11 +69,11 @@ Never generate or fake a key. Keys are issued by Discord `/signup`. The key must
 
 Use exact aliases from the live catalog. Do not invent aliases.
 
-- Chat examples: `bbg/zai-org/GLM-5.1`, `bbl/gpt-5.4-mini`, `wsf/kimi-k2.6`.
-- Anthropic Messages examples: `rev/claude-sonnet-4.5`, `rev/claude-haiku-4.5`, `rev/claude-opus-4.5`.
-- Image example: `img/gpt-image-2`.
+- Chat examples: `glm/glm-5.1`, `bbl/gpt-5.5-mini`, `olm/kimi-k2.7-code`.
+- Anthropic Messages examples: `glm/glm-5.1`, `glm/glm-4.5-air`, `mim/mimo-v2.5`.
+- Image example: `eve/gpt-image-2`.
 - Voice examples: `xai/grok-tts`, `xai/grok-stt`.
-- Role-gated prefixes may include `agr/`, `mim/`, and `xai/`.
+- Role-gated prefixes currently include `exa/`, `pplx/`, and `xai/`.
 
 If an alias fails with `400 unknown aliased model`, fetch the live catalog and choose a currently exposed alias.
 
@@ -120,7 +119,7 @@ client = Anthropic(
 ```bash
 export ANTHROPIC_BASE_URL=https://api.freetheai.xyz
 export ANTHROPIC_AUTH_TOKEN=fta_PASTE_YOUR_FREETHEAI_KEY
-claude --model rev/claude-sonnet-4.5
+claude --model glm/glm-5.1
 ```
 
 ## Curl Smoke Test
@@ -130,7 +129,7 @@ curl https://api.freetheai.xyz/v1/chat/completions \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "bbg/zai-org/GLM-5.1",
+    "model": "glm/glm-5.1",
     "messages": [{ "role": "user", "content": "Reply with OK." }],
     "max_tokens": 32
   }'
@@ -163,7 +162,7 @@ with open("clip.wav", "rb") as audio_file:
 print(transcript.text)
 ```
 
-Voice aliases are role-gated. If a user gets `403 model_access_denied`, they need the `seems_legit` Discord role.
+Some voice/search aliases are role-gated. If a user gets `403 model_access_denied`, they need the `seems_legit` Discord role or a different public alias from the live catalog.
 
 ## Common Errors
 

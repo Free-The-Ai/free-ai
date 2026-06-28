@@ -18,7 +18,7 @@ const client = new OpenAI({
 });
 
 const stream = await client.chat.completions.create({
-    model: "bbl/gpt-5.4-mini",
+    model: "bbl/gpt-5.5-mini",
     messages: [{ role: "user", content: "Stream a haiku about pair programming." }],
     stream: true,
     max_tokens: 128,

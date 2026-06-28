@@ -21,7 +21,7 @@ const client = new OpenAI({
 });
 
 const response = await client.images.generate({
-    model: "img/gpt-image-2",
+    model: "eve/gpt-image-2",
     prompt,
 });
 

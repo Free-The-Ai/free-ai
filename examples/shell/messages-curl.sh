@@ -16,7 +16,7 @@ curl -sS https://api.freetheai.xyz/v1/messages \
     -H "Authorization: Bearer ${FREETHEAI_API_KEY}" \
     -H "Content-Type: application/json" \
     -d '{
-        "model": "rev/claude-sonnet-4.5",
+        "model": "glm/glm-5.1",
         "max_tokens": 128,
         "messages": [
             { "role": "user", "content": "Reply with exactly: OK" }

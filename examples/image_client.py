@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 import base64
-import mimetypes
 from pathlib import Path
 
 import requests
@@ -48,19 +47,6 @@ def read_multiline_prompt():
     if not prompt:
         raise RuntimeError("No prompt entered.")
     return prompt
-
-
-def image_to_data_url(path):
-    """
-    var: path
-    type: str
-    desc: Convert a local image file into a base64 data URL for edits.
-    """
-    image_path = Path(path)
-    data = image_path.read_bytes()
-    mime = mimetypes.guess_type(image_path.name)[0] or "image/png"
-    encoded = base64.b64encode(data).decode("ascii")
-    return f"data:{mime};base64,{encoded}"
 
 
 def post_json(path, payload, api_key):
@@ -119,12 +105,11 @@ def generate(api_key):
     desc: Prompt for generation options and save the generated image.
     """
     print("Recommended models:")
-    print("1. vhr/gpt_image_2")
-    print("2. vhr/flux_dev")
-    print("3. vhr/nano_banana_2")
-    print("4. vhr/bytedance_seedream_v4")
-    print("5. img/gpt-image-2")
-    model = input("Model [vhr/gpt_image_2]: ").strip() or "vhr/gpt_image_2"
+    print("1. eve/gpt-image-2")
+    print("2. eve/gpt-image-2-low")
+    print("3. eve/gpt-image-2-medium")
+    print("4. eve/gpt-image-2-high")
+    model = input("Model [eve/gpt-image-2]: ").strip() or "eve/gpt-image-2"
     prompt = read_multiline_prompt()
     output = input("Output file [generated.png]: ").strip() or "generated.png"
 
@@ -140,49 +125,14 @@ def generate(api_key):
     print(f"Saved image to {output}")
 
 
-def edit(api_key):
-    """
-    var: api_key
-    type: str
-    desc: Prompt for edit options and save the edited image.
-    """
-    print("Image edits currently use img/gpt-image-2.")
-    image_path = input("Path to image file: ").strip().strip('"')
-    if not image_path:
-        raise RuntimeError("No image path entered.")
-
-    prompt = read_multiline_prompt()
-    output = input("Output file [edited.png]: ").strip() or "edited.png"
-
-    result = post_json(
-        "/images/edits",
-        {
-            "model": "img/gpt-image-2",
-            "prompt": prompt,
-            "image": image_to_data_url(image_path),
-        },
-        api_key,
-    )
-    save_image_result(result, output)
-    print(f"Saved image to {output}")
-
-
 def main():
     """
     var: none
     type: None
-    desc: Run the interactive image client menu.
+    desc: Run the interactive image generation client.
     """
     api_key = get_api_key()
-    print("Choose an action:")
-    print("1. Generate an image")
-    print("2. Edit an image")
-    choice = input("Enter 1 or 2: ").strip()
-
-    if choice == "2":
-        edit(api_key)
-    else:
-        generate(api_key)
+    generate(api_key)
 
 
 if __name__ == "__main__":

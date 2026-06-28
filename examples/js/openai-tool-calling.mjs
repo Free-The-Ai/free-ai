@@ -42,7 +42,7 @@ function getWeather({ city, units = "metric" }) {
 const messages = [{ role: "user", content: "What is the weather in Boston in metric?" }];
 
 const first = await client.chat.completions.create({
-    model: "wsf/swe-1.6",
+    model: "glm/glm-5.1",
     messages,
     tools,
     tool_choice: "auto",
@@ -68,7 +68,7 @@ for (const call of choice.tool_calls) {
 }
 
 const final = await client.chat.completions.create({
-    model: "wsf/swe-1.6",
+    model: "glm/glm-5.1",
     messages,
     max_tokens: 256,
 });

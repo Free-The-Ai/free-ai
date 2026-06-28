@@ -18,7 +18,7 @@ const client = new Anthropic({
 });
 
 const response = await client.messages.create({
-    model: "rev/claude-sonnet-4.5",
+    model: "glm/glm-5.1",
     max_tokens: 128,
     messages: [{ role: "user", content: "Reply with exactly: OK" }],
 });

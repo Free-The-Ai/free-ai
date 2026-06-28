@@ -277,7 +277,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
                         { code: "POST /v1/responses", span: "Responses-style route. Same key, same model alias." },
                         { code: "GET /v1/models", span: "Authenticated client catalog." },
                         { code: "GET /v1/models/full", span: "Catalog with context, output, capability, and access metadata." },
-                        { code: "POST /v1/audio/speech", span: "Text-to-speech route for supported role-gated voice aliases." },
+                        { code: "POST /v1/audio/speech", span: "Text-to-speech route for supported voice aliases." },
                         { code: "POST /v1/audio/transcriptions", span: "Speech-to-text route for OpenAI-style multipart audio uploads." },
                     ]} />
                     <p>

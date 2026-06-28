@@ -27,7 +27,7 @@ def main() -> None:
         raise RuntimeError("Set FREETHEAI_API_KEY before running this example.")
 
     llm = ChatOpenAI(
-        model="bbg/zai-org/GLM-5.1",
+        model="glm/glm-5.1",
         api_key=key,
         base_url="https://api.freetheai.xyz/v1",
         max_tokens=128,

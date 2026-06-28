@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """Text-to-speech against FreeTheAi /v1/audio/speech.
 
-The voice aliases (`xai/grok-tts`, `mim/mimo-v2.5-tts`, etc.) are role-gated
-behind the `seems_legit` Discord role. Pricing on the free tier stays $0.
+`xai/grok-tts` is role-gated behind the `seems_legit` Discord role. Pricing on
+the free tier stays $0.
 
 Usage:
     pip install openai

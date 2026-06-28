@@ -11,7 +11,7 @@
 
 <sub>Also searched as <strong>Free The AI</strong>, <strong>Free The Ai</strong>, and <strong>FreeTheAI</strong>.</sub>
 
-Chat · Streaming · Tool Calling · Image Generation · Image Editing
+Chat | Streaming | Tool Calling | Image Generation | Audio
 
 <br>
 
@@ -23,7 +23,7 @@ Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 <br>
 
-[Website](https://freetheai.xyz) · [Quickstart](https://freetheai.xyz/quickstart) · [Setup Guides](https://freetheai.xyz/setup) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [Pricing](https://freetheai.xyz/pricing) · [Status](https://freetheai.xyz/status) · [API Health](https://api.freetheai.xyz/v1/health) · [Discord](https://discord.gg/secrets) · [Support](https://buymeacoffee.com/vibheksoni)
+[Website](https://freetheai.xyz) | [Quickstart](https://freetheai.xyz/quickstart) | [Setup Guides](https://freetheai.xyz/setup) | [Docs](https://freetheai.xyz/docs) | [Model Catalog](https://freetheai.xyz/models) | [Pricing](https://freetheai.xyz/pricing) | [Status](https://freetheai.xyz/status) | [API Health](https://api.freetheai.xyz/v1/health) | [Discord](https://discord.gg/secrets) | [Support](https://buymeacoffee.com/vibheksoni)
 
 <br>
 
@@ -37,11 +37,11 @@ Chat · Streaming · Tool Calling · Image Generation · Image Editing
 
 FreeTheAi, also searched as Free The AI or Free The Ai, is a free API gateway with 50+ active models behind a single key. OpenAI-compatible - if your SDK works with OpenAI, it works here. Full request docs live at [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
-- `POST /v1/chat/completions` — chat with streaming and tool calling
-- `POST /v1/messages` — Anthropic-style messages route
-- `POST /v1/responses` — OpenAI Responses API
-- `POST /v1/images/generations` — image generation
-- `POST /v1/images/edits` — image editing with prompt + base64 input
+- `POST /v1/chat/completions` - chat with streaming and tool calling
+- `POST /v1/messages` - Anthropic-style messages route
+- `POST /v1/responses` - OpenAI Responses API
+- `POST /v1/images/generations` - image generation
+- `POST /v1/audio/speech` and `/v1/audio/transcriptions` - supported voice aliases
 - Tool calling, structured outputs, multi-turn conversations
 - No billing, no credit card, no prompt storage
 - Optional paid slots at [freetheai.xyz/pricing](https://freetheai.xyz/pricing) for separate higher-power models
@@ -127,7 +127,8 @@ This repo includes a [`SKILL.md`](SKILL.md) describing how AI agents should conn
 | `/v1/messages` | `POST` | Anthropic-style messages |
 | `/v1/responses` | `POST` | OpenAI Responses API |
 | `/v1/images/generations` | `POST` | Image generation |
-| `/v1/images/edits` | `POST` | Image editing |
+| `/v1/audio/speech` | `POST` | Text to speech for supported voice aliases |
+| `/v1/audio/transcriptions` | `POST` | Speech to text for supported voice aliases |
 | `/v1/models` | `GET` | Authenticated model catalog |
 | `/v1/models/full` | `GET` | Expanded model catalog with throughput policy metadata |
 | `/v1/models/leaderboard` | `GET` | Site-key top model leaderboard |
@@ -138,7 +139,7 @@ This repo includes a [`SKILL.md`](SKILL.md) describing how AI agents should conn
 ## Code Examples
 
 <details>
-<summary><b>Chat — curl</b></summary>
+<summary><b>Chat - curl</b></summary>
 <br>
 
 ```bash
@@ -146,7 +147,7 @@ curl https://api.freetheai.xyz/v1/chat/completions \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "bbg/moonshotai/Kimi-K2.5",
+    "model": "glm/glm-5.1",
     "messages": [
       { "role": "user", "content": "Write a Python hello world." }
     ],
@@ -157,7 +158,7 @@ curl https://api.freetheai.xyz/v1/chat/completions \
 </details>
 
 <details>
-<summary><b>Chat — JavaScript</b></summary>
+<summary><b>Chat - JavaScript</b></summary>
 <br>
 
 ```js
@@ -169,7 +170,7 @@ const client = new OpenAI({
 });
 
 const res = await client.chat.completions.create({
-  model: "bbg/moonshotai/Kimi-K2.5",
+  model: "glm/glm-5.1",
   messages: [{ role: "user", content: "Say hello." }],
 });
 
@@ -179,7 +180,7 @@ console.log(res.choices[0].message.content);
 </details>
 
 <details>
-<summary><b>Chat — Python</b></summary>
+<summary><b>Chat - Python</b></summary>
 <br>
 
 ```python
@@ -191,7 +192,7 @@ client = OpenAI(
 )
 
 res = client.chat.completions.create(
-    model="bbg/moonshotai/Kimi-K2.5",
+    model="glm/glm-5.1",
     messages=[{"role": "user", "content": "Say hello."}],
 )
 
@@ -201,7 +202,7 @@ print(res.choices[0].message.content)
 </details>
 
 <details>
-<summary><b>Messages API — curl</b></summary>
+<summary><b>Messages API - curl</b></summary>
 <br>
 
 ```bash
@@ -209,7 +210,7 @@ curl https://api.freetheai.xyz/v1/messages \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "bbg/moonshotai/Kimi-K2.5",
+    "model": "glm/glm-5.1",
     "max_tokens": 256,
     "messages": [
       { "role": "user", "content": "Write a migration plan." }
@@ -220,7 +221,7 @@ curl https://api.freetheai.xyz/v1/messages \
 </details>
 
 <details>
-<summary><b>Tool calling — Python</b></summary>
+<summary><b>Tool calling - Python</b></summary>
 <br>
 
 ```python
@@ -232,7 +233,7 @@ client = OpenAI(
 )
 
 res = client.chat.completions.create(
-    model="wsf/swe-1.6",
+    model="glm/glm-5.1",
     tool_choice="required",
     messages=[{"role": "user", "content": "Get weather for Boston."}],
     tools=[{
@@ -256,7 +257,7 @@ print(res.choices[0].message.tool_calls)
 </details>
 
 <details>
-<summary><b>Image generation — curl</b></summary>
+<summary><b>Image generation - curl</b></summary>
 <br>
 
 ```bash
@@ -264,49 +265,20 @@ curl https://api.freetheai.xyz/v1/images/generations \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
   -d '{
-    "model": "img/gpt-image-2",
+    "model": "eve/gpt-image-2",
     "prompt": "A neon sports car under rainy city lights"
   }'
 ```
 
-The free API exposes `img/gpt-image-2` for both generation and editing. Live availability and any future image models are in [`GET /v1/models`](https://freetheai.xyz/models).
+The free API exposes `eve/gpt-image-2`, `eve/gpt-image-2-low`, `eve/gpt-image-2-medium`, and `eve/gpt-image-2-high` for image generation. Live availability and any future image models are in [`GET /v1/models`](https://freetheai.xyz/models).
 
-Robust clients should support both response shapes:
+Image responses are OpenAI-compatible and return:
 
 - `data[0].b64_json` for base64 image data
-- `data[0].url` for a generated image URL
 
 </details>
 
-<details>
-<summary><b>Image editing — Python</b></summary>
-<br>
-
-```python
-import base64, requests, os
-
-def edit_image(prompt, image_path):
-    with open(image_path, "rb") as f:
-        data_url = "data:image/png;base64," + \
-            base64.b64encode(f.read()).decode()
-
-    return requests.post(
-        "https://api.freetheai.xyz/v1/images/edits",
-        headers={
-            "Authorization": f"Bearer {os.environ['FREETHEAI_API_KEY']}",
-            "Content-Type": "application/json",
-        },
-        json={
-            "model": "img/gpt-image-2",
-            "prompt": prompt,
-            "image": data_url,
-        },
-    ).json()
-```
-
-See [`examples/image_client.py`](examples/image_client.py) for a beginner-friendly CLI tool that saves the key locally and handles both `b64_json` and `url` image responses.
-
-</details>
+See [`examples/image_client.py`](examples/image_client.py) for a beginner-friendly CLI tool that saves the key locally and writes the returned `b64_json` image to disk.
 
 ---
 
@@ -340,16 +312,21 @@ Thanks for keeping the free tier alive.
 
 Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.xyz/models). Request examples and endpoint details are on [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
+Live health currently reports 53 public catalog models across 11 provider prefixes. The bundled site fallback snapshot at [`site/public/models.json`](site/public/models.json) is refreshed from the same live `/v1/models/full` catalog used by the models page.
+
 | Prefix | What it is |
 | :--- | :--- |
-| `kai/*` | Aggregated models |
-| `bbg/*` | Premium allowlist |
-| `bbl/*` | Chat models |
-| `cwy/*` | Chat models |
-| `glm/*` | Chat models |
-| `opc/*` | Free models |
-| `wsf/*` | Chat models |
-| `img/*` | Image generation and editing |
+| `bbl/*` | General chat models |
+| `eve/*` | Image generation models |
+| `exa/*` | Role-gated web search models |
+| `glm/*` | Long-context chat models |
+| `kai/*` | Aggregated free chat and coding models |
+| `mim/*` | Chat and voice models |
+| `min/*` | Chat models |
+| `olm/*` | DeepSeek and coding-oriented models |
+| `opc/*` | Free chat/coding models |
+| `pplx/*` | Role-gated web search |
+| `xai/*` | Role-gated voice models |
 
 > [!NOTE]
 > Use exact alias IDs from `GET /v1/models`. Model availability updates automatically as the service catalog changes.
@@ -468,7 +445,7 @@ GitHub org: [Free-The-Ai](https://github.com/Free-The-Ai). Full team page: [free
 
 <br>
 
-[Website](https://freetheai.xyz) · [Quickstart](https://freetheai.xyz/quickstart) · [Docs](https://freetheai.xyz/docs) · [Model Catalog](https://freetheai.xyz/models) · [Pricing](https://freetheai.xyz/pricing) · [Status](https://freetheai.xyz/status) · [Team](https://freetheai.xyz/team) · [Discord](https://discord.gg/secrets) · [Backup Invite](https://discord.gg/rG3SYpeqYF) · [Support](https://buymeacoffee.com/vibheksoni)
+[Website](https://freetheai.xyz) | [Quickstart](https://freetheai.xyz/quickstart) | [Docs](https://freetheai.xyz/docs) | [Model Catalog](https://freetheai.xyz/models) | [Pricing](https://freetheai.xyz/pricing) | [Status](https://freetheai.xyz/status) | [Team](https://freetheai.xyz/team) | [Discord](https://discord.gg/secrets) | [Backup Invite](https://discord.gg/rG3SYpeqYF) | [Support](https://buymeacoffee.com/vibheksoni)
 
 <br>
 

@@ -28,7 +28,7 @@ def main() -> None:
         raise RuntimeError("Set FREETHEAI_API_KEY before running this example.")
 
     llm = OpenAILike(
-        model="bbg/zai-org/GLM-5.1",
+        model="glm/glm-5.1",
         api_key=key,
         api_base="https://api.freetheai.xyz/v1",
         is_chat_model=True,

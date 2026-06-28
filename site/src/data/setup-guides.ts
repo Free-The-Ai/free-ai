@@ -65,9 +65,9 @@ export const SETUP_GUIDES: SetupGuide[] = [
         summary:
             "OpenCode reads its providers from a JSON config file. Add FreeTheAi as a custom provider with the OpenAI-compatible adapter and you can pick any FreeTheAi alias as the active model.",
         recommendedModels: [
-            "agr/deepseek-v4-pro",
-            "bbl/gpt-5.4-mini",
-            "wsf/kimi-k2.6",
+            "olm/deepseek-v4-pro",
+            "bbl/gpt-5.5-mini",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -100,11 +100,11 @@ export const SETUP_GUIDES: SetupGuide[] = [
         "baseURL": "https://api.freetheai.xyz/v1"
       },
       "models": {
-        "agr/deepseek-v4-pro": {
+        "olm/deepseek-v4-pro": {
           "name": "DeepSeek V4 Pro",
           "limit": { "context": 50000, "output": 32000 }
         },
-        "bbl/gpt-5.4-mini": {
+        "bbl/gpt-5.5-mini": {
           "name": "GPT 5.4 Mini",
           "limit": { "context": 80000, "output": 32000 }
         }
@@ -126,7 +126,7 @@ export const SETUP_GUIDES: SetupGuide[] = [
         gotchas: [
             "OpenCode uses the npm `@ai-sdk/openai-compatible` adapter under the hood, so you can keep adding any FreeTheAi alias under `models` without restarting.",
             "If `Developer: Reload Window` does not show your provider, double check the JSON saved without trailing commas.",
-            "Use exact aliases from /models (for example `agr/deepseek-v4-pro`). Strip any leading `freetheai/` if a copy-paste added one.",
+            "Use exact aliases from /models (for example `olm/deepseek-v4-pro`). Strip any leading `freetheai/` if a copy-paste added one.",
         ],
         keywords: ["opencode", "sst opencode", "ai sdk", "agent"],
     },
@@ -142,9 +142,9 @@ export const SETUP_GUIDES: SetupGuide[] = [
         summary:
             "Kilo Code is a VSCode extension that lets you connect a custom OpenAI-compatible provider directly in its sidebar. FreeTheAi works without leaving the editor.",
         recommendedModels: [
-            "agr/deepseek-v4-pro",
-            "bbl/gpt-5.4-mini",
-            "wsf/kimi-k2.6",
+            "olm/deepseek-v4-pro",
+            "bbl/gpt-5.5-mini",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -173,7 +173,7 @@ export const SETUP_GUIDES: SetupGuide[] = [
                     value: `Provider Name: freetheai
 API URL: https://api.freetheai.xyz/v1
 API Key: PASTE_YOUR_FREETHEAI_KEY
-Model Name: bbl/gpt-5.4-mini
+Model Name: bbl/gpt-5.5-mini
 Max Completion Tokens: 80000
 Max Output Tokens: 32000
 Max Tokens: 80000
@@ -187,7 +187,7 @@ Supports tools: enabled`,
         ],
         gotchas: [
             "If pasting the key truncates to ~15 characters, the field is masking it as you type. Click the eye icon to confirm the full key was pasted.",
-            "404 unknown API route usually means the model alias is wrong. Use one from `GET /v1/models` such as `agr/deepseek-v4-pro`.",
+            "404 unknown API route usually means the model alias is wrong. Use one from `GET /v1/models` such as `olm/deepseek-v4-pro`.",
             "Keep `Supports tools` on so Kilo can run shell, file edits, and search tools.",
         ],
         keywords: ["kilo code", "kilocode", "vscode", "agent"],
@@ -204,9 +204,9 @@ Supports tools: enabled`,
         summary:
             "Zed has a built-in agent panel. Add FreeTheAi as a custom OpenAI-compatible provider and Zed handles the rest.",
         recommendedModels: [
-            "agr/deepseek-v4-pro",
-            "wsf/kimi-k2.6",
-            "bbl/gpt-5.4-mini",
+            "olm/deepseek-v4-pro",
+            "olm/kimi-k2.7-code",
+            "bbl/gpt-5.5-mini",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -257,9 +257,9 @@ API key: PASTE_YOUR_FREETHEAI_KEY`,
         summary:
             "SillyTavern uses its own Connection Profile system. Switch the API to Chat Completion with `Custom (OpenAI-compatible)` and SillyTavern will handle streaming and presets.",
         recommendedModels: [
-            "bbl/gpt-5.4-mini",
+            "bbl/gpt-5.5-mini",
             "glm/glm-5.1",
-            "wsf/kimi-k2.6",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -291,7 +291,7 @@ Custom API Key: PASTE_YOUR_FREETHEAI_KEY`,
                 body: "Type or paste a FreeTheAi alias into `Enter a Model ID`. The dropdown will populate after the first connect.",
                 code: {
                     lang: "text",
-                    value: "bbl/gpt-5.4-mini",
+                    value: "bbl/gpt-5.5-mini",
                 },
             },
             {
@@ -316,9 +316,9 @@ Custom API Key: PASTE_YOUR_FREETHEAI_KEY`,
         summary:
             "Janitor AI uses a proxy slot for any OpenAI-compatible endpoint. Drop FreeTheAi in as a proxy and pick the model you want.",
         recommendedModels: [
-            "bbl/gpt-5.4-mini",
+            "bbl/gpt-5.5-mini",
             "glm/glm-5.1",
-            "wsf/kimi-k2.6",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         apiPath: "/chat/completions",
@@ -345,7 +345,7 @@ Custom API Key: PASTE_YOUR_FREETHEAI_KEY`,
                 code: {
                     lang: "text",
                     value: `Name: freetheai
-Model: bbl/gpt-5.4-mini
+Model: bbl/gpt-5.5-mini
 Proxy URL: https://api.freetheai.xyz/v1/chat/completions
 API Key: PASTE_YOUR_FREETHEAI_KEY`,
                 },
@@ -358,7 +358,7 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         gotchas: [
             "Janitor AI sometimes shows a `Failed to fetch (unk)` error. That is usually Janitor-side instability, not FreeTheAi - try Chub or SillyTavern instead, or wait it out.",
             "401 means the key is wrong. Use `/resetkey` in the FreeTheAi Discord and paste only the key value, no quotes or markdown.",
-            "Some models do not work for Janitor RP - try `bbl/gpt-5.4-mini` or `glm/glm-5.1` for the most reliable responses.",
+            "Some models do not work for Janitor RP - try `bbl/gpt-5.5-mini` or `glm/glm-5.1` for the most reliable responses.",
         ],
         keywords: ["janitor", "janitor ai", "janitorai", "roleplay"],
     },
@@ -373,8 +373,8 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         summary:
             "Chub AI lets you reverse-proxy any OpenAI-compatible endpoint through its `Secrets` panel. Pair it with the OpenAI / Proxy preset and pick a FreeTheAi model.",
         recommendedModels: [
-            "bbl/gpt-5.4-mini",
-            "wsf/kimi-k2.6",
+            "bbl/gpt-5.5-mini",
+            "olm/kimi-k2.7-code",
             "glm/glm-5.1",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
@@ -406,7 +406,7 @@ Reverse Proxy Key: PASTE_YOUR_FREETHEAI_KEY`,
                 code: {
                     lang: "text",
                     value: `API: OpenAI / Proxy
-Model: bbl/gpt-5.4-mini`,
+Model: bbl/gpt-5.5-mini`,
                 },
             },
             {
@@ -433,8 +433,8 @@ Model: bbl/gpt-5.4-mini`,
             "RisuAI keeps your character data local and lets you point at any OpenAI-compatible chat completions URL. Use the full FreeTheAi /chat/completions URL and any alias.",
         recommendedModels: [
             "glm/glm-5.1",
-            "bbl/gpt-5.4-mini",
-            "wsf/kimi-k2.6",
+            "bbl/gpt-5.5-mini",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         apiPath: "/chat/completions",
@@ -471,7 +471,7 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         ],
         gotchas: [
             "Risu does not auto-add `/chat/completions`. Paste the full path or every request will 404.",
-            "Risu's roleplay prompts are long. Pair it with `glm/*`, `bbl/*`, or `wsf/*` aliases that have a generous context window.",
+            "Risu's roleplay prompts are long. Pair it with `glm/*`, `bbl/*`, or `olm/*` aliases that have a generous context window.",
             "Avoid `cat/*` and `yng/*` for roleplay - they do not handle Risu's tool/system shape well.",
         ],
         keywords: ["risu", "risuai", "roleplay", "kwaroran"],
@@ -488,8 +488,8 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
             "Cline runs a full agent loop inside VSCode. Add FreeTheAi as an OpenAI Compatible provider and it can read, edit, and run code with any FreeTheAi alias.",
         recommendedModels: [
             "glm/glm-5.1",
-            "agr/deepseek-v4-pro",
-            "wsf/kimi-k2.6",
+            "olm/deepseek-v4-pro",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -538,9 +538,9 @@ Model ID: glm/glm-5.1`,
         summary:
             "Roo Code splits the agent into a planning/code/QA team. Add FreeTheAi as the OpenAI Compatible provider and Roo's roles share the same base URL.",
         recommendedModels: [
-            "agr/deepseek-v4-pro",
-            "agr/glm-5.1",
-            "wsf/kimi-k2.6",
+            "olm/deepseek-v4-pro",
+            "glm/glm-5.1",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -568,7 +568,7 @@ Model ID: glm/glm-5.1`,
                     lang: "text",
                     value: `Base URL: https://api.freetheai.xyz/v1
 API Key: PASTE_YOUR_FREETHEAI_KEY
-Model: agr/glm-5.1`,
+Model: glm/glm-5.1`,
                 },
             },
         ],
@@ -591,8 +591,8 @@ Model: agr/glm-5.1`,
             "Continue uses a yaml config you can version-control. Drop a FreeTheAi model entry and Continue hot-reloads it.",
         recommendedModels: [
             "glm/glm-5.1",
-            "agr/deepseek-v4-pro",
-            "wsf/kimi-k2.6",
+            "olm/deepseek-v4-pro",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -618,7 +618,7 @@ Model: agr/glm-5.1`,
     apiKey: \${{ secrets.FREETHEAI_API_KEY }}
   - name: FreeTheAi DeepSeek V4 Pro
     provider: openai
-    model: agr/deepseek-v4-pro
+    model: olm/deepseek-v4-pro
     apiBase: https://api.freetheai.xyz/v1
     apiKey: \${{ secrets.FREETHEAI_API_KEY }}`,
                 },
@@ -646,9 +646,9 @@ Model: agr/glm-5.1`,
         summary:
             "Aider is LiteLLM-backed, so any OpenAI-compatible base URL works. Set two env vars and pass `openai/<freetheai-alias>` as the model.",
         recommendedModels: [
-            "agr/deepseek-v4-pro",
+            "olm/deepseek-v4-pro",
             "glm/glm-5.1",
-            "wsf/kimi-k2.6",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -703,7 +703,7 @@ model: openai/glm/glm-5.1`,
         summary:
             "Claude Code talks to FreeTheAi through the Anthropic Messages format. Set the gateway env vars, run `claude`, and pick a Claude alias.",
         recommendedModels: [
-            "bbl/gpt-5.4-mini",
+            "bbl/gpt-5.5-mini",
             "glm/glm-5.1",
             "opc/deepseek-v4-flash-free",
         ],
@@ -737,7 +737,7 @@ export ANTHROPIC_AUTH_TOKEN=fta_PASTE_YOUR_FREETHEAI_KEY`,
                 body: "Start Claude Code, then use `/model` or `--model` to choose a FreeTheAi Claude alias.",
                 code: {
                     lang: "bash",
-                    value: "claude --model bbl/gpt-5.4-mini",
+                    value: "claude --model bbl/gpt-5.5-mini",
                 },
             },
         ],
@@ -762,7 +762,7 @@ export ANTHROPIC_AUTH_TOKEN=fta_PASTE_YOUR_FREETHEAI_KEY`,
             "LibreChat exposes any OpenAI-compatible host through `endpoints.custom`. Add a FreeTheAi block, set the env var, and the model picker auto-fills from /v1/models.",
         recommendedModels: [
             "glm/glm-5.1",
-            "bbl/gpt-5.4-mini",
+            "bbl/gpt-5.5-mini",
             "opc/deepseek-v4-flash-free",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
@@ -783,7 +783,7 @@ export ANTHROPIC_AUTH_TOKEN=fta_PASTE_YOUR_FREETHEAI_KEY`,
       apiKey: '\${FREETHEAI_API_KEY}'
       baseURL: 'https://api.freetheai.xyz/v1'
       models:
-        default: ['glm/glm-5.1', 'bbl/gpt-5.4-mini']
+        default: ['glm/glm-5.1', 'bbl/gpt-5.5-mini']
         fetch: true
       titleConvo: true
       titleModel: 'opc/deepseek-v4-flash-free'
@@ -824,8 +824,8 @@ export ANTHROPIC_AUTH_TOKEN=fta_PASTE_YOUR_FREETHEAI_KEY`,
             "Open WebUI lets admins add multiple OpenAI-compatible connections. Add FreeTheAi and the model picker auto-fills from /v1/models.",
         recommendedModels: [
             "glm/glm-5.1",
-            "wsf/kimi-k2.6",
-            "bbl/gpt-5.4-mini",
+            "olm/kimi-k2.7-code",
+            "bbl/gpt-5.5-mini",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -875,8 +875,8 @@ OpenAI API Key: PASTE_YOUR_FREETHEAI_KEY`,
             "LobeChat supports any OpenAI-compatible host through env vars or its `Add Custom Provider` UI. Pair it with FreeTheAi for a slick local web client.",
         recommendedModels: [
             "glm/glm-5.1",
-            "wsf/kimi-k2.6",
-            "bbl/gpt-5.4-mini",
+            "olm/kimi-k2.7-code",
+            "bbl/gpt-5.5-mini",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -931,9 +931,9 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         summary:
             "AnythingLLM treats FreeTheAi as a `Generic OpenAI` provider. Type the alias, set the context window, save.",
         recommendedModels: [
-            "wsf/kimi-k2.6",
+            "olm/kimi-k2.7-code",
             "glm/glm-5.1",
-            "bbl/gpt-5.4-mini",
+            "bbl/gpt-5.5-mini",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -953,7 +953,7 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
                     lang: "text",
                     value: `Base URL: https://api.freetheai.xyz/v1
 API Key: PASTE_YOUR_FREETHEAI_KEY
-Chat Model Name: wsf/kimi-k2.6
+Chat Model Name: olm/kimi-k2.7-code
 Token context window: 50000`,
                 },
             },
@@ -979,9 +979,9 @@ Token context window: 50000`,
         summary:
             "Cherry Studio supports many providers through one UI. Add FreeTheAi as an OpenAI provider and load the aliases you want as separate models.",
         recommendedModels: [
-            "opc/minimax-m3-free",
+            "min/minimax-m3",
             "glm/glm-5.1",
-            "bbl/gpt-5.4-mini",
+            "bbl/gpt-5.5-mini",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -1028,9 +1028,9 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         summary:
             "TypingMind lets you paste any OpenAI-compatible endpoint as a custom model. Add FreeTheAi and use any alias.",
         recommendedModels: [
-            "agr/deepseek-v4-pro",
+            "olm/deepseek-v4-pro",
             "glm/glm-5.1",
-            "wsf/kimi-k2.6",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -1054,7 +1054,7 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
                     lang: "text",
                     value: `Custom endpoint / Base URL: https://api.freetheai.xyz/v1
 API Key: PASTE_YOUR_FREETHEAI_KEY
-Model ID: agr/deepseek-v4-pro`,
+Model ID: olm/deepseek-v4-pro`,
                 },
             },
             {
@@ -1079,9 +1079,9 @@ Model ID: agr/deepseek-v4-pro`,
         summary:
             "BoltAI floats AI in any macOS app. Add FreeTheAi as a custom OpenAI-compatible server.",
         recommendedModels: [
-            "bbl/gpt-5.4-mini",
+            "bbl/gpt-5.5-mini",
             "glm/glm-5.1",
-            "wsf/kimi-k2.6",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -1102,7 +1102,7 @@ Model ID: agr/deepseek-v4-pro`,
                     value: `Name: FreeTheAi
 Base URL: https://api.freetheai.xyz/v1
 API Key: PASTE_YOUR_FREETHEAI_KEY
-Model ID: bbl/gpt-5.4-mini
+Model ID: bbl/gpt-5.5-mini
 Context Length: 80000`,
                 },
             },
@@ -1128,9 +1128,9 @@ Context Length: 80000`,
         summary:
             "Page Assist runs in the browser side panel. Add FreeTheAi as a custom OpenAI-compatible API and pick the alias you want.",
         recommendedModels: [
-            "bbl/gpt-5.4-mini",
+            "bbl/gpt-5.5-mini",
             "glm/glm-5.1",
-            "wsf/kimi-k2.6",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {
@@ -1179,8 +1179,8 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
             "Chatbox supports any OpenAI-compatible base. Use the OpenAI API Compatible mode and split the URL into Host and Path.",
         recommendedModels: [
             "glm/glm-5.1",
-            "bbl/gpt-5.4-mini",
-            "wsf/kimi-k2.6",
+            "bbl/gpt-5.5-mini",
+            "olm/kimi-k2.7-code",
         ],
         baseUrl: "https://api.freetheai.xyz",
         apiPath: "/v1/chat/completions",
@@ -1232,8 +1232,8 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
             "Big-AGI's OpenAI vendor accepts a custom API endpoint. Drop FreeTheAi in and Big-AGI auto-fetches /v1/models.",
         recommendedModels: [
             "glm/glm-5.1",
-            "bbl/gpt-5.4-mini",
-            "agr/deepseek-v4-pro",
+            "bbl/gpt-5.5-mini",
+            "olm/deepseek-v4-pro",
         ],
         baseUrl: "https://api.freetheai.xyz/v1",
         compatibility: {

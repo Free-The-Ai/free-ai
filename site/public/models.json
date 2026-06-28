@@ -4,66 +4,6 @@
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
-                                                               ],
-                                    "requires_seems_legit":  true
-                                },
-                     "context_window":  1048576,
-                     "created":  1780694663,
-                     "id":  "agr/deepseek-v4-pro",
-                     "max_input_tokens":  1048576,
-                     "max_output_tokens":  32768,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "agr",
-                     "requires_seems_legit":  true,
-                     "supports_chat":  true,
-                     "visibility":  "role_gated"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
-                                                                   "seems_legit"
-                                                               ],
-                                    "requires_seems_legit":  true
-                                },
-                     "context_window":  202752,
-                     "created":  1780694663,
-                     "id":  "agr/glm-5.1",
-                     "max_input_tokens":  202752,
-                     "max_output_tokens":  32768,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "agr",
-                     "requires_seems_legit":  true,
-                     "supports_chat":  true,
-                     "visibility":  "role_gated"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
-
-                                                               ],
-                                    "requires_seems_legit":  false
-                                },
-                     "context_window":  80000,
-                     "created":  0,
-                     "id":  "bbl/gemini-2.5-flash",
-                     "max_input_tokens":  80000,
-                     "max_output_tokens":  32000,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "bbl",
-                     "requires_seems_legit":  false,
-                     "supports_chat":  true,
-                     "visibility":  "site_catalog"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
 
                                                                ],
                                     "requires_seems_legit":  false
@@ -110,67 +50,27 @@
                                 },
                      "context_window":  80000,
                      "created":  0,
+                     "id":  "bbl/gemini-3.1-flash-lite",
+                     "max_input_tokens":  80000,
+                     "max_output_tokens":  32000,
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "bbl",
+                     "requires_seems_legit":  false,
+                     "supports_chat":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "context_window":  80000,
+                     "created":  0,
                      "id":  "bbl/gemini-3.5-flash",
-                     "max_input_tokens":  80000,
-                     "max_output_tokens":  32000,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "bbl",
-                     "requires_seems_legit":  false,
-                     "supports_chat":  true,
-                     "visibility":  "site_catalog"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
-
-                                                               ],
-                                    "requires_seems_legit":  false
-                                },
-                     "context_window":  80000,
-                     "created":  0,
-                     "id":  "bbl/gpt-4.1",
-                     "max_input_tokens":  80000,
-                     "max_output_tokens":  32000,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "bbl",
-                     "requires_seems_legit":  false,
-                     "supports_chat":  true,
-                     "visibility":  "site_catalog"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
-
-                                                               ],
-                                    "requires_seems_legit":  false
-                                },
-                     "context_window":  80000,
-                     "created":  0,
-                     "id":  "bbl/gpt-5-mini",
-                     "max_input_tokens":  80000,
-                     "max_output_tokens":  32000,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "bbl",
-                     "requires_seems_legit":  false,
-                     "supports_chat":  true,
-                     "visibility":  "site_catalog"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
-
-                                                               ],
-                                    "requires_seems_legit":  false
-                                },
-                     "context_window":  80000,
-                     "created":  0,
-                     "id":  "bbl/gpt-5.4-mini",
                      "max_input_tokens":  80000,
                      "max_output_tokens":  32000,
                      "object":  "model",
@@ -224,12 +124,80 @@
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "created":  1782668991,
+                     "id":  "eve/gpt-image-2",
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "eve",
+                     "requires_seems_legit":  false,
+                     "supports_images":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "created":  1782668991,
+                     "id":  "eve/gpt-image-2-high",
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "eve",
+                     "requires_seems_legit":  false,
+                     "supports_images":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "created":  1782668991,
+                     "id":  "eve/gpt-image-2-low",
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "eve",
+                     "requires_seems_legit":  false,
+                     "supports_images":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "created":  1782668991,
+                     "id":  "eve/gpt-image-2-medium",
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "eve",
+                     "requires_seems_legit":  false,
+                     "supports_images":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
                                                                    "seems_legit"
                                                                ],
                                     "requires_seems_legit":  true
                                 },
                      "context_window":  16000,
-                     "created":  1780694660,
+                     "created":  1782668991,
                      "id":  "exa/search",
                      "max_input_tokens":  16000,
                      "max_output_tokens":  4096,
@@ -249,7 +217,7 @@
                                     "requires_seems_legit":  true
                                 },
                      "context_window":  16000,
-                     "created":  1780694660,
+                     "created":  1782668991,
                      "id":  "exa/search-deep",
                      "max_input_tokens":  16000,
                      "max_output_tokens":  4096,
@@ -269,7 +237,7 @@
                                     "requires_seems_legit":  true
                                 },
                      "context_window":  16000,
-                     "created":  1780694660,
+                     "created":  1782668991,
                      "id":  "exa/search-fast",
                      "max_input_tokens":  16000,
                      "max_output_tokens":  4096,
@@ -289,7 +257,7 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  128000,
-                     "created":  1780694661,
+                     "created":  1753632000,
                      "id":  "glm/glm-4.5",
                      "max_input_tokens":  128000,
                      "max_output_tokens":  98304,
@@ -309,7 +277,7 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  128000,
-                     "created":  1780694661,
+                     "created":  1753632000,
                      "id":  "glm/glm-4.5-air",
                      "max_input_tokens":  128000,
                      "max_output_tokens":  98304,
@@ -329,7 +297,7 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  200000,
-                     "created":  1780694661,
+                     "created":  1759276800,
                      "id":  "glm/glm-4.6",
                      "max_input_tokens":  200000,
                      "max_output_tokens":  131072,
@@ -349,7 +317,7 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  200000,
-                     "created":  1780694661,
+                     "created":  1766332800,
                      "id":  "glm/glm-4.7",
                      "max_input_tokens":  200000,
                      "max_output_tokens":  131072,
@@ -369,7 +337,7 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  200000,
-                     "created":  1780694661,
+                     "created":  1770739200,
                      "id":  "glm/glm-5",
                      "max_input_tokens":  200000,
                      "max_output_tokens":  131072,
@@ -389,7 +357,7 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  200000,
-                     "created":  1780694661,
+                     "created":  1773504000,
                      "id":  "glm/glm-5-turbo",
                      "max_input_tokens":  200000,
                      "max_output_tokens":  131072,
@@ -409,13 +377,53 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  200000,
-                     "created":  1780694661,
+                     "created":  1774620000,
                      "id":  "glm/glm-5.1",
                      "max_input_tokens":  200000,
                      "max_output_tokens":  131072,
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "glm",
+                     "requires_seems_legit":  false,
+                     "supports_chat":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "context_window":  1000000,
+                     "created":  1781625600,
+                     "id":  "glm/glm-5.2",
+                     "max_input_tokens":  1000000,
+                     "max_output_tokens":  131072,
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "glm",
+                     "requires_seems_legit":  false,
+                     "supports_chat":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "context_window":  256000,
+                     "created":  1781723748,
+                     "id":  "kai/cohere/north-mini-code:free",
+                     "max_input_tokens":  256000,
+                     "max_output_tokens":  64000,
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "kai",
                      "requires_seems_legit":  false,
                      "supports_chat":  true,
                      "visibility":  "site_catalog"
@@ -623,9 +631,9 @@
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
+
                                                                ],
-                                    "requires_seems_legit":  true
+                                    "requires_seems_legit":  false
                                 },
                      "context_window":  262144,
                      "created":  0,
@@ -635,17 +643,17 @@
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "mim",
-                     "requires_seems_legit":  true,
+                     "requires_seems_legit":  false,
                      "supports_chat":  true,
-                     "visibility":  "role_gated"
+                     "visibility":  "site_catalog"
                  },
                  {
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
+
                                                                ],
-                                    "requires_seems_legit":  true
+                                    "requires_seems_legit":  false
                                 },
                      "context_window":  1048576,
                      "created":  0,
@@ -655,34 +663,34 @@
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "mim",
-                     "requires_seems_legit":  true,
+                     "requires_seems_legit":  false,
                      "supports_chat":  true,
-                     "visibility":  "role_gated"
+                     "visibility":  "site_catalog"
                  },
                  {
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
+
                                                                ],
-                                    "requires_seems_legit":  true
+                                    "requires_seems_legit":  false
                                 },
                      "created":  0,
                      "id":  "mim/mimo-v2-tts",
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "mim",
-                     "requires_seems_legit":  true,
+                     "requires_seems_legit":  false,
                      "supports_audio":  true,
-                     "visibility":  "role_gated"
+                     "visibility":  "site_catalog"
                  },
                  {
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
+
                                                                ],
-                                    "requires_seems_legit":  true
+                                    "requires_seems_legit":  false
                                 },
                      "context_window":  1048576,
                      "created":  0,
@@ -692,34 +700,34 @@
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "mim",
-                     "requires_seems_legit":  true,
+                     "requires_seems_legit":  false,
                      "supports_chat":  true,
-                     "visibility":  "role_gated"
+                     "visibility":  "site_catalog"
                  },
                  {
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
+
                                                                ],
-                                    "requires_seems_legit":  true
+                                    "requires_seems_legit":  false
                                 },
                      "created":  0,
                      "id":  "mim/mimo-v2.5-asr",
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "mim",
-                     "requires_seems_legit":  true,
+                     "requires_seems_legit":  false,
                      "supports_chat":  true,
-                     "visibility":  "role_gated"
+                     "visibility":  "site_catalog"
                  },
                  {
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
+
                                                                ],
-                                    "requires_seems_legit":  true
+                                    "requires_seems_legit":  false
                                 },
                      "context_window":  1048576,
                      "created":  0,
@@ -729,60 +737,131 @@
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "mim",
-                     "requires_seems_legit":  true,
+                     "requires_seems_legit":  false,
                      "supports_chat":  true,
-                     "visibility":  "role_gated"
+                     "visibility":  "site_catalog"
                  },
                  {
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
+
                                                                ],
-                                    "requires_seems_legit":  true
+                                    "requires_seems_legit":  false
                                 },
                      "created":  0,
                      "id":  "mim/mimo-v2.5-tts",
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "mim",
-                     "requires_seems_legit":  true,
+                     "requires_seems_legit":  false,
                      "supports_audio":  true,
-                     "visibility":  "role_gated"
+                     "visibility":  "site_catalog"
                  },
                  {
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
+
                                                                ],
-                                    "requires_seems_legit":  true
+                                    "requires_seems_legit":  false
                                 },
                      "created":  0,
                      "id":  "mim/mimo-v2.5-tts-voiceclone",
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "mim",
-                     "requires_seems_legit":  true,
+                     "requires_seems_legit":  false,
                      "supports_audio":  true,
-                     "visibility":  "role_gated"
+                     "visibility":  "site_catalog"
                  },
                  {
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-                                                                   "seems_legit"
+
                                                                ],
-                                    "requires_seems_legit":  true
+                                    "requires_seems_legit":  false
                                 },
                      "created":  0,
                      "id":  "mim/mimo-v2.5-tts-voicedesign",
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "mim",
-                     "requires_seems_legit":  true,
+                     "requires_seems_legit":  false,
                      "supports_audio":  true,
-                     "visibility":  "role_gated"
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "context_window":  1000000,
+                     "created":  1782668991,
+                     "id":  "min/minimax-m3",
+                     "max_input_tokens":  1000000,
+                     "max_output_tokens":  32000,
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "min",
+                     "requires_seems_legit":  false,
+                     "supports_chat":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "created":  1782668991,
+                     "id":  "olm/deepseek-v3.1",
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "olm",
+                     "requires_seems_legit":  false,
+                     "supports_chat":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "created":  1782668991,
+                     "id":  "olm/deepseek-v4-pro",
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "olm",
+                     "requires_seems_legit":  false,
+                     "supports_chat":  true,
+                     "visibility":  "site_catalog"
+                 },
+                 {
+                     "access":  {
+                                    "available":  true,
+                                    "required_discord_roles":  [
+
+                                                               ],
+                                    "requires_seems_legit":  false
+                                },
+                     "created":  1782668991,
+                     "id":  "olm/kimi-k2.7-code",
+                     "object":  "model",
+                     "owned_by":  "gateway",
+                     "prefix":  "olm",
+                     "requires_seems_legit":  false,
+                     "supports_chat":  true,
+                     "visibility":  "site_catalog"
                  },
                  {
                      "access":  {
@@ -793,7 +872,7 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  200000,
-                     "created":  1780694662,
+                     "created":  1782668991,
                      "id":  "opc/big-pickle",
                      "max_input_tokens":  200000,
                      "max_output_tokens":  32000,
@@ -813,7 +892,7 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  200000,
-                     "created":  1780694662,
+                     "created":  1782668991,
                      "id":  "opc/deepseek-v4-flash-free",
                      "max_input_tokens":  200000,
                      "max_output_tokens":  128000,
@@ -833,7 +912,7 @@
                                     "requires_seems_legit":  false
                                 },
                      "context_window":  200000,
-                     "created":  1780694662,
+                     "created":  1782668991,
                      "id":  "opc/mimo-v2.5-free",
                      "max_input_tokens":  200000,
                      "max_output_tokens":  32000,
@@ -852,48 +931,8 @@
                                                                ],
                                     "requires_seems_legit":  false
                                 },
-                     "context_window":  200000,
-                     "created":  1780694662,
-                     "id":  "opc/minimax-m3-free",
-                     "max_input_tokens":  200000,
-                     "max_output_tokens":  32000,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "opc",
-                     "requires_seems_legit":  false,
-                     "supports_chat":  true,
-                     "visibility":  "site_catalog"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
-
-                                                               ],
-                                    "requires_seems_legit":  false
-                                },
-                     "context_window":  204800,
-                     "created":  1780694662,
-                     "id":  "opc/nemotron-3-super-free",
-                     "max_input_tokens":  204800,
-                     "max_output_tokens":  128000,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "opc",
-                     "requires_seems_legit":  false,
-                     "supports_chat":  true,
-                     "visibility":  "site_catalog"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
-
-                                                               ],
-                                    "requires_seems_legit":  false
-                                },
                      "context_window":  1000000,
-                     "created":  1780694662,
+                     "created":  1782668991,
                      "id":  "opc/nemotron-3-ultra-free",
                      "max_input_tokens":  1000000,
                      "max_output_tokens":  128000,
@@ -912,11 +951,11 @@
                                                                ],
                                     "requires_seems_legit":  false
                                 },
-                     "context_window":  262144,
-                     "created":  1780694662,
-                     "id":  "opc/qwen3.6-plus-free",
-                     "max_input_tokens":  262144,
-                     "max_output_tokens":  65536,
+                     "context_window":  256000,
+                     "created":  1782668991,
+                     "id":  "opc/north-mini-code-free",
+                     "max_input_tokens":  256000,
+                     "max_output_tokens":  64000,
                      "object":  "model",
                      "owned_by":  "gateway",
                      "prefix":  "opc",
@@ -933,7 +972,7 @@
                                     "requires_seems_legit":  true
                                 },
                      "context_window":  16000,
-                     "created":  1780694660,
+                     "created":  1782668991,
                      "id":  "pplx/search",
                      "max_input_tokens":  16000,
                      "max_output_tokens":  4096,
@@ -948,71 +987,11 @@
                      "access":  {
                                     "available":  true,
                                     "required_discord_roles":  [
-
-                                                               ],
-                                    "requires_seems_legit":  false
-                                },
-                     "context_window":  104000,
-                     "created":  1780694661,
-                     "id":  "wsf/kimi-k2.6",
-                     "max_input_tokens":  104000,
-                     "max_output_tokens":  32000,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "wsf",
-                     "requires_seems_legit":  false,
-                     "supports_chat":  true,
-                     "visibility":  "site_catalog"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
-
-                                                               ],
-                                    "requires_seems_legit":  false
-                                },
-                     "context_window":  80000,
-                     "created":  1780694661,
-                     "id":  "wsf/swe-1.5",
-                     "max_input_tokens":  80000,
-                     "max_output_tokens":  32000,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "wsf",
-                     "requires_seems_legit":  false,
-                     "supports_chat":  true,
-                     "visibility":  "site_catalog"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
-
-                                                               ],
-                                    "requires_seems_legit":  false
-                                },
-                     "context_window":  80000,
-                     "created":  1780694661,
-                     "id":  "wsf/swe-1.6",
-                     "max_input_tokens":  80000,
-                     "max_output_tokens":  32000,
-                     "object":  "model",
-                     "owned_by":  "gateway",
-                     "prefix":  "wsf",
-                     "requires_seems_legit":  false,
-                     "supports_chat":  true,
-                     "visibility":  "site_catalog"
-                 },
-                 {
-                     "access":  {
-                                    "available":  true,
-                                    "required_discord_roles":  [
                                                                    "seems_legit"
                                                                ],
                                     "requires_seems_legit":  true
                                 },
-                     "created":  1780694660,
+                     "created":  1782668991,
                      "id":  "xai/grok-stt",
                      "object":  "model",
                      "owned_by":  "gateway",
@@ -1029,7 +1008,7 @@
                                                                ],
                                     "requires_seems_legit":  true
                                 },
-                     "created":  1780694660,
+                     "created":  1782668991,
                      "id":  "xai/grok-tts",
                      "object":  "model",
                      "owned_by":  "gateway",
@@ -1039,7 +1018,7 @@
                      "visibility":  "role_gated"
                  }
              ],
-    "generated_at":  "2026-06-05T21:31:02Z",
+    "generated_at":  "2026-06-28T17:59:30Z",
     "object":  "model_catalog",
     "policy":  {
                    "invite_tiers":  [
@@ -1077,7 +1056,7 @@
                    "seems_legit_required_prefixes":  [
                                                          "agr/",
                                                          "exa/",
-                                                         "mim/",
+                                                         "miv/",
                                                          "pplx/",
                                                          "xai/"
                                                      ],

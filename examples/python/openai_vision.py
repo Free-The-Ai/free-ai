@@ -57,7 +57,7 @@ def main() -> None:
 
     client = get_client()
     response = client.chat.completions.create(
-        model="bbg/zai-org/GLM-5.1",
+        model="glm/glm-5.1",
         messages=[
             {
                 "role": "user",

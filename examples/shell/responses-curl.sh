@@ -16,7 +16,7 @@ curl -sS https://api.freetheai.xyz/v1/responses \
     -H "Authorization: Bearer ${FREETHEAI_API_KEY}" \
     -H "Content-Type: application/json" \
     -d '{
-        "model": "bbg/zai-org/GLM-5.1",
+        "model": "glm/glm-5.1",
         "input": "Reply with exactly: OK",
         "max_output_tokens": 64
     }'

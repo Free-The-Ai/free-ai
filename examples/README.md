@@ -26,7 +26,7 @@ export FREETHEAI_API_KEY=fta_...
 | [`llamaindex_chat.py`](python/llamaindex_chat.py) | LlamaIndex `OpenAILike` LLM |
 | [`audio_tts.py`](python/audio_tts.py) | Text-to-speech with `/v1/audio/speech` |
 | [`audio_stt.py`](python/audio_stt.py) | Speech-to-text with `/v1/audio/transcriptions` |
-| [`image_client.py`](image_client.py) | Standalone image generation/edit CLI |
+| [`image_client.py`](image_client.py) | Standalone image generation CLI |
 
 ## JavaScript / TypeScript (`examples/js`)
 
@@ -56,6 +56,6 @@ export FREETHEAI_API_KEY=fta_...
 
 ## Notes
 
-- Audio routes (`/v1/audio/speech`, `/v1/audio/transcriptions`) and the model prefixes that back them (`xai/`, `mim/*tts*`) are role-gated. Earn the `seems_legit` Discord role by being active in the server. Check `requires_seems_legit` on `/v1/models/full` to see which aliases need it.
+- Some search and voice aliases are role-gated, currently `exa/`, `pplx/`, and `xai/`. Earn the `seems_legit` Discord role by being active in the server. Check `requires_seems_legit` on `/v1/models/full` to see which aliases need it.
 - For the latest setup guides for full apps (Cline, Cursor, Zed, OpenCode, SillyTavern, etc.), see [`https://freetheai.xyz/setup`](https://freetheai.xyz/setup).
 - Free tier stays free. If FreeTheAi saves you a subscription, you can [buy Vibhek a coffee](https://buymeacoffee.com/vibheksoni) to keep it running.

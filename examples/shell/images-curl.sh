@@ -20,6 +20,6 @@ curl -sS https://api.freetheai.xyz/v1/images/generations \
     -H "Authorization: Bearer ${FREETHEAI_API_KEY}" \
     -H "Content-Type: application/json" \
     -d "$(jq -n --arg prompt "$PROMPT" '{
-        model: "img/gpt-image-2",
+        model: "eve/gpt-image-2",
         prompt: $prompt
     }')"

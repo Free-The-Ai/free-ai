@@ -131,6 +131,7 @@ html {
     scroll-padding-top: 96px;
     scrollbar-width: thin;
     scrollbar-color: var(--accent) transparent;
+    scrollbar-gutter: stable;
 }
 
 html::-webkit-scrollbar {
@@ -3413,16 +3414,9 @@ h3 {
 }
 
 html.popover-open { background: var(--bg); }
-html.popover-open,
-body.popover-open {
+html.popover-open {
     overflow: hidden;
     overscroll-behavior: none;
-}
-body.popover-open {
-    position: fixed;
-    left: 0;
-    right: 0;
-    width: 100%;
 }
 
 .nav-drawer-overlay {
@@ -3458,19 +3452,8 @@ body.popover-open {
 
 html.nav-drawer-open {
     background: var(--bg);
-}
-
-html.nav-drawer-open,
-body.nav-drawer-open {
     overflow: hidden;
     overscroll-behavior: none;
-}
-
-body.nav-drawer-open {
-    position: fixed;
-    left: 0;
-    right: 0;
-    width: 100%;
 }
 .nav-drawer__title {
     font-size: 0.82rem;
@@ -4374,19 +4357,8 @@ body.nav-drawer-open {
 
     html.docs-toc-open {
         background: var(--bg);
-    }
-
-    html.docs-toc-open,
-    body.docs-toc-open {
         overflow: hidden;
         overscroll-behavior: none;
-    }
-
-    body.docs-toc-open {
-        position: fixed;
-        left: 0;
-        right: 0;
-        width: 100%;
     }
 
     .docs-sidebar-label {

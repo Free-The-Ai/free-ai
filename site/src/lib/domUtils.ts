@@ -10,25 +10,19 @@ export function disconnectPointerDrag(
   }
 }
 
-/** Lock body scroll and store current scrollY so it can be restored by unlockBodyScroll. */
+/** Lock body scroll. scrollbar-gutter: stable on <html> prevents horizontal reflow. */
 let lockedScrollY = 0;
 export function lockBodyScroll(className: string = "scroll-locked"): void {
   if (typeof document === "undefined") return;
-  if (document.body.classList.contains(className)) return;
+  if (document.documentElement.classList.contains(className)) return;
   lockedScrollY = window.scrollY;
   document.documentElement.classList.add(className);
-  document.body.classList.add(className);
-  document.body.style.top = `-${lockedScrollY}px`;
 }
 
 /** Unlock body scroll (undo lockBodyScroll). */
 export function unlockBodyScroll(className: string = "scroll-locked"): void {
   if (typeof document === "undefined") return;
-  if (!document.body.classList.contains(className)) return;
-  const y = lockedScrollY;
+  if (!document.documentElement.classList.contains(className)) return;
   document.documentElement.classList.remove(className);
-  document.body.classList.remove(className);
-  document.body.style.top = "";
   lockedScrollY = 0;
-  window.scrollTo(0, y);
 }

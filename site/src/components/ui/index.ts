@@ -16,3 +16,5 @@ export type {
 } from './Menu';
 export { ToastRegion } from './Toast';
 export type { ToastManager } from './Toast';
+export { ResponsiveDrawer, NavDrawerSheet } from './Drawer';
+export type { ResponsiveDrawerProps, NavDrawerSheetProps } from './Drawer';

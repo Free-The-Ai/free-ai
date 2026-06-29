@@ -1,9 +1,7 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import type { ProviderHealth } from "./ProviderStatusGrid";
 import { formatPercent } from "../utils/format";
-import { lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
-import { motionApply, motionFor } from "../lib/motion";
-import { useDragToDismiss } from "../lib/useDragToDismiss";
+import { ResponsiveDrawer } from "./ui";
 
 type ScrollRailMetrics = {
     scrollable: boolean;
@@ -159,130 +157,79 @@ export default function ProviderPopover(props: {
     provider: ProviderHealth;
     onClose: () => void;
 }) {
-    const [isMobile, setIsMobile] = useState(false);
-    const sheetRef = useRef<HTMLDivElement>(null);
     const provider = props.provider;
-    const closePopover = useCallback(() => {
-        unlockBodyScroll("popover-open");
-        props.onClose();
-    }, [props]);
     const isAffected = provider.status === "degraded" || provider.status === "down";
-
     const rail = useScrollRail(provider);
-    const drag = useDragToDismiss({ isMobile, onDismiss: closePopover });
-
-    const lockPageScroll = useCallback(() => lockBodyScroll("popover-open"), []);
 
     useEffect(() => {
-        lockPageScroll();
-        if (sheetRef.current) {
-            motionApply(sheetRef.current, motionFor("popover", "enter", {
-                size: sheetRef.current.offsetHeight,
-            }));
-        }
         if (typeof window === "undefined") return;
-        setIsMobile(window.innerWidth <= 640);
-        const onResize = () => { setIsMobile(window.innerWidth <= 640); rail.queueUpdate(); };
-        const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closePopover(); };
+        const onResize = () => rail.queueUpdate();
         window.addEventListener("resize", onResize);
-        document.addEventListener("keydown", onKey);
-        return () => {
-            window.removeEventListener("resize", onResize);
-            document.removeEventListener("keydown", onKey);
-            unlockBodyScroll("popover-open");
-        };
-    }, [lockPageScroll, rail, closePopover]);
-
-    const sheetTransform = !isMobile ? undefined : drag.dragOffset > 0 ? `translateY(${drag.dragOffset}px)` : undefined;
-    const sheetTransition = drag.isDragging ? "none" : undefined;
+        return () => window.removeEventListener("resize", onResize);
+    }, [rail]);
 
     return (
-        <div>
+        <ResponsiveDrawer
+            open={true}
+            onOpenChange={(open) => { if (!open) props.onClose(); }}
+            className={`provider-popover is-${provider.status}`}
+        >
+            <div className="popover-status-strip" />
+
+            <div className="popover-header">
+                <button
+                    className="popover-close"
+                    onClick={props.onClose}
+                    data-sound="overlay.close"
+                    aria-label="Close"
+                >
+                    &times;
+                </button>
+                <h3 className="popover-heading">
+                    {provider.prefix}/
+                </h3>
+                <p className="popover-sub">
+                    Status:{" "}
+                    <strong>{provider.status}</strong>{" "}
+                    &middot;{" "}
+                    {provider.model_count.toLocaleString()}{" "}
+                    {provider.model_count === 1 ? "model" : "models"}
+                    {isAffected &&
+                        (provider.status === "down" ? " — affected" : " — at risk")}
+                </p>
+            </div>
+
             <div
-                className="popover-backdrop"
-                onClick={closePopover}
-                data-sound="overlay.close"
+                className={`popover-body-frame${rail.metrics.scrollable ? " is-scrollable" : ""}`}
+                onWheel={rail.onBodyWheel}
             >
                 <div
-                    ref={(el) => { sheetRef.current = el; drag.sheetRef.current = el; }}
-                    className={`popover is-${provider.status} is-open`}
-                    style={{
-                        transform: sheetTransform,
-                        transition: sheetTransition,
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                    role="dialog"
-                    aria-label={`${provider.prefix} provider details`}
+                    className="popover-body"
+                    ref={rail.bodyRef}
+                    onScroll={rail.metrics.scrollable ? rail.queueUpdate : undefined}
                 >
-                    <div className="popover-status-strip" />
-
-                    {isMobile && (
-                        <div
-                            className="popover-drag-handle"
-                            data-sound="overlay.close"
-                            onPointerDown={drag.onDragStart}
-                        />
-                    )}
-
-                    <div
-                        className={`popover-header${isMobile ? " has-handle" : ""}`}
-                        onPointerDown={isMobile ? drag.onDragStart : undefined}
-                    >
-                        <button
-                            className="popover-close"
-                            onClick={closePopover}
-                            data-sound="overlay.close"
-                            aria-label="Close"
-                        >
-                            &times;
-                        </button>
-                        <h3 className="popover-heading">
-                            {provider.prefix}/
-                        </h3>
-                        <p className="popover-sub">
-                            Status:{" "}
-                            <strong>{provider.status}</strong>{" "}
-                            &middot;{" "}
-                            {provider.model_count.toLocaleString()}{" "}
-                            {provider.model_count === 1 ? "model" : "models"}
-                            {isAffected &&
-                                (provider.status === "down" ? " — affected" : " — at risk")}
-                        </p>
-                    </div>
-
-                    <div
-                        className={`popover-body-frame${rail.metrics.scrollable ? " is-scrollable" : ""}`}
-                        onWheel={rail.onBodyWheel}
-                    >
-                        <div
-                            className="popover-body"
-                            ref={rail.bodyRef}
-                            onScroll={rail.metrics.scrollable ? rail.queueUpdate : undefined}
-                        >
-                            <ProviderPopoverBody provider={provider} />
-                        </div>
-                    </div>
-
-                    <div
-                        className={`popover-scroll-rail${rail.isDragging ? " is-dragging" : ""}`}
-                        ref={rail.railRef}
-                        aria-hidden="true"
-                        onPointerDown={rail.onRailDown}
-                    >
-                        <div
-                            className={`popover-scroll-thumb${rail.isDragging ? " is-dragging" : ""}`}
-                            style={{
-                                height: `${rail.metrics.thumbHeight}px`,
-                                transform: `translateY(${rail.metrics.thumbTop}px)`,
-                            }}
-                            onPointerDown={rail.onThumbDown}
-                            onPointerMove={rail.onThumbMove}
-                            onPointerUp={rail.onThumbEnd}
-                            onPointerCancel={rail.onThumbEnd}
-                        />
-                    </div>
+                    <ProviderPopoverBody provider={provider} />
                 </div>
             </div>
-        </div>
+
+            <div
+                className={`popover-scroll-rail${rail.isDragging ? " is-dragging" : ""}`}
+                ref={rail.railRef}
+                aria-hidden="true"
+                onPointerDown={rail.onRailDown}
+            >
+                <div
+                    className={`popover-scroll-thumb${rail.isDragging ? " is-dragging" : ""}`}
+                    style={{
+                        height: `${rail.metrics.thumbHeight}px`,
+                        transform: `translateY(${rail.metrics.thumbTop}px)`,
+                    }}
+                    onPointerDown={rail.onThumbDown}
+                    onPointerMove={rail.onThumbMove}
+                    onPointerUp={rail.onThumbEnd}
+                    onPointerCancel={rail.onThumbEnd}
+                />
+            </div>
+        </ResponsiveDrawer>
     );
 }

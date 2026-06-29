@@ -518,6 +518,7 @@ export default function CatalogBrowser() {
   const [source, setSource] = createSignal<"live" | "snapshot" | "error">("live");
   const [loadError, setLoadError] = createSignal("");
   const [selected, setSelected] = createSignal<Model | null>(null);
+  let mounted = false;
 
   const togglePrefix = (pfx: string) => {
     setPrefixes((prev) => {
@@ -580,6 +581,7 @@ export default function CatalogBrowser() {
 
   createEffect(() => {
     if (typeof window === "undefined") return;
+    if (!mounted) return;
     const params = new URLSearchParams(window.location.search);
     const pfxList = [...prefixes()];
     const typeList = [...typeFilters()];
@@ -604,6 +606,7 @@ export default function CatalogBrowser() {
     if (params.query) setQuery(params.query);
     if (params.prefixes.length > 0) setPrefixes(new Set(params.prefixes));
     if (params.types.length > 0) setTypeFilters(new Set(params.types));
+    mounted = true;
 
     const handleKey = (event: KeyboardEvent) => {
       if (event.key === "Escape" && selected()) setSelected(null);

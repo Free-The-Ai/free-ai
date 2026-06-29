@@ -1,5 +1,6 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Button, Skeleton, TextField, Menu } from "./ui";
+import { CheckmarkIcon } from "./ui/icons";
 import { formatTokens, modelPrefix, modelSuffix, siteModelContextWindow } from "../utils/format";
 
 interface AccessInfo {
@@ -417,15 +418,18 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
 
 function FilterCheckbox({ checked, onToggle, label, count }: { checked: boolean; onToggle: () => void; label: string; count?: number }) {
   return (
-    <Menu.Item
+    <Menu.CheckboxItem
       className={`catalog-filter-menu-item${checked ? " is-active" : ""}`}
-      onClick={(e: React.MouseEvent) => { e.preventDefault(); onToggle(); }}
+      checked={checked}
+      onCheckedChange={() => onToggle()}
       data-sound="interaction.toggle"
     >
-      <span className="catalog-filter-checkbox" aria-hidden="true">{checked ? "\u2713" : ""}</span>
+      <Menu.CheckboxItemIndicator className="catalog-filter-checkbox">
+        <CheckmarkIcon />
+      </Menu.CheckboxItemIndicator>
       <span className="catalog-filter-option-name">{label}</span>
       {count !== undefined && <span className="catalog-filter-option-count">{count}</span>}
-    </Menu.Item>
+    </Menu.CheckboxItem>
   );
 }
 

@@ -1,7 +1,7 @@
 import { Menu as BaseMenu } from '@base-ui/react/menu';
 import { soundPlay } from '../../lib/sound/singleton';
 import type { SoundRole } from '../../lib/sound/types';
-import { ChevronDownIcon } from './icons';
+import { CheckmarkIcon, ChevronDownIcon } from './icons';
 
 export type Side = 'top' | 'bottom' | 'left' | 'right' | 'inline-start' | 'inline-end';
 
@@ -106,11 +106,23 @@ export function MenuItemLabel({ className, children }: { className?: string; chi
   return <span className={['kb-menu__item-label', className].filter(Boolean).join(' ')}>{children}</span>;
 }
 
+export interface MenuCheckboxItemProps extends React.ComponentProps<typeof BaseMenu.CheckboxItem> {}
+
+export function MenuCheckboxItem({ className, children, ...rest }: MenuCheckboxItemProps) {
+  return <BaseMenu.CheckboxItem className={['kb-menu__item', 'kb-menu__checkbox-item', className].filter(Boolean).join(' ')} {...rest}>{children}</BaseMenu.CheckboxItem>;
+}
+
+export function MenuCheckboxItemIndicator({ className, children }: { className?: string; children?: React.ReactNode }) {
+  return <BaseMenu.CheckboxItemIndicator className={['kb-menu__checkbox-indicator', className].filter(Boolean).join(' ')}>{children}</BaseMenu.CheckboxItemIndicator>;
+}
+
 export const Menu = {
   Root: MenuRoot,
   Trigger: MenuTrigger,
   Content: MenuContent,
   Item: MenuItem,
+  CheckboxItem: MenuCheckboxItem,
+  CheckboxItemIndicator: MenuCheckboxItemIndicator,
   Sub: MenuSub,
   SubTrigger: MenuSubTrigger,
   SubContent: MenuSubContent,

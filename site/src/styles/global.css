@@ -2109,10 +2109,34 @@ h3 {
 
 .catalog-filter-checkbox {
     width: 16px;
-    text-align: center;
     color: var(--accent);
     font-size: 0.82rem;
     font-weight: 700;
+}
+
+.kb-menu__checkbox-item {
+    display: grid;
+    grid-template-columns: 16px 1fr auto;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: background 120ms var(--ease-out-smooth), color 120ms var(--ease-out-smooth);
+    user-select: none;
+}
+
+.kb-menu__checkbox-item[data-highlighted] {
+    background: var(--control-bg);
+}
+
+.kb-menu__checkbox-item[data-checked] {
+    color: var(--accent-text);
+    text-shadow: var(--accent-text-glow);
+    background: var(--accent-muted);
 }
     -webkit-appearance: none;
     width: 14px;

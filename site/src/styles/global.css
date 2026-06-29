@@ -2507,10 +2507,8 @@ h3 {
 
 
 .model-modal-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 16px;
+    display: grid;
+    gap: 4px;
 }
 
 .model-modal-prefix {
@@ -2530,26 +2528,6 @@ h3 {
     font-family: var(--font-mono);
     font-size: 1rem;
     word-break: break-all;
-}
-
-.model-modal-close {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    border: 1px solid var(--sk-border);
-    border-radius: var(--radius-sm);
-    background: var(--sk-inset-bg);
-    color: var(--muted);
-    cursor: pointer;
-    transition: border-color 150ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth);
-}
-
-.model-modal-close:hover {
-    border-color: oklch(0.659 0.192 40.1 / 0.42);
-    color: var(--accent-text);
 }
 
 .model-modal-meta {
@@ -3074,46 +3052,17 @@ h3 {
 
 .provider-popover .popover-header {
     flex-shrink: 0;
-    padding: 0 24px;
+    padding: 24px 26px 0;
     min-width: 0;
     touch-action: none;
 }
 
-.provider-popover .popover-close {
-    position: absolute;
-    top: 14px;
-    right: 14px;
-    z-index: 2;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border: 1px solid var(--sk-border);
-    border-radius: var(--radius-sm);
-    background: var(--sk-inset-bg);
-    box-shadow: var(--sk-inset-shadow);
-    color: var(--muted);
-    cursor: pointer;
-    font-size: 1.1rem;
-    line-height: 1;
-    flex-shrink: 0;
-    transition: border-color 0.15s ease, color 0.15s ease, background 0.15s ease;
-}
-.provider-popover .popover-close:hover {
-    border-color: var(--border-strong);
-    color: var(--text);
-    background: var(--sk-shell-bg);
-}
-.provider-popover .popover-close:active { transform: scale(0.93); }
-
 .provider-popover .popover-heading {
-    margin: 22px 0 4px;
+    margin: 0 0 4px;
     color: var(--text);
     font-family: var(--font-serif);
     font-size: 1.3rem;
     font-weight: 600;
-    padding-right: 38px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -3139,7 +3088,7 @@ h3 {
     overflow-x: hidden;
     min-width: 0;
     min-height: 0;
-    padding: 8px 24px 24px;
+    padding: 8px 26px 24px;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
     overscroll-behavior: contain;
@@ -3193,12 +3142,6 @@ h3 {
 .responsive-drawer-popup.provider-popover {
     height: 88dvh;
     max-height: 88dvh;
-}
-
-.responsive-drawer-popup.provider-popover .popover-header,
-.responsive-drawer-popup.provider-popover .popover-body {
-    padding-left: 18px;
-    padding-right: 18px;
 }
 
 .detail-section {

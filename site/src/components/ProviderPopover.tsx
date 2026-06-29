@@ -177,14 +177,6 @@ export default function ProviderPopover(props: {
             <div className="popover-status-strip" />
 
             <div className="popover-header">
-                <button
-                    className="popover-close"
-                    onClick={props.onClose}
-                    data-sound="overlay.close"
-                    aria-label="Close"
-                >
-                    &times;
-                </button>
                 <h3 className="popover-heading">
                     {provider.prefix}/
                 </h3>

@@ -304,19 +304,8 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
         >
             <article className="model-modal">
                 <header className="model-modal-head">
-                    <div>
-                        <span className="model-modal-prefix">{model.prefix}/*</span>
-                        <code className="model-modal-id">{model.id}</code>
-                    </div>
-                    <button
-                        type="button"
-                        className="model-modal-close"
-                        aria-label="Close"
-                        data-sound="overlay.close"
-                        onClick={onClose}
-                    >
-                        <span className="material-symbols-outlined" aria-hidden="true">close</span>
-                    </button>
+                    <span className="model-modal-prefix">{model.prefix}/*</span>
+                    <code className="model-modal-id">{model.id}</code>
                 </header>
 
                 <section className="model-modal-meta">

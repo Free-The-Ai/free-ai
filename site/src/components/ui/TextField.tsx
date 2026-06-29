@@ -1,73 +1,88 @@
-import { TextField as KTextField } from "@kobalte/core/text-field";
-import { splitProps } from "solid-js";
-import type { ComponentProps } from "solid-js";
-import { soundPlay, soundEnabled } from "../../lib/sound/singleton";
+import { Field } from '@base-ui/react/field';
+import { Input } from '@base-ui/react/input';
+import { soundPlay, soundEnabled } from '../../lib/sound/singleton';
 
 const TYPING_THROTTLE_MS = 120;
 let lastTypingSound = 0;
 
-interface TextFieldProps extends ComponentProps<typeof KTextField> {
+interface TextFieldProps {
   label?: string;
   description?: string;
   error?: string;
   multiline?: boolean;
-  /** Set to false to disable typing sounds. */
   sound?: boolean;
+  value?: string;
+  defaultValue?: string;
+  onChange?: (value: string) => void;
+  placeholder?: string;
+  className?: string;
+  name?: string;
+  disabled?: boolean;
+  required?: boolean;
+  id?: string;
 }
 
-export default function TextField(props: TextFieldProps) {
-  const [local, rest] = splitProps(props, [
-    "label", "description", "error", "multiline", "class", "sound",
-    "value", "onChange", "placeholder",
-  ]);
-
+export default function TextField({
+  label,
+  description,
+  error,
+  multiline,
+  sound = true,
+  value,
+  defaultValue,
+  onChange,
+  placeholder,
+  className,
+  name,
+  disabled,
+  required,
+  id,
+}: TextFieldProps) {
   const handleInput = () => {
-    if (local.sound !== false && soundEnabled()) {
+    if (sound && soundEnabled()) {
       const now = Date.now();
       if (now - lastTypingSound >= TYPING_THROTTLE_MS) {
         lastTypingSound = now;
-        soundPlay("interaction.typing");
+        soundPlay('interaction.typing');
       }
     }
   };
 
   return (
-    <KTextField
-      {...rest}
-      value={local.value}
-      onChange={(v: string) => local.onChange?.(v)}
-      class={`kb-text-field ${local.class ?? ""}`}
-      validationState={local.error ? "invalid" : "valid"}
+    <Field.Root
+      className={['kb-text-field', className].filter(Boolean).join(' ')}
+      invalid={!!error}
+      disabled={disabled}
+      name={name}
     >
-      {local.label && (
-        <KTextField.Label class="kb-text-field__label">
-          {local.label}
-        </KTextField.Label>
-      )}
-      {local.multiline ? (
-        <KTextField.TextArea
-          class="kb-text-field__textarea"
-          placeholder={local.placeholder}
-          autoResize
+      {label && <Field.Label className="kb-text-field__label">{label}</Field.Label>}
+      {multiline ? (
+        <textarea
+          className="kb-text-field__textarea"
+          placeholder={placeholder}
+          value={value}
+          defaultValue={defaultValue}
+          onChange={(e) => onChange?.(e.target.value)}
           onInput={handleInput}
+          disabled={disabled}
+          required={required}
+          id={id}
         />
       ) : (
-        <KTextField.Input
-          class="kb-text-field__input"
-          placeholder={local.placeholder}
+        <Input
+          className="kb-text-field__input"
+          placeholder={placeholder}
+          value={value}
+          defaultValue={defaultValue}
+          onValueChange={(val) => onChange?.(val)}
           onInput={handleInput}
+          disabled={disabled}
+          required={required}
+          id={id}
         />
       )}
-      {local.description && (
-        <KTextField.Description class="kb-text-field__description">
-          {local.description}
-        </KTextField.Description>
-      )}
-      {local.error && (
-        <KTextField.ErrorMessage class="kb-text-field__error">
-          {local.error}
-        </KTextField.ErrorMessage>
-      )}
-    </KTextField>
+      {description && <Field.Description className="kb-text-field__description">{description}</Field.Description>}
+      {error && <Field.Error className="kb-text-field__error">{error}</Field.Error>}
+    </Field.Root>
   );
 }

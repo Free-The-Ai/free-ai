@@ -1,60 +1,37 @@
-import { Button as KButton } from "@kobalte/core/button";
-import { splitProps } from "solid-js";
-import type { ComponentProps, ValidComponent } from "solid-js";
-import type { SoundRole } from "../../lib/sound/types";
-import { soundPlay } from "../../lib/sound/singleton";
-import type { Density } from "../../lib/theme";
+import { Button as BaseButton } from '@base-ui/react/button';
+import { soundPlay } from '../../lib/sound/singleton';
+import type { SoundRole } from '../../lib/sound/types';
 
-type Variant = "primary" | "ghost" | "danger";
-type Size = "sm" | "md" | "lg";
+type ButtonVariant = 'primary' | 'ghost' | 'danger';
+type ButtonSize = 'sm' | 'md' | 'lg';
 
-/** Per-instance control-height overrides scoped to a single button. */
-const DENSITY_HEIGHT: Record<Density, string> = {
-  compact: "34px",
-  comfortable: "40px",
-  spacious: "46px",
-};
-
-interface ButtonProps extends Omit<ComponentProps<typeof KButton>, "as"> {
-  variant?: Variant;
-  size?: Size;
-  /** Override the global density for this button only (sets --control-height locally). */
-  density?: Density;
-  as?: ValidComponent;
+interface ButtonProps extends Omit<React.ComponentProps<typeof BaseButton>, 'render'> {
+  variant?: ButtonVariant;
+  size?: ButtonSize;
   sound?: SoundRole | false;
   volume?: number;
 }
 
-const sizeMap: Record<Size, string | undefined> = { sm: "sm", md: undefined, lg: "lg" };
-
-export default function Button(props: ButtonProps) {
-  const [local, rest] = splitProps(props, ["variant", "size", "density", "class", "sound", "volume", "onClick", "style"]);
-
-  const handleClick = (e: MouseEvent) => {
-    if (local.sound !== false) {
-      soundPlay(local.sound ?? "interaction.tap", { volume: local.volume });
-    }
-    local.onClick?.(e);
-  };
-
-  const classes = () =>
-    ["kb-button", local.class].filter(Boolean).join(" ");
-
-  const style = () =>
-    local.density
-      ? { "--control-height": DENSITY_HEIGHT[local.density], ...((local.style as Record<string, string>) ?? {}) }
-      : local.style;
-
+export default function Button({
+  variant = 'ghost',
+  size = 'md',
+  sound,
+  volume,
+  className,
+  onClick,
+  ...rest
+}: ButtonProps) {
   return (
-    <KButton
-      as={rest.as}
-      class={classes()}
-      style={style()}
-      data-variant={local.variant ?? "ghost"}
-      data-size={sizeMap[local.size ?? "md"]}
+    <BaseButton
+      data-variant={variant}
+      data-size={size === 'md' ? undefined : size}
       data-sound=""
+      className={['kb-button', className].filter(Boolean).join(' ')}
+      onClick={(e) => {
+        if (sound !== false) soundPlay(sound ?? 'interaction.tap', { volume });
+        onClick?.(e);
+      }}
       {...rest}
-      onClick={handleClick}
     />
   );
 }

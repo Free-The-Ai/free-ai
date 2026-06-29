@@ -1,135 +1,111 @@
-import { DropdownMenu as KMenu } from "@kobalte/core/dropdown-menu";
-import { splitProps } from "solid-js";
-import type { ComponentProps, JSX, ValidComponent } from "solid-js";
-import { ChevronDownIcon } from "./icons";
-import type { SoundRole } from "../../lib/sound/types";
-import { soundPlay } from "../../lib/sound/singleton";
+import { Menu as BaseMenu } from '@base-ui/react/menu';
+import { soundPlay } from '../../lib/sound/singleton';
+import type { SoundRole } from '../../lib/sound/types';
+import { ChevronDownIcon } from './icons';
 
-export type { Placement } from "@kobalte/core/popper";
+export type Side = 'top' | 'bottom' | 'left' | 'right' | 'inline-start' | 'inline-end';
 
-/**
- * Kobalte `DropdownMenu` wrapper styled for the Hyperstudio dark theme.
- *
- * Submenu hover uses a built-in prediction cone ("safe triangle"): while the
- * pointer travels diagonally from a `Menu.SubTrigger` toward its
- * `Menu.SubContent`, Kobalte keeps the submenu open by testing the pointer
- * against a grace-area polygon derived from the submenu content bounds. No
- * extra wiring is required — see `src/lib/safeTriangle.ts` for the reusable,
- * configurable primitive used by custom hover surfaces.
- */
-
-export interface MenuRootProps extends ComponentProps<typeof KMenu> {}
-
-/** Menu root. Accepts `placement` and `gutter` (popper geometry). */
-export function MenuRoot(props: MenuRootProps) {
-  return <KMenu {...props} />;
+export interface MenuRootProps extends Omit<React.ComponentProps<typeof BaseMenu.Root>, 'side'> {
+  side?: Side;
 }
 
-export interface MenuTriggerProps
-  extends Omit<ComponentProps<typeof KMenu.Trigger>, "as"> {
-  as?: ValidComponent;
+export function MenuRoot({ children, ...rest }: MenuRootProps) {
+  return <BaseMenu.Root {...rest}>{children}</BaseMenu.Root>;
+}
+
+export interface MenuTriggerProps extends Omit<React.ComponentProps<typeof BaseMenu.Trigger>, 'render'> {
   sound?: SoundRole | false;
 }
 
-/** Trigger button. Plays a tap sound unless `sound` is false. */
-export function MenuTrigger(props: MenuTriggerProps) {
-  const [local, rest] = splitProps(props, [
-    "as",
-    "class",
-    "sound",
-    "onClick",
-    "children",
-  ]);
-
-  const handleClick: JSX.EventHandlerUnion<HTMLElement, MouseEvent> = (event) => {
-    if (local.sound !== false) soundPlay(local.sound ?? "interaction.tap");
-    if (typeof local.onClick === "function") local.onClick(event);
-  };
-
+export function MenuTrigger({ sound, className, onClick, children, ...rest }: MenuTriggerProps) {
   return (
-    <KMenu.Trigger
-      as={local.as}
-      class={`kb-menu__trigger ${local.class ?? ""}`}
+    <BaseMenu.Trigger
+      className={['kb-menu__trigger', className].filter(Boolean).join(' ')}
       data-sound=""
+      onClick={(e) => {
+        if (sound !== false) soundPlay(sound ?? 'interaction.tap');
+        onClick?.(e);
+      }}
       {...rest}
-      onClick={handleClick}
     >
-      {local.children}
-      <ChevronDownIcon class="kb-menu__chevron" />
-    </KMenu.Trigger>
+      {children}
+      <ChevronDownIcon className="kb-menu__chevron" />
+    </BaseMenu.Trigger>
   );
 }
 
-export interface MenuContentProps extends ComponentProps<typeof KMenu.Content> {}
+export interface MenuContentProps extends Omit<React.ComponentProps<typeof BaseMenu.Positioner>, 'side'> {
+  side?: Side;
+}
 
-/** Floating panel. */
-export function MenuContent(props: MenuContentProps) {
-  const [local, rest] = splitProps(props, ["class"]);
+export function MenuContent({ side = 'bottom', className, children, ...rest }: MenuContentProps) {
   return (
-    <KMenu.Portal>
-      <KMenu.Content class={`kb-menu__content ${local.class ?? ""}`} {...rest} />
-    </KMenu.Portal>
+    <BaseMenu.Portal>
+      <BaseMenu.Positioner side={side} {...rest}>
+        <BaseMenu.Popup className={['kb-menu__content', className].filter(Boolean).join(' ')}>
+          {children}
+        </BaseMenu.Popup>
+      </BaseMenu.Positioner>
+    </BaseMenu.Portal>
   );
 }
 
-export interface MenuItemProps extends ComponentProps<typeof KMenu.Item> {}
+export interface MenuItemProps extends React.ComponentProps<typeof BaseMenu.Item> {}
 
-/** Selectable item. Highlight state drives `data-highlighted` styling. */
-export function MenuItem(props: MenuItemProps) {
-  const [local, rest] = splitProps(props, ["class"]);
-  return <KMenu.Item class={`kb-menu__item ${local.class ?? ""}`} {...rest} />;
+export function MenuItem({ className, ...rest }: MenuItemProps) {
+  return <BaseMenu.Item className={['kb-menu__item', className].filter(Boolean).join(' ')} {...rest} />;
 }
 
-export interface MenuSubProps extends ComponentProps<typeof KMenu.Sub> {}
-/** Submenu root. */
-export function MenuSub(props: MenuSubProps) {
-  return <KMenu.Sub {...props} />;
+export interface MenuSubProps extends React.ComponentProps<typeof BaseMenu.SubmenuRoot> {}
+
+export function MenuSub({ children, ...rest }: MenuSubProps) {
+  return <BaseMenu.SubmenuRoot {...rest}>{children}</BaseMenu.SubmenuRoot>;
 }
 
-export interface MenuSubTriggerProps
-  extends ComponentProps<typeof KMenu.SubTrigger> {}
-/** Item that opens a submenu. Safe-triangle grace area is built in. */
-export function MenuSubTrigger(props: MenuSubTriggerProps) {
-  const [local, rest] = splitProps(props, ["class", "children"]);
+export interface MenuSubTriggerProps extends React.ComponentProps<typeof BaseMenu.SubmenuTrigger> {}
+
+export function MenuSubTrigger({ className, children, ...rest }: MenuSubTriggerProps) {
   return (
-    <KMenu.SubTrigger class={`kb-menu__item kb-menu__sub-trigger ${local.class ?? ""}`} {...rest}>
-      <span class="kb-menu__item-label">{local.children}</span>
-      <ChevronDownIcon class="kb-menu__chevron kb-menu__chevron--sub" />
-    </KMenu.SubTrigger>
+    <BaseMenu.SubmenuTrigger
+      className={['kb-menu__item', 'kb-menu__sub-trigger', className].filter(Boolean).join(' ')}
+      {...rest}
+    >
+      <span className="kb-menu__item-label">{children}</span>
+      <ChevronDownIcon className="kb-menu__chevron kb-menu__chevron--sub" />
+    </BaseMenu.SubmenuTrigger>
   );
 }
 
-export interface MenuSubContentProps
-  extends ComponentProps<typeof KMenu.SubContent> {}
-/** Floating submenu panel. */
-export function MenuSubContent(props: MenuSubContentProps) {
-  const [local, rest] = splitProps(props, ["class"]);
+export interface MenuSubContentProps extends React.ComponentProps<typeof BaseMenu.Positioner> {}
+
+export function MenuSubContent({ side = 'inline-end', className, children, ...rest }: MenuSubContentProps) {
   return (
-    <KMenu.Portal>
-      <KMenu.SubContent class={`kb-menu__content ${local.class ?? ""}`} {...rest} />
-    </KMenu.Portal>
+    <BaseMenu.Portal>
+      <BaseMenu.Positioner side={side} {...rest}>
+        <BaseMenu.Popup className={['kb-menu__content', className].filter(Boolean).join(' ')}>
+          {children}
+        </BaseMenu.Popup>
+      </BaseMenu.Positioner>
+    </BaseMenu.Portal>
   );
 }
 
-export const MenuSeparator = (props: ComponentProps<typeof KMenu.Separator>) => (
-  <KMenu.Separator class="kb-menu__separator" {...props} />
-);
-export const MenuGroup = (props: ComponentProps<typeof KMenu.Group>) => (
-  <KMenu.Group {...props} />
-);
-export const MenuGroupLabel = (props: ComponentProps<typeof KMenu.GroupLabel>) => (
-  <KMenu.GroupLabel class="kb-menu__group-label" {...props} />
-);
-export const MenuItemLabel = (props: ComponentProps<typeof KMenu.ItemLabel>) => (
-  <KMenu.ItemLabel class="kb-menu__item-label" {...props} />
-);
-export const MenuItemDescription = (
-  props: ComponentProps<typeof KMenu.ItemDescription>,
-) => (
-  <KMenu.ItemDescription class="kb-menu__item-description" {...props} />
-);
+export function MenuSeparator(props: React.ComponentProps<typeof BaseMenu.Separator>) {
+  return <BaseMenu.Separator className="kb-menu__separator" {...props} />;
+}
 
-/** Composable Menu namespace mirroring Kobalte's DropdownMenu. */
+export function MenuGroup(props: React.ComponentProps<typeof BaseMenu.Group>) {
+  return <BaseMenu.Group {...props} />;
+}
+
+export function MenuGroupLabel({ className, ...rest }: React.ComponentProps<typeof BaseMenu.GroupLabel>) {
+  return <BaseMenu.GroupLabel className={['kb-menu__group-label', className].filter(Boolean).join(' ')} {...rest} />;
+}
+
+export function MenuItemLabel({ className, children }: { className?: string; children?: React.ReactNode }) {
+  return <span className={['kb-menu__item-label', className].filter(Boolean).join(' ')}>{children}</span>;
+}
+
 export const Menu = {
   Root: MenuRoot,
   Trigger: MenuTrigger,
@@ -141,7 +117,6 @@ export const Menu = {
   Group: MenuGroup,
   GroupLabel: MenuGroupLabel,
   ItemLabel: MenuItemLabel,
-  ItemDescription: MenuItemDescription,
   Separator: MenuSeparator,
 };
 

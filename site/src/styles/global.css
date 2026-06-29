@@ -2790,28 +2790,7 @@ h3 {
 /* Status */
 .status-main {
     width: 100%;
-    padding: 84px 0 96px;
-}
-
-.status-hero {
-    margin-bottom: 40px;
-    padding: clamp(28px, 4.6vw, 52px);
-}
-
-.status-hero h1 {
-    font-family: var(--font-serif);
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
-    font-weight: 700;
-    line-height: 1.15;
-    margin: 12px 0;
-}
-
-.status-hero p {
-    color: var(--muted);
-    font-size: 1.05rem;
-    line-height: 1.6;
-    max-width: 520px;
-    text-wrap: pretty;
+    padding: 22px 0 96px;
 }
 
 .status-board {

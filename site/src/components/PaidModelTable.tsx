@@ -179,10 +179,17 @@ export default function PaidModelTable(props: PaidModelTableProps) {
     setCost("all");
   }, []);
 
+  const filtersActive = query.trim() !== "" || prefix !== "all" || route !== "all" || cost !== "all";
+  const resultLabel = () => {
+    const count = filteredRows.length;
+    const plural = count === 1 ? "paid alias" : "paid aliases";
+    return `${count.toLocaleString()} ${plural} across ${props.activePlan ? props.activePlan : "all plans"}`;
+  };
+
   return (
     <div className="paid-table-panel">
-      <div className="paid-table-toolbar">
-        <div className="catalog-search-field paid-table-search">
+      <div className="catalog-toolbar">
+        <div className="catalog-search-field">
           <span className="material-symbols-outlined catalog-search-icon">search</span>
           <TextField
             className="catalog-search-input"
@@ -191,9 +198,9 @@ export default function PaidModelTable(props: PaidModelTableProps) {
             onChange={(value: string) => setQuery(value)}
           />
         </div>
-        <div className="paid-table-filters" aria-label="Paid model filters">
+        <div className="catalog-filter-group" aria-label="Paid model filters">
           <Select
-            className="paid-filter-select"
+            className="catalog-filter-trigger"
             label="Prefix"
             options={prefixOptions}
             value={prefix}
@@ -201,7 +208,7 @@ export default function PaidModelTable(props: PaidModelTableProps) {
             placeholder="All prefixes"
           />
           <Select
-            className="paid-filter-select"
+            className="catalog-filter-trigger"
             label="Route"
             options={routeOptions}
             value={route}
@@ -209,23 +216,23 @@ export default function PaidModelTable(props: PaidModelTableProps) {
             placeholder="All routes"
           />
           <Select
-            className="paid-filter-select"
+            className="catalog-filter-trigger"
             label="Cost"
             options={costOptions}
             value={cost}
             onChange={(val: string) => setCost(val ?? "all")}
             placeholder="All costs"
           />
-          {(query.trim() || prefix !== "all" || route !== "all" || cost !== "all") && (
-            <button type="button" className="paid-filter-clear" onClick={clearFilters} data-sound="interaction.subtle">
-              Clear
-            </button>
-          )}
         </div>
       </div>
 
-      <div className="catalog-summary paid-table-summary" aria-live="polite">
-        <span>{filteredRows.length} / {rows.length} paid aliases</span>
+      <div className="catalog-summary" aria-live="polite">
+        <span>{resultLabel()}</span>
+        {filtersActive && (
+          <button type="button" onClick={clearFilters} data-sound="interaction.subtle">
+            Clear filters
+          </button>
+        )}
       </div>
 
       <div className="paid-model-table" role="table" aria-label="Paid model unit costs">

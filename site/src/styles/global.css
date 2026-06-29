@@ -2004,7 +2004,11 @@ h3 {
     transition:
         border-color 150ms var(--ease-out-smooth),
         background 150ms var(--ease-out-smooth),
-        box-shadow 150ms var(--ease-out-smooth);
+        box-shadow 150ms var(--ease-out-smooth),
+        transform var(--press-dur) var(--ease-out-smooth);
+}
+.catalog-filter-trigger:active {
+    transform: scale(var(--press-scale));
 }
 
 .catalog-filter-trigger:hover {
@@ -2424,6 +2428,10 @@ h3 {
 .model-card[role="button"] {
     cursor: pointer;
 }
+.model-card[role="button"]:active {
+    transform: scale(var(--press-scale));
+    transition-duration: var(--press-dur);
+}
 
 .model-card[role="button"]:focus-visible {
     outline: 2px solid var(--accent);
@@ -2766,6 +2774,9 @@ h3 {
 .model-copy:hover {
     color: var(--text);
     border-color: var(--border-strong);
+}
+.model-copy:active {
+    transform: scale(var(--press-scale));
 }
 
 .catalog-empty {

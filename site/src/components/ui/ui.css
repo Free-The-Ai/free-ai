@@ -155,9 +155,13 @@
 .kb-select__trigger[data-expanded] { border-color: var(--border-strong); }
 .kb-select__icon { color: var(--dim); transition: transform 200ms var(--ease-out-smooth); }
 .kb-select__icon[data-expanded] { transform: rotate(180deg); }
+.kb-select__positioner {
+  position: relative;
+  z-index: 100;
+}
 .kb-select__content {
-  z-index: 50;
-  min-width: var(--kb-select-content-available-width);
+  width: var(--anchor-width, 220px);
+  min-width: var(--anchor-width, 220px);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--sk-shell-bg);

@@ -62,7 +62,7 @@ export default function SelectComponent({
         </Select.Icon>
       </Select.Trigger>
       <Select.Portal>
-        <Select.Positioner>
+        <Select.Positioner className="kb-select__positioner">
           <Select.Popup className="kb-select__content">
             <Select.List className="kb-select__listbox">
               {options.map((option) => (

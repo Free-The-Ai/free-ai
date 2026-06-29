@@ -2453,6 +2453,10 @@ h3 {
     to { opacity: 1; transform: translateY(0) scale(1); }
 }
 
+.model-modal-drag-handle {
+    display: none;
+}
+
 .model-modal.is-gated {
     border-color: oklch(0.666 0.157 58.3 / 0.45);
 }
@@ -3283,6 +3287,57 @@ h3 {
 .catalog-link-arrow { font-size: 0.9rem; opacity: 0.7; flex-shrink: 0; }
 
 @media (max-width: 640px) {
+    .model-modal-backdrop.is-mobile {
+        padding: 0;
+        align-items: flex-end;
+        background: oklch(0 0 0 / 0.5);
+    }
+
+    .model-modal.is-mobile {
+        width: 100%;
+        max-width: 100%;
+        max-height: 88dvh;
+        height: min(640px, 88dvh);
+        border-radius: 14px 14px 0 0;
+        border-bottom: none;
+        padding: 0 0 calc(18px + env(safe-area-inset-bottom, 0px));
+        animation: model-modal-sheet-in 250ms var(--ease-out-expo);
+        transform-origin: bottom center;
+        overflow: hidden;
+    }
+
+    @keyframes model-modal-sheet-in {
+        from { opacity: 0; transform: translateY(100%); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .model-modal-drag-handle {
+        display: block;
+        flex-shrink: 0;
+        width: 36px;
+        height: 4px;
+        margin: 10px auto 6px;
+        border-radius: 2px;
+        background: var(--border-strong);
+    }
+
+    .model-modal.is-mobile .model-modal-head {
+        padding: 0 18px;
+    }
+
+    .model-modal.is-mobile .model-modal-meta,
+    .model-modal.is-mobile .model-modal-gate,
+    .model-modal.is-mobile .model-modal-routes,
+    .model-modal.is-mobile .model-modal-foot {
+        margin: 0 18px;
+    }
+
+    .model-modal.is-mobile .model-modal-routes {
+        max-height: 240px;
+        overflow-y: auto;
+        padding-right: 4px;
+    }
+
     .popover-backdrop {
         padding: 0;
         align-items: flex-end;
@@ -3356,13 +3411,19 @@ html.popover-open {
 html.nav-drawer-open {
     overscroll-behavior: none;
 }
+.nav-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
 .nav-drawer__title {
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    margin-bottom: 20px;
 }
 .nav-drawer__links {
     display: flex;

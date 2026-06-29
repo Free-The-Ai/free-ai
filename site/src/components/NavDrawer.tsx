@@ -147,6 +147,18 @@ export default function NavDrawer(props: NavDrawerProps) {
             onPointerMove={swipe.onPointerMove}
             onPointerUp={swipe.onPointerUp}
           >
+            <div className="nav-drawer__header">
+              <span className="nav-drawer__title">Menu</span>
+              <button
+                type="button"
+                className="nav-drawer__close"
+                aria-label="Close navigation menu"
+                onClick={closeDrawer}
+                data-sound="overlay.close"
+              >
+                <span className="material-symbols-outlined" aria-hidden="true">close</span>
+              </button>
+            </div>
             <div className="nav-drawer__links">
               {LINKS.map(([href, label, external]) => (
                 <a

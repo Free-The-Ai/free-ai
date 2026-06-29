@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Button, Skeleton, TextField, Menu } from "./ui";
 import { CheckmarkIcon } from "./ui/icons";
 import { formatTokens, modelPrefix, modelSuffix, siteModelContextWindow } from "../utils/format";
+import { useDragToDismiss } from "../lib/useDragToDismiss";
 
 interface AccessInfo {
   available?: boolean;
@@ -295,9 +296,26 @@ function ModelCard({ model, onSelect }: { model: Model; onSelect: (m: Model) => 
 function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onClose: () => void; verifiedLabel: string }) {
     const ctx = modelContext(model);
     const maxInput = model.prefix === "sky" ? ctx : model.max_input_tokens;
+    const [isMobile, setIsMobile] = useState(false);
+    const sheetRef = useRef<HTMLDivElement | null>(null);
+    const drag = useDragToDismiss({ isMobile, onDismiss: onClose });
+
+    useEffect(() => {
+        if (typeof window === "undefined") return;
+        setIsMobile(window.innerWidth <= 640);
+        const onResize = () => setIsMobile(window.innerWidth <= 640);
+        window.addEventListener("resize", onResize);
+        return () => window.removeEventListener("resize", onResize);
+    }, []);
+
+    const sheetTransform = isMobile && drag.dragOffset > 0
+        ? `translateY(${drag.dragOffset}px)`
+        : undefined;
+    const sheetTransition = drag.isDragging ? "none" : undefined;
+
     return (
         <div
-            className="model-modal-backdrop"
+            className={`model-modal-backdrop${isMobile ? " is-mobile" : ""}`}
             role="dialog"
             aria-modal="true"
             aria-label={`${model.id} details`}
@@ -305,9 +323,13 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
             onClick={onClose}
         >
             <article
-                className={`model-modal${model.requires_seems_legit ? " is-gated" : ""}`}
+                ref={(el) => { sheetRef.current = el; drag.sheetRef.current = el; }}
+                className={`model-modal${model.requires_seems_legit ? " is-gated" : ""}${isMobile ? " is-mobile" : ""}`}
+                style={{ transform: sheetTransform, transition: sheetTransition }}
                 onClick={(e) => e.stopPropagation()}
+                onPointerDown={isMobile ? drag.onDragStart : undefined}
             >
+                {isMobile && <div className="model-modal-drag-handle" aria-hidden="true" />}
                 <header className="model-modal-head">
                     <div>
                         <span className="model-modal-prefix">{model.prefix}/*</span>

@@ -12,7 +12,7 @@
  * Public API:
  *   themeConfigure(partial) — set scheme/density/typography/scale/contrast
  *   themeGet()              — read the current ThemeState
- *   themeToggleScheme()     — cycle dark → light → midnight
+ *   themeToggleScheme()     — cycle dark → midnight
  *   initThemeSystem()       — start system-preference detection + persistence
  *   destroyThemeSystem()    — cleanup
  */
@@ -57,7 +57,7 @@ function applyTokens(): void {
   }
   // Expose the raw scale for components that need the multiplier directly.
   root.style.setProperty("--ui-scale", String(s));
-  root.style.colorScheme = config.scheme === "light" ? "light" : "dark";
+  root.style.colorScheme = "dark";
   root.setAttribute("data-theme", config.scheme);
   root.setAttribute("data-density", config.density);
   tokens = resolved;
@@ -105,9 +105,7 @@ function persist(): void {
 
 function detectSystemScheme(): ColorScheme {
   if (typeof window === "undefined" || !window.matchMedia) return "dark";
-  return window.matchMedia("(prefers-color-scheme: light)").matches
-    ? "light"
-    : "dark";
+  return "dark";
 }
 
 function detectSystemContrast(): boolean {
@@ -118,7 +116,7 @@ function detectSystemContrast(): boolean {
 function onSchemeChange(event: MediaQueryListEvent): void {
   // Only auto-follow the system if the user hasn't explicitly chosen a scheme.
   if (systemScheme) {
-    config.scheme = event.matches ? "light" : "dark";
+    config.scheme = "dark";
     applyTokens();
     persist();
   }
@@ -147,7 +145,7 @@ export function themeGet(): ThemeState {
   return { config: { ...config }, tokens: { ...tokens }, systemScheme };
 }
 
-const SCHEME_CYCLE: ColorScheme[] = ["dark", "light", "midnight"];
+const SCHEME_CYCLE: ColorScheme[] = ["dark", "midnight"];
 
 export function themeToggleScheme(): ColorScheme {
   const idx = SCHEME_CYCLE.indexOf(config.scheme);
@@ -182,8 +180,7 @@ export function initThemeSystem(): void {
   }
   applyTokens();
 
-  schemeMql = window.matchMedia("(prefers-color-scheme: light)");
-  schemeMql.addEventListener("change", onSchemeChange);
+  schemeMql = null;
 
   contrastMql = window.matchMedia("(prefers-contrast: more)");
   contrastMql.addEventListener("change", onContrastChange);
@@ -198,6 +195,7 @@ export function destroyThemeSystem(): void {
   if (!initialized) return;
   initialized = false;
   schemeMql?.removeEventListener("change", onSchemeChange);
+  schemeMql = null;
   contrastMql?.removeEventListener("change", onContrastChange);
   schemeMql = null;
   contrastMql = null;
@@ -209,5 +207,5 @@ export function destroyThemeSystem(): void {
  * a flash of the wrong theme (FOUC). Mirrors the loader fade pattern.
  */
 export function themeInlineBootstrap(): string {
-  return `(function(){try{var k="${STORAGE_KEY}";var s=localStorage.getItem(k);var c=s?JSON.parse(s):null;var scheme=c&&c.scheme?c.scheme:(matchMedia("(prefers-color-scheme: light)").matches?"light":"dark");var hc=c&&c.highContrast?c.highContrast:matchMedia("(prefers-contrast: more)").matches;var d=document.documentElement;d.setAttribute("data-theme",scheme);d.colorScheme=scheme==="light"?"light":"dark";d.setAttribute("data-contrast",hc?"high":"normal");}catch(e){}})();`;
+  return `(function(){try{var k="${STORAGE_KEY}";var s=localStorage.getItem(k);var c=s?JSON.parse(s):null;var scheme=c&&c.scheme?c.scheme:"dark";var hc=c&&c.highContrast?c.highContrast:matchMedia("(prefers-contrast: more)").matches;var d=document.documentElement;d.setAttribute("data-theme",scheme);d.colorScheme="dark";d.setAttribute("data-contrast",hc?"high":"normal");}catch(e){}})();`;
 }

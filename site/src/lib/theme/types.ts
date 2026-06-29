@@ -9,7 +9,7 @@
  * per-component change. This mirrors the sound + motion singletons (Yokoten).
  */
 
-export type ColorScheme = "dark" | "light" | "midnight";
+export type ColorScheme = "dark" | "midnight";
 export type Density = "compact" | "comfortable" | "spacious";
 export type TypographyScale = "small" | "standard" | "large";
 

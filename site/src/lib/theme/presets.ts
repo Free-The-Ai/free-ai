@@ -33,22 +33,6 @@ const SCHEMES: Record<ColorScheme, ThemeTokens> = {
     "--sk-shell-bg": "linear-gradient(180deg, oklch(0.244 0 0) 0%, oklch(0.213 0 0) 100%)",
     "--sk-inset-bg": "linear-gradient(180deg, oklch(0.178 0 0) 0%, oklch(0.209 0 0) 100%)",
   },
-  light: {
-    "--bg": "oklch(0.970 0 0)",
-    "--surface": "oklch(1 0 0)",
-    "--border": "oklch(0 0 0 / 0.08)",
-    "--border-strong": "oklch(0 0 0 / 0.16)",
-    "--text": "oklch(0.218 0 0)",
-    "--muted": "oklch(0.549 0 0)",
-    "--dim": "oklch(0.647 0 0)",
-    "--control-bg": "oklch(0 0 0 / 0.03)",
-    "--code-bg": "oklch(0.952 0 0)",
-    "--code-text": "oklch(0.387 0 0)",
-    "--sk-bg-gradient":
-      "radial-gradient(circle at 50% -12%, oklch(0.659 0.192 40.1 / 0.06), transparent 34rem), linear-gradient(180deg, oklch(0.985 0 0) 0%, oklch(0.952 0 0) 32%, oklch(0.928 0 0) 100%)",
-    "--sk-shell-bg": "linear-gradient(180deg, oklch(1 0 0) 0%, oklch(0.964 0 0) 100%)",
-    "--sk-inset-bg": "linear-gradient(180deg, oklch(0.952 0 0) 0%, oklch(0.928 0 0) 100%)",
-  },
   midnight: {
     "--bg": "oklch(0.115 0 0)",
     "--surface": "oklch(0.159 0 0)",
@@ -124,14 +108,6 @@ const HIGH_CONTRAST: ThemeTokens = {
   "--sk-border": "oklch(1 0 0 / 0.20)",
 };
 
-const HIGH_CONTRAST_LIGHT: ThemeTokens = {
-  "--border": "oklch(0 0 0 / 0.28)",
-  "--border-strong": "oklch(0 0 0 / 0.45)",
-  "--text": "oklch(0 0 0)",
-  "--muted": "oklch(0.387 0 0)",
-  "--sk-border": "oklch(0 0 0 / 0.28)",
-};
-
 export function resolveTokens(
   scheme: ColorScheme,
   density: Density,
@@ -144,9 +120,7 @@ export function resolveTokens(
     ...TYPOGRAPHY[typography],
   };
   if (highContrast) {
-    const contrastOverrides =
-      scheme === "light" ? HIGH_CONTRAST_LIGHT : HIGH_CONTRAST;
-    Object.assign(tokens, contrastOverrides);
+    Object.assign(tokens, HIGH_CONTRAST);
   }
   tokens["--ui-scale"] = "1"; // scale multiplier applied separately in singleton
   tokens["--font-scale"] = tokens["--font-scale"] ?? "1";

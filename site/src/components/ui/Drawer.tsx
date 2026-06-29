@@ -1,22 +1,6 @@
 import * as React from "react";
 import { Drawer as BaseDrawer } from "@base-ui/react/drawer";
 
-function useMediaQuery(query: string): boolean {
-  const getMatches = React.useCallback(() => {
-    if (typeof window === "undefined") return false;
-    return window.matchMedia(query).matches;
-  }, [query]);
-  const [matches, setMatches] = React.useState(getMatches);
-  React.useEffect(() => {
-    if (typeof window === "undefined") return;
-    const mql = window.matchMedia(query);
-    const handler = (e: MediaQueryListEvent) => setMatches(e.matches);
-    mql.addEventListener("change", handler);
-    return () => mql.removeEventListener("change", handler);
-  }, [query]);
-  return matches;
-}
-
 export interface ResponsiveDrawerProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -34,26 +18,20 @@ export function ResponsiveDrawer({
   className,
   modal = true,
 }: ResponsiveDrawerProps) {
-  const isMobile = useMediaQuery("(max-width: 640px)");
-  const swipeDirection = isMobile ? "down" : "right";
   return (
     <BaseDrawer.Root
       open={open}
       onOpenChange={onOpenChange}
-      swipeDirection={swipeDirection}
+      swipeDirection="down"
       modal={modal}
     >
       <BaseDrawer.Portal>
         <BaseDrawer.Backdrop className="responsive-drawer-backdrop" data-sound="overlay.close" />
-        <BaseDrawer.Viewport
-          className={`responsive-drawer-viewport${isMobile ? " is-mobile" : " is-desktop"}`}
-        >
+        <BaseDrawer.Viewport className="responsive-drawer-viewport">
           <BaseDrawer.Popup
-            className={`responsive-drawer-popup${isMobile ? " is-mobile" : " is-desktop"}${className ? ` ${className}` : ""}`}
+            className={`responsive-drawer-popup${className ? ` ${className}` : ""}`}
           >
-            {isMobile && (
-              <div className="responsive-drawer-handle" aria-hidden="true" />
-            )}
+            <div className="responsive-drawer-handle" aria-hidden="true" />
             {title && (
               <BaseDrawer.Title className="responsive-drawer-title">
                 {title}

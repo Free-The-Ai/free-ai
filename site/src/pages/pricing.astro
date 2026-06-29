@@ -130,7 +130,7 @@ const jsonLd = [
         width: 260px;
         height: 260px;
         border-radius: 50%;
-        background: radial-gradient(circle, rgba(238, 93, 32, 0.22), transparent 64%);
+        background: radial-gradient(circle, oklch(0.659 0.192 40.1 / 0.22), transparent 64%);
         pointer-events: none;
     }
 
@@ -206,8 +206,8 @@ const jsonLd = [
         height: 420px;
         border-radius: 50%;
         background:
-            radial-gradient(circle, rgba(238, 93, 32, 0.2), transparent 62%),
-            radial-gradient(circle at 70% 65%, rgba(255, 179, 125, 0.12), transparent 48%);
+            radial-gradient(circle, oklch(0.659 0.192 40.1 / 0.2), transparent 62%),
+            radial-gradient(circle at 70% 65%, oklch(0.827 0.113 55.9 / 0.12), transparent 48%);
         pointer-events: none;
     }
 
@@ -257,7 +257,7 @@ const jsonLd = [
         padding: clamp(16px, 2.4vw, 22px);
         border: 1px solid var(--sk-border);
         border-radius: var(--radius);
-        background: rgba(10, 10, 10, 0.42);
+        background: oklch(0.145 0.000 90.1 / 0.42);
         box-shadow: var(--sk-inset-shadow);
         transition:
             border-color 180ms ease,
@@ -266,11 +266,11 @@ const jsonLd = [
     }
 
     .paid-plan-option.is-active {
-        border-color: rgba(238, 93, 32, 0.72);
+        border-color: oklch(0.659 0.192 40.1 / 0.72);
         box-shadow:
             var(--sk-raised-shadow),
-            0 0 0 1px rgba(238, 93, 32, 0.18),
-            0 20px 50px rgba(238, 93, 32, 0.08);
+            0 0 0 1px oklch(0.659 0.192 40.1 / 0.18),
+            0 20px 50px oklch(0.659 0.192 40.1 / 0.08);
         transform: translateY(-2px);
     }
 
@@ -458,7 +458,7 @@ const jsonLd = [
     }
 
     .paid-filter-clear:hover {
-        border-color: rgba(238, 93, 32, 0.42);
+        border-color: oklch(0.659 0.192 40.1 / 0.42);
         color: var(--accent-text);
     }
 
@@ -529,7 +529,7 @@ const jsonLd = [
         padding: 4px 7px;
         border: 1px solid var(--sk-border);
         border-radius: var(--radius-sm);
-        background: rgba(255, 255, 255, 0.035);
+        background: oklch(1 0 0 / 0.035);
         color: var(--muted);
         font-family: var(--font-mono);
         font-size: 0.7rem;
@@ -576,7 +576,7 @@ const jsonLd = [
 
     .pricing-model-copy:hover {
         color: var(--text);
-        border-color: rgba(238, 93, 32, 0.42);
+        border-color: oklch(0.659 0.192 40.1 / 0.42);
     }
 
     @media (max-width: 1120px) {

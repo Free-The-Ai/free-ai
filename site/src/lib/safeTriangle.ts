@@ -148,7 +148,7 @@ export function createSafeTriangle(
     }
     if (!overlay) return;
     overlay.innerHTML = cone
-      ? `<polygon points="${cone.map((p) => p.join(",")).join(" ")}" fill="rgba(238,93,32,0.12)" stroke="rgba(238,93,32,0.7)" stroke-width="1"/>`
+      ? `<polygon points="${cone.map((p) => p.join(",")).join(" ")}" fill="oklch(0.659 0.192 40.1 / 0.12)" stroke="oklch(0.659 0.192 40.1 / 0.7)" stroke-width="1"/>`
       : "";
   };
 

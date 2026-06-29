@@ -222,8 +222,8 @@ const jsonLd = [
         height: 260px;
         border-radius: 999px;
         background:
-            radial-gradient(circle at 30% 30%, rgba(238, 93, 32, 0.24), transparent 54%),
-            radial-gradient(circle at 70% 70%, rgba(255, 179, 125, 0.12), transparent 58%);
+            radial-gradient(circle at 30% 30%, oklch(0.659 0.192 40.1 / 0.24), transparent 54%),
+            radial-gradient(circle at 70% 70%, oklch(0.827 0.113 55.9 / 0.12), transparent 58%);
         filter: blur(18px);
         opacity: 0.6;
         pointer-events: none;
@@ -274,7 +274,7 @@ const jsonLd = [
 
     .intent-secondary:hover {
         color: var(--accent-text);
-        border-color: rgba(238, 93, 32, 0.42);
+        border-color: oklch(0.659 0.192 40.1 / 0.42);
     }
 
     .intent-config-section,
@@ -418,7 +418,7 @@ const jsonLd = [
     }
 
     .intent-guide-card:hover {
-        border-color: rgba(238, 93, 32, 0.42);
+        border-color: oklch(0.659 0.192 40.1 / 0.42);
         transform: translateY(-2px);
     }
 

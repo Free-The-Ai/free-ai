@@ -38,17 +38,6 @@ const jsonLd = [
     currentPath="/pricing"
 >
     <main class="pricing-main">
-        <section class="pricing-hero shell">
-            <div class="pricing-hero-copy">
-                <span class="home-paths-eyebrow">Paid plans</span>
-                <h1>Paid slots without token math.</h1>
-                <p class="hero-text">
-                    Compare currently available paid plans, then pick the lane
-                    that fits your client, context size, and usage pattern.
-                </p>
-            </div>
-        </section>
-
         <PaidPlanExplorer snapshot={paidPlan} discordUrl={siteConfig.socials.discord} client:load />
     </main>
 </Layout>
@@ -57,33 +46,6 @@ const jsonLd = [
     .pricing-main {
         gap: 28px;
         padding: 22px 0 64px;
-    }
-
-    .pricing-hero {
-        display: grid;
-        grid-template-columns: minmax(0, 1fr);
-        gap: clamp(24px, 5vw, 72px);
-        align-items: center;
-        min-height: auto;
-        padding: clamp(28px, 4.6vw, 52px);
-    }
-
-    .pricing-hero-copy {
-        display: grid;
-        gap: 18px;
-        min-width: 0;
-    }
-
-    .pricing-hero h1 {
-        max-width: 15ch;
-        font-size: clamp(2.35rem, 4.7vw, 4rem);
-        line-height: 1.02;
-        letter-spacing: -0.055em;
-    }
-
-    .pricing-hero .hero-text {
-        max-width: 47ch;
-        margin: 0;
     }
 
     .pricing-note {
@@ -580,10 +542,6 @@ const jsonLd = [
     }
 
     @media (max-width: 1120px) {
-        .pricing-hero {
-            grid-template-columns: 1fr;
-        }
-
         .paid-plan-chooser {
             grid-template-columns: 1fr;
         }
@@ -592,22 +550,12 @@ const jsonLd = [
             justify-self: stretch;
             width: 100%;
         }
-
-        .pricing-hero h1 {
-            max-width: 15ch;
-        }
-
     }
 
     @media (max-width: 560px) {
         .pricing-main {
             gap: 24px;
             padding-top: 10px;
-        }
-
-        .pricing-hero {
-            gap: 22px;
-            padding: 18px;
         }
 
         .paid-plan-options,
@@ -619,11 +567,6 @@ const jsonLd = [
 
         .paid-plan-chooser {
             padding: 18px;
-        }
-
-        .pricing-hero h1 {
-            font-size: clamp(2.15rem, 12vw, 3.05rem);
-            line-height: 1.02;
         }
 
         .pricing-card {

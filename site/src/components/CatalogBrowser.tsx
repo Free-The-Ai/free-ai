@@ -36,22 +36,28 @@ const PAGE_SIZE = 80;
 const str = (v: unknown): string | undefined => typeof v === "string" && v.trim() ? v.trim() : undefined;
 const posInt = (v: unknown): number | undefined => typeof v === "number" && Number.isFinite(v) && v > 0 ? v : undefined;
 
-const SUPPORTED_ROUTES: Array<{
+type RouteInfo = {
+  method: "GET" | "POST";
   path: string;
   label: string;
   description: string;
-}> = [
+};
+
+const SUPPORTED_ROUTES: RouteInfo[] = [
   {
+    method: "POST",
     path: "/v1/chat/completions",
     label: "Chat Completions",
     description: "OpenAI-compatible chat with streaming and tool calling.",
   },
   {
+    method: "POST",
     path: "/v1/messages",
     label: "Messages",
     description: "Anthropic-compatible Messages route with system prompts and tool use.",
   },
   {
+    method: "POST",
     path: "/v1/responses",
     label: "Responses",
     description: "Responses-style route with the same key and model alias.",
@@ -62,11 +68,12 @@ const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: tr
 
 const formatTokensFull = (n: number): string => n.toLocaleString();
 
-const FILTER_OPTIONS = ["chat", "audio", "gated", "long"] as const;
+const FILTER_OPTIONS = ["chat", "image", "audio", "gated", "long"] as const;
 type FilterKey = typeof FILTER_OPTIONS[number];
 
 const FILTER_LABELS: Record<FilterKey, string> = {
   chat: "Chat",
+  image: "Image",
   audio: "Audio",
   long: "128k+ context",
   gated: "Verified members",
@@ -77,10 +84,15 @@ const modelSupportsAudio = (model: Model): boolean =>
   /(^|\/)(grok-stt|grok-tts)$/i.test(model.id) ||
   /tts|stt|speech|transcription/i.test(model.id);
 
+const modelSupportsImage = (model: Model): boolean =>
+  model.supports_images === true ||
+  /(^|\/)(gpt-image|.*-image)(-|$|\/)/i.test(model.id);
+
 const modelContext = (model: Model): number => siteModelContextWindow(model);
 
 const TYPE_PREDICATES: Record<FilterKey, (m: Model) => boolean> = {
-  chat: (m) => !modelSupportsAudio(m),
+  chat: (m) => !modelSupportsAudio(m) && !modelSupportsImage(m),
+  image: (m) => modelSupportsImage(m),
   audio: (m) => modelSupportsAudio(m),
   gated: (m) => m.requires_seems_legit,
   long: (m) => modelContext(m) >= 128_000,
@@ -91,16 +103,28 @@ const matchesAnyType = (m: Model, types: Set<FilterKey>): boolean => {
   return false;
 };
 
-const modelRoutes = (model: Model) => {
+const modelRoutes = (model: Model): RouteInfo[] => {
   const suffix = modelSuffix(model.id).toLowerCase();
-  if (suffix.includes("stt") || suffix.includes("transcription")) {
+  if (modelSupportsImage(model)) {
+    const routes: RouteInfo[] = [
+      { method: "POST" as const, path: "/v1/images/generations", label: "Image generation", description: "OpenAI-compatible image generation." },
+    ];
+    if (model.prefix === "ever") {
+      routes.push({ method: "POST" as const, path: "/v1/images/edits", label: "Image edits", description: "OpenAI-compatible multipart image editing." });
+    }
+    if (model.prefix === "eve") {
+      routes.push({ method: "GET" as const, path: "/v1/images/generations/{request_id}", label: "Image polling", description: "Poll async image jobs submitted with background or async enabled." });
+    }
+    return routes;
+  }
+  if (suffix.includes("stt") || suffix.includes("asr") || suffix.includes("transcription")) {
     return [
-      { path: "/v1/audio/transcriptions", label: "Speech to text", description: "OpenAI-compatible multipart audio transcription." },
+      { method: "POST" as const, path: "/v1/audio/transcriptions", label: "Speech to text", description: "OpenAI-compatible multipart audio transcription." },
     ];
   }
   if (suffix.includes("tts") || suffix.includes("speech")) {
     return [
-      { path: "/v1/audio/speech", label: "Text to speech", description: "OpenAI-compatible speech generation." },
+      { method: "POST" as const, path: "/v1/audio/speech", label: "Text to speech", description: "OpenAI-compatible speech generation." },
     ];
   }
   return SUPPORTED_ROUTES;
@@ -240,6 +264,12 @@ function ModelCard({ model, onSelect }: { model: Model; onSelect: (m: Model) => 
                         Audio
                     </span>
                 )}
+                {modelSupportsImage(model) && (
+                    <span class="model-chip is-images" title="Supports an image route">
+                        <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
+                        Image
+                    </span>
+                )}
             </div>
             <button
                 class="model-copy"
@@ -327,6 +357,10 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
                         <span>Audio route</span>
                         <strong>{modelSupportsAudio(model) ? "Yes" : "No"}</strong>
                     </div>
+                    <div>
+                        <span>Image route</span>
+                        <strong>{modelSupportsImage(model) ? "Yes" : "No"}</strong>
+                    </div>
                     <Show when={model.visibility}>
                         <div>
                             <span>Visibility</span>
@@ -358,7 +392,7 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
                         <For each={modelRoutes(model)}>
                             {(route) => (
                                 <li>
-                                    <code>POST {route.path}</code>
+                                    <code>{route.method} {route.path}</code>
                                     <span>{route.description}</span>
                                 </li>
                             )}
@@ -512,6 +546,7 @@ export default function CatalogBrowser() {
   };
 
   const hasAudioModel = () => allModels().some(modelSupportsAudio);
+  const hasImageModel = () => allModels().some(modelSupportsImage);
   const hasGatedModel = () => allModels().some((m) => m.requires_seems_legit);
 
   const filteredModels = () => filterModels(allModels(), prefixes(), typeFilters(), query());
@@ -626,6 +661,7 @@ export default function CatalogBrowser() {
 
   const visibleTypeOptions = (): FilterKey[] => {
     const list: FilterKey[] = ["chat"];
+    if (hasImageModel()) list.push("image");
     if (hasAudioModel()) list.push("audio");
     list.push("long");
     if (hasGatedModel()) list.push("gated");

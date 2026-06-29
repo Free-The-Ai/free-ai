@@ -12,7 +12,7 @@ export function buildWebsiteJsonLd() {
 		alternateName: ['Free The AI', 'Free The Ai', 'FreeTheAI', 'FreeTheAi.xyz'],
 		url: 'https://freetheai.xyz',
 		description:
-			'Free OpenAI-compatible API with 50+ active models. Chat completions, streaming, tool calling, and Anthropic-style messages - all behind a single free key from Discord.',
+			'Free OpenAI-compatible API with 60+ active models. Chat completions, streaming, tool calling, and Anthropic-style messages - all behind a single free key from Discord.',
 		inLanguage: 'en-US',
 		publisher: {
 			'@id': 'https://freetheai.xyz/#organization',
@@ -81,7 +81,7 @@ export function buildOrganizationJsonLd() {
 		url: 'https://freetheai.xyz',
 		logo: 'https://freetheai.xyz/freetheai-transparent-logo-responsive-same-colors.png',
 		description:
-			'Community-run free AI API project with 50+ active models, Discord signup, optional paid slots for higher-power models, and a public searchable model catalog.',
+			'Community-run free AI API project with 60+ active models, Discord signup, optional paid slots for higher-power models, and a public searchable model catalog.',
 		sameAs: [
 			'https://discord.gg/secrets',
 			'https://github.com/Free-The-Ai/free-ai',
@@ -106,7 +106,7 @@ export function buildSoftwareJsonLd() {
 		applicationSubCategory: 'AI API Gateway',
 		operatingSystem: 'Web',
 		description:
-			'Free OpenAI-compatible AI API with 50+ active models, Discord key signup, streaming chat completions, tool calling, Anthropic-style messages, and a live searchable model catalog.',
+			'Free OpenAI-compatible AI API with 60+ active models, Discord key signup, streaming chat completions, tool calling, Anthropic-style messages, and a live searchable model catalog.',
 		url: 'https://freetheai.xyz',
 		downloadUrl: 'https://github.com/Free-The-Ai/free-ai',
 		isAccessibleForFree: true,
@@ -120,7 +120,7 @@ export function buildSoftwareJsonLd() {
 			'Streaming responses',
 			'Tool calling and structured outputs',
 			'Anthropic-style messages endpoint',
-			'Live searchable model catalog with 50+ active models',
+			'Live searchable model catalog with 60+ active models',
 			'No billing or credit card required',
 			'No daily usage limits',
 		],
@@ -147,7 +147,7 @@ export function buildWebApiJsonLd() {
 		name: 'FreeTheAi API',
 		url: 'https://api.freetheai.xyz/v1',
 		description:
-			'Free OpenAI-compatible REST API with chat completions, streaming, tool calling, Anthropic-style messages, and 50+ active models.',
+			'Free OpenAI-compatible REST API with chat completions, streaming, tool calling, Anthropic-style messages, and 60+ active models.',
 		documentation: 'https://freetheai.xyz',
 		termsOfService: 'https://freetheai.xyz/terms',
 		isAccessibleForFree: true,

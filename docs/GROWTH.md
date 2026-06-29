@@ -6,7 +6,7 @@ Use this checklist to improve GitHub discovery, Google SEO, and launch conversio
 
 ## GitHub Repository
 
-- Keep the repo description short and keyword-rich: `Free OpenAI-compatible AI API with 50+ active models, image generation, tool calling, and Discord key signup.`
+- Keep the repo description short and keyword-rich: `Free OpenAI-compatible AI API with 60+ active models, image generation, tool calling, and Discord key signup.`
 - Use focused topics instead of generic tags. Suggested topics: `free-ai-api`, `openai-compatible`, `ai-api`, `llm-api`, `chat-completions`, `image-generation`, `developer-tools`, `astro`, `discord-bot`, `api-gateway`.
 - Keep the first README screen conversion-focused: one-line value prop, proof badges, quick start, and copy-paste examples.
 - Ship regular release tags so GitHub shows activity and users can subscribe to updates.
@@ -46,7 +46,7 @@ If `gh` is unavailable, use GitHub's Releases page and draft a new release from 
 
 2. **Homepage content added**: Added ~500 words of unique descriptive content targeting the exact phrase "free the ai" and related long-tail keywords (`free OpenAI API alternative`, `free LLM API`, `free image generation API`, `free AI API gateway`). Content covers: what FreeTheAi is, why use a free AI API, what you can build, privacy stance, and getting started steps.
 
-3. **H1 accessibility fixed**: Replaced `line-height:0` with a visible H1 container and added an `.sr-only` span containing "FreeTheAi - Free The AI - Free OpenAI-compatible API with 50+ active models" for screen readers and search engines.
+3. **H1 accessibility fixed**: Replaced `line-height:0` with a visible H1 container and added an `.sr-only` span containing "FreeTheAi - Free The AI - Free OpenAI-compatible API with 60+ active models" for screen readers and search engines.
 
 4. **Title tags differentiated**: Homepage title changed to `"FreeTheAi - Free OpenAI-Compatible AI API | No Credit Card"` while keeping "Free The AI" in crawlable page text. Other pages use distinct titles to prevent cannibalization:
    - `/docs`: "FreeTheAi API Docs - OpenAI-Compatible Chat, Images, Models"

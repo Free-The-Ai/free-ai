@@ -1,7 +1,7 @@
 {
   "name": "FreeTheAi",
   "short_name": "FreeTheAi",
-  "description": "FreeTheAi, also searched as Free The AI, is a free OpenAI-compatible API with 50+ active models",
+  "description": "FreeTheAi, also searched as Free The AI, is a free OpenAI-compatible API with 60+ active models",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#101010",

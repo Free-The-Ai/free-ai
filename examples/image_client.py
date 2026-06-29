@@ -108,7 +108,6 @@ def generate(api_key):
     print("1. eve/gpt-image-2")
     print("2. eve/gpt-image-2-low")
     print("3. eve/gpt-image-2-medium")
-    print("4. eve/gpt-image-2-high")
     model = input("Model [eve/gpt-image-2]: ").strip() or "eve/gpt-image-2"
     prompt = read_multiline_prompt()
     output = input("Output file [generated.png]: ").strip() or "generated.png"

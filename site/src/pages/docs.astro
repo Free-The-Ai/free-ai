@@ -14,7 +14,7 @@ import {
 import { highlight } from "../lib/highlight";
 
 const pageDescription =
-    "FreeTheAi API docs for OpenAI-compatible chat completions, Anthropic-style messages, model listing, signup, check-in, and key reset.";
+    "FreeTheAi API docs for OpenAI-compatible chat completions, Anthropic-style messages, image generation, image edits, audio, model listing, signup, check-in, and key reset.";
 
 const jsonLd = [
     buildWebsiteJsonLd(),
@@ -79,7 +79,7 @@ const modelListSnippet = `curl https://api.freetheai.xyz/v1/models \\
 const modelListSnippetHtml = await highlight(modelListSnippet, "bash");
 
 const fullModelListSnippet = `curl "https://api.freetheai.xyz/v1/models/full" \\
-  -H "Authorization: Bearer $FREETHEAI_API_KEY"`;
+  -H "Authorization: Bearer freetheai.xyz"`;
 const fullModelListSnippetHtml = await highlight(fullModelListSnippet, "bash");
 
 const endpoints = [
@@ -97,6 +97,21 @@ const endpoints = [
         "POST",
         "/v1/responses",
         "Responses-style route. Same key, same model alias.",
+    ],
+    [
+        "POST",
+        "/v1/images/generations",
+        "OpenAI-compatible image generation for supported image aliases.",
+    ],
+    [
+        "POST",
+        "/v1/images/edits",
+        "OpenAI-compatible multipart image edits for supported image aliases.",
+    ],
+    [
+        "GET",
+        "/v1/images/generations/{request_id}",
+        "Poll async EVE image generation jobs submitted with background or async enabled.",
     ],
     ["GET", "/v1/models", "Authenticated model list for normal clients."],
     [

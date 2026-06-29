@@ -53,7 +53,7 @@
   </g>
 
   <!-- Tagline text -->
-  <text x="600" y="458" fill="#ffffff" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="0.04">Free OpenAI-compatible API - 50+ Active Models</text>
+  <text x="600" y="458" fill="#ffffff" font-family="Inter, system-ui, sans-serif" font-size="22" font-weight="600" text-anchor="middle" letter-spacing="0.04">Free OpenAI-compatible API - 60+ Active Models</text>
 
   <!-- URL pill -->
   <g transform="translate(600, 492)">
@@ -63,7 +63,7 @@
 
   <!-- Stats row -->
   <g transform="translate(600, 548)">
-    <text x="-140" y="0" fill="#777777" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-weight="500">50+ Models</text>
+    <text x="-140" y="0" fill="#777777" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-weight="500">60+ Models</text>
     <line x1="-32" y1="-8" x2="-32" y2="8" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
     <text x="-4" y="0" fill="#777777" font-family="Inter, system-ui, sans-serif" font-size="13" text-anchor="middle" font-weight="500">No Daily Limit</text>
     <line x1="32" y1="-8" x2="32" y2="8" stroke="rgba(255,255,255,0.06)" stroke-width="1" />

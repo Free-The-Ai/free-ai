@@ -7,7 +7,7 @@
 <sub><i>gpt-image-2 api for free</i></sub>
 <br><br>
 
-**Free OpenAI-compatible API - 50+ active models, zero billing**
+**Free OpenAI-compatible API - 60+ active models, zero billing**
 
 <sub>Also searched as <strong>Free The AI</strong>, <strong>Free The Ai</strong>, and <strong>FreeTheAI</strong>.</sub>
 
@@ -15,7 +15,7 @@ Chat | Streaming | Tool Calling | Image Generation | Audio
 
 <br>
 
-[![Models](https://img.shields.io/badge/models-50%2B%20active-white?style=flat-square)](https://freetheai.xyz/models)
+[![Models](https://img.shields.io/badge/models-60%2B%20active-white?style=flat-square)](https://freetheai.xyz/models)
 [![API](https://img.shields.io/badge/OpenAI-compatible-white?style=flat-square)](https://api.freetheai.xyz)
 [![Cost](https://img.shields.io/badge/cost-%240-white?style=flat-square)](https://freetheai.xyz)
 [![Prompts](https://img.shields.io/badge/prompts-not%20stored-white?style=flat-square)](https://freetheai.xyz)
@@ -35,12 +35,13 @@ Chat | Streaming | Tool Calling | Image Generation | Audio
 
 ## Overview
 
-FreeTheAi, also searched as Free The AI or Free The Ai, is a free API gateway with 50+ active models behind a single key. OpenAI-compatible - if your SDK works with OpenAI, it works here. Full request docs live at [freetheai.xyz/docs](https://freetheai.xyz/docs).
+FreeTheAi, also searched as Free The AI or Free The Ai, is a free API gateway with 60+ active models behind a single key. OpenAI-compatible - if your SDK works with OpenAI, it works here. Full request docs live at [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
 - `POST /v1/chat/completions` - chat with streaming and tool calling
 - `POST /v1/messages` - Anthropic-style messages route
 - `POST /v1/responses` - OpenAI Responses API
 - `POST /v1/images/generations` - image generation
+- `POST /v1/images/edits` - image edits for supported image aliases
 - `POST /v1/audio/speech` and `/v1/audio/transcriptions` - supported voice aliases
 - Tool calling, structured outputs, multi-turn conversations
 - No billing, no credit card, no prompt storage
@@ -127,6 +128,8 @@ This repo includes a [`SKILL.md`](SKILL.md) describing how AI agents should conn
 | `/v1/messages` | `POST` | Anthropic-style messages |
 | `/v1/responses` | `POST` | OpenAI Responses API |
 | `/v1/images/generations` | `POST` | Image generation |
+| `/v1/images/edits` | `POST` | Image edits for supported image aliases |
+| `/v1/images/generations/{request_id}` | `GET` | Poll async image generation jobs |
 | `/v1/audio/speech` | `POST` | Text to speech for supported voice aliases |
 | `/v1/audio/transcriptions` | `POST` | Speech to text for supported voice aliases |
 | `/v1/models` | `GET` | Authenticated model catalog |
@@ -270,11 +273,12 @@ curl https://api.freetheai.xyz/v1/images/generations \
   }'
 ```
 
-The free API exposes `eve/gpt-image-2`, `eve/gpt-image-2-low`, `eve/gpt-image-2-medium`, and `eve/gpt-image-2-high` for image generation. Live availability and any future image models are in [`GET /v1/models`](https://freetheai.xyz/models).
+The free API exposes `eve/gpt-image-2`, `eve/gpt-image-2-low`, and `eve/gpt-image-2-medium` for image generation. It also exposes `ever/*image*` aliases for image generation and supported image edits. Live availability and any future image models are in [`GET /v1/models`](https://freetheai.xyz/models).
 
 Image responses are OpenAI-compatible and return:
 
 - `data[0].b64_json` for base64 image data
+- For long EVE jobs, send `background: true` or `async: true`, then poll `GET /v1/images/generations/{request_id}` with the same API key.
 
 </details>
 
@@ -312,12 +316,13 @@ Thanks for keeping the free tier alive.
 
 Browse the full searchable catalog at [freetheai.xyz/models](https://freetheai.xyz/models). Request examples and endpoint details are on [freetheai.xyz/docs](https://freetheai.xyz/docs).
 
-Live health currently reports 53 public catalog models across 11 provider prefixes. The bundled site fallback snapshot at [`site/public/models.json`](site/public/models.json) is refreshed from the same live `/v1/models/full` catalog used by the models page.
+Live health currently reports 64 public catalog models across 12 provider prefixes. The bundled site fallback snapshot at [`site/public/models.json`](site/public/models.json) is refreshed from the same live `/v1/models/full` catalog used by the models page.
 
 | Prefix | What it is |
 | :--- | :--- |
 | `bbl/*` | General chat models |
 | `eve/*` | Image generation models |
+| `ever/*` | Chat, image generation, and image edit models |
 | `exa/*` | Role-gated web search models |
 | `glm/*` | Long-context chat models |
 | `kai/*` | Aggregated free chat and coding models |

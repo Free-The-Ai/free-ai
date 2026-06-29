@@ -275,6 +275,9 @@ export default function DocsAccordion(props: DocsAccordionProps) {
                         { code: "POST /v1/chat/completions", span: "OpenAI-compatible chat completions. Streaming, tool calling, and structured outputs." },
                         { code: "POST /v1/messages", span: "Anthropic-compatible Messages route. System prompts, tool use, and the same content blocks Claude clients expect." },
                         { code: "POST /v1/responses", span: "Responses-style route. Same key, same model alias." },
+                        { code: "POST /v1/images/generations", span: "OpenAI-compatible image generation for supported image aliases." },
+                        { code: "POST /v1/images/edits", span: "OpenAI-compatible multipart image edits for supported image aliases." },
+                        { code: "GET /v1/images/generations/{request_id}", span: "Poll async EVE image jobs submitted with background or async enabled." },
                         { code: "GET /v1/models", span: "Authenticated client catalog." },
                         { code: "GET /v1/models/full", span: "Catalog with context, output, capability, and access metadata." },
                         { code: "POST /v1/audio/speech", span: "Text-to-speech route for supported voice aliases." },
@@ -332,7 +335,9 @@ export default function DocsAccordion(props: DocsAccordionProps) {
                     <p>
                         Use <code>/v1/models</code> for normal clients. Use{" "}
                         <code>/v1/models/full</code>
-                        when you need tier and catalog metadata for a UI.
+                        when you need tier and catalog metadata for a UI. The
+                        full catalog is a site-key endpoint, so public catalog
+                        clients use <code>Bearer freetheai.xyz</code>.
                     </p>
                     <DocsCodeGrid items={[
                         { title: "Client catalog", code: props.modelListSnippet, html: props.modelListSnippetHtml, lang: "bash" },

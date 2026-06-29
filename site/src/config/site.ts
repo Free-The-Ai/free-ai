@@ -2,7 +2,7 @@ export const siteConfig = {
     title: "FreeTheAi",
     aliases: ["Free The AI", "Free The Ai", "FreeTheAI", "FreeTheAi.xyz"],
     description:
-        "FreeTheAi, also searched as Free The AI, is a free OpenAI-compatible AI API gateway with 50+ active models, Discord key signup, daily check-in, chat completions, streaming, tool calling, Anthropic messages, and optional paid slots.",
+        "FreeTheAi, also searched as Free The AI, is a free OpenAI-compatible AI API gateway with 60+ active models, Discord key signup, daily check-in, chat completions, streaming, tool calling, Anthropic messages, and optional paid slots.",
     site: "https://freetheai.xyz",
     author: {
         name: "FreeTheAi",

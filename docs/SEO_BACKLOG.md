@@ -13,7 +13,7 @@ Already shipped in the May 2026 SEO bomb:
 - Removed `vhr/*` from `llms.txt` and `ai.txt` (provider disabled May 21)
 - Removed `hreflang` clutter (English-only site)
 - Non-blocking Google Fonts via `media="print" onload="this.media='all'"`
-- Synced GitHub repo description from `16,000+ models` to `50+ active models`
+- Synced GitHub repo description from `16,000+ models` to `60+ active models`
 - Built `/quickstart` (HowTo JSON-LD + 5 steps including `/checkin`)
 - Built `/what-is-free-the-ai` (Article JSON-LD + brand disambiguation + Vibhek story)
 - Built `/team` (Organization + Person JSON-LD for 3 members)

@@ -198,7 +198,6 @@ const themeBootstrap = themeInlineBootstrap();
 							<span class="donate-button-label">Donate</span>
 						</a>
 					</div>
-					<NavDrawer currentPath={currentPath} client:load />
 				</nav>
 			</header>
 
@@ -233,7 +232,9 @@ const themeBootstrap = themeInlineBootstrap();
 				<div class="footer-bottom">free tier stays free. paid slots are optional. support and issue reports are available on the support page.</div>
 			</footer>
 
-		<ToastRegion client:load />
+			<NavDrawer currentPath={currentPath} client:load />
+
+			<ToastRegion client:load />
 		<SmoothScroll client:load />
 	</div>
 

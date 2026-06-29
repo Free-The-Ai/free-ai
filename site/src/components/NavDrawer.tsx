@@ -1,19 +1,24 @@
-import { useState, useRef, useCallback, useEffect } from "react";
+import { useState, useCallback } from "react";
 import { siteConfig } from "../config/site";
 import { NavDrawerSheet } from "./ui";
 
-const LINKS: [string, string, boolean][] = [
-  ["/home", "Home", false],
+const TABS: [string, string, string][] = [
+  ["/home", "Home", "home"],
+  ["/models", "Models", "smart_toy"],
+  ["/pricing", "Pricing", "payments"],
+  ["/status", "Status", "monitoring"],
+];
+
+const MORE: [string, string, boolean][] = [
   ["/docs", "Docs", false],
-  ["/models", "Models", false],
   ["/setup", "Setup", false],
   ["/roleplay-api", "Roleplay API", false],
   ["/coding-agent-api", "Coding API", false],
-  ["/pricing", "Pricing", false],
-  ["/status", "Status", false],
   ["/privacy", "Privacy", false],
   ["/terms", "Terms", false],
   [siteConfig.socials.github, "Repo", true],
+  [siteConfig.socials.discord, "Join Discord", true],
+  [siteConfig.socials.donate, "Donate", true],
 ];
 
 type NavDrawerProps = {
@@ -21,95 +26,61 @@ type NavDrawerProps = {
 };
 
 export default function NavDrawer(props: NavDrawerProps) {
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-  const openRef = useRef(open);
-  openRef.current = open;
-
-  const closeDrawer = useCallback(() => setOpen(false), []);
-
-  useEffect(() => {
-    const nav = rootRef.current?.closest(".nav");
-    if (nav instanceof HTMLElement) {
-      nav.classList.toggle("has-open-drawer", open);
-    }
-  }, [open]);
-
-  useEffect(() => {
-    if (!open || typeof document === "undefined") return;
-    const onKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape") closeDrawer();
-    };
-    document.addEventListener("keydown", onKey);
-    return () => document.removeEventListener("keydown", onKey);
-  }, [open, closeDrawer]);
+  const [moreOpen, setMoreOpen] = useState(false);
+  const closeMore = useCallback(() => setMoreOpen(false), []);
 
   return (
-    <div className="nav-menu" ref={rootRef} data-open={open ? "" : undefined}>
-      <button
-        type="button"
-        className="nav-hamburger"
-        aria-label={open ? "Close navigation menu" : "Open navigation menu"}
-        aria-expanded={open}
-        aria-controls="mobile-navigation-menu"
-        data-sound={open ? "overlay.close" : "overlay.open"}
-        onClick={() => setOpen((value) => !value)}
-      >
-        <span className="hamburger-bar" />
-        <span className="hamburger-bar" />
-        <span className="hamburger-bar" />
-      </button>
-      <NavDrawerSheet open={open} onOpenChange={setOpen}>
-        <nav id="mobile-navigation-menu" aria-label="Mobile navigation" className="nav-drawer-panel">
-          <div className="nav-drawer-header">
-            <span className="nav-drawer-title">Menu</span>
-            <button
-              type="button"
-              className="nav-drawer-close"
-              aria-label="Close navigation menu"
-              onClick={closeDrawer}
-              data-sound="overlay.close"
+    <div className="mobile-nav">
+      <nav className="bottom-tab-bar" aria-label="Mobile navigation">
+        {TABS.map(([href, label, icon]) => {
+          const isActive = props.currentPath === href;
+          return (
+            <a
+              key={href}
+              href={href}
+              className={`bottom-tab${isActive ? " is-active" : ""}`}
+              aria-current={isActive ? "page" : undefined}
+              data-sound={isActive ? undefined : "interaction.tap"}
             >
-              <span className="material-symbols-outlined" aria-hidden="true">close</span>
-            </button>
-          </div>
-          <div className="nav-drawer-links">
-            {LINKS.map(([href, label, external]) => (
+              <span className="material-symbols-outlined" aria-hidden="true">
+                {icon}
+              </span>
+              <span className="bottom-tab-label">{label}</span>
+            </a>
+          );
+        })}
+        <button
+          type="button"
+          className={`bottom-tab${moreOpen ? " is-active" : ""}`}
+          aria-label="More navigation"
+          aria-expanded={moreOpen}
+          aria-controls="mobile-more-menu"
+          data-sound={moreOpen ? "overlay.close" : "overlay.open"}
+          onClick={() => setMoreOpen((value) => !value)}
+        >
+          <span className="material-symbols-outlined" aria-hidden="true">menu</span>
+          <span className="bottom-tab-label">More</span>
+        </button>
+      </nav>
+
+      <NavDrawerSheet open={moreOpen} onOpenChange={setMoreOpen} className="more-sheet">
+        <div id="mobile-more-menu" className="more-menu">
+          <span className="more-menu-title">More</span>
+          <nav className="more-menu-links" aria-label="More navigation">
+            {MORE.map(([href, label, external]) => (
               <a
                 key={href}
                 href={href}
-                className={`nav-drawer-link${props.currentPath === href ? " is-active" : ""}`}
-                onClick={() => closeDrawer()}
+                className={`more-menu-link${props.currentPath === href ? " is-active" : ""}`}
+                onClick={closeMore}
                 target={external ? "_blank" : undefined}
                 rel={external ? "noreferrer" : undefined}
               >
                 {label}
               </a>
             ))}
-          </div>
-          <div className="nav-drawer-footer">
-            <a
-              href={siteConfig.socials.discord}
-              className="nav-drawer-discord"
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => closeDrawer()}
-            >
-              <span className="material-symbols-outlined">forum</span>
-              Join Discord
-            </a>
-            <a
-              href={siteConfig.socials.donate}
-              className="nav-drawer-donate"
-              target="_blank"
-              rel="noreferrer"
-              onClick={() => closeDrawer()}
-            >
-              <span className="material-symbols-outlined">favorite</span>
-              Donate
-            </a>
-          </div>
-        </nav>
+          </nav>
+        </div>
       </NavDrawerSheet>
     </div>
   );

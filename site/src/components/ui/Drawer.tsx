@@ -51,9 +51,10 @@ export interface NavDrawerSheetProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   children: React.ReactNode;
+  className?: string;
 }
 
-export function NavDrawerSheet({ open, onOpenChange, children }: NavDrawerSheetProps) {
+export function NavDrawerSheet({ open, onOpenChange, children, className }: NavDrawerSheetProps) {
   return (
     <BaseDrawer.Root
       open={open}
@@ -64,7 +65,7 @@ export function NavDrawerSheet({ open, onOpenChange, children }: NavDrawerSheetP
       <BaseDrawer.Portal>
         <BaseDrawer.Backdrop className="nav-drawer-backdrop" data-sound="overlay.close" />
         <BaseDrawer.Viewport className="nav-drawer-viewport">
-          <BaseDrawer.Popup className="nav-drawer-popup">
+          <BaseDrawer.Popup className={`nav-drawer-popup${className ? ` ${className}` : ""}`}>
             <div className="nav-drawer-handle" aria-hidden="true" />
             <BaseDrawer.Content className="nav-drawer-content">
               {children}

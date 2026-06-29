@@ -3843,14 +3843,6 @@ html.nav-drawer-open {
         inset 2px 0 0 oklch(0.673 0.215 25.0 / 0.76);
 }
 
-.status-dot {
-    width: 8px;
-    height: 8px;
-    box-shadow:
-        0 0 0 2px oklch(1 0 0 / 0.06),
-        0 0 10px currentColor;
-}
-
 .status-card-main span {
     font-family: var(--font-mono);
     font-size: clamp(1.55rem, 3vw, 2.15rem);

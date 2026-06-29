@@ -149,7 +149,6 @@ function SkeletonCard() {
         <div className="status-grid">
             <article className="status-card is-unknown" aria-live="polite">
                 <div className="status-card-top">
-                    <span className="status-dot" />
                     <strong>providers/</strong>
                     <span>loading</span>
                 </div>
@@ -192,7 +191,6 @@ function StatusCard({ provider, isSelected, onSelect, closePopover }: {
             }}
         >
             <div className="status-card-top">
-                <span className="status-dot" />
                 <strong>{provider.prefix}/</strong>
                 <span>{provider.status}</span>
             </div>

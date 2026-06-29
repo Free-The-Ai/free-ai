@@ -298,7 +298,6 @@ export default function ProviderPopover(props: {
                             &times;
                         </button>
                         <h3 className="popover-heading">
-                            <span className={`status-dot is-${provider.status}`} />{" "}
                             {provider.prefix}/
                         </h3>
                         <p className="popover-sub">

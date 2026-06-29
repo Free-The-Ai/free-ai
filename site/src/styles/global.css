@@ -3339,9 +3339,7 @@ h3 {
     .detail-section dd { font-size: 0.8rem; }
 }
 
-html.popover-open { background: var(--bg); }
 html.popover-open {
-    overflow: hidden;
     overscroll-behavior: none;
 }
 
@@ -3377,8 +3375,6 @@ html.popover-open {
 }
 
 html.nav-drawer-open {
-    background: var(--bg);
-    overflow: hidden;
     overscroll-behavior: none;
 }
 .nav-drawer__title {
@@ -4280,8 +4276,6 @@ html.nav-drawer-open {
     }
 
     html.docs-toc-open {
-        background: var(--bg);
-        overflow: hidden;
         overscroll-behavior: none;
     }
 

@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, useRef, useCallback } from "react";
-import { Button, Skeleton, TextField } from "./ui";
+import { Button, Skeleton, TextField, Menu } from "./ui";
 import { formatTokens, modelPrefix, modelSuffix, siteModelContextWindow } from "../utils/format";
 
 interface AccessInfo {
@@ -415,6 +415,20 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
     );
 }
 
+function FilterCheckbox({ checked, onToggle, label, count }: { checked: boolean; onToggle: () => void; label: string; count?: number }) {
+  return (
+    <Menu.Item
+      className={`catalog-filter-menu-item${checked ? " is-active" : ""}`}
+      onClick={(e: React.MouseEvent) => { e.preventDefault(); onToggle(); }}
+      data-sound="interaction.toggle"
+    >
+      <span className="catalog-filter-checkbox" aria-hidden="true">{checked ? "\u2713" : ""}</span>
+      <span className="catalog-filter-option-name">{label}</span>
+      {count !== undefined && <span className="catalog-filter-option-count">{count}</span>}
+    </Menu.Item>
+  );
+}
+
 function CatalogFiltersToolbar(props: {
   query: string; setQuery: (v: string) => void; setPage: (v: number | ((p: number) => number)) => void;
   prefixes: Set<string>; togglePrefix: (p: string) => void; prefixCounts: [string, number][];
@@ -433,43 +447,45 @@ function CatalogFiltersToolbar(props: {
         />
       </div>
       <div className="catalog-filter-group">
-        <details className="catalog-filter">
-          <summary className={`catalog-filter-trigger ${props.prefixes.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
+        <Menu.Root>
+          <Menu.Trigger className={`catalog-filter-trigger${props.prefixes.size > 0 ? " is-active" : ""}`} sound="overlay.expand">
             <span className="catalog-filter-label">Prefix</span>
             <span className="catalog-filter-value">{props.prefixButtonLabel}</span>
-            {props.prefixes.size > 0 && (
-              <span className="catalog-filter-count">{props.prefixes.size}</span>
-            )}
-            <span className="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
-          </summary>
-          <div className="catalog-filter-menu" role="group" aria-label="Filter by prefix">
-            {props.prefixCounts.map(([pfx, count]) => (
-              <label key={pfx} className={`catalog-filter-option ${props.prefixes.has(pfx) ? "is-active" : ""}`}>
-                <input name="prefix-filter" type="checkbox" checked={props.prefixes.has(pfx)} onChange={() => props.togglePrefix(pfx)} data-sound="interaction.toggle" />
-                <span className="catalog-filter-option-name">{pfx}/*</span>
-                <span className="catalog-filter-option-count">{count}</span>
-              </label>
-            ))}
-          </div>
-        </details>
-        <details className="catalog-filter">
-          <summary className={`catalog-filter-trigger ${props.typeFilters.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
+            {props.prefixes.size > 0 && <span className="catalog-filter-count">{props.prefixes.size}</span>}
+          </Menu.Trigger>
+          <Menu.Content side="bottom" className="catalog-filter-content">
+            <Menu.Group>
+              {props.prefixCounts.map(([pfx, count]) => (
+                <FilterCheckbox
+                  key={pfx}
+                  checked={props.prefixes.has(pfx)}
+                  onToggle={() => props.togglePrefix(pfx)}
+                  label={`${pfx}/*`}
+                  count={count}
+                />
+              ))}
+            </Menu.Group>
+          </Menu.Content>
+        </Menu.Root>
+        <Menu.Root>
+          <Menu.Trigger className={`catalog-filter-trigger${props.typeFilters.size > 0 ? " is-active" : ""}`} sound="overlay.expand">
             <span className="catalog-filter-label">Capability</span>
             <span className="catalog-filter-value">{props.typeButtonLabel}</span>
-            {props.typeFilters.size > 0 && (
-              <span className="catalog-filter-count">{props.typeFilters.size}</span>
-            )}
-            <span className="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
-          </summary>
-          <div className="catalog-filter-menu" role="group" aria-label="Filter by capability">
-            {props.visibleTypeOptions.map((key) => (
-              <label key={key} className={`catalog-filter-option ${props.typeFilters.has(key) ? "is-active" : ""}`}>
-                <input name="capability-filter" type="checkbox" checked={props.typeFilters.has(key)} onChange={() => props.toggleType(key)} data-sound="interaction.toggle" />
-                <span className="catalog-filter-option-name">{FILTER_LABELS[key]}</span>
-              </label>
-            ))}
-          </div>
-        </details>
+            {props.typeFilters.size > 0 && <span className="catalog-filter-count">{props.typeFilters.size}</span>}
+          </Menu.Trigger>
+          <Menu.Content side="bottom" className="catalog-filter-content">
+            <Menu.Group>
+              {props.visibleTypeOptions.map((key) => (
+                <FilterCheckbox
+                  key={key}
+                  checked={props.typeFilters.has(key)}
+                  onToggle={() => props.toggleType(key)}
+                  label={FILTER_LABELS[key]}
+                />
+              ))}
+            </Menu.Group>
+          </Menu.Content>
+        </Menu.Root>
       </div>
     </div>
   );

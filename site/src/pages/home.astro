@@ -49,20 +49,20 @@ const pageDescription =
 >
     <main>
         <!-- Hero -->
-        <section style="position:relative;overflow:hidden;padding:80px 16px 48px;text-align:center">
-            <div style="position:relative;z-index:1;max-width:600px;margin:0 auto">
-                <h1 style="position:relative;margin:0">
+        <section class="home-hero">
+            <div class="home-hero-inner">
+                <h1 class="home-hero-logo">
                     <Logo
                         width={520}
                         label="FreeTheAi"
-                        style="display:block;width:min(92vw,520px);height:auto;margin:0 auto"
+                        class="home-hero-logo-svg"
                     />
                     <span class="sr-only">FreeTheAi — free OpenAI-compatible API</span>
                 </h1>
-                <p style="color:var(--muted);font-size:1.15rem;margin:20px auto 0;line-height:1.6;max-width:480px;text-wrap:pretty">
+                <p class="home-hero-lead">
                     OpenAI-compatible. 60+ active models.<br />No card. No catch.
                 </p>
-                <div style="margin-top:40px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center">
+                <div class="home-hero-cta">
                     <a
                         class="primary-button"
                         href={siteConfig.socials.discord}
@@ -70,10 +70,10 @@ const pageDescription =
                         rel="noreferrer"
                     >
                         <span>Get a free API key</span>
-                        <span style="opacity:0.6;font-size:0.85rem;margin-left:4px">&rarr;</span>
+                        <span class="hero-cta-arrow">&rarr;</span>
                     </a>
                 </div>
-                <div style="display:flex;gap:16px;margin-top:16px;justify-content:center">
+                <div class="home-hero-links">
                     <a href="/models" class="hero-link">Browse Models</a>
                     <a href="/docs" class="hero-link">Read Docs</a>
                 </div>
@@ -81,8 +81,8 @@ const pageDescription =
         </section>
 
         <!-- Code card -->
-        <section style="max-width:600px;margin:0 auto;padding:48px 16px 0;text-align:center">
-            <div class="code-card" style="text-align:left">
+        <section class="home-code-section">
+            <div class="code-card home-code-card">
                 <div class="card-head">
                     <div class="dot-row">
                         <span></span><span></span><span></span>
@@ -97,15 +97,15 @@ const pageDescription =
                 </div>
             </div>
 
-            <div style="margin-top:48px;display:flex;flex-direction:column;align-items:center">
+            <div class="home-stats-wrap">
                 <LiveStats client:load />
                 <a
                     href={siteConfig.socials.discord}
                     target="_blank"
                     rel="noreferrer"
-                    style="display:inline-flex;align-items:center;gap:6px;margin-top:16px;color:var(--accent-text);text-shadow:var(--accent-text-glow);font-size:0.85rem;text-decoration:none;font-weight:500"
+                    class="home-discord-link"
                 >
-                    Join Discord <span style="font-size:1rem">&rarr;</span>
+                    Join Discord <span class="home-discord-link-arrow">&rarr;</span>
                 </a>
             </div>
         </section>
@@ -244,6 +244,96 @@ const pageDescription =
 </Layout>
 
 <style>
+    .home-hero {
+        position: relative;
+        overflow: hidden;
+        padding: 80px 16px 48px;
+        text-align: center;
+    }
+
+    .home-hero-inner {
+        position: relative;
+        z-index: 1;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .home-hero-logo {
+        position: relative;
+        margin: 0;
+    }
+
+    .home-hero-logo-svg {
+        display: block;
+        width: min(92vw, 520px);
+        height: auto;
+        margin: 0 auto;
+    }
+
+    .home-hero-lead {
+        color: var(--muted);
+        font-size: 1.15rem;
+        margin: 20px auto 0;
+        line-height: 1.6;
+        max-width: 480px;
+        text-wrap: pretty;
+    }
+
+    .home-hero-cta {
+        margin-top: 40px;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+
+    .hero-cta-arrow {
+        opacity: 0.6;
+        font-size: 0.85rem;
+        margin-left: 4px;
+    }
+
+    .home-hero-links {
+        display: flex;
+        gap: 16px;
+        margin-top: 16px;
+        justify-content: center;
+    }
+
+    .home-code-section {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 48px 16px 0;
+        text-align: center;
+    }
+
+    .home-code-card {
+        text-align: left;
+    }
+
+    .home-stats-wrap {
+        margin-top: 48px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .home-discord-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        margin-top: 16px;
+        color: var(--accent-text);
+        text-shadow: var(--accent-text-glow);
+        font-size: 0.85rem;
+        text-decoration: none;
+        font-weight: 500;
+    }
+
+    .home-discord-link-arrow {
+        font-size: 1rem;
+    }
+
     .home-support {
         margin-top: 8px;
     }
@@ -387,11 +477,17 @@ const pageDescription =
         box-shadow: var(--sk-inset-shadow);
         color: var(--text);
         text-decoration: none;
-        transition: border-color 160ms ease, transform 160ms ease;
+        transition:
+            border-color 160ms var(--ease-out-smooth),
+            transform 160ms var(--ease-out-smooth);
     }
 
     .home-path-grid a:hover {
         border-color: oklch(0.659 0.192 40.1 / 0.42);
+    }
+
+    .home-path-grid a:active {
+        transform: scale(var(--press-scale));
     }
 
     .home-path-grid strong {
@@ -411,6 +507,15 @@ const pageDescription =
     @media (hover: hover) and (pointer: fine) {
         .home-path-grid a:hover {
             transform: translateY(-2px);
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .home-path-grid a,
+        .home-path-grid a:hover,
+        .home-path-grid a:active {
+            transition: none;
+            transform: none;
         }
     }
 

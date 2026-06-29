@@ -2667,11 +2667,21 @@ h3 {
         box-shadow var(--hover-dur) var(--ease-out-smooth);
 }
 
-.model-card:hover {
-    border-color: var(--border-strong);
-    background: var(--bg);
-    transform: translateY(var(--hover-lift));
-    box-shadow: var(--sk-raised-shadow);
+@media (hover: hover) and (pointer: fine) {
+    .model-card:hover {
+        border-color: var(--border-strong);
+        background: var(--bg);
+        transform: translateY(var(--hover-lift));
+        box-shadow: var(--sk-raised-shadow);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .model-card,
+    .model-card[role="button"]:active {
+        transition: none;
+        transform: none;
+    }
 }
 
 .model-card.is-image {
@@ -3592,6 +3602,10 @@ html.nav-drawer-open {
 .footer-bottom {
     color: var(--dim);
     font-size: 0.75rem;
+}
+
+.footer-logo {
+    opacity: 0.4;
 }
 
 /* ── Skeuomorphic site material pass ── */

@@ -57,78 +57,6 @@ const jsonLd = [
         text-wrap: pretty;
     }
 
-    .pricing-card {
-        min-width: 0;
-        border: 1px solid var(--sk-border);
-        border-radius: var(--radius);
-        background: var(--sk-shell-bg);
-        box-shadow: var(--sk-raised-shadow);
-        padding: clamp(20px, 2.7vw, 28px);
-    }
-
-    .pricing-card p {
-        margin: 0;
-        color: var(--muted);
-        line-height: 1.65;
-        text-wrap: pretty;
-    }
-
-    .pricing-plan-card {
-        position: relative;
-        overflow: hidden;
-        display: grid;
-        justify-self: end;
-        width: min(100%, 380px);
-        min-height: 240px;
-        align-content: center;
-        gap: 14px;
-        padding: clamp(22px, 2.8vw, 32px);
-    }
-
-    .pricing-plan-card::before {
-        content: "";
-        position: absolute;
-        inset: -40% -20% auto auto;
-        width: 260px;
-        height: 260px;
-        border-radius: 50%;
-        background: radial-gradient(circle, oklch(0.659 0.192 40.1 / 0.22), transparent 64%);
-        pointer-events: none;
-    }
-
-    .pricing-price {
-        display: flex;
-        align-items: flex-end;
-        gap: 12px;
-    }
-
-    .pricing-price strong {
-        color: var(--accent-text-strong);
-        font-family: var(--font-serif);
-        font-size: clamp(3rem, 6vw, 4.2rem);
-        font-weight: 500;
-        line-height: 0.88;
-        letter-spacing: -0.08em;
-        text-shadow: var(--accent-text-glow);
-    }
-
-    .pricing-price span {
-        margin-bottom: 8px;
-        color: var(--muted);
-        font-family: var(--font-mono);
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-    }
-
-    .pricing-plan-tag {
-        margin: 0;
-        color: var(--muted);
-        font-family: var(--font-mono);
-        font-size: 0.78rem;
-        letter-spacing: 0.04em;
-    }
-
     .pricing-plan-cta {
         display: inline-flex;
         align-items: center;
@@ -222,9 +150,9 @@ const jsonLd = [
         background: oklch(0.145 0.000 90.1 / 0.42);
         box-shadow: var(--sk-inset-shadow);
         transition:
-            border-color 180ms ease,
-            box-shadow 180ms ease,
-            transform 180ms ease;
+            border-color 180ms var(--ease-out-smooth),
+            box-shadow 180ms var(--ease-out-smooth),
+            transform 180ms var(--ease-out-smooth);
     }
 
     .paid-plan-option.is-active {
@@ -334,6 +262,15 @@ const jsonLd = [
         letter-spacing: 0.05em;
         text-transform: uppercase;
         cursor: pointer;
+        transition:
+            border-color 150ms var(--ease-out-smooth),
+            background 150ms var(--ease-out-smooth),
+            color 150ms var(--ease-out-smooth),
+            transform var(--press-dur) var(--ease-out-smooth);
+    }
+
+    .paid-plan-select:active {
+        transform: scale(var(--press-scale));
     }
 
     .paid-plan-option.is-active .paid-plan-select {
@@ -366,69 +303,6 @@ const jsonLd = [
     .paid-table-panel {
         display: grid;
         gap: 16px;
-    }
-
-    .paid-table-toolbar {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 10px;
-    }
-
-    .paid-table-search {
-        flex: 1 1 260px;
-        min-width: 220px;
-    }
-
-    .paid-table-filters {
-        display: flex;
-        flex-wrap: wrap;
-        align-items: center;
-        gap: 8px;
-        flex: 1 1 auto;
-        min-width: 0;
-    }
-
-    .paid-filter-select {
-        flex: 1 1 150px;
-        min-width: 140px;
-        max-width: 220px;
-        gap: 0;
-    }
-
-    .paid-filter-select .kb-select__trigger {
-        min-height: 40px;
-        padding: 0 12px;
-        font-family: var(--font-mono);
-        font-size: 0.78rem;
-    }
-
-    .paid-filter-clear {
-        flex: 0 0 auto;
-        height: 40px;
-        padding: 0 14px;
-        border: 1px solid var(--sk-border);
-        border-radius: var(--radius);
-        background: var(--sk-inset-bg);
-        color: var(--muted);
-        font-family: var(--font-mono);
-        font-size: 0.74rem;
-        letter-spacing: 0.05em;
-        text-transform: uppercase;
-        cursor: pointer;
-        transition: border-color 150ms ease, color 150ms ease;
-    }
-
-    .paid-filter-clear:hover {
-        border-color: oklch(0.659 0.192 40.1 / 0.42);
-        color: var(--accent-text);
-    }
-
-    @media (max-width: 720px) {
-        .paid-filter-select {
-            flex: 1 1 100%;
-            max-width: none;
-        }
     }
 
     .paid-model-table {
@@ -534,6 +408,10 @@ const jsonLd = [
         color: var(--muted);
         box-shadow: var(--sk-inset-shadow);
         cursor: pointer;
+        transition:
+            border-color 150ms var(--ease-out-smooth),
+            color 150ms var(--ease-out-smooth),
+            transform var(--press-dur) var(--ease-out-smooth);
     }
 
     .pricing-model-copy:hover {
@@ -541,14 +419,13 @@ const jsonLd = [
         border-color: oklch(0.659 0.192 40.1 / 0.42);
     }
 
+    .pricing-model-copy:active {
+        transform: scale(var(--press-scale));
+    }
+
     @media (max-width: 1120px) {
         .paid-plan-chooser {
             grid-template-columns: 1fr;
-        }
-
-        .pricing-plan-card {
-            justify-self: stretch;
-            width: 100%;
         }
     }
 
@@ -569,12 +446,20 @@ const jsonLd = [
             padding: 18px;
         }
 
-        .pricing-card {
-            padding: 16px;
-        }
-
         .pricing-section {
             padding: 18px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .paid-plan-option,
+        .paid-plan-option.is-active,
+        .paid-plan-select,
+        .paid-plan-select:active,
+        .pricing-model-copy,
+        .pricing-model-copy:active {
+            transition: none;
+            transform: none;
         }
     }
 </style>

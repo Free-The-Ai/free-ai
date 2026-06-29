@@ -283,6 +283,14 @@
   from { opacity: 1; transform: scale(1); }
   to   { opacity: 0; transform: scale(var(--dropdown-pre-scale)); }
 }
+
+@media (prefers-reduced-motion: reduce) {
+  .kb-menu__content,
+  .kb-menu__content[data-closed] {
+    animation: none;
+  }
+}
+
 .kb-menu__item {
   display: flex;
   align-items: center;

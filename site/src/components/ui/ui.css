@@ -222,6 +222,11 @@
 }
 .kb-menu__trigger[data-expanded] .kb-menu__chevron { transform: rotate(180deg); }
 .kb-menu__chevron--sub { transform: rotate(-90deg); }
+.kb-menu__positioner {
+  position: relative;
+  z-index: 100;
+}
+
 .kb-menu__content {
   z-index: 50;
   min-width: var(--kb-menu-content-available-width);

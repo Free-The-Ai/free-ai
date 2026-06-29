@@ -457,7 +457,7 @@ function CatalogFiltersToolbar(props: {
             <span className="catalog-filter-value">{props.prefixButtonLabel}</span>
             {props.prefixes.size > 0 && <span className="catalog-filter-count">{props.prefixes.size}</span>}
           </Menu.Trigger>
-          <Menu.Content side="bottom" className="catalog-filter-content">
+          <Menu.Content side="bottom" align="start" className="catalog-filter-content">
             <Menu.Group>
               {props.prefixCounts.map(([pfx, count]) => (
                 <FilterCheckbox
@@ -477,7 +477,7 @@ function CatalogFiltersToolbar(props: {
             <span className="catalog-filter-value">{props.typeButtonLabel}</span>
             {props.typeFilters.size > 0 && <span className="catalog-filter-count">{props.typeFilters.size}</span>}
           </Menu.Trigger>
-          <Menu.Content side="bottom" className="catalog-filter-content">
+          <Menu.Content side="bottom" align="start" className="catalog-filter-content">
             <Menu.Group>
               {props.visibleTypeOptions.map((key) => (
                 <FilterCheckbox

@@ -388,7 +388,6 @@ export default function PaidPlanExplorer(props: PaidPlanExplorerProps) {
           <div>
             <span className="eyebrow">Selected plan</span>
             <h2>{selected?.display_name ?? "Paid plan"}</h2>
-            <p>{selected?.description}</p>
           </div>
           <div className="paid-selected-metrics">
             <span>

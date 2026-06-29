@@ -194,6 +194,7 @@ export default function PaidModelTable(props: PaidModelTableProps) {
         <div className="paid-table-filters" aria-label="Paid model filters">
           <Select
             className="paid-filter-select"
+            label="Prefix"
             options={prefixOptions}
             value={prefix}
             onChange={(val: string) => setPrefix(val ?? "all")}
@@ -201,6 +202,7 @@ export default function PaidModelTable(props: PaidModelTableProps) {
           />
           <Select
             className="paid-filter-select"
+            label="Route"
             options={routeOptions}
             value={route}
             onChange={(val: string) => setRoute(val ?? "all")}
@@ -208,6 +210,7 @@ export default function PaidModelTable(props: PaidModelTableProps) {
           />
           <Select
             className="paid-filter-select"
+            label="Cost"
             options={costOptions}
             value={cost}
             onChange={(val: string) => setCost(val ?? "all")}

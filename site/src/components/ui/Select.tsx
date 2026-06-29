@@ -37,6 +37,7 @@ export default function SelectComponent({
   volume,
 }: SelectProps) {
   const items = options.map((o) => ({ label: o.label, value: o.value }));
+  const activeLabel = options.find((o) => o.value === value)?.label ?? placeholder;
 
   const handleValueChange = (val: string | null) => {
     if (sound !== false) soundPlay(sound ?? 'interaction.subtle', { volume });
@@ -52,11 +53,11 @@ export default function SelectComponent({
       disabled={disabled}
       name={name}
     >
-      {label && <Select.Label className="kb-select__label">{label}</Select.Label>}
       <Select.Trigger className={['kb-select__trigger', className].filter(Boolean).join(' ')}>
-        <Select.Value placeholder={placeholder}>
-          {(val: string | null) => options.find((o) => o.value === val)?.label ?? placeholder}
-        </Select.Value>
+        <span className="kb-select__trigger-label">
+          {label && <span className="kb-select__label-text">{label}</span>}
+          <span className="kb-select__value-text">{activeLabel}</span>
+        </span>
         <Select.Icon className="kb-select__icon">
           <ChevronDownIcon />
         </Select.Icon>

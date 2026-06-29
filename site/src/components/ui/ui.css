@@ -132,28 +132,57 @@
 /* ── Select ── */
 .kb-select { display: grid; gap: 6px; }
 .kb-select__trigger {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   justify-content: space-between;
-  gap: 10px;
-  min-height: 44px;
+  gap: 8px;
+  height: 44px;
   padding: 0 14px;
-  border: 1px solid var(--sk-border);
+  border: 1px solid var(--border);
   border-radius: var(--radius);
-  background: var(--sk-shell-bg);
-  box-shadow: var(--sk-raised-shadow);
+  background: var(--surface);
   color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
   cursor: pointer;
-  transition: border-color 200ms var(--ease-out-smooth), box-shadow 200ms var(--ease-out-smooth);
+  width: 220px;
+  transition:
+    border-color 150ms var(--ease-out-smooth),
+    background 150ms var(--ease-out-smooth),
+    box-shadow 150ms var(--ease-out-smooth),
+    transform var(--press-dur) var(--ease-out-smooth);
 }
 .kb-select__trigger:hover {
   border-color: var(--border-strong);
-  box-shadow: var(--sk-raised-shadow), var(--sk-accent-glow);
+  background: var(--bg);
 }
-.kb-select__trigger[data-expanded] { border-color: var(--border-strong); }
-.kb-select__icon { color: var(--dim); transition: transform 200ms var(--ease-out-smooth); }
+.kb-select__trigger[data-expanded] {
+  border-color: var(--accent);
+  box-shadow: var(--sk-accent-glow);
+}
+.kb-select__trigger-label {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1px;
+  line-height: 1.1;
+  overflow: hidden;
+}
+.kb-select__label-text {
+  color: var(--dim);
+  font-size: 0.66rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.kb-select__value-text {
+  color: var(--text);
+  font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+.kb-select__icon { color: var(--dim); transition: transform 200ms var(--ease-out-smooth); flex: 0 0 auto; }
 .kb-select__icon[data-expanded] { transform: rotate(180deg); }
 .kb-select__positioner {
   position: relative;

@@ -2138,17 +2138,6 @@ h3 {
     text-shadow: var(--accent-text-glow);
     background: var(--accent-muted);
 }
-    -webkit-appearance: none;
-    width: 14px;
-    height: 14px;
-    margin: 0;
-    border: 1px solid var(--border-strong);
-    border-radius: 3px;
-    background: var(--bg);
-    cursor: pointer;
-    transition: border-color 120ms var(--ease-out-smooth), background 120ms var(--ease-out-smooth);
-    position: relative;
-}
 
 .catalog-filter-option-name {
     overflow: hidden;

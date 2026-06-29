@@ -11,7 +11,7 @@
  * reduced-motion listeners on window persist across SPA navigations. Cleanup
  * happens on tab close via beforeunload inside singleton.ts.
  */
-import { onMount } from "solid-js";
+import { useEffect } from "react";
 import {
   initMotionSystem,
   motionConfigure,
@@ -23,10 +23,10 @@ interface MotionProviderProps {
 }
 
 export default function MotionProvider(props: MotionProviderProps) {
-  onMount(() => {
+  useEffect(() => {
     motionConfigure(props.config);
     initMotionSystem();
-  });
+  }, []);
 
   return null;
 }

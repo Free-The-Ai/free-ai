@@ -11,7 +11,7 @@
  * <script is:inline> in <head> so persisted/system scheme applies before
  * hydration. Lifecycle: initThemeSystem() on mount; cleanup on beforeunload.
  */
-import { onMount } from "solid-js";
+import { useEffect } from "react";
 import {
   initThemeSystem,
   themeConfigure,
@@ -23,13 +23,13 @@ interface ThemeProviderProps {
 }
 
 export default function ThemeProvider(props: ThemeProviderProps) {
-  onMount(() => {
+  useEffect(() => {
     // User-provided config (from Layout props) is treated as an explicit choice.
     if (props.config && Object.keys(props.config).length > 0) {
       themeConfigure(props.config);
     }
     initThemeSystem();
-  });
+  }, []);
 
   return null;
 }

@@ -1,4 +1,4 @@
-import { onMount, onCleanup } from "solid-js";
+import { useEffect, useRef } from "react";
 
 export interface DitherShaderProps {
   w?: number;
@@ -18,10 +18,7 @@ function hash(x: number, y: number, seed: number): number {
 }
 
 export default function DitherShader(props: DitherShaderProps) {
-  let canvas: HTMLCanvasElement | undefined;
-  let raf: number;
-  let last = 0;
-  let visible = true;
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const W = () => props.w ?? 60;
   const H = () => props.h ?? 38;
@@ -29,7 +26,8 @@ export default function DitherShader(props: DitherShaderProps) {
   const spd = () => props.speed ?? 1;
   const ivl = () => props.interval ?? 200;
 
-  onMount(() => {
+  useEffect(() => {
+    const canvas = canvasRef.current;
     if (!canvas || typeof window === "undefined") return;
 
     const w = W();
@@ -39,6 +37,10 @@ export default function DitherShader(props: DitherShaderProps) {
     const ctx = canvas.getContext("2d", { alpha: false })!;
     const img = ctx.createImageData(w, h);
     const d = img.data;
+
+    let raf: number;
+    let last = 0;
+    let visible = true;
 
     function draw(t: number) {
       const time = t * 0.00018 * spd();
@@ -96,21 +98,25 @@ export default function DitherShader(props: DitherShaderProps) {
     draw(0);
     loop(0);
 
+    let obs: IntersectionObserver | undefined;
+
     if (props.pauseWhenOffscreen !== false) {
-      const obs = new IntersectionObserver(
+      obs = new IntersectionObserver(
         ([entry]) => { visible = entry.isIntersecting; },
-        { threshold: 0 }
+        { threshold: 0 },
       );
       obs.observe(canvas);
-      onCleanup(() => obs.disconnect());
     }
 
-    onCleanup(() => cancelAnimationFrame(raf));
-  });
+    return () => {
+      cancelAnimationFrame(raf);
+      obs?.disconnect();
+    };
+  }, []);
 
   return (
     <canvas
-      ref={canvas}
+      ref={canvasRef}
       aria-hidden="true"
       style={{
         position: "absolute",

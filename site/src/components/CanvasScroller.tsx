@@ -1,4 +1,4 @@
-import { onMount, onCleanup } from "solid-js";
+import { useEffect, useRef } from "react";
 import * as THREE from "three";
 import { scrollRatio } from "./SmoothScroll";
 
@@ -107,9 +107,10 @@ function createAccentLayer(): THREE.Points {
 }
 
 export default function CanvasScroller() {
-    let container: HTMLDivElement | undefined;
+    const containerRef = useRef<HTMLDivElement>(null);
 
-    onMount(() => {
+    useEffect(() => {
+        const container = containerRef.current;
         if (!container || typeof window === "undefined") return;
 
         const scene = new THREE.Scene();
@@ -166,7 +167,7 @@ export default function CanvasScroller() {
         };
         window.addEventListener("resize", onResize);
 
-        onCleanup(() => {
+        return () => {
             cancelAnimationFrame(frame);
             window.removeEventListener("resize", onResize);
             points.geometry.dispose();
@@ -176,15 +177,15 @@ export default function CanvasScroller() {
             accents.geometry.dispose();
             (accents.material as THREE.Material).dispose();
             renderer.dispose();
-            if (container) container.innerHTML = "";
-        });
-    });
+            container.innerHTML = "";
+        };
+    }, []);
 
     return (
         <div
-            ref={container}
+            ref={containerRef}
             aria-hidden="true"
-            class="canvas-scroller-bg"
+            className="canvas-scroller-bg"
         />
     );
 }

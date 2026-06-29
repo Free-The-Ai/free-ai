@@ -1,10 +1,4 @@
-import {
-    Show,
-    createEffect,
-    createSignal,
-    onCleanup,
-    onMount,
-} from "solid-js";
+import { useState, useEffect, useRef, useCallback } from "react";
 import type { ProviderHealth } from "./ProviderStatusGrid";
 import { formatPercent } from "../utils/format";
 import { disconnectPointerDrag, lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
@@ -18,18 +12,23 @@ type ScrollRailMetrics = {
 
 const DISMISS_THRESHOLD = 0.3;
 
-function useScrollRail(onProviderChange: () => unknown) {
-    const [metrics, setMetrics] = createSignal<ScrollRailMetrics>({ scrollable: false, thumbHeight: 0, thumbTop: 0 });
-    const [isDragging, setIsDragging] = createSignal(false);
-    let bodyEl: HTMLDivElement | undefined;
-    let railEl: HTMLDivElement | undefined;
-    let frame: number | undefined;
-    let dragStartY = 0;
-    let dragStartTop = 0;
+function useScrollRail(provider: ProviderHealth) {
+    const [metrics, setMetrics] = useState<ScrollRailMetrics>({ scrollable: false, thumbHeight: 0, thumbTop: 0 });
+    const [isDragging, setIsDragging] = useState(false);
+    const bodyRef = useRef<HTMLDivElement | null>(null);
+    const railRef = useRef<HTMLDivElement | null>(null);
+    const frameRef = useRef<number | undefined>(undefined);
+    const dragStartYRef = useRef(0);
+    const dragStartTopRef = useRef(0);
+    const metricsRef = useRef(metrics);
+    metricsRef.current = metrics;
+    const isDraggingRef = useRef(false);
+    isDraggingRef.current = isDragging;
 
-    const reset = () => setMetrics({ scrollable: false, thumbHeight: 0, thumbTop: 0 });
-    const update = () => {
-        const body = bodyEl, rail = railEl;
+    const reset = useCallback(() => setMetrics({ scrollable: false, thumbHeight: 0, thumbTop: 0 }), []);
+
+    const update = useCallback(() => {
+        const body = bodyRef.current, rail = railRef.current;
         if (!body || !rail) { reset(); return; }
         const maxScroll = body.scrollHeight - body.clientHeight;
         const railH = rail.clientHeight;
@@ -37,49 +36,59 @@ function useScrollRail(onProviderChange: () => unknown) {
         const thumbH = Math.max(32, Math.round((body.clientHeight / body.scrollHeight) * railH));
         const maxT = Math.max(0, railH - thumbH);
         setMetrics({ scrollable: true, thumbHeight: thumbH, thumbTop: Math.round((body.scrollTop / maxScroll) * maxT) });
-    };
-    const queueUpdate = () => {
+    }, [reset]);
+
+    const queueUpdate = useCallback(() => {
         if (typeof window === "undefined") return;
-        if (frame !== undefined) window.cancelAnimationFrame(frame);
-        frame = window.requestAnimationFrame(() => { frame = undefined; update(); });
-    };
-    const scrollToThumb = (thumbTop: number) => {
-        const body = bodyEl, rail = railEl;
+        if (frameRef.current !== undefined) window.cancelAnimationFrame(frameRef.current);
+        frameRef.current = window.requestAnimationFrame(() => { frameRef.current = undefined; update(); });
+    }, [update]);
+
+    const scrollToThumb = useCallback((thumbTop: number) => {
+        const body = bodyRef.current, rail = railRef.current;
         if (!body || !rail) return;
         const maxScroll = body.scrollHeight - body.clientHeight;
-        const maxT = rail.clientHeight - metrics().thumbHeight;
+        const maxT = rail.clientHeight - metricsRef.current.thumbHeight;
         body.scrollTop = maxT > 0 ? (thumbTop / maxT) * maxScroll : 0;
         update();
-    };
-    const onRailDown = (e: PointerEvent) => {
-        if (!metrics().scrollable || e.target !== e.currentTarget || !railEl) return;
+    }, [update]);
+
+    const onRailDown = useCallback((e: React.PointerEvent) => {
+        if (!metricsRef.current.scrollable || e.target !== e.currentTarget || !railRef.current) return;
         e.preventDefault(); e.stopPropagation();
-        const rect = railEl.getBoundingClientRect();
-        const maxT = Math.max(0, railEl.clientHeight - metrics().thumbHeight);
-        scrollToThumb(Math.max(0, Math.min(e.clientY - rect.top - metrics().thumbHeight / 2, maxT)));
-    };
-    const onThumbDown = (e: PointerEvent) => {
-        if (!metrics().scrollable) return;
+        const rect = railRef.current.getBoundingClientRect();
+        const maxT = Math.max(0, railRef.current.clientHeight - metricsRef.current.thumbHeight);
+        scrollToThumb(Math.max(0, Math.min(e.clientY - rect.top - metricsRef.current.thumbHeight / 2, maxT)));
+    }, [scrollToThumb]);
+
+    const onThumbDown = useCallback((e: React.PointerEvent) => {
+        if (!metricsRef.current.scrollable) return;
         e.preventDefault(); e.stopPropagation();
-        dragStartY = e.clientY; dragStartTop = metrics().thumbTop;
+        dragStartYRef.current = e.clientY;
+        dragStartTopRef.current = metricsRef.current.thumbTop;
         setIsDragging(true);
+        isDraggingRef.current = true;
         (e.currentTarget as HTMLDivElement).setPointerCapture(e.pointerId);
-    };
-    const onThumbMove = (e: PointerEvent) => {
-        if (!isDragging() || !railEl) return;
+    }, []);
+
+    const onThumbMove = useCallback((e: React.PointerEvent) => {
+        if (!isDraggingRef.current || !railRef.current) return;
         e.preventDefault(); e.stopPropagation();
-        const maxT = Math.max(0, railEl.clientHeight - metrics().thumbHeight);
-        scrollToThumb(Math.max(0, Math.min(dragStartTop + e.clientY - dragStartY, maxT)));
-    };
-    const onThumbEnd = (e: PointerEvent) => {
-        if (!isDragging()) return;
+        const maxT = Math.max(0, railRef.current.clientHeight - metricsRef.current.thumbHeight);
+        scrollToThumb(Math.max(0, Math.min(dragStartTopRef.current + e.clientY - dragStartYRef.current, maxT)));
+    }, [scrollToThumb]);
+
+    const onThumbEnd = useCallback((e: React.PointerEvent) => {
+        if (!isDraggingRef.current) return;
         e.preventDefault(); e.stopPropagation();
         setIsDragging(false);
+        isDraggingRef.current = false;
         const t = e.currentTarget as HTMLDivElement;
         if (t.hasPointerCapture(e.pointerId)) t.releasePointerCapture(e.pointerId);
-    };
-    const onBodyWheel = (e: WheelEvent) => {
-        const body = bodyEl;
+    }, []);
+
+    const onBodyWheel = useCallback((e: React.WheelEvent) => {
+        const body = bodyRef.current;
         if (!body) return;
         const maxScroll = body.scrollHeight - body.clientHeight;
         if (maxScroll <= 1) return;
@@ -87,62 +96,76 @@ function useScrollRail(onProviderChange: () => unknown) {
         e.preventDefault(); e.stopPropagation();
         body.scrollTop = Math.max(0, Math.min(body.scrollTop + deltaY, maxScroll));
         update();
-    };
+    }, [update]);
 
-    createEffect(() => { if (onProviderChange()) queueUpdate(); });
+    useEffect(() => { queueUpdate(); }, [provider, queueUpdate]);
+
+    useEffect(() => () => { if (frameRef.current !== undefined) window.cancelAnimationFrame(frameRef.current); }, []);
 
     return {
         metrics, isDragging, queueUpdate,
-        setBodyRef: (el: HTMLDivElement) => { bodyEl = el; queueUpdate(); },
-        setRailRef: (el: HTMLDivElement) => { railEl = el; queueUpdate(); },
+        bodyRef, railRef,
         onRailDown, onThumbDown, onThumbMove, onThumbEnd, onBodyWheel,
-        cleanup: () => { if (frame !== undefined) window.cancelAnimationFrame(frame); },
     };
 }
 
-function useDragToDismiss(isMobile: () => boolean, onDismiss: () => void) {
-    const [dragOffset, setDragOffset] = createSignal(0);
-    const [isDragging, setIsDragging] = createSignal(false);
-    let sheetEl: HTMLDivElement | undefined;
-    let startY = 0;
-    let startOffset = 0;
-    let boundMove: ((e: PointerEvent) => void) | null = null;
-    let boundUp: ((e: PointerEvent) => void) | null = null;
+function useDragToDismiss(isMobile: boolean, onDismiss: () => void) {
+    const [dragOffset, setDragOffset] = useState(0);
+    const [isDragging, setIsDragging] = useState(false);
+    const sheetRef = useRef<HTMLDivElement | null>(null);
+    const startYRef = useRef(0);
+    const startOffsetRef = useRef(0);
+    const isDraggingRef = useRef(false);
+    const dragOffsetRef = useRef(0);
+    const boundMoveRef = useRef<((e: PointerEvent) => void) | null>(null);
+    const boundUpRef = useRef<((e: PointerEvent) => void) | null>(null);
+    const onDismissRef = useRef(onDismiss);
+    onDismissRef.current = onDismiss;
+    const isMobileRef = useRef(isMobile);
+    isMobileRef.current = isMobile;
 
-    const move = (e: PointerEvent) => {
-        if (!isDragging()) return;
+    const move = useCallback((e: PointerEvent) => {
+        if (!isDraggingRef.current) return;
         e.preventDefault();
-        const delta = e.clientY - startY;
-        setDragOffset(Math.max(0, startOffset + (delta > 0 ? delta : delta * 0.3)));
-    };
-    const end = (e: PointerEvent) => {
-        if (!isDragging()) return;
+        const delta = e.clientY - startYRef.current;
+        const next = Math.max(0, startOffsetRef.current + (delta > 0 ? delta : delta * 0.3));
+        dragOffsetRef.current = next;
+        setDragOffset(next);
+    }, []);
+
+    const end = useCallback((e: PointerEvent) => {
+        if (!isDraggingRef.current) return;
         e.preventDefault();
         setIsDragging(false);
-        disconnectPointerDrag(boundMove, boundUp);
-        boundMove = boundUp = null;
-        const threshold = (sheetEl?.offsetHeight ?? 400) * DISMISS_THRESHOLD;
-        if (dragOffset() > threshold) onDismiss();
+        isDraggingRef.current = false;
+        disconnectPointerDrag(boundMoveRef.current, boundUpRef.current);
+        boundMoveRef.current = boundUpRef.current = null;
+        const threshold = (sheetRef.current?.offsetHeight ?? 400) * DISMISS_THRESHOLD;
+        if (dragOffsetRef.current > threshold) onDismissRef.current();
         else setDragOffset(0);
-    };
-    const start = (e: PointerEvent) => {
-        if (!isMobile()) return;
+    }, []);
+
+    const onDragStart = useCallback((e: React.PointerEvent) => {
+        if (!isMobileRef.current) return;
         const target = e.target as HTMLElement;
         if (target.closest("button,a")) return;
         e.preventDefault();
-        startY = e.clientY; startOffset = dragOffset();
+        startYRef.current = e.clientY;
+        startOffsetRef.current = dragOffsetRef.current;
         setIsDragging(true);
-        boundMove = move; boundUp = end;
-        document.addEventListener("pointermove", boundMove, { passive: false });
-        document.addEventListener("pointerup", boundUp, { passive: false });
-        document.addEventListener("pointercancel", boundUp, { passive: false });
-    };
+        isDraggingRef.current = true;
+        boundMoveRef.current = move;
+        boundUpRef.current = end;
+        document.addEventListener("pointermove", move, { passive: false });
+        document.addEventListener("pointerup", end, { passive: false });
+        document.addEventListener("pointercancel", end, { passive: false });
+    }, [move, end]);
+
+    useEffect(() => () => disconnectPointerDrag(boundMoveRef.current, boundUpRef.current), []);
 
     return {
         dragOffset, isDragging,
-        setSheetRef: (el: HTMLDivElement) => { sheetEl = el; },
-        onDragStart: start, resetOffset: () => setDragOffset(0),
-        cleanup: () => { disconnectPointerDrag(boundMove, boundUp); },
+        sheetRef, onDragStart, resetOffset: () => { dragOffsetRef.current = 0; setDragOffset(0); },
     };
 }
 
@@ -156,41 +179,39 @@ function formatTimestamp(iso: string | null | undefined): string {
     }
 }
 
-// ── Popover Body sub-component ──
-
-function ProviderPopoverBody({ provider }: { provider: () => ProviderHealth }) {
+function ProviderPopoverBody({ provider }: { provider: ProviderHealth }) {
   return (
     <>
-      <dl class="detail-section">
-        <h4 class="detail-section-title">Reliability</h4>
+      <dl className="detail-section">
+        <h4 className="detail-section-title">Reliability</h4>
         <dt>60m error rate</dt>
-        <dd class={provider().error_rate_60m === 0 ? "zero" : ""}>{formatPercent(provider().error_rate_60m)}</dd>
+        <dd className={provider.error_rate_60m === 0 ? "zero" : ""}>{formatPercent(provider.error_rate_60m)}</dd>
         <dt>30m errors</dt>
-        <dd>{provider().errors_30m.toLocaleString()}</dd>
+        <dd>{provider.errors_30m.toLocaleString()}</dd>
         <dt>60m errors</dt>
-        <dd>{provider().errors_60m.toLocaleString()}</dd>
+        <dd>{provider.errors_60m.toLocaleString()}</dd>
       </dl>
-      <dl class="detail-section">
-        <h4 class="detail-section-title">Throughput</h4>
+      <dl className="detail-section">
+        <h4 className="detail-section-title">Throughput</h4>
         <dt>60m requests</dt>
-        <dd>{provider().requests_60m.toLocaleString()}</dd>
+        <dd>{provider.requests_60m.toLocaleString()}</dd>
         <dt>30m successes</dt>
-        <dd>{provider().successes_30m.toLocaleString()}</dd>
+        <dd>{provider.successes_30m.toLocaleString()}</dd>
         <dt>60m successes</dt>
-        <dd>{provider().successes_60m.toLocaleString()}</dd>
+        <dd>{provider.successes_60m.toLocaleString()}</dd>
       </dl>
-      <dl class="detail-section">
-        <h4 class="detail-section-title">Activity</h4>
+      <dl className="detail-section">
+        <h4 className="detail-section-title">Activity</h4>
         <dt>Last success</dt>
-        <dd>{formatTimestamp(provider().last_success_at)}</dd>
+        <dd>{formatTimestamp(provider.last_success_at)}</dd>
         <dt>Last error</dt>
-        <dd class={!provider().last_error_at ? "zero" : ""}>{formatTimestamp(provider().last_error_at)}</dd>
+        <dd className={!provider.last_error_at ? "zero" : ""}>{formatTimestamp(provider.last_error_at)}</dd>
       </dl>
-      <Show when={provider().model_count > 0}>
-        <a class="catalog-link" href={`/models?prefix=${provider().prefix}`}>
-          View all in model catalog <span class="catalog-link-arrow">&rarr;</span>
+      {provider.model_count > 0 && (
+        <a className="catalog-link" href={`/models?prefix=${provider.prefix}`}>
+          View all in model catalog <span className="catalog-link-arrow">&rarr;</span>
         </a>
-      </Show>
+      )}
     </>
   );
 }
@@ -199,146 +220,131 @@ export default function ProviderPopover(props: {
     provider: ProviderHealth;
     onClose: () => void;
 }) {
-    const [isMobile, setIsMobile] = createSignal(false);
-
-    const provider = () => props.provider;
-    let sheetEl: HTMLDivElement | undefined;
-    const closePopover = () => {
-        unlockPageScroll();
+    const [isMobile, setIsMobile] = useState(false);
+    const sheetRef = useRef<HTMLDivElement>(null);
+    const provider = props.provider;
+    const closePopover = useCallback(() => {
+        unlockBodyScroll("popover-open");
         props.onClose();
-    };
-    const isAffected = provider().status === "degraded" || provider().status === "down";
+    }, [props]);
+    const isAffected = provider.status === "degraded" || provider.status === "down";
 
-    /* ── Hooks ── */
     const rail = useScrollRail(provider);
     const drag = useDragToDismiss(isMobile, closePopover);
 
-    /* ── Body scroll lock (uses shared domUtils with "popover-open" class) ── */
-    const lockPageScroll = () => lockBodyScroll("popover-open");
-    const unlockPageScroll = () => unlockBodyScroll("popover-open");
+    const lockPageScroll = useCallback(() => lockBodyScroll("popover-open"), []);
 
-    onMount(() => {
+    useEffect(() => {
         lockPageScroll();
-        // Adaptive motion: compute open params from live pointer velocity + size,
-        // then expose them as --motion-* CSS vars consumed by .popover.
-        if (sheetEl) {
-            motionApply(sheetEl, motionFor("popover", "enter", {
-                size: sheetEl.offsetHeight,
+        if (sheetRef.current) {
+            motionApply(sheetRef.current, motionFor("popover", "enter", {
+                size: sheetRef.current.offsetHeight,
             }));
         }
         if (typeof window === "undefined") return;
         setIsMobile(window.innerWidth <= 640);
         const onResize = () => { setIsMobile(window.innerWidth <= 640); rail.queueUpdate(); };
+        const onKey = (e: KeyboardEvent) => { if (e.key === "Escape") closePopover(); };
         window.addEventListener("resize", onResize);
-        document.addEventListener("keydown", (e: KeyboardEvent) => { if (e.key === "Escape") closePopover(); });
-        onCleanup(() => window.removeEventListener("resize", onResize));
-    });
+        document.addEventListener("keydown", onKey);
+        return () => {
+            window.removeEventListener("resize", onResize);
+            document.removeEventListener("keydown", onKey);
+            unlockBodyScroll("popover-open");
+        };
+    }, [lockPageScroll, rail, closePopover]);
 
-    onCleanup(() => { unlockPageScroll(); rail.cleanup(); drag.cleanup(); });
-
-    const sheetTransform = () => !isMobile() ? undefined : drag.dragOffset() > 0 ? `translateY(${drag.dragOffset()}px)` : undefined;
-    const sheetTransition = () => drag.isDragging() ? "none" : undefined;
+    const sheetTransform = !isMobile ? undefined : drag.dragOffset > 0 ? `translateY(${drag.dragOffset}px)` : undefined;
+    const sheetTransition = drag.isDragging ? "none" : undefined;
 
     return (
         <div>
+            <div
+                className="popover-backdrop"
+                onClick={closePopover}
+                data-sound="overlay.close"
+            >
                 <div
-                    class="popover-backdrop"
-                    onClick={closePopover}
-                    data-sound="overlay.close"
+                    ref={(el) => { sheetRef.current = el; drag.sheetRef.current = el; }}
+                    className={`popover is-${provider.status} is-open`}
+                    style={{
+                        transform: sheetTransform,
+                        transition: sheetTransition,
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                    role="dialog"
+                    aria-label={`${provider.prefix} provider details`}
                 >
+                    <div className="popover-status-strip" />
+
+                    {isMobile && (
+                        <div
+                            className="popover-drag-handle"
+                            data-sound="overlay.close"
+                            onPointerDown={drag.onDragStart}
+                        />
+                    )}
+
                     <div
-                        ref={(el) => { sheetEl = el; drag.setSheetRef(el); }}
-                        class={`popover is-${provider().status} is-open`}
-                        style={{
-                            transform: sheetTransform(),
-                            transition: sheetTransition(),
-                        }}
-                        onClick={(e) => e.stopPropagation()}
-                        role="dialog"
-                        aria-label={`${provider().prefix} provider details`}
+                        className={`popover-header${isMobile ? " has-handle" : ""}`}
+                        onPointerDown={isMobile ? drag.onDragStart : undefined}
                     >
-                        <div class="popover-status-strip" />
-
-                        <Show when={isMobile()}>
-                            <div
-                                class="popover-drag-handle"
-                                data-sound="overlay.close"
-                                onPointerDown={drag.onDragStart}
-                            />
-                        </Show>
-
-                        <div
-                            class={`popover-header${isMobile() ? " has-handle" : ""}`}
-                            onPointerDown={
-                                isMobile() ? drag.onDragStart : undefined
-                            }
+                        <button
+                            className="popover-close"
+                            onClick={closePopover}
+                            data-sound="overlay.close"
+                            aria-label="Close"
                         >
-                            <button
-                                class="popover-close"
-                                onClick={closePopover}
-                                data-sound="overlay.close"
-                                aria-label="Close"
-                            >
-                                &times;
-                            </button>
-                            <h3 class="popover-heading">
-                                <span
-                                    class={`status-dot is-${provider().status}`}
-                                />{" "}
-                                {provider().prefix}/
-                            </h3>
-                            <p class="popover-sub">
-                                Status:{" "}
-                                <strong>
-                                    {provider().status}
-                                </strong>{" "}
-                                &middot;{" "}
-                                {provider().model_count.toLocaleString()}{" "}
-                                {provider().model_count === 1
-                                    ? "model"
-                                    : "models"}
-                                {isAffected &&
-                                    (provider().status === "down"
-                                        ? " — affected"
-                                        : " — at risk")}
-                            </p>
-                        </div>
+                            &times;
+                        </button>
+                        <h3 className="popover-heading">
+                            <span className={`status-dot is-${provider.status}`} />{" "}
+                            {provider.prefix}/
+                        </h3>
+                        <p className="popover-sub">
+                            Status:{" "}
+                            <strong>{provider.status}</strong>{" "}
+                            &middot;{" "}
+                            {provider.model_count.toLocaleString()}{" "}
+                            {provider.model_count === 1 ? "model" : "models"}
+                            {isAffected &&
+                                (provider.status === "down" ? " — affected" : " — at risk")}
+                        </p>
+                    </div>
 
+                    <div
+                        className={`popover-body-frame${rail.metrics.scrollable ? " is-scrollable" : ""}`}
+                        onWheel={rail.onBodyWheel}
+                    >
                         <div
-                            class={`popover-body-frame${rail.metrics().scrollable ? " is-scrollable" : ""}`}
-                            onWheel={rail.onBodyWheel}
+                            className="popover-body"
+                            ref={rail.bodyRef}
+                            onScroll={rail.metrics.scrollable ? rail.queueUpdate : undefined}
                         >
-                            <div
-                                class="popover-body"
-                                ref={rail.setBodyRef}
-                                onScroll={rail.metrics.scrollable ? rail.queueUpdate : undefined}
-                            >
-                                <ProviderPopoverBody provider={provider} />
+                            <ProviderPopoverBody provider={provider} />
                         </div>
+                    </div>
 
+                    <div
+                        className={`popover-scroll-rail${rail.isDragging ? " is-dragging" : ""}`}
+                        ref={rail.railRef}
+                        aria-hidden="true"
+                        onPointerDown={rail.onRailDown}
+                    >
                         <div
-                            class={`popover-scroll-rail${rail.isDragging() ? " is-dragging" : ""}`}
-                            ref={rail.setRailRef}
-                            aria-hidden="true"
-                            onPointerDown={rail.onRailDown}
-                        >
-                            <div
-                                class={`popover-scroll-thumb${rail.isDragging() ? " is-dragging" : ""}`}
-                                style={{
-                                    height: `${rail.metrics().thumbHeight}px`,
-                                    transform: `translateY(${rail.metrics().thumbTop}px)`,
-                                }}
-                                onPointerDown={rail.onThumbDown}
-                                onPointerMove={rail.onThumbMove}
-                                onPointerUp={rail.onThumbEnd}
-                                onPointerCancel={rail.onThumbEnd}
-                            />
-                        </div>
+                            className={`popover-scroll-thumb${rail.isDragging ? " is-dragging" : ""}`}
+                            style={{
+                                height: `${rail.metrics.thumbHeight}px`,
+                                transform: `translateY(${rail.metrics.thumbTop}px)`,
+                            }}
+                            onPointerDown={rail.onThumbDown}
+                            onPointerMove={rail.onThumbMove}
+                            onPointerUp={rail.onThumbEnd}
+                            onPointerCancel={rail.onThumbEnd}
+                        />
                     </div>
                 </div>
             </div>
         </div>
     );
 }
-
-

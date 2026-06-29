@@ -1,5 +1,5 @@
 import sitemap from "@astrojs/sitemap";
-import solid from "@astrojs/solid-js";
+import react from "@astrojs/react";
 import { defineConfig } from "astro/config";
 
 export default defineConfig({
@@ -9,7 +9,7 @@ export default defineConfig({
         sitemap({
             filter: (url) => url !== "https://freetheai.xyz/",
         }),
-        solid(),
+        react(),
     ],
     devToolbar: {
         enabled: false,

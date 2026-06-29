@@ -1,10 +1,10 @@
-import { For, type JSXElement } from "solid-js";
+import type { ReactNode } from "react";
 
 interface DocsSection {
     value: string;
     label: string;
     eyebrow: string;
-    children: JSXElement;
+    children: ReactNode;
 }
 
 interface DocsAccordionProps {
@@ -25,33 +25,33 @@ interface DocsAccordionProps {
 
 function CodeBlock(props: { code: string; lang?: string; html?: string }) {
     return (
-        <div class="docs-code-group">
+        <div className="docs-code-group">
             {props.lang ? (
-                <div class="docs-code-bar">
-                    <span class="docs-code-lang">{props.lang}</span>
+                <div className="docs-code-bar">
+                    <span className="docs-code-lang">{props.lang}</span>
                     <button
-                        class="copy-btn"
+                        className="copy-btn"
                         type="button"
                         title="Copy"
                         aria-label="Copy to clipboard"
                     >
-                        <span class="material-symbols-outlined">
+                        <span className="material-symbols-outlined">
                             content_copy
                         </span>
                     </button>
                 </div>
             ) : (
                 <button
-                    class="copy-btn"
+                    className="copy-btn"
                     type="button"
                     title="Copy"
                     aria-label="Copy to clipboard"
                 >
-                    <span class="material-symbols-outlined">content_copy</span>
+                    <span className="material-symbols-outlined">content_copy</span>
                 </button>
             )}
             {props.html ? (
-                <div class="shiki-wrapper" innerHTML={props.html} />
+                <div className="shiki-wrapper" dangerouslySetInnerHTML={{ __html: props.html }} />
             ) : (
                 <pre>
                     <code>{props.code}</code>
@@ -63,20 +63,18 @@ function CodeBlock(props: { code: string; lang?: string; html?: string }) {
 
 interface DocsRow {
     code: string;
-    span: string | number | JSXElement;
+    span: string | number | ReactNode;
 }
 
 function DocsRowTable(props: { rows: DocsRow[]; compact?: boolean }) {
     return (
-        <div class={`docs-table${props.compact ? " compact" : ""}`}>
-            <For each={props.rows}>
-                {(row) => (
-                    <div class="docs-row">
-                        <code>{row.code}</code>
-                        <span>{row.span}</span>
-                    </div>
-                )}
-            </For>
+        <div className={`docs-table${props.compact ? " compact" : ""}`}>
+            {props.rows.map((row, i) => (
+                <div className="docs-row" key={i}>
+                    <code>{row.code}</code>
+                    <span>{row.span}</span>
+                </div>
+            ))}
         </div>
     );
 }
@@ -90,23 +88,21 @@ interface DocsCodeGridItem {
 
 function DocsCodeGrid(props: { items: DocsCodeGridItem[] }) {
     return (
-        <div class="docs-code-grid">
-            <For each={props.items}>
-                {(item) => (
-                    <div>
-                        <h3>{item.title}</h3>
-                        <CodeBlock code={item.code} html={item.html} lang={item.lang} />
-                    </div>
-                )}
-            </For>
+        <div className="docs-code-grid">
+            {props.items.map((item, i) => (
+                <div key={i}>
+                    <h3>{item.title}</h3>
+                    <CodeBlock code={item.code} html={item.html} lang={item.lang} />
+                </div>
+            ))}
         </div>
     );
 }
 
 function DocsErrorsSection() {
     return (
-        <section class="docs-card docs-errors">
-            <div class="docs-errors-shape">
+        <section className="docs-card docs-errors">
+            <div className="docs-errors-shape">
                 <h3>Error shape</h3>
                 <p>
                     Most API errors use the OpenAI-style envelope. The
@@ -134,7 +130,7 @@ data: [DONE]`}</code></pre>
                     example <code>Error id: opc-xxxxxxxxxxxx</code>.
                 </p>
             </div>
-            <div class="docs-errors-group">
+            <div className="docs-errors-group">
                 <h3>Auth, check-in, and role gates</h3>
                 <DocsRowTable compact rows={[
                     { code: "401 invalid_api_key", span: <>Missing, invalid, revoked, or inactive key. Send the exact key from <code>/signup</code> as <code>Authorization: Bearer YOUR_KEY</code> with no quotes, markdown, or extra spaces.</> },
@@ -146,7 +142,7 @@ data: [DONE]`}</code></pre>
                     { code: "403 client_signature_banned", span: "Banned client signature. Switch to a supported client; staff action may be required." },
                 ]} />
             </div>
-            <div class="docs-errors-group">
+            <div className="docs-errors-group">
                 <h3>Request validation</h3>
                 <DocsRowTable compact rows={[
                     { code: "400 invalid_request_error", span: <>Bad JSON, missing field, unknown alias, or unsupported route. Common messages: <em>invalid json payload</em>, <em>missing model</em>, <em>missing prompt</em>, <em>unknown aliased model</em>, <em>unsupported responses input shape</em>, <em>provider rejected the request payload</em>. Use a model from <code>GET /v1/models</code>.</> },
@@ -155,7 +151,7 @@ data: [DONE]`}</code></pre>
                     { code: "404 invalid_request_error", span: "Currently used for deferred video lookup when the request id is unknown." },
                 ]} />
             </div>
-            <div class="docs-errors-group">
+            <div className="docs-errors-group">
                 <h3>Rate limits, daily caps, and concurrency</h3>
                 <DocsRowTable compact rows={[
                     { code: "429 rate_limit_error", span: <>Per-minute, daily-success cap, provider rate limit, or anti-abuse overlap block. Honor <code>Retry-After</code> when present and wait for the next UTC reset.</> },
@@ -164,7 +160,7 @@ data: [DONE]`}</code></pre>
                     { code: "499 client_canceled", span: "Client disconnected while the request was still running. Keep the connection open until the response completes." },
                 ]} />
             </div>
-            <div class="docs-errors-group">
+            <div className="docs-errors-group">
                 <h3>Provider and gateway</h3>
                 <DocsRowTable compact rows={[
                     { code: "502 provider_error", span: "Provider call/read/translation failed. Retry, or try another model. If it persists, report the model and timestamp." },
@@ -175,13 +171,13 @@ data: [DONE]`}</code></pre>
                     { code: "503 discord_membership_error", span: "Discord membership/role lookup failed temporarily. Retry shortly." },
                 ]} />
             </div>
-            <div class="docs-errors-group">
+            <div className="docs-errors-group">
                 <h3>Site-only catalog and stats endpoints</h3>
                 <DocsRowTable compact rows={[
                     { code: "401 invalid_request_error", span: <>Site-only endpoints (e.g. full catalog with metadata) need <code>Authorization: Bearer freetheai.xyz</code>. Common messages: <em>invalid site catalog key</em>, <em>invalid site stats key</em>.</> },
                 ]} />
             </div>
-            <div class="docs-errors-group">
+            <div className="docs-errors-group">
                 <h3>Headers to respect</h3>
                 <p>Rate, concurrency, and cooldown errors include machine-readable headers. Clients should branch on these rather than parsing the human message.</p>
                 <DocsRowTable compact rows={[
@@ -191,7 +187,7 @@ data: [DONE]`}</code></pre>
                     { code: "X-DailyLimit-*", span: <><code>Limit</code>, <code>Remaining</code>, <code>Reset</code> for the daily success cap.</> },
                 ]} />
             </div>
-            <div class="docs-errors-group">
+            <div className="docs-errors-group">
                 <h3>One-line user copy</h3>
                 <DocsRowTable compact rows={[
                     { code: "401 invalid_api_key", span: "Your API key is missing or wrong." },
@@ -219,7 +215,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
             label: "Get a key",
             eyebrow: "Auth",
             children: (
-                <section class="docs-card">
+                <section className="docs-card">
                     <p>
                         Join Discord and run <code>/signup</code>. The bot opens
                         a modal that asks for your use case, bot-disclosure
@@ -244,17 +240,15 @@ export default function DocsAccordion(props: DocsAccordionProps) {
             label: "Supported routes",
             eyebrow: "Endpoints",
             children: (
-                <section class="docs-card">
-                    <div class="docs-table">
-                        <For each={props.endpoints}>
-                            {([method, route, desc]) => (
-                                <div class="docs-row">
-                                    <code>{method}</code>
-                                    <code>{route}</code>
-                                    <span>{desc}</span>
-                                </div>
-                            )}
-                        </For>
+                <section className="docs-card">
+                    <div className="docs-table">
+                        {props.endpoints.map(([method, route, desc], i) => (
+                            <div className="docs-row" key={i}>
+                                <code>{method}</code>
+                                <code>{route}</code>
+                                <span>{desc}</span>
+                            </div>
+                        ))}
                     </div>
                 </section>
             ),
@@ -264,7 +258,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
             label: "Cross-compatible client formats",
             eyebrow: "Compatibility",
             children: (
-                <section class="docs-card">
+                <section className="docs-card">
                     <p>
                         FreeTheAi supports multiple API formats for easier client
                         compatibility. You can use OpenAI-compatible Chat
@@ -295,7 +289,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
             label: "OpenAI-compatible chat",
             eyebrow: "Chat Completions",
             children: (
-                <section class="docs-card">
+                <section className="docs-card">
                     <p>
                         Point OpenAI-compatible clients at{" "}
                         <code>https://api.freetheai.xyz/v1</code>. Use exact
@@ -313,7 +307,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
             label: "Anthropic-style clients",
             eyebrow: "Messages API",
             children: (
-                <section class="docs-card">
+                <section className="docs-card">
                     <p>
                         Use <code>/v1/messages</code> for clients that expect
                         Anthropic-style request bodies.
@@ -331,7 +325,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
             label: "List models",
             eyebrow: "Model Catalog",
             children: (
-                <section class="docs-card">
+                <section className="docs-card">
                     <p>
                         Use <code>/v1/models</code> for normal clients. Use{" "}
                         <code>/v1/models/full</code>
@@ -355,20 +349,18 @@ export default function DocsAccordion(props: DocsAccordionProps) {
     ];
 
     return (
-        <div class="docs-sections">
-            <For each={items}>
-                {(item) => (
-                    <article class="docs-section" id={item.value}>
-                        <header class="docs-section-head">
-                            <span class="docs-section-eyebrow">
-                                {item.eyebrow}
-                            </span>
-                            <h2>{item.label}</h2>
-                        </header>
-                        {item.children}
-                    </article>
-                )}
-            </For>
+        <div className="docs-sections">
+            {items.map((item) => (
+                <article className="docs-section" id={item.value} key={item.value}>
+                    <header className="docs-section-head">
+                        <span className="docs-section-eyebrow">
+                            {item.eyebrow}
+                        </span>
+                        <h2>{item.label}</h2>
+                    </header>
+                    {item.children}
+                </article>
+            ))}
         </div>
     );
 }

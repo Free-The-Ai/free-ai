@@ -1,4 +1,4 @@
-import { createMemo, createSignal, For, Show } from "solid-js";
+import { useState, useMemo, useCallback } from "react";
 import { Select, TextField } from "./ui";
 import { formatTokens, siteModelContextWindow } from "../utils/format";
 import type { SelectOption } from "./ui";
@@ -49,8 +49,6 @@ function computeCounts<T>(
 const collator = new Intl.Collator(undefined, { sensitivity: "base", numeric: true });
 const formatCost = (cost: number) => Number.isInteger(cost) ? String(cost) : String(cost);
 
-// ── Paid Model Row sub-component ──
-
 function PaidModelRow({ model }: { model: PaidModel }) {
   const ctx = siteModelContextWindow(model);
   const out = model.max_output_tokens;
@@ -65,66 +63,66 @@ function PaidModelRow({ model }: { model: PaidModel }) {
     setTimeout(() => { icon.textContent = "content_copy"; }, 1500);
   };
   return (
-    <div class="paid-model-row" role="row">
-      <span class="paid-model-name">
+    <div className="paid-model-row" role="row">
+      <span className="paid-model-name">
         <code>{model.id}</code>
         {hasMeta && (
-          <span class="paid-model-meta">
+          <span className="paid-model-meta">
             {ctx > 0 && (
-              <span class="model-chip" title="Total context window">
-                <span class="model-chip-label">Ctx</span>
+              <span className="model-chip" title="Total context window">
+                <span className="model-chip-label">Ctx</span>
                 <strong>{formatTokens(ctx)}</strong>
               </span>
             )}
             {out !== undefined && (
-              <span class="model-chip" title="Maximum output tokens">
-                <span class="model-chip-label">Out</span>
+              <span className="model-chip" title="Maximum output tokens">
+                <span className="model-chip-label">Out</span>
                 <strong>{formatTokens(out)}</strong>
               </span>
             )}
             {model.supports_images && (
-              <span class="model-chip is-images" title="Supports image inputs or generation">
-                <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
+              <span className="model-chip is-images" title="Supports image inputs or generation">
+                <span className="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
                 Images
               </span>
             )}
             {model.supports_tool_call && (
-              <span class="model-chip" title="Supports tool calling">
-                <span class="model-chip-label">Tools</span>
+              <span className="model-chip" title="Supports tool calling">
+                <span className="model-chip-label">Tools</span>
               </span>
             )}
             {model.supports_response_schema && (
-              <span class="model-chip" title="Supports structured response schemas">
-                <span class="model-chip-label">JSON</span>
+              <span className="model-chip" title="Supports structured response schemas">
+                <span className="model-chip-label">JSON</span>
               </span>
             )}
           </span>
         )}
       </span>
-      <span class="pricing-route-pill">{model.prefix}/*</span>
-      <span class="pricing-route-pill">{model.route}</span>
-      <span class="paid-model-plans">
+      <span className="pricing-route-pill">{model.prefix}/*</span>
+      <span className="pricing-route-pill">{model.route}</span>
+      <span className="paid-model-plans">
         {(model.plans ?? []).map((plan) => (
-          <span class="pricing-route-pill">{plan}</span>
+          <span key={plan} className="pricing-route-pill">{plan}</span>
         ))}
       </span>
       <strong>{model.unit_label}</strong>
-      <button class="copy-btn pricing-model-copy" type="button" title={`Copy ${model.id}`}
+      <button className="copy-btn pricing-model-copy" type="button" title={`Copy ${model.id}`}
         onClick={(event) => copyModel(event.currentTarget)}>
-        <code class="sr-only">{model.id}</code>
-        <span class="material-symbols-outlined">content_copy</span>
+        <code className="sr-only">{model.id}</code>
+        <span className="material-symbols-outlined">content_copy</span>
       </button>
     </div>
   );
 }
 
 export default function PaidModelTable(props: PaidModelTableProps) {
-  const [query, setQuery] = createSignal("");
-  const [prefix, setPrefix] = createSignal("all");
-  const [route, setRoute] = createSignal("all");
-  const [cost, setCost] = createSignal("all");
+  const [query, setQuery] = useState("");
+  const [prefix, setPrefix] = useState("all");
+  const [route, setRoute] = useState("all");
+  const [cost, setCost] = useState("all");
 
-  const rows = createMemo<Row[]>(() =>
+  const rows = useMemo<Row[]>(() =>
     props.groups.flatMap((group) =>
       group.models
         .filter((model) => !props.activePlan || (model.plans ?? []).includes(props.activePlan))
@@ -134,101 +132,101 @@ export default function PaidModelTable(props: PaidModelTableProps) {
           groupLabel: group.label,
         })),
     ),
-  );
+  [props.groups, props.activePlan]);
 
-  const prefixCounts = createMemo(() => computeCounts(rows(), (r) => r.prefix, (a, b) => collator.compare(a[0] as string, b[0] as string)));
-  const routeCounts = createMemo(() => computeCounts(rows(), (r) => r.route, (a, b) => collator.compare(a[0] as string, b[0] as string)));
-  const costCounts = createMemo(() => computeCounts(rows(), (r) => r.unit_cost, (a, b) => (a[0] as number) - (b[0] as number)));
+  const prefixCounts = useMemo(() => computeCounts(rows, (r) => r.prefix, (a, b) => collator.compare(a[0] as string, b[0] as string)), [rows]);
+  const routeCounts = useMemo(() => computeCounts(rows, (r) => r.route, (a, b) => collator.compare(a[0] as string, b[0] as string)), [rows]);
+  const costCounts = useMemo(() => computeCounts(rows, (r) => r.unit_cost, (a, b) => (a[0] as number) - (b[0] as number)), [rows]);
 
-  const filteredRows = createMemo(() => {
-    const q = query().trim().toLowerCase();
-    return rows()
-      .filter((row) => prefix() === "all" || row.prefix === prefix())
-      .filter((row) => route() === "all" || row.route === route())
-      .filter((row) => cost() === "all" || row.unit_cost === Number(cost()))
+  const filteredRows = useMemo(() => {
+    const q = query.trim().toLowerCase();
+    return rows
+      .filter((row) => prefix === "all" || row.prefix === prefix)
+      .filter((row) => route === "all" || row.route === route)
+      .filter((row) => cost === "all" || row.unit_cost === Number(cost))
       .filter((row) => !q || row.id.toLowerCase().includes(q))
       .sort((a, b) => a.unit_cost - b.unit_cost || collator.compare(a.id, b.id));
-  });
+  }, [rows, query, prefix, route, cost]);
 
-  const prefixOptions = createMemo<SelectOption[]>(() => [
-    { value: "all", label: `All prefixes · ${rows().length}` },
-    ...prefixCounts().map(([id, count]) => ({
+  const prefixOptions = useMemo<SelectOption[]>(() => [
+    { value: "all", label: `All prefixes · ${rows.length}` },
+    ...prefixCounts.map(([id, count]) => ({
       value: id,
       label: `${id}/* · ${count}`,
     })),
-  ]);
+  ], [prefixCounts, rows.length]);
 
-  const routeOptions = createMemo<SelectOption[]>(() => [
-    { value: "all", label: `All routes · ${rows().length}` },
-    ...routeCounts().map(([name, count]) => ({
+  const routeOptions = useMemo<SelectOption[]>(() => [
+    { value: "all", label: `All routes · ${rows.length}` },
+    ...routeCounts.map(([name, count]) => ({
       value: name,
       label: `${name} · ${count}`,
     })),
-  ]);
+  ], [routeCounts, rows.length]);
 
-  const costOptions = createMemo<SelectOption[]>(() => [
-    { value: "all", label: `All costs · ${rows().length}` },
-    ...costCounts().map(([amount, count]) => ({
+  const costOptions = useMemo<SelectOption[]>(() => [
+    { value: "all", label: `All costs · ${rows.length}` },
+    ...costCounts.map(([amount, count]) => ({
       value: String(amount),
       label: `${formatCost(amount)} unit${amount === 1 ? "" : "s"} · ${count}`,
     })),
-  ]);
+  ], [costCounts, rows.length]);
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setQuery("");
     setPrefix("all");
     setRoute("all");
     setCost("all");
-  };
+  }, []);
 
   return (
-    <div class="paid-table-panel">
-      <div class="paid-table-toolbar">
-        <div class="catalog-search-field paid-table-search">
-          <span class="material-symbols-outlined catalog-search-icon">search</span>
+    <div className="paid-table-panel">
+      <div className="paid-table-toolbar">
+        <div className="catalog-search-field paid-table-search">
+          <span className="material-symbols-outlined catalog-search-icon">search</span>
           <TextField
-            class="catalog-search-input"
-            value={query()}
+            className="catalog-search-input"
+            value={query}
             placeholder="Search paid aliases..."
             onChange={(value: string) => setQuery(value)}
           />
         </div>
-        <div class="paid-table-filters" aria-label="Paid model filters">
+        <div className="paid-table-filters" aria-label="Paid model filters">
           <Select
-            class="paid-filter-select"
-            options={prefixOptions()}
-            value={prefix()}
+            className="paid-filter-select"
+            options={prefixOptions}
+            value={prefix}
             onChange={(val: string) => setPrefix(val ?? "all")}
             placeholder="All prefixes"
           />
           <Select
-            class="paid-filter-select"
-            options={routeOptions()}
-            value={route()}
+            className="paid-filter-select"
+            options={routeOptions}
+            value={route}
             onChange={(val: string) => setRoute(val ?? "all")}
             placeholder="All routes"
           />
           <Select
-            class="paid-filter-select"
-            options={costOptions()}
-            value={cost()}
+            className="paid-filter-select"
+            options={costOptions}
+            value={cost}
             onChange={(val: string) => setCost(val ?? "all")}
             placeholder="All costs"
           />
-          <Show when={query().trim() || prefix() !== "all" || route() !== "all" || cost() !== "all"}>
-            <button type="button" class="paid-filter-clear" onClick={clearFilters} data-sound="interaction.subtle">
+          {(query.trim() || prefix !== "all" || route !== "all" || cost !== "all") && (
+            <button type="button" className="paid-filter-clear" onClick={clearFilters} data-sound="interaction.subtle">
               Clear
             </button>
-          </Show>
+          )}
         </div>
       </div>
 
-      <div class="catalog-summary paid-table-summary" aria-live="polite">
-        <span>{filteredRows().length} / {rows().length} paid aliases</span>
+      <div className="catalog-summary paid-table-summary" aria-live="polite">
+        <span>{filteredRows.length} / {rows.length} paid aliases</span>
       </div>
 
-      <div class="paid-model-table" role="table" aria-label="Paid model unit costs">
-        <div class="paid-model-row paid-model-row-head" role="row">
+      <div className="paid-model-table" role="table" aria-label="Paid model unit costs">
+        <div className="paid-model-row paid-model-row-head" role="row">
           <span>Model</span>
           <span>Prefix</span>
           <span>Route</span>
@@ -236,14 +234,11 @@ export default function PaidModelTable(props: PaidModelTableProps) {
           <span>Unit cost</span>
           <span>Copy</span>
         </div>
-        <Show
-          when={filteredRows().length > 0}
-          fallback={<div class="paid-model-empty">No paid aliases match your filters.</div>}
-        >
-          <For each={filteredRows()}>
-            {(model) => <PaidModelRow model={model} />}
-          </For>
-        </Show>
+        {filteredRows.length > 0 ? (
+          filteredRows.map((model) => <PaidModelRow key={model.id} model={model} />)
+        ) : (
+          <div className="paid-model-empty">No paid aliases match your filters.</div>
+        )}
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 /**
  * Adaptive motion system — public API barrel.
  *
- * motionFor(preset, intent, overrides?) → computed MotionParams (duration,
+ * motionFor(preset, intent, overrides?) -> computed MotionParams (duration,
  * easing, scale, translate, opacity) adapted to the live pointer/scroll
  * velocity, distance, element size, and reduced-motion preference.
  */
@@ -16,7 +16,7 @@ export {
   destroyMotionSystem,
 } from "./singleton";
 
-export { createMotion } from "./primitives";
+export { useMotion } from "./primitives";
 export type { MotionController, MotionInput } from "./primitives";
 
 export {

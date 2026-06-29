@@ -9,14 +9,13 @@
  * open; once it leaves (and is not inside the trigger or content) a grace
  * timer closes it.
  *
- * The geometry mirrors the proven Radix/Kobalte pointer-grace-area algorithm
- * but is exposed here as a reusable, configurable Solid primitive so any
- * hover bridge (custom nav mega-menus, flyouts, popovers) can opt in with
- * tunable behavior. Kobalte's own Menu.Sub uses the same cone internally and
- * needs no wiring; this primitive is for surfaces that do not use it.
+ * The geometry mirrors the proven Radix/Base UI pointer-grace-area algorithm
+ * but is exposed here as a reusable, configurable React hook so any hover
+ * bridge (custom nav mega-menus, flyouts, popovers) can opt in with tunable
+ * behavior. Base UI's own Menu.SubmenuRoot uses the same cone internally and
+ * needs no wiring; this hook is for surfaces that do not use it.
  */
-import { createSignal, onCleanup } from "solid-js";
-import type { Accessor } from "solid-js";
+import { useState, useCallback, useEffect, useRef } from "react";
 
 /** Submenu anchor side, relative to its trigger. */
 export type Side = "left" | "right" | "top" | "bottom";
@@ -38,7 +37,7 @@ export interface SafeTriangleOptions {
 
 export interface SafeTriangleState {
   /** True while the pointer is inside the current prediction cone. */
-  isActive: Accessor<boolean>;
+  isActive: boolean;
   /**
    * Recompute the cone from the live pointer position and test containment.
    * Call this from a `pointermove` handler on the surface that owns the
@@ -114,89 +113,91 @@ export function buildSafeCone(
 }
 
 /**
- * Reactive prediction-cone primitive. Attach `track` to the pointermove
- * handler of the surface bridging a trigger and its submenu; read `isActive`
- * to decide whether to defer closing.
+ * Reactive prediction-cone hook. Attach `track` to the pointermove handler of
+ * the surface bridging a trigger and its submenu; read `isActive` to decide
+ * whether to defer closing.
  *
  * @example
- * const cone = createSafeTriangle({ closeTimeout: 250 });
+ * const cone = useSafeTriangle({ closeTimeout: 250 });
  * <div onPointerMove={(e) => {
  *   if (!cone.track(subContentEl, "right", e)) maybeCloseSubmenu();
  * }} />
  */
-export function createSafeTriangle(
+export function useSafeTriangle(
   options: SafeTriangleOptions = {},
 ): SafeTriangleState {
   const pointerOffset = options.pointerOffset ?? 5;
   const closeTimeout = options.closeTimeout ?? 300;
   const debug = options.debug ?? false;
 
-  const [isActive, setIsActive] = createSignal(false);
-  let cone: Polygon | null = null;
-  let timer: ReturnType<typeof setTimeout> | null = null;
-  let overlay: SVGSVGElement | null = null;
+  const [isActive, setIsActive] = useState(false);
+  const coneRef = useRef<Polygon | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const overlayRef = useRef<SVGSVGElement | null>(null);
 
-  const paintDebug = (): void => {
+  const paintDebug = useCallback((): void => {
     if (!debug) return;
-    if (cone && !overlay) {
-      overlay = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+    const cone = coneRef.current;
+    if (cone && !overlayRef.current) {
+      const overlay = document.createElementNS("http://www.w3.org/2000/svg", "svg");
       overlay.setAttribute(
         "style",
         "position:fixed;inset:0;width:100vw;height:100vh;pointer-events:none;z-index:99999;",
       );
       document.body.appendChild(overlay);
+      overlayRef.current = overlay;
     }
+    const overlay = overlayRef.current;
     if (!overlay) return;
     overlay.innerHTML = cone
       ? `<polygon points="${cone.map((p) => p.join(",")).join(" ")}" fill="oklch(0.659 0.192 40.1 / 0.12)" stroke="oklch(0.659 0.192 40.1 / 0.7)" stroke-width="1"/>`
       : "";
-  };
+  }, [debug]);
 
-  const track = (
-    contentEl: HTMLElement,
-    placement: Side,
-    event: PointerEvent,
-  ): boolean => {
-    const pointer: Point = [event.clientX, event.clientY];
-    cone = buildSafeCone(
-      pointer,
-      contentEl.getBoundingClientRect(),
-      placement,
-      pointerOffset,
-    );
-    const inside = isPointInPolygon(pointer, cone);
+  const track = useCallback(
+    (contentEl: HTMLElement, placement: Side, event: PointerEvent): boolean => {
+      const pointer: Point = [event.clientX, event.clientY];
+      const cone = buildSafeCone(
+        pointer,
+        contentEl.getBoundingClientRect(),
+        placement,
+        pointerOffset,
+      );
+      coneRef.current = cone;
+      const inside = isPointInPolygon(pointer, cone);
 
-    if (timer) {
-      clearTimeout(timer);
-      timer = null;
-    }
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
 
-    if (inside) {
-      setIsActive(true);
-    } else {
-      // Defer deactivation so a brief excursion outside the cone does not
-      // snap the submenu shut before the pointer reaches the content.
-      timer = setTimeout(() => {
-        setIsActive(false);
-        cone = null;
-        paintDebug();
-      }, closeTimeout);
-    }
-    paintDebug();
-    return inside;
-  };
+      if (inside) {
+        setIsActive(true);
+      } else {
+        timerRef.current = setTimeout(() => {
+          setIsActive(false);
+          coneRef.current = null;
+          paintDebug();
+        }, closeTimeout);
+      }
+      paintDebug();
+      return inside;
+    },
+    [pointerOffset, closeTimeout, paintDebug],
+  );
 
-  const dispose = (): void => {
-    if (timer) clearTimeout(timer);
-    timer = null;
-    cone = null;
+  const dispose = useCallback((): void => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = null;
+    coneRef.current = null;
     setIsActive(false);
-    if (overlay) {
-      overlay.remove();
-      overlay = null;
+    if (overlayRef.current) {
+      overlayRef.current.remove();
+      overlayRef.current = null;
     }
-  };
+  }, []);
 
-  onCleanup(dispose);
+  useEffect(() => dispose, [dispose]);
+
   return { isActive, track, dispose };
 }

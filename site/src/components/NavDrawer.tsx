@@ -1,5 +1,5 @@
-import { createEffect, createSignal, onCleanup, Show } from "solid-js";
-import { Portal } from "solid-js/web";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { createPortal } from "react-dom";
 import { siteConfig } from "../config/site";
 import { lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
 import { motionFor, motionApply } from "../lib/motion";
@@ -23,124 +23,136 @@ type NavDrawerProps = {
 };
 
 /** Horizontal swipe-to-close handler. Returns pointer event handlers to spread on an element. */
-function useSwipeToClose(el: () => HTMLElement | undefined, onClose: () => void) {
-  let startX = 0, currentX = 0, dragging = false;
-  let lastX = 0, lastT = 0, releaseVelocity = 0;
-  const start = (e: PointerEvent) => {
+function useSwipeToClose(drawerRef: React.RefObject<HTMLElement | null>, onClose: () => void) {
+  const stateRef = useRef({ startX: 0, currentX: 0, dragging: false, lastX: 0, lastT: 0, releaseVelocity: 0 });
+  const velocityRef = useRef(0);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
+  const onPointerDown = useCallback((e: React.PointerEvent) => {
     if (e.button !== 0 || (e.target as HTMLElement).closest("a, button")) return;
-    startX = currentX = lastX = e.clientX;
-    lastT = performance.now();
-    releaseVelocity = 0;
-    dragging = true;
+    const s = stateRef.current;
+    s.startX = s.currentX = s.lastX = e.clientX;
+    s.lastT = performance.now();
+    s.releaseVelocity = 0;
+    s.dragging = true;
     (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
     e.preventDefault();
-  };
-  const move = (e: PointerEvent) => {
-    if (!dragging) return;
+  }, []);
+
+  const onPointerMove = useCallback((e: React.PointerEvent) => {
+    const s = stateRef.current;
+    if (!s.dragging) return;
     const now = performance.now();
-    const dt = now - lastT;
-    if (dt > 0) releaseVelocity = (e.clientX - lastX) / dt;
-    lastX = e.clientX;
-    lastT = now;
-    currentX = e.clientX;
-    const elRef = el();
-    if (elRef) {
-      elRef.style.transform = `translateX(${Math.max(0, currentX - startX)}px)`;
-      elRef.style.transition = "none";
+    const dt = now - s.lastT;
+    if (dt > 0) s.releaseVelocity = (e.clientX - s.lastX) / dt;
+    s.lastX = e.clientX;
+    s.lastT = now;
+    s.currentX = e.clientX;
+    const el = drawerRef.current;
+    if (el) {
+      el.style.transform = `translateX(${Math.max(0, s.currentX - s.startX)}px)`;
+      el.style.transition = "none";
     }
     e.preventDefault();
-  };
-  const end = (e: PointerEvent) => {
-    if (!dragging) return;
-    dragging = false;
-    const delta = currentX - startX;
+  }, [drawerRef]);
+
+  const onPointerUp = useCallback((e: React.PointerEvent) => {
+    const s = stateRef.current;
+    if (!s.dragging) return;
+    s.dragging = false;
+    velocityRef.current = s.releaseVelocity;
+    const delta = s.currentX - s.startX;
     (e.currentTarget as HTMLElement).releasePointerCapture(e.pointerId);
-    const elRef = el();
-    if (elRef) { elRef.style.transition = ""; elRef.style.transform = ""; }
-    if (delta > (elRef?.offsetWidth ?? 280) * 0.3) onClose();
-  };
-  return { onPointerDown: start, onPointerMove: move, onPointerUp: end, getVelocity: () => releaseVelocity };
+    const el = drawerRef.current;
+    if (el) { el.style.transition = ""; el.style.transform = ""; }
+    if (delta > (el?.offsetWidth ?? 280) * 0.3) onCloseRef.current();
+  }, [drawerRef]);
+
+  return { onPointerDown, onPointerMove, onPointerUp, getVelocity: () => velocityRef.current };
 }
 
 export default function NavDrawer(props: NavDrawerProps) {
-  const [open, setOpen] = createSignal(false);
-  let rootRef: HTMLDivElement | undefined;
-  let drawerRef: HTMLElement | undefined;
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const drawerRef = useRef<HTMLElement>(null);
+  const openRef = useRef(open);
+  openRef.current = open;
 
-  const lockPageScroll = () => lockBodyScroll("nav-drawer-open");
-  const unlockPageScroll = () => unlockBodyScroll("nav-drawer-open");
+  const lockPageScroll = useCallback(() => lockBodyScroll("nav-drawer-open"), []);
+  const unlockPageScroll = useCallback(() => unlockBodyScroll("nav-drawer-open"), []);
 
-  const closeDrawer = () => {
+  const closeDrawer = useCallback(() => {
     setOpen(false);
     unlockPageScroll();
-  };
+  }, [unlockPageScroll]);
 
-  const swipe = useSwipeToClose(() => drawerRef, closeDrawer);
+  const swipe = useSwipeToClose(drawerRef, closeDrawer);
 
-  createEffect(() => {
-    const nav = rootRef?.closest(".nav");
+  useEffect(() => {
+    const nav = rootRef.current?.closest(".nav");
     if (nav instanceof HTMLElement) {
-      nav.classList.toggle("has-open-drawer", open());
+      nav.classList.toggle("has-open-drawer", open);
     }
+    if (open) lockPageScroll();
+  }, [open, lockPageScroll]);
 
-    if (open()) {
-      lockPageScroll();
-    }
-
-    if (!open() || typeof document === "undefined") return;
-
+  useEffect(() => {
+    if (!open || typeof document === "undefined") return;
     const closeOnEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") closeDrawer();
     };
-
     document.addEventListener("keydown", closeOnEscape);
-    onCleanup(() => {
-      document.removeEventListener("keydown", closeOnEscape);
-    });
-  });
+    return () => document.removeEventListener("keydown", closeOnEscape);
+  }, [open, closeDrawer]);
 
-  onCleanup(() => unlockPageScroll());
+  useEffect(() => () => unlockPageScroll(), [unlockPageScroll]);
+
+  const setDrawerRef = useCallback((el: HTMLElement | null) => {
+    drawerRef.current = el;
+    if (el) {
+      const distance = el.offsetWidth || 320;
+      motionApply(el, motionFor("panel", "enter", {
+        distance,
+        size: distance,
+        pointerVelocity: swipe.getVelocity(),
+      }));
+    }
+  }, [swipe]);
 
   return (
-    <div class="nav-menu" ref={rootRef} data-open={open() ? "" : undefined}>
+    <div className="nav-menu" ref={rootRef} data-open={open ? "" : undefined}>
       <button
         type="button"
-        class="nav-hamburger"
-        aria-label={open() ? "Close navigation menu" : "Open navigation menu"}
-        aria-expanded={open()}
+        className="nav-hamburger"
+        aria-label={open ? "Close navigation menu" : "Open navigation menu"}
+        aria-expanded={open}
         aria-controls="mobile-navigation-menu"
-        data-sound={open() ? "overlay.close" : "overlay.open"}
+        data-sound={open ? "overlay.close" : "overlay.open"}
         onClick={() => setOpen((value) => !value)}
       >
-        <span class="hamburger-bar" />
-        <span class="hamburger-bar" />
-        <span class="hamburger-bar" />
+        <span className="hamburger-bar" />
+        <span className="hamburger-bar" />
+        <span className="hamburger-bar" />
       </button>
-      <Show when={open()}>
-        <Portal mount={document.body}>
-          <div class="nav-drawer-overlay" onClick={closeDrawer} data-sound="overlay.close" />
+      {open && createPortal(
+        <>
+          <div className="nav-drawer-overlay" onClick={closeDrawer} data-sound="overlay.close" />
           <nav
             id="mobile-navigation-menu"
-            class="nav-drawer"
-            ref={(el) => {
-              drawerRef = el;
-              const distance = el.offsetWidth || 320;
-              motionApply(el, motionFor("panel", "enter", {
-                distance,
-                size: distance,
-                pointerVelocity: swipe.getVelocity(),
-              }));
-            }}
+            className="nav-drawer"
+            ref={setDrawerRef}
             aria-label="Mobile navigation"
             onPointerDown={swipe.onPointerDown}
             onPointerMove={swipe.onPointerMove}
             onPointerUp={swipe.onPointerUp}
           >
-            <div class="nav-drawer__links">
+            <div className="nav-drawer__links">
               {LINKS.map(([href, label, external]) => (
                 <a
+                  key={href}
                   href={href}
-                  class={`nav-drawer__link${props.currentPath === href ? " is-active" : ""}`}
+                  className={`nav-drawer__link${props.currentPath === href ? " is-active" : ""}`}
                   onClick={() => closeDrawer()}
                   target={external ? "_blank" : undefined}
                   rel={external ? "noreferrer" : undefined}
@@ -149,31 +161,32 @@ export default function NavDrawer(props: NavDrawerProps) {
                 </a>
               ))}
             </div>
-            <div class="nav-drawer__footer">
+            <div className="nav-drawer__footer">
               <a
                 href={siteConfig.socials.discord}
-                class="nav-drawer__discord"
+                className="nav-drawer__discord"
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => closeDrawer()}
               >
-                <span class="material-symbols-outlined">forum</span>
+                <span className="material-symbols-outlined">forum</span>
                 Join Discord
               </a>
               <a
                 href={siteConfig.socials.donate}
-                class="nav-drawer__donate"
+                className="nav-drawer__donate"
                 target="_blank"
                 rel="noreferrer"
                 onClick={() => closeDrawer()}
               >
-                <span class="material-symbols-outlined">favorite</span>
+                <span className="material-symbols-outlined">favorite</span>
                 Donate
               </a>
             </div>
           </nav>
-        </Portal>
-      </Show>
+        </>,
+        document.body,
+      )}
     </div>
   );
 }

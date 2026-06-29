@@ -1,4 +1,4 @@
-import { createEffect, createMemo, createSignal, For, onMount, Show } from "solid-js";
+import { useState, useEffect, useMemo } from "react";
 import PaidModelTable from "./PaidModelTable";
 import { siteModelContextWindow } from "../utils/format";
 
@@ -268,17 +268,17 @@ function PlanCard(props: {
     accent: "Request-unit pricing with a dedicated paid model catalog.",
   };
   return (
-    <article class={`paid-plan-option${props.active ? " is-active" : ""}`}>
-      <div class="paid-plan-option-top">
-        <span class="pricing-route-pill">{copy.tag}</span>
-        <span class="paid-plan-option-price">
+    <article className={`paid-plan-option${props.active ? " is-active" : ""}`}>
+      <div className="paid-plan-option-top">
+        <span className="pricing-route-pill">{copy.tag}</span>
+        <span className="paid-plan-option-price">
           {formatPlanPrice(props.plan)}
           <small>{planPeriod(props.plan, props.period) ? ` / ${planPeriod(props.plan, props.period)}` : ""}</small>
         </span>
       </div>
       <h3>{props.plan.display_name}</h3>
       <p>{copy.bestFor}</p>
-      <div class="paid-plan-stat-grid">
+      <div className="paid-plan-stat-grid">
         <span>
           <strong>{formatNumber(props.plan.model_count ?? props.plan.models?.length ?? 0)}</strong>
           models
@@ -288,20 +288,18 @@ function PlanCard(props: {
           concurrent
         </span>
       </div>
-      <div class="paid-plan-limit-strip">
-        <For each={limitEntries(props.plan).slice(0, 3)}>
-          {(entry) => (
-            <span>
-              <strong>{formatNumber(entry.value.limit ?? 0)}</strong>
-              {LIMIT_LABELS[entry.key] ?? entry.key}
-            </span>
-          )}
-        </For>
+      <div className="paid-plan-limit-strip">
+        {limitEntries(props.plan).slice(0, 3).map((entry) => (
+          <span key={entry.key}>
+            <strong>{formatNumber(entry.value.limit ?? 0)}</strong>
+            {LIMIT_LABELS[entry.key] ?? entry.key}
+          </span>
+        ))}
       </div>
-      <p class="paid-plan-option-note">{copy.accent}</p>
+      <p className="paid-plan-option-note">{copy.accent}</p>
       <button
         type="button"
-        class="paid-plan-select"
+        className="paid-plan-select"
         onClick={props.onSelect}
         data-sound="interaction.tap"
       >
@@ -313,108 +311,106 @@ function PlanCard(props: {
 
 export default function PaidPlanExplorer(props: PaidPlanExplorerProps) {
   const initialCatalog = snapshotState(props.snapshot);
-  const [catalog, setCatalog] = createSignal<CatalogState>(initialCatalog);
-  const [selectedPlan, setSelectedPlan] = createSignal(initialCatalog.plans[0]?.id ?? PLAN_ORDER[0]);
+  const [catalog, setCatalog] = useState<CatalogState>(initialCatalog);
+  const [selectedPlan, setSelectedPlan] = useState(initialCatalog.plans[0]?.id ?? PLAN_ORDER[0]);
 
-  onMount(() => {
+  useEffect(() => {
+    let cancelled = false;
     fetchLiveCatalog()
-      .then((next) => {
-        setCatalog(next);
-      })
+      .then((next) => { if (!cancelled) setCatalog(next); })
       .catch((error) => {
-        if (import.meta.env.DEV) console.warn("Paid catalog refresh failed.", error);
+        if (!cancelled && import.meta.env.DEV) console.warn("Paid catalog refresh failed.", error);
       });
-  });
+    return () => { cancelled = true; };
+  }, []);
 
-  const plans = createMemo(() =>
-    [...catalog().plans].sort((a, b) => {
+  const plans = useMemo(() =>
+    [...catalog.plans].sort((a, b) => {
       const ai = PLAN_ORDER.indexOf(a.id);
       const bi = PLAN_ORDER.indexOf(b.id);
       return (ai === -1 ? 99 : ai) - (bi === -1 ? 99 : bi) || a.display_name.localeCompare(b.display_name);
     }),
-  );
+  [catalog.plans]);
 
-  createEffect(() => {
-    const ids = new Set(plans().map((plan) => plan.id));
-    if (!ids.has(selectedPlan()) && plans().length > 0) setSelectedPlan(plans()[0].id);
-  });
+  useEffect(() => {
+    const ids = new Set(plans.map((plan) => plan.id));
+    if (!ids.has(selectedPlan) && plans.length > 0) setSelectedPlan(plans[0].id);
+  }, [plans, selectedPlan]);
 
-  const selected = createMemo(() => plans().find((plan) => plan.id === selectedPlan()) ?? plans()[0]);
-  const selectedModelIds = createMemo(() => new Set(selected()?.models ?? []));
-  const selectedModelCount = createMemo(() =>
-    catalog().groups.reduce((total, group) =>
-      total + group.models.filter((model) => (model.plans ?? []).includes(selectedPlan()) || selectedModelIds().has(model.id)).length,
+  const selected = useMemo(() => plans.find((plan) => plan.id === selectedPlan) ?? plans[0], [plans, selectedPlan]);
+  const selectedModelIds = useMemo(() => new Set(selected?.models ?? []), [selected]);
+  const selectedModelCount = useMemo(() =>
+    catalog.groups.reduce((total, group) =>
+      total + group.models.filter((model) => (model.plans ?? []).includes(selectedPlan) || selectedModelIds.has(model.id)).length,
       0,
     ),
-  );
-  const selectedMinCost = createMemo(() => {
-    const costs = catalog().groups.flatMap((group) =>
+  [catalog.groups, selectedPlan, selectedModelIds]);
+  const selectedMinCost = useMemo(() => {
+    const costs = catalog.groups.flatMap((group) =>
       group.models
-        .filter((model) => (model.plans ?? []).includes(selectedPlan()) || selectedModelIds().has(model.id))
+        .filter((model) => (model.plans ?? []).includes(selectedPlan) || selectedModelIds.has(model.id))
         .map((model) => model.unit_cost),
     );
     return costs.length ? Math.min(...costs) : 0;
-  });
+  }, [catalog.groups, selectedPlan, selectedModelIds]);
 
   return (
-    <div class="paid-plan-explorer">
-      <section class="paid-plan-chooser shell" aria-labelledby="paid-plan-title">
-        <div class="paid-plan-chooser-copy">
-          <span class="eyebrow">Paid plans</span>
+    <div className="paid-plan-explorer">
+      <section className="paid-plan-chooser shell" aria-labelledby="paid-plan-title">
+        <div className="paid-plan-chooser-copy">
+          <span className="eyebrow">Paid plans</span>
           <h2 id="paid-plan-title">Pick the lane that matches how you use the API.</h2>
-          <Show
-            when={plans().length > 1}
-            fallback={<p>{selected()?.description ?? "Available paid plans use request units and refresh from the live paid API catalog."}</p>}
-          >
+          {plans.length > 1 ? (
             <p>
               Available plans use request units. Pick the lane that matches your client, context size,
               and usage pattern.
             </p>
-          </Show>
+          ) : (
+            <p>{selected?.description ?? "Available paid plans use request units and refresh from the live paid API catalog."}</p>
+          )}
         </div>
 
-        <div class={`paid-plan-options${plans().length === 1 ? " is-single" : ""}`}>
-          <For each={plans()}>
-            {(plan) => (
-              <PlanCard
-                plan={plan}
-                active={selectedPlan() === plan.id}
-                period={props.snapshot.plan?.period}
-                onSelect={() => setSelectedPlan(plan.id)}
-              />
-            )}
-          </For>
+        <div className={`paid-plan-options${plans.length === 1 ? " is-single" : ""}`}>
+          {plans.map((plan) => (
+            <PlanCard
+              key={plan.id}
+              plan={plan}
+              active={selectedPlan === plan.id}
+              period={props.snapshot.plan?.period}
+              onSelect={() => setSelectedPlan(plan.id)}
+            />
+          ))}
         </div>
       </section>
 
-      <section class="section shell pricing-section paid-selected-section">
-        <div class="paid-selected-summary">
+      <section className="section shell pricing-section paid-selected-section">
+        <div className="paid-selected-summary">
           <div>
-            <span class="eyebrow">Selected plan</span>
-            <h2>{selected()?.display_name ?? "Paid plan"}</h2>
-            <p>{selected()?.description}</p>
+            <span className="eyebrow">Selected plan</span>
+            <h2>{selected?.display_name ?? "Paid plan"}</h2>
+            <p>{selected?.description}</p>
           </div>
-          <div class="paid-selected-metrics">
+          <div className="paid-selected-metrics">
             <span>
-              <strong>{formatNumber(selectedModelCount())}</strong>
+              <strong>{formatNumber(selectedModelCount)}</strong>
               aliases
             </span>
             <span>
-              <strong>{selectedMinCost() ? formatUnitCost(selectedMinCost()) : "-"}</strong>
+              <strong>{selectedMinCost ? formatUnitCost(selectedMinCost) : "-"}</strong>
               starting units
             </span>
             <span>
-              <strong>{selected()?.concurrency_limit ?? "-"}</strong>
+              <strong>{selected?.concurrency_limit ?? "-"}</strong>
               concurrent
             </span>
           </div>
-          <a class="primary-button pricing-plan-cta" href={props.discordUrl} target="_blank" rel="noreferrer">
+          <a className="primary-button pricing-plan-cta" href={props.discordUrl} target="_blank" rel="noreferrer">
             <span>Get a paid key</span>
-            <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+            <span className="cta-arrow" aria-hidden="true">&rarr;</span>
           </a>
         </div>
 
-        <PaidModelTable groups={catalog().groups} activePlan={selectedPlan()} />
+        <PaidModelTable groups={catalog.groups} activePlan={selectedPlan} />
       </section>
     </div>
   );

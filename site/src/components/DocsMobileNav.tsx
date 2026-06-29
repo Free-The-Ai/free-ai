@@ -1,4 +1,4 @@
-import { createSignal, createEffect, onCleanup, For, Show } from "solid-js";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { disconnectPointerDrag, lockBodyScroll, unlockBodyScroll } from "../lib/domUtils";
 import { motionFor, motionApply } from "../lib/motion";
 
@@ -11,77 +11,74 @@ const SECTIONS = [
   { id: "errors", label: "Errors" },
 ];
 
-// ── Sheet drag hook (reused pattern) ──
+function useSheetDrag(onClose: () => void) {
+  const [dragY, setDragY] = useState(0);
+  const sheetRef = useRef<HTMLDivElement | null>(null);
+  const startYRef = useRef(0);
+  const startOffsetRef = useRef(0);
+  const isDraggingRef = useRef(false);
+  const dragYRef = useRef(0);
+  const boundMoveRef = useRef<((e: PointerEvent) => void) | null>(null);
+  const boundUpRef = useRef<((e: PointerEvent) => void) | null>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
 
-function useSheetDrag(isOpen: () => boolean, onClose: () => void) {
-  const [dragY, setDragY] = createSignal(0);
-  let sheetEl: HTMLDivElement | undefined;
-  let startY = 0;
-  let startOffset = 0;
-  let isDragging = false;
-  let boundMove: ((e: PointerEvent) => void) | null = null;
-  let boundUp: ((e: PointerEvent) => void) | null = null;
+  const onDragMove = useCallback((e: PointerEvent) => {
+    if (!isDraggingRef.current) return;
+    e.preventDefault();
+    const next = Math.max(0, startOffsetRef.current + e.clientY - startYRef.current);
+    dragYRef.current = next;
+    setDragY(next);
+  }, []);
 
-  const onDragStart = (e: PointerEvent) => {
+  const onDragEnd = useCallback((e: PointerEvent) => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    e.preventDefault();
+    disconnectPointerDrag(boundMoveRef.current, boundUpRef.current);
+    boundMoveRef.current = boundUpRef.current = null;
+    const sheet = sheetRef.current;
+    if (!sheet) { setDragY(0); dragYRef.current = 0; return; }
+    if (dragYRef.current > sheet.offsetHeight * 0.3) onCloseRef.current();
+    else { setDragY(0); dragYRef.current = 0; }
+  }, []);
+
+  const onDragStart = useCallback((e: React.PointerEvent) => {
     const target = e.target as HTMLElement;
     if (target.closest("button:not(.docs-mobile-toc__handle), a")) return;
     e.preventDefault();
-    isDragging = true;
-    startY = e.clientY;
-    startOffset = dragY();
-    boundMove = onDragMove;
-    boundUp = onDragEnd;
-    document.addEventListener("pointermove", boundMove, { passive: false });
-    document.addEventListener("pointerup", boundUp, { passive: false });
-    document.addEventListener("pointercancel", boundUp, { passive: false });
-  };
-  const onDragMove = (e: PointerEvent) => {
-    if (!isDragging) return;
-    e.preventDefault();
-    setDragY(Math.max(0, startOffset + e.clientY - startY));
-  };
-  const onDragEnd = (e: PointerEvent) => {
-    if (!isDragging) return;
-    isDragging = false;
-    e.preventDefault();
-    disconnectPointerDrag(boundMove, boundUp);
-    boundMove = boundUp = null;
-    const sheet = sheetEl;
-    if (!sheet) { setDragY(0); return; }
-    if (dragY() > sheet.offsetHeight * 0.3) onClose();
-    else setDragY(0);
-  };
+    isDraggingRef.current = true;
+    startYRef.current = e.clientY;
+    startOffsetRef.current = dragYRef.current;
+    boundMoveRef.current = onDragMove;
+    boundUpRef.current = onDragEnd;
+    document.addEventListener("pointermove", onDragMove, { passive: false });
+    document.addEventListener("pointerup", onDragEnd, { passive: false });
+    document.addEventListener("pointercancel", onDragEnd, { passive: false });
+  }, [onDragMove, onDragEnd]);
 
-  onCleanup(() => { disconnectPointerDrag(boundMove, boundUp); });
+  useEffect(() => () => disconnectPointerDrag(boundMoveRef.current, boundUpRef.current), []);
 
-  return {
-    dragY, setSheetRef: (el: HTMLDivElement) => { sheetEl = el; },
-    onDragStart, cleanup: () => disconnectPointerDrag(boundMove, boundUp),
-  };
+  return { dragY, sheetRef, onDragStart };
 }
 
 export default function DocsMobileNav() {
-  const [open, setOpen] = createSignal(false);
-  const [activeId, setActiveId] = createSignal("");
+  const [open, setOpen] = useState(false);
+  const [activeId, setActiveId] = useState("");
 
-  const close = () => {
+  const close = useCallback(() => {
     setOpen(false);
-    unlockScroll();
-  };
+    unlockBodyScroll("docs-toc-open");
+  }, []);
 
-  const drag = useSheetDrag(() => open, close);
+  const drag = useSheetDrag(close);
 
-  // Sheet mounts fresh on every open (via <Show>), so the ref callback fires
-  // each open — apply adaptive motion params sized to the sheet height there.
-  const setSheetRef = (el: HTMLDivElement) => {
-    drag.setSheetRef(el);
-    motionApply(el, motionFor("panel", "enter", { size: el.offsetHeight }));
-  };
+  const setSheetRef = useCallback((el: HTMLDivElement | null) => {
+    drag.sheetRef.current = el;
+    if (el) motionApply(el, motionFor("panel", "enter", { size: el.offsetHeight }));
+  }, [drag]);
 
-  const lockScroll = () => lockBodyScroll("docs-toc-open");
-  const unlockScroll = () => unlockBodyScroll("docs-toc-open");
-
-  createEffect(() => {
+  useEffect(() => {
     if (typeof window === "undefined") return;
     if (!("IntersectionObserver" in window)) return;
 
@@ -101,65 +98,66 @@ export default function DocsMobileNav() {
       if (el) observer.observe(el);
     }
 
-    onCleanup(() => observer.disconnect());
-  });
+    return () => observer.disconnect();
+  }, []);
 
-  const scrollTo = (id: string) => {
+  const scrollTo = useCallback((id: string) => {
     const el = document.getElementById(id);
     if (el) {
       close();
       setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 50);
     }
-  };
+  }, [close]);
 
-  const toggle = () => {
-    if (open()) { close(); }
-    else { setOpen(true); lockScroll(); }
-  };
+  const toggle = useCallback(() => {
+    if (open) close();
+    else { setOpen(true); lockBodyScroll("docs-toc-open"); }
+  }, [open, close]);
 
-  const handleKeyDown = (e: KeyboardEvent) => {
+  const handleKeyDown = useCallback((e: React.KeyboardEvent) => {
     if (e.key === "Escape") close();
-  };
+  }, [close]);
 
-  onCleanup(() => { if (open()) unlockScroll(); });
+  useEffect(() => () => { if (open) unlockBodyScroll("docs-toc-open"); }, [open]);
 
   return (
-    <div class="docs-mobile-toc" onKeyDown={handleKeyDown}>
+    <div className="docs-mobile-toc" onKeyDown={handleKeyDown}>
       <button
         type="button"
-        class="docs-mobile-toc__trigger"
+        className="docs-mobile-toc__trigger"
         onClick={toggle}
-        aria-expanded={open()}
+        aria-expanded={open}
         aria-label="Table of contents"
       >
-        <span class="material-symbols-outlined">toc</span>
+        <span className="material-symbols-outlined">toc</span>
       </button>
 
-      <Show when={open()}>
-        <div class="docs-mobile-toc__overlay" data-sound="overlay.close" onClick={close} />
-        <div
-          class="docs-mobile-toc__sheet"
-          ref={setSheetRef}
-          style={drag.dragY() > 0 ? { transform: `translateY(${drag.dragY()}px)`, transition: "none", "touch-action": "none" } : {}}
-          onPointerDown={drag.onDragStart}
-        >
-          <div class="docs-mobile-toc__handle" />
-          <div class="docs-mobile-toc__label">On this page</div>
-          <nav class="docs-mobile-toc__links">
-            <For each={SECTIONS}>
-              {(s) => (
+      {open && (
+        <>
+          <div className="docs-mobile-toc__overlay" data-sound="overlay.close" onClick={close} />
+          <div
+            className="docs-mobile-toc__sheet"
+            ref={setSheetRef}
+            style={drag.dragY > 0 ? { transform: `translateY(${drag.dragY}px)`, transition: "none", touchAction: "none" } : {}}
+            onPointerDown={drag.onDragStart}
+          >
+            <div className="docs-mobile-toc__handle" />
+            <div className="docs-mobile-toc__label">On this page</div>
+            <nav className="docs-mobile-toc__links">
+              {SECTIONS.map((s) => (
                 <button
+                  key={s.id}
                   type="button"
-                  class={`docs-mobile-toc__link${activeId() === s.id ? " is-active" : ""}`}
+                  className={`docs-mobile-toc__link${activeId === s.id ? " is-active" : ""}`}
                   onClick={() => scrollTo(s.id)}
                 >
                   {s.label}
                 </button>
-              )}
-            </For>
-          </nav>
-        </div>
-      </Show>
+              ))}
+            </nav>
+          </div>
+        </>
+      )}
     </div>
   );
 }

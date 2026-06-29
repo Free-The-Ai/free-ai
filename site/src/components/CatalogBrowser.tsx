@@ -1,4 +1,4 @@
-import { createSignal, createEffect, onMount, onCleanup, For, Show } from "solid-js";
+import { useState, useEffect, useMemo, useRef, useCallback } from "react";
 import { Button, Skeleton, TextField } from "./ui";
 import { formatTokens, modelPrefix, modelSuffix, siteModelContextWindow } from "../utils/format";
 
@@ -32,7 +32,6 @@ const LIVE_KEY = "freetheai.xyz";
 const DISABLED = new Set<string>();
 const PAGE_SIZE = 80;
 
-// ── Field validation helpers ──
 const str = (v: unknown): string | undefined => typeof v === "string" && v.trim() ? v.trim() : undefined;
 const posInt = (v: unknown): number | undefined => typeof v === "number" && Number.isFinite(v) && v > 0 ? v : undefined;
 
@@ -130,8 +129,6 @@ const modelRoutes = (model: Model): RouteInfo[] => {
   return SUPPORTED_ROUTES;
 };
 
-// ── Pure helpers extracted from CatalogBrowser ──
-
 const parseModel = (i: any): Model | null => {
   const _id = str(i?.id);
   if (!_id) return null;
@@ -219,16 +216,14 @@ const readCatalogParams = () => {
   };
 };
 
-// ── Model Card ──
-
 function ModelCard({ model, onSelect }: { model: Model; onSelect: (m: Model) => void }) {
     const ctx = modelContext(model);
     const out = model.max_output_tokens;
     return (
         <article
-            class={`model-card${model.requires_seems_legit ? " is-gated" : ""}`}
+            className={`model-card${model.requires_seems_legit ? " is-gated" : ""}`}
             role="button"
-            tabindex="0"
+            tabIndex={0}
             aria-haspopup="dialog"
             aria-label={`Open details for ${model.id}`}
             data-sound="interaction.tap"
@@ -243,36 +238,36 @@ function ModelCard({ model, onSelect }: { model: Model; onSelect: (m: Model) => 
                 }
             }}
         >
-            <div class="model-card-top">
-                <span class="model-prefix">{model.prefix}/*</span>
+            <div className="model-card-top">
+                <span className="model-prefix">{model.prefix}/*</span>
             </div>
-            <code class="model-id">{model.id}</code>
-            <div class="model-meta">
+            <code className="model-id">{model.id}</code>
+            <div className="model-meta">
                 {ctx > 0 && (
-                    <span class="model-chip" title="Total context window">
+                    <span className="model-chip" title="Total context window">
                         <strong>{formatTokens(ctx)}</strong> ctx
                     </span>
                 )}
                 {out !== undefined && (
-                    <span class="model-chip" title="Maximum output tokens">
+                    <span className="model-chip" title="Maximum output tokens">
                         <strong>{formatTokens(out)}</strong> out
                     </span>
                 )}
                 {modelSupportsAudio(model) && (
-                    <span class="model-chip is-audio" title="Supports an audio route">
-                        <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">graphic_eq</span>
+                    <span className="model-chip is-audio" title="Supports an audio route">
+                        <span className="material-symbols-outlined model-chip-icon" aria-hidden="true">graphic_eq</span>
                         Audio
                     </span>
                 )}
                 {modelSupportsImage(model) && (
-                    <span class="model-chip is-images" title="Supports an image route">
-                        <span class="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
+                    <span className="model-chip is-images" title="Supports an image route">
+                        <span className="material-symbols-outlined model-chip-icon" aria-hidden="true">image</span>
                         Image
                     </span>
                 )}
             </div>
             <button
-                class="model-copy"
+                className="model-copy"
                 title="Copy model alias"
                 aria-label={"Copy " + model.id}
                 data-sound="interaction.confirm"
@@ -290,20 +285,18 @@ function ModelCard({ model, onSelect }: { model: Model; onSelect: (m: Model) => 
                     }
                 }}
             >
-                <span class="material-symbols-outlined">content_copy</span>
+                <span className="material-symbols-outlined">content_copy</span>
             </button>
         </article>
     );
 }
-
-// ── Model Detail Modal ──
 
 function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onClose: () => void; verifiedLabel: string }) {
     const ctx = modelContext(model);
     const maxInput = model.prefix === "sky" ? ctx : model.max_input_tokens;
     return (
         <div
-            class="model-modal-backdrop"
+            className="model-modal-backdrop"
             role="dialog"
             aria-modal="true"
             aria-label={`${model.id} details`}
@@ -311,26 +304,26 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
             onClick={onClose}
         >
             <article
-                class={`model-modal${model.requires_seems_legit ? " is-gated" : ""}`}
+                className={`model-modal${model.requires_seems_legit ? " is-gated" : ""}`}
                 onClick={(e) => e.stopPropagation()}
             >
-                <header class="model-modal-head">
+                <header className="model-modal-head">
                     <div>
-                        <span class="model-modal-prefix">{model.prefix}/*</span>
-                        <code class="model-modal-id">{model.id}</code>
+                        <span className="model-modal-prefix">{model.prefix}/*</span>
+                        <code className="model-modal-id">{model.id}</code>
                     </div>
                     <button
                         type="button"
-                        class="model-modal-close"
+                        className="model-modal-close"
                         aria-label="Close"
                         data-sound="overlay.close"
                         onClick={onClose}
                     >
-                        <span class="material-symbols-outlined" aria-hidden="true">close</span>
+                        <span className="material-symbols-outlined" aria-hidden="true">close</span>
                     </button>
                 </header>
 
-                <section class="model-modal-meta">
+                <section className="model-modal-meta">
                     {ctx > 0 && (
                         <div>
                             <span>Context window</span>
@@ -361,49 +354,47 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
                         <span>Image route</span>
                         <strong>{modelSupportsImage(model) ? "Yes" : "No"}</strong>
                     </div>
-                    <Show when={model.visibility}>
+                    {model.visibility && (
                         <div>
                             <span>Visibility</span>
                             <strong>{model.visibility === "role_gated" ? "Verified members" : "Public catalog"}</strong>
                         </div>
-                    </Show>
-                    <Show when={model.requires_seems_legit}>
+                    )}
+                    {model.requires_seems_legit && (
                         <div>
                             <span>Access</span>
                             <strong>Verified members only</strong>
                         </div>
-                    </Show>
+                    )}
                 </section>
 
-                <Show when={model.requires_seems_legit}>
-                    <p class="model-modal-gate">
-                        <span class="material-symbols-outlined" aria-hidden="true">verified_user</span>
+                {model.requires_seems_legit && (
+                    <p className="model-modal-gate">
+                        <span className="material-symbols-outlined" aria-hidden="true">verified_user</span>
                         <span>
                             This model is available to {verifiedLabel} on the FreeTheAi Discord server.
                             Run <code>/checkin</code> daily once you have access.
                         </span>
                     </p>
-                </Show>
+                )}
 
-                <section class="model-modal-routes">
+                <section className="model-modal-routes">
                     <h4>Supported API routes</h4>
                     <p>Use the same API key and model alias on the supported route for this model.</p>
                     <ul>
-                        <For each={modelRoutes(model)}>
-                            {(route) => (
-                                <li>
-                                    <code>{route.method} {route.path}</code>
-                                    <span>{route.description}</span>
-                                </li>
-                            )}
-                        </For>
+                        {modelRoutes(model).map((route, i) => (
+                            <li key={i}>
+                                <code>{route.method} {route.path}</code>
+                                <span>{route.description}</span>
+                            </li>
+                        ))}
                     </ul>
                 </section>
 
-                <footer class="model-modal-foot">
+                <footer className="model-modal-foot">
                     <button
                         type="button"
-                        class="model-modal-copy"
+                        className="model-modal-copy"
                         data-sound="interaction.confirm"
                         onClick={(e) => {
                             navigator.clipboard.writeText(model.id).catch((error) => {
@@ -417,14 +408,12 @@ function ModelDetailModal({ model, onClose, verifiedLabel }: { model: Model; onC
                     >
                         Copy alias
                     </button>
-                    <a class="model-modal-docs" href="/docs#compatibility">View API docs</a>
+                    <a className="model-modal-docs" href="/docs#compatibility">View API docs</a>
                 </footer>
             </article>
         </div>
     );
 }
-
-// ── Catalog Filters Toolbar sub-component ──
 
 function CatalogFiltersToolbar(props: {
   query: string; setQuery: (v: string) => void; setPage: (v: number | ((p: number) => number)) => void;
@@ -433,94 +422,88 @@ function CatalogFiltersToolbar(props: {
   prefixButtonLabel: string; typeButtonLabel: string;
 }) {
   return (
-    <div class="catalog-toolbar">
-      <div class="catalog-search-field">
-        <span class="material-symbols-outlined catalog-search-icon">search</span>
+    <div className="catalog-toolbar">
+      <div className="catalog-search-field">
+        <span className="material-symbols-outlined catalog-search-icon">search</span>
         <TextField
-          class="catalog-search-input"
+          className="catalog-search-input"
           value={props.query}
           placeholder="Search model aliases..."
           onChange={(v: string) => { props.setQuery(v); props.setPage(1); }}
         />
       </div>
-      <div class="catalog-filter-group">
-        <details class="catalog-filter">
-          <summary class={`catalog-filter-trigger ${props.prefixes.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
-            <span class="catalog-filter-label">Prefix</span>
-            <span class="catalog-filter-value">{props.prefixButtonLabel}</span>
-            <Show when={props.prefixes.size > 0}>
-              <span class="catalog-filter-count">{props.prefixes.size}</span>
-            </Show>
-            <span class="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
+      <div className="catalog-filter-group">
+        <details className="catalog-filter">
+          <summary className={`catalog-filter-trigger ${props.prefixes.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
+            <span className="catalog-filter-label">Prefix</span>
+            <span className="catalog-filter-value">{props.prefixButtonLabel}</span>
+            {props.prefixes.size > 0 && (
+              <span className="catalog-filter-count">{props.prefixes.size}</span>
+            )}
+            <span className="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
           </summary>
-          <div class="catalog-filter-menu" role="group" aria-label="Filter by prefix">
-            <For each={props.prefixCounts}>
-              {([pfx, count]) => (
-                <label class={`catalog-filter-option ${props.prefixes.has(pfx) ? "is-active" : ""}`}>
-                  <input name="prefix-filter" type="checkbox" checked={props.prefixes.has(pfx)} onChange={() => props.togglePrefix(pfx)} data-sound="interaction.toggle" />
-                  <span class="catalog-filter-option-name">{pfx}/*</span>
-                  <span class="catalog-filter-option-count">{count}</span>
-                </label>
-              )}
-            </For>
+          <div className="catalog-filter-menu" role="group" aria-label="Filter by prefix">
+            {props.prefixCounts.map(([pfx, count]) => (
+              <label key={pfx} className={`catalog-filter-option ${props.prefixes.has(pfx) ? "is-active" : ""}`}>
+                <input name="prefix-filter" type="checkbox" checked={props.prefixes.has(pfx)} onChange={() => props.togglePrefix(pfx)} data-sound="interaction.toggle" />
+                <span className="catalog-filter-option-name">{pfx}/*</span>
+                <span className="catalog-filter-option-count">{count}</span>
+              </label>
+            ))}
           </div>
         </details>
-        <details class="catalog-filter">
-          <summary class={`catalog-filter-trigger ${props.typeFilters.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
-            <span class="catalog-filter-label">Capability</span>
-            <span class="catalog-filter-value">{props.typeButtonLabel}</span>
-            <Show when={props.typeFilters.size > 0}>
-              <span class="catalog-filter-count">{props.typeFilters.size}</span>
-            </Show>
-            <span class="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
+        <details className="catalog-filter">
+          <summary className={`catalog-filter-trigger ${props.typeFilters.size > 0 ? "is-active" : ""}`} data-sound="overlay.expand">
+            <span className="catalog-filter-label">Capability</span>
+            <span className="catalog-filter-value">{props.typeButtonLabel}</span>
+            {props.typeFilters.size > 0 && (
+              <span className="catalog-filter-count">{props.typeFilters.size}</span>
+            )}
+            <span className="material-symbols-outlined catalog-filter-caret" aria-hidden="true">expand_more</span>
           </summary>
-          <div class="catalog-filter-menu" role="group" aria-label="Filter by capability">
-            <For each={props.visibleTypeOptions}>
-              {(key) => (
-                <label class={`catalog-filter-option ${props.typeFilters.has(key) ? "is-active" : ""}`}>
-                  <input name="capability-filter" type="checkbox" checked={props.typeFilters.has(key)} onChange={() => props.toggleType(key)} data-sound="interaction.toggle" />
-                  <span class="catalog-filter-option-name">{FILTER_LABELS[key]}</span>
-                </label>
-              )}
-            </For>
+          <div className="catalog-filter-menu" role="group" aria-label="Filter by capability">
+            {props.visibleTypeOptions.map((key) => (
+              <label key={key} className={`catalog-filter-option ${props.typeFilters.has(key) ? "is-active" : ""}`}>
+                <input name="capability-filter" type="checkbox" checked={props.typeFilters.has(key)} onChange={() => props.toggleType(key)} data-sound="interaction.toggle" />
+                <span className="catalog-filter-option-name">{FILTER_LABELS[key]}</span>
+              </label>
+            ))}
           </div>
         </details>
       </div>
     </div>
   );
 }
-
-// ── Catalog Pagination sub-component ──
 
 function CatalogPagination({ page, pageCount, filteredCount, totalCount, setPage }: {
   page: number; pageCount: number; filteredCount: number; totalCount: number;
   setPage: (v: number | ((p: number) => number)) => void;
 }) {
   return (
-    <div class="catalog-pagination">
-      <span class="catalog-pagination-count">
+    <div className="catalog-pagination">
+      <span className="catalog-pagination-count">
         {totalCount === 0 ? "Loading..." : `${filteredCount.toLocaleString()} model${filteredCount !== 1 ? "s" : ""}`}
       </span>
-      <Button variant="ghost" class="pagination-button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
-      <span class="catalog-pagination-text">{page} / {pageCount}</span>
-      <Button variant="ghost" class="pagination-button" disabled={page >= pageCount} onClick={() => setPage((p) => p + 1)}>Next</Button>
+      <Button variant="ghost" className="pagination-button" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>Previous</Button>
+      <span className="catalog-pagination-text">{page} / {pageCount}</span>
+      <Button variant="ghost" className="pagination-button" disabled={page >= pageCount} onClick={() => setPage((p) => p + 1)}>Next</Button>
     </div>
   );
 }
 
 export default function CatalogBrowser() {
-  const [allModels, setAllModels] = createSignal<Model[]>([]);
-  const [policy, setPolicy] = createSignal<Policy | null>(null);
-  const [query, setQuery] = createSignal("");
-  const [page, setPage] = createSignal(1);
-  const [prefixes, setPrefixes] = createSignal<Set<string>>(new Set());
-  const [typeFilters, setTypeFilters] = createSignal<Set<FilterKey>>(new Set());
-  const [source, setSource] = createSignal<"live" | "snapshot" | "error">("live");
-  const [loadError, setLoadError] = createSignal("");
-  const [selected, setSelected] = createSignal<Model | null>(null);
-  let mounted = false;
+  const [allModels, setAllModels] = useState<Model[]>([]);
+  const [policy, setPolicy] = useState<Policy | null>(null);
+  const [query, setQuery] = useState("");
+  const [page, setPage] = useState(1);
+  const [prefixes, setPrefixes] = useState<Set<string>>(new Set());
+  const [typeFilters, setTypeFilters] = useState<Set<FilterKey>>(new Set());
+  const [source, setSource] = useState<"live" | "snapshot" | "error">("live");
+  const [loadError, setLoadError] = useState("");
+  const [selected, setSelected] = useState<Model | null>(null);
+  const mountedRef = useRef(false);
 
-  const togglePrefix = (pfx: string) => {
+  const togglePrefix = useCallback((pfx: string) => {
     setPrefixes((prev) => {
       const next = new Set(prev);
       if (next.has(pfx)) next.delete(pfx);
@@ -528,9 +511,9 @@ export default function CatalogBrowser() {
       return next;
     });
     setPage(1);
-  };
+  }, []);
 
-  const toggleType = (key: FilterKey) => {
+  const toggleType = useCallback((key: FilterKey) => {
     setTypeFilters((prev) => {
       const next = new Set(prev);
       if (next.has(key)) next.delete(key);
@@ -538,38 +521,40 @@ export default function CatalogBrowser() {
       return next;
     });
     setPage(1);
-  };
+  }, []);
 
-  const prefixCounts = () => {
+  const prefixCounts = useMemo(() => {
     const m = new Map<string, number>();
-    for (const { prefix: pfx } of allModels()) m.set(pfx, (m.get(pfx) ?? 0) + 1);
+    for (const { prefix: pfx } of allModels) m.set(pfx, (m.get(pfx) ?? 0) + 1);
     return [...m.entries()].sort((a, b) => b[1] - a[1]);
-  };
+  }, [allModels]);
 
-  const hasAudioModel = () => allModels().some(modelSupportsAudio);
-  const hasImageModel = () => allModels().some(modelSupportsImage);
-  const hasGatedModel = () => allModels().some((m) => m.requires_seems_legit);
+  const hasAudioModel = useMemo(() => allModels.some(modelSupportsAudio), [allModels]);
+  const hasImageModel = useMemo(() => allModels.some(modelSupportsImage), [allModels]);
+  const hasGatedModel = useMemo(() => allModels.some((m) => m.requires_seems_legit), [allModels]);
 
-  const filteredModels = () => filterModels(allModels(), prefixes(), typeFilters(), query());
+  const filteredModels = useMemo(
+    () => filterModels(allModels, prefixes, typeFilters, query),
+    [allModels, prefixes, typeFilters, query],
+  );
 
-  const pageCount = () => Math.max(1, Math.ceil(filteredModels().length / PAGE_SIZE));
-  const visibleModels = () => {
-    const start = (page() - 1) * PAGE_SIZE;
-    return filteredModels().slice(start, start + PAGE_SIZE);
-  };
+  const pageCount = Math.max(1, Math.ceil(filteredModels.length / PAGE_SIZE));
+  const visibleModels = useMemo(() => {
+    const start = (page - 1) * PAGE_SIZE;
+    return filteredModels.slice(start, start + PAGE_SIZE);
+  }, [filteredModels, page]);
 
-  createEffect(() => {
-    if (page() > pageCount()) setPage(pageCount());
-  });
+  useEffect(() => {
+    if (page > pageCount) setPage(pageCount);
+  }, [page, pageCount]);
 
-  createEffect(() => {
-    const sel = prefixes();
-    if (sel.size === 0) return;
-    if (allModels().length === 0) return;
-    const valid = new Set(prefixCounts().map(([pfx]) => pfx));
+  useEffect(() => {
+    if (prefixes.size === 0) return;
+    if (allModels.length === 0) return;
+    const valid = new Set(prefixCounts.map(([pfx]) => pfx));
     let dirty = false;
     const next = new Set<string>();
-    for (const pfx of sel) {
+    for (const pfx of prefixes) {
       if (valid.has(pfx)) next.add(pfx);
       else dirty = true;
     }
@@ -577,15 +562,15 @@ export default function CatalogBrowser() {
       setPrefixes(next);
       setPage(1);
     }
-  });
+  }, [prefixes, allModels, prefixCounts]);
 
-  createEffect(() => {
+  useEffect(() => {
     if (typeof window === "undefined") return;
-    if (!mounted) return;
+    if (!mountedRef.current) return;
     const params = new URLSearchParams(window.location.search);
-    const pfxList = [...prefixes()];
-    const typeList = [...typeFilters()];
-    const search = query().trim();
+    const pfxList = [...prefixes];
+    const typeList = [...typeFilters];
+    const search = query.trim();
     if (pfxList.length === 0) params.delete("prefix");
     else params.set("prefix", pfxList.join(","));
     params.delete("images");
@@ -599,135 +584,133 @@ export default function CatalogBrowser() {
     if (next !== `${window.location.pathname}${window.location.search}${window.location.hash}`) {
       window.history.replaceState(null, "", next);
     }
-  });
+  }, [prefixes, typeFilters, query]);
 
-  onMount(() => {
+  useEffect(() => {
     const params = readCatalogParams();
     if (params.query) setQuery(params.query);
     if (params.prefixes.length > 0) setPrefixes(new Set(params.prefixes));
     if (params.types.length > 0) setTypeFilters(new Set(params.types));
-    mounted = true;
+    mountedRef.current = true;
 
     const handleKey = (event: KeyboardEvent) => {
-      if (event.key === "Escape" && selected()) setSelected(null);
+      if (event.key === "Escape") setSelected(null);
     };
     document.addEventListener("keydown", handleKey);
-    onCleanup(() => document.removeEventListener("keydown", handleKey));
-  });
+    return () => document.removeEventListener("keydown", handleKey);
+  }, []);
 
-  onMount(async () => {
-    try {
-      const { payload, src } = await fetchModels();
-      const items = Array.isArray(payload?.data) ? payload.data : [];
-      setAllModels(
-        items
-          .map(parseModel)
-          .filter((m: Model | null): m is Model => m !== null)
-          .filter((m: Model) => !DISABLED.has(m.prefix))
-          .sort((a, b) => collator.compare(a.id, b.id))
-      );
-      if (payload?.policy && typeof payload.policy === "object") setPolicy(payload.policy as Policy);
-      setSource(src);
-    } catch (err) {
-      setSource("error");
-      setLoadError(err instanceof Error ? err.message : "Failed to load model catalog.");
-    }
-  });
+  useEffect(() => {
+    let cancelled = false;
+    (async () => {
+      try {
+        const { payload, src } = await fetchModels();
+        if (cancelled) return;
+        const items = Array.isArray(payload?.data) ? payload.data : [];
+        setAllModels(
+          items
+            .map(parseModel)
+            .filter((m: Model | null): m is Model => m !== null)
+            .filter((m: Model) => !DISABLED.has(m.prefix))
+            .sort((a, b) => collator.compare(a.id, b.id))
+        );
+        if (payload?.policy && typeof payload.policy === "object") setPolicy(payload.policy as Policy);
+        setSource(src);
+      } catch (err) {
+        if (cancelled) return;
+        setSource("error");
+        setLoadError(err instanceof Error ? err.message : "Failed to load model catalog.");
+      }
+    })();
+    return () => { cancelled = true; };
+  }, []);
 
-  const providerLabel = () => prefixLabel(prefixes());
+  const providerLabel = prefixLabel(prefixes);
 
   const resultLabel = () => {
-    if (allModels().length === 0 && source() !== "error") return "Loading model catalog...";
-    const count = filteredModels().length;
+    if (allModels.length === 0 && source !== "error") return "Loading model catalog...";
+    const count = filteredModels.length;
     const plural = count === 1 ? "model" : "models";
-    return `${count.toLocaleString()} ${plural} across ${providerLabel()}`;
+    return `${count.toLocaleString()} ${plural} across ${providerLabel}`;
   };
 
-  const filtersActive = () =>
-    query().trim() !== "" ||
-    prefixes().size > 0 ||
-    typeFilters().size > 0;
+  const filtersActive = query.trim() !== "" || prefixes.size > 0 || typeFilters.size > 0;
 
-  const clearFilters = () => {
+  const clearFilters = useCallback(() => {
     setQuery("");
     setPrefixes(new Set());
     setTypeFilters(new Set());
     setPage(1);
-  };
+  }, []);
 
   const verifiedMemberLabel = () => {
-    const label = policy()?.seems_legit_required_role_label;
+    const label = policy?.seems_legit_required_role_label;
     const normalized = label?.toLowerCase().replace(/[\s-]+/g, "_");
     if (!normalized || normalized === "seems_legit") return "Verified members";
     return label;
   };
 
-  const visibleTypeOptions = (): FilterKey[] => {
+  const visibleTypeOptions = useMemo((): FilterKey[] => {
     const list: FilterKey[] = ["chat"];
-    if (hasImageModel()) list.push("image");
-    if (hasAudioModel()) list.push("audio");
+    if (hasImageModel) list.push("image");
+    if (hasAudioModel) list.push("audio");
     list.push("long");
-    if (hasGatedModel()) list.push("gated");
+    if (hasGatedModel) list.push("gated");
     return list;
-  };
+  }, [hasImageModel, hasAudioModel, hasGatedModel]);
 
   return (
-    <div class="panel catalog-panel">
-      <div class="catalog-panel-head">
+    <div className="panel catalog-panel">
+      <div className="catalog-panel-head">
         <div>
           <h3>Models</h3>
         </div>
       </div>
 
       <CatalogFiltersToolbar
-        query={query()} setQuery={setQuery} setPage={setPage}
-        prefixes={prefixes()} togglePrefix={togglePrefix} prefixCounts={prefixCounts()}
-        typeFilters={typeFilters()} toggleType={toggleType} visibleTypeOptions={visibleTypeOptions()}
-        prefixButtonLabel={prefixButtonLabel(prefixes())} typeButtonLabel={typeButtonLabel(typeFilters(), FILTER_LABELS)}
+        query={query} setQuery={setQuery} setPage={setPage}
+        prefixes={prefixes} togglePrefix={togglePrefix} prefixCounts={prefixCounts}
+        typeFilters={typeFilters} toggleType={toggleType} visibleTypeOptions={visibleTypeOptions}
+        prefixButtonLabel={prefixButtonLabel(prefixes)} typeButtonLabel={typeButtonLabel(typeFilters, FILTER_LABELS)}
       />
 
-      <Show when={hasGatedModel()}>
-        <blockquote class="catalog-note">
+      {hasGatedModel && (
+        <blockquote className="catalog-note">
           Orange-outlined models are available to {verifiedMemberLabel()}.
         </blockquote>
-      </Show>
+      )}
 
-      <div class="catalog-summary" aria-live="polite">
+      <div className="catalog-summary" aria-live="polite">
         <span>{resultLabel()}</span>
-        <Show when={filtersActive()}>
+        {filtersActive && (
           <button type="button" onClick={clearFilters} data-sound="interaction.subtle">
             Clear filters
           </button>
-        </Show>
+        )}
       </div>
 
-      <div class="catalog-results">
-        <Show
-          when={visibleModels().length > 0}
-          fallback={
-            <div class="catalog-empty">
-              {source() === "error"
-                ? loadError()
-                : allModels().length === 0
-                ? <Skeleton width="200" height="14" />
-                : "No models match your search."}
-            </div>
-          }
-        >
-          <For each={visibleModels()}>
-            {(model) => <ModelCard model={model} onSelect={setSelected} />}
-          </For>
-        </Show>
+      <div className="catalog-results">
+        {visibleModels.length > 0 ? (
+          visibleModels.map((model) => <ModelCard key={model.id} model={model} onSelect={setSelected} />)
+        ) : (
+          <div className="catalog-empty">
+            {source === "error"
+              ? loadError
+              : allModels.length === 0
+              ? <Skeleton width="200" height="14" />
+              : "No models match your search."}
+          </div>
+        )}
       </div>
 
       <CatalogPagination
-        page={page()} pageCount={pageCount()} filteredCount={filteredModels().length}
-        totalCount={allModels().length} setPage={setPage}
+        page={page} pageCount={pageCount} filteredCount={filteredModels.length}
+        totalCount={allModels.length} setPage={setPage}
       />
 
-      <Show when={selected()}>
-        {(model) => <ModelDetailModal model={model()} onClose={() => setSelected(null)} verifiedLabel={verifiedMemberLabel()} />}
-      </Show>
+      {selected && (
+        <ModelDetailModal model={selected} onClose={() => setSelected(null)} verifiedLabel={verifiedMemberLabel()} />
+      )}
     </div>
   );
 }

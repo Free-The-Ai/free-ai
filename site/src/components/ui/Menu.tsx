@@ -41,7 +41,7 @@ export interface MenuContentProps extends Omit<React.ComponentProps<typeof BaseM
 export function MenuContent({ side = 'bottom', className, children, ...rest }: MenuContentProps) {
   return (
     <BaseMenu.Portal>
-      <BaseMenu.Positioner className="kb-menu__positioner" side={side} {...rest}>
+      <BaseMenu.Positioner className="kb-menu__positioner" side={side} collisionPadding={8} {...rest}>
         <BaseMenu.Popup className={['kb-menu__content', className].filter(Boolean).join(' ')}>
           {children}
         </BaseMenu.Popup>
@@ -81,7 +81,7 @@ export interface MenuSubContentProps extends React.ComponentProps<typeof BaseMen
 export function MenuSubContent({ side = 'inline-end', className, children, ...rest }: MenuSubContentProps) {
   return (
     <BaseMenu.Portal>
-      <BaseMenu.Positioner className="kb-menu__positioner" side={side} {...rest}>
+      <BaseMenu.Positioner className="kb-menu__positioner" side={side} collisionPadding={8} {...rest}>
         <BaseMenu.Popup className={['kb-menu__content', className].filter(Boolean).join(' ')}>
           {children}
         </BaseMenu.Popup>

@@ -191,6 +191,7 @@
 .kb-select__content {
   width: var(--anchor-width, 220px);
   min-width: var(--anchor-width, 220px);
+  max-width: calc(100vw - 32px);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--sk-shell-bg);
@@ -263,6 +264,7 @@
 .kb-menu__content {
   z-index: 50;
   min-width: var(--kb-menu-content-available-width);
+  max-width: calc(100vw - 32px);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--sk-shell-bg);

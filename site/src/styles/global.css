@@ -738,6 +738,13 @@ pre {
     margin: 0 auto;
 }
 
+.home-code-card .shiki {
+    white-space: pre-wrap;
+    overflow-x: hidden;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
 .ghost-button {
     border-color: var(--border);
     background: transparent;
@@ -2511,6 +2518,12 @@ h3 {
     min-height: 0;
     overflow-y: auto;
     overscroll-behavior: contain;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.responsive-drawer-content::-webkit-scrollbar {
+    display: none;
 }
 
 /* Model detail drawer */

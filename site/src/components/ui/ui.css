@@ -189,9 +189,7 @@
   z-index: 100;
 }
 .kb-select__content {
-  width: var(--anchor-width, 220px);
-  min-width: var(--anchor-width, 220px);
-  max-width: calc(100vw - 32px);
+  width: min(var(--anchor-width, 220px), var(--available-width, 100vw));
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--sk-shell-bg);
@@ -204,7 +202,13 @@
   opacity: 0;
   transform: translateY(-4px) scale(0.98);
 }
-.kb-select__listbox { padding: 6px; max-height: 280px; overflow-y: auto; }
+.kb-select__listbox {
+  padding: 6px;
+  max-height: min(var(--available-height, 280px), 280px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
 .kb-select__item {
   display: flex;
   align-items: center;
@@ -263,15 +267,17 @@
 
 .kb-menu__content {
   z-index: 50;
-  min-width: var(--kb-menu-content-available-width);
-  max-width: calc(100vw - 32px);
+  width: min(var(--anchor-width, 220px), var(--available-width, 100vw));
+  max-height: min(var(--available-height, 320px), 320px);
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
   background: var(--sk-shell-bg);
   box-shadow: var(--sk-raised-shadow);
-  overflow: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   padding: 6px;
-  transform-origin: var(--kb-menu-content-transform-origin);
+  transform-origin: var(--transform-origin);
   animation: menuOpen var(--motion-duration, var(--dropdown-open-dur)) var(--motion-easing, var(--ease-out-smooth));
 }
 .kb-menu__content[data-closed] {

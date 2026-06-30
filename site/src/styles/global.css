@@ -738,7 +738,7 @@ pre {
     margin: 0 auto;
 }
 
-.home-code-card .shiki {
+.home-code-card .shiki-wrapper .shiki {
     white-space: pre-wrap;
     overflow-x: hidden;
     word-break: break-word;

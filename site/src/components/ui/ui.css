@@ -289,6 +289,18 @@
 .kb-menu__content::-webkit-scrollbar {
   display: none;
 }
+
+.kb-select__listbox::after,
+.kb-menu__content::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  display: block;
+  height: 24px;
+  margin-top: -24px;
+  pointer-events: none;
+  background: linear-gradient(transparent, var(--sk-shell-bg));
+}
 .kb-menu__content[data-closed] {
   animation: menuClose var(--motion-duration, var(--dropdown-close-dur)) var(--motion-easing, var(--ease-in-smooth)) forwards;
 }

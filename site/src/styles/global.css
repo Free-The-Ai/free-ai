@@ -730,6 +730,14 @@ pre {
     z-index: 1;
 }
 
+.home-hero-logo-svg {
+    display: block;
+    width: 100%;
+    max-width: 520px;
+    height: auto;
+    margin: 0 auto;
+}
+
 .ghost-button {
     border-color: var(--border);
     background: transparent;

@@ -15,8 +15,6 @@ interface PaidModel {
   max_output_tokens?: number;
   supports_images?: boolean;
   supports_streaming?: boolean;
-  supports_tool_call?: boolean;
-  supports_response_schema?: boolean;
 }
 
 interface PaidModelGroup {
@@ -52,7 +50,7 @@ const formatCost = (cost: number) => Number.isInteger(cost) ? String(cost) : Str
 function PaidModelRow({ model }: { model: PaidModel }) {
   const ctx = siteModelContextWindow(model);
   const out = model.max_output_tokens;
-  const hasMeta = ctx > 0 || out !== undefined || model.supports_images || model.supports_tool_call || model.supports_response_schema;
+  const hasMeta = ctx > 0 || out !== undefined || model.supports_images;
   const copyModel = (button: HTMLButtonElement) => {
     navigator.clipboard.writeText(model.id).catch((error) => {
       console.error("Failed to copy paid model alias", error);
@@ -86,16 +84,7 @@ function PaidModelRow({ model }: { model: PaidModel }) {
                 Images
               </span>
             )}
-            {model.supports_tool_call && (
-              <span className="model-chip" title="Supports tool calling">
-                <span className="model-chip-label">Tools</span>
-              </span>
-            )}
-            {model.supports_response_schema && (
-              <span className="model-chip" title="Supports structured response schemas">
-                <span className="model-chip-label">JSON</span>
-              </span>
-            )}
+
           </span>
         )}
       </span>

@@ -64,7 +64,7 @@ function PaidModelRow({ model }: { model: PaidModel }) {
   };
   return (
     <div className="paid-model-row" role="row">
-      <span className="paid-model-name">
+      <span className="paid-model-name" data-label="Model">
         <code>{model.id}</code>
         {hasMeta && (
           <span className="paid-model-meta">
@@ -99,15 +99,15 @@ function PaidModelRow({ model }: { model: PaidModel }) {
           </span>
         )}
       </span>
-      <span className="pricing-route-pill">{model.prefix}/*</span>
-      <span className="pricing-route-pill">{model.route}</span>
-      <span className="paid-model-plans">
+      <span className="pricing-route-pill" data-label="Prefix">{model.prefix}/*</span>
+      <span className="pricing-route-pill" data-label="Route">{model.route}</span>
+      <span className="paid-model-plans" data-label="Plan">
         {(model.plans ?? []).map((plan) => (
           <span key={plan} className="pricing-route-pill">{plan}</span>
         ))}
       </span>
-      <strong>{model.unit_label}</strong>
-      <button className="copy-btn pricing-model-copy" type="button" title={`Copy ${model.id}`}
+      <strong data-label="Unit cost">{model.unit_label}</strong>
+      <button className="copy-btn pricing-model-copy" type="button" title={`Copy ${model.id}`} data-label="Copy"
         onClick={(event) => copyModel(event.currentTarget)}>
         <code className="sr-only">{model.id}</code>
         <span className="material-symbols-outlined">content_copy</span>
@@ -237,12 +237,12 @@ export default function PaidModelTable(props: PaidModelTableProps) {
 
       <div className="paid-model-table" role="table" aria-label="Paid model unit costs">
         <div className="paid-model-row paid-model-row-head" role="row">
-          <span>Model</span>
-          <span>Prefix</span>
-          <span>Route</span>
-          <span>Plan</span>
-          <span>Unit cost</span>
-          <span>Copy</span>
+          <span data-label="Model">Model</span>
+          <span data-label="Prefix">Prefix</span>
+          <span data-label="Route">Route</span>
+          <span data-label="Plan">Plan</span>
+          <span data-label="Unit cost">Unit cost</span>
+          <span data-label="Copy">Copy</span>
         </div>
         {filteredRows.length > 0 ? (
           filteredRows.map((model) => <PaidModelRow key={model.id} model={model} />)

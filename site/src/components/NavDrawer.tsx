@@ -80,7 +80,7 @@ export default function NavDrawer(props: NavDrawerProps) {
               href={href}
               className={`bottom-tab${isActive ? " is-active" : ""}`}
               aria-current={isActive ? "page" : undefined}
-              data-sound={isActive ? undefined : "interaction.tap"}
+              data-sound={isActive ? "interaction.subtle" : "interaction.tap"}
             >
               <span className="bottom-tab-icon">{ICONS[icon]}</span>
               <span className="bottom-tab-label">{label}</span>

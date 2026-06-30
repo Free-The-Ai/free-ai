@@ -280,6 +280,15 @@
   transform-origin: var(--transform-origin);
   animation: menuOpen var(--motion-duration, var(--dropdown-open-dur)) var(--motion-easing, var(--ease-out-smooth));
 }
+
+.kb-select__listbox,
+.kb-menu__content {
+  scrollbar-width: none;
+}
+.kb-select__listbox::-webkit-scrollbar,
+.kb-menu__content::-webkit-scrollbar {
+  display: none;
+}
 .kb-menu__content[data-closed] {
   animation: menuClose var(--motion-duration, var(--dropdown-close-dur)) var(--motion-easing, var(--ease-in-smooth)) forwards;
 }

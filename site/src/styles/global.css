@@ -126,21 +126,19 @@ textarea:focus-visible {
     outline-offset: 2px;
 }
 
-html, body {
-    scrollbar-gutter: stable;
-}
-
 html {
     overflow-x: hidden;
+    overflow-y: scroll;
     font-size: calc(clamp(14px, calc(0.9rem + 0.25vw), 18px) * var(--font-scale, 1));
     scroll-padding-top: 96px;
     scrollbar-width: thin;
     scrollbar-color: var(--accent) transparent;
+    scrollbar-gutter: auto !important;
 }
 
 html::-webkit-scrollbar {
     width: 6px;
-    height: 6px;
+    height: 0;
 }
 
 html::-webkit-scrollbar-track {
@@ -163,12 +161,11 @@ html::-webkit-scrollbar-corner {
 body {
     margin: 0;
     min-height: 100vh;
-    min-height: 100svh;
+    min-height: 100dvh;
     background: transparent;
     color: var(--text);
     font-family: var(--font-sans);
-    overflow-x: hidden;
-    overflow-y: scroll;
+    overflow: visible;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
 }
@@ -3044,7 +3041,6 @@ h3 {
 .provider-popover .popover-status-strip {
     flex-shrink: 0;
     height: 3px;
-    margin: -1px -1px 0;
     border-radius: var(--radius) var(--radius) 0 0;
 }
 .provider-popover.is-up .popover-status-strip    { background: oklch(0.622 0.166 146.2 / 0.6); }

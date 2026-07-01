@@ -45,25 +45,30 @@ function playSequence(
     osc.connect(gain); gain.connect(ctx.destination);
     osc.start(t); osc.stop(t + opts.dur + pad);
     oscs.push(osc);
-    if (opts.shimmerVol) {
-      const sh = createOscillator(ctx, freq * 2.003, conf);
-      const sg = createEnvelopedGain(ctx, t, vol * opts.shimmerVol, opts.dur, conf);
-      sh.connect(sg); sg.connect(ctx.destination);
-      sh.start(t); sh.stop(t + opts.dur + pad);
-      oscs.push(sh);
-    }
-    if (opts.partials) {
-      for (const partial of opts.partials) {
-        const pdur = opts.partialDur ?? opts.dur;
-        const p = createOscillator(ctx, freq * partial, conf);
-        const pg = createEnvelopedGain(ctx, t, vol * (opts.partialVol ?? 0.08), pdur, conf);
-        p.connect(pg); pg.connect(ctx.destination);
-        p.start(t); p.stop(t + pdur + pad);
-        oscs.push(p);
-      }
-    }
+    if (opts.shimmerVol) oscs.push(...addShimmer(ctx, t, freq, vol * opts.shimmerVol, opts.dur, pad, conf));
+    if (opts.partials) oscs.push(...addPartials(ctx, t, freq, vol, pad, conf, opts));
   }
   return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
+}
+
+function addShimmer(ctx: AudioContext, t: number, freq: number, vol: number, dur: number, pad: number, conf: InstrumentConfig): OscillatorNode[] {
+  const sh = createOscillator(ctx, freq * 2.003, conf);
+  const sg = createEnvelopedGain(ctx, t, vol, dur, conf);
+  sh.connect(sg); sg.connect(ctx.destination);
+  sh.start(t); sh.stop(t + dur + pad);
+  return [sh];
+}
+
+function addPartials(ctx: AudioContext, t: number, freq: number, vol: number, pad: number, conf: InstrumentConfig, opts: SeqOpts): OscillatorNode[] {
+  const pdur = opts.partialDur ?? opts.dur;
+  const pvol = vol * (opts.partialVol ?? 0.08);
+  return (opts.partials ?? []).map(partial => {
+    const p = createOscillator(ctx, freq * partial, conf);
+    const pg = createEnvelopedGain(ctx, t, pvol, pdur, conf);
+    p.connect(pg); pg.connect(ctx.destination);
+    p.start(t); p.stop(t + pdur + pad);
+    return p;
+  });
 }
 
 // ── Helpers ──

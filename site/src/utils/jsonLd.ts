@@ -368,23 +368,19 @@ export function buildPaidPlanJsonLd(
 	 * desc Structured data for optional paid API plans and request-unit catalog offers.
 	 */
 	const priceForPlan = (paidPlan: (typeof plans)[number]): string => {
-		if (typeof paidPlan.price_usd_milli === 'number' && paidPlan.price_usd_milli > 0) {
-			return String(paidPlan.price_usd_milli / 1000);
-		}
-		if (typeof paidPlan.price_usd === 'number' && paidPlan.price_usd > 0) {
-			return String(paidPlan.price_usd);
-		}
+		const milli = paidPlan.price_usd_milli;
+		if (typeof milli === 'number' && milli > 0) return String(milli / 1000);
+		const usd = paidPlan.price_usd;
+		if (typeof usd === 'number' && usd > 0) return String(usd);
 		if (typeof paidPlan.price === 'string') {
 			const cleaned = paidPlan.price.replace(/[^0-9.]/g, '');
 			if (cleaned) return cleaned;
 		}
 		if (paidPlan.price && typeof paidPlan.price === 'object') {
-			if (typeof paidPlan.price.amount_milli === 'number' && paidPlan.price.amount_milli > 0) {
-				return String(paidPlan.price.amount_milli / 1000);
-			}
-			if (typeof paidPlan.price.amount === 'number' && paidPlan.price.amount > 0) {
-				return String(paidPlan.price.amount);
-			}
+			const objMilli = paidPlan.price.amount_milli;
+			if (typeof objMilli === 'number' && objMilli > 0) return String(objMilli / 1000);
+			const objAmount = paidPlan.price.amount;
+			if (typeof objAmount === 'number' && objAmount > 0) return String(objAmount);
 		}
 		return plan.price.replace(/[^0-9.]/g, '');
 	};

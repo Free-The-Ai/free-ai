@@ -127,10 +127,10 @@ const formatPlanPrice = (plan: PaidPlan): string => {
   const usd = num(plan.price_usd);
   if (usd !== undefined) return formatUSD(usd);
   if (typeof plan.price === "string" && plan.price.trim()) return plan.price.trim();
-  if (typeof plan.price === "object" && plan.price !== null) {
+  if (plan.price && typeof plan.price === "object") {
     const amount = num(plan.price.amount);
-    const amountMilli = num(plan.price.amount_milli);
     if (amount !== undefined) return formatUSD(amount);
+    const amountMilli = num(plan.price.amount_milli);
     if (amountMilli !== undefined) return formatUSD(amountMilli / 1000);
   }
   return PLAN_PRICE_FALLBACKS[plan.id] ?? "Paid";
@@ -158,22 +158,27 @@ const limitEntries = (plan: PaidPlan) =>
       typeof entry.value?.limit === "number" && Number.isFinite(entry.value.limit),
     );
 
+const strArray = (v: unknown): string[] =>
+  Array.isArray(v) ? v.filter((item: unknown): item is string => typeof item === "string") : [];
+
+const strOrObj = (v: unknown): string | PaidPrice | undefined =>
+  typeof v === "string" || (v && typeof v === "object") ? v as string | PaidPrice : undefined;
+
 const normalizePlan = (raw: any): PaidPlan | null => {
   const id = str(raw?.id);
   if (!id) return null;
   if (raw?.display === false || raw?.visible === false || raw?.purchasable === false) return null;
-  const rawPrice = raw?.price;
-  const price = typeof rawPrice === "string" || (rawPrice && typeof rawPrice === "object") ? rawPrice : undefined;
+  const price = strOrObj(raw?.price);
   return {
     id,
     display_name: str(raw?.display_name) ?? id,
     description: str(raw?.description),
-    highlights: Array.isArray(raw?.highlights) ? raw.highlights.filter((item: unknown): item is string => typeof item === "string") : [],
+    highlights: strArray(raw?.highlights),
     limits: raw?.limits && typeof raw.limits === "object" ? raw.limits : {},
     model_count: num(raw?.model_count),
     concurrency_limit: num(raw?.concurrency_limit),
-    providers: Array.isArray(raw?.providers) ? raw.providers.filter((item: unknown): item is string => typeof item === "string") : [],
-    models: Array.isArray(raw?.models) ? raw.models.filter((item: unknown): item is string => typeof item === "string") : [],
+    providers: strArray(raw?.providers),
+    models: strArray(raw?.models),
     billing_period: str(raw?.billing_period) ?? str(raw?.period) ?? str(raw?.price?.period),
     price,
     price_usd: num(raw?.price_usd),
@@ -187,26 +192,25 @@ const normalizeModel = (raw: any): PaidModel | null => {
   if (!id) return null;
   const unit = num(raw?.pricing_units) ?? num(raw?.pricing?.unit_cost) ?? num(raw?.unit_cost) ?? 1;
   const display = str(raw?.pricing?.display) ?? str(raw?.unit_label) ?? `${formatUnitCost(unit)} request units`;
+  const context = num(raw?.context_window);
+  const maxIn = num(raw?.max_input_tokens);
   const model = {
     id,
     name: str(raw?.name),
     unit_cost: unit,
     unit_label: display,
     route: str(raw?.route) ?? routeForModel(id),
-    plans: Array.isArray(raw?.plans) ? raw.plans.filter((item: unknown): item is string => typeof item === "string") : [],
-    context_window: num(raw?.context_window),
-    max_input_tokens: num(raw?.max_input_tokens),
+    plans: strArray(raw?.plans),
+    context_window: context,
+    max_input_tokens: maxIn,
     max_output_tokens: num(raw?.max_output_tokens),
     supports_images: raw?.supports_images === true,
     supports_streaming: raw?.supports_streaming === true,
     supports_tool_call: raw?.supports_tool_call === true,
     supports_response_schema: raw?.supports_response_schema === true,
   };
-  const context = siteModelContextWindow(model);
-  if (context > 0) {
-    model.context_window = context;
-    model.max_input_tokens = context;
-  }
+  const ctx = siteModelContextWindow(model);
+  if (ctx > 0) { model.context_window = ctx; model.max_input_tokens = ctx; }
   return model;
 };
 

@@ -34,6 +34,7 @@ const DISABLED = new Set<string>();
 const PAGE_SIZE = 80;
 
 const str = (v: unknown): string | undefined => typeof v === "string" && v.trim() ? v.trim() : undefined;
+const strArray = (v: unknown): string[] => Array.isArray(v) ? v.filter((item: unknown): item is string => typeof item === "string") : [];
 const posInt = (v: unknown): number | undefined => typeof v === "number" && Number.isFinite(v) && v > 0 ? v : undefined;
 
 type RouteInfo = {
@@ -103,29 +104,26 @@ const matchesAnyType = (m: Model, types: Set<FilterKey>): boolean => {
   return false;
 };
 
+const AUDIO_ROUTE_PATTERNS: Record<string, RouteInfo> = {
+  stt: { method: "POST" as const, path: "/v1/audio/transcriptions", label: "Speech to text", description: "OpenAI-compatible multipart audio transcription." },
+  asr: { method: "POST" as const, path: "/v1/audio/transcriptions", label: "Speech to text", description: "OpenAI-compatible multipart audio transcription." },
+  transcription: { method: "POST" as const, path: "/v1/audio/transcriptions", label: "Speech to text", description: "OpenAI-compatible multipart audio transcription." },
+  tts: { method: "POST" as const, path: "/v1/audio/speech", label: "Text to speech", description: "OpenAI-compatible speech generation." },
+  speech: { method: "POST" as const, path: "/v1/audio/speech", label: "Text to speech", description: "OpenAI-compatible speech generation." },
+};
+
 const modelRoutes = (model: Model): RouteInfo[] => {
-  const suffix = modelSuffix(model.id).toLowerCase();
   if (modelSupportsImage(model)) {
     const routes: RouteInfo[] = [
-      { method: "POST" as const, path: "/v1/images/generations", label: "Image generation", description: "OpenAI-compatible image generation." },
+      { method: "POST", path: "/v1/images/generations", label: "Image generation", description: "OpenAI-compatible image generation." },
     ];
-    if (model.prefix === "ever") {
-      routes.push({ method: "POST" as const, path: "/v1/images/edits", label: "Image edits", description: "OpenAI-compatible multipart image editing." });
-    }
-    if (model.prefix === "eve") {
-      routes.push({ method: "GET" as const, path: "/v1/images/generations/{request_id}", label: "Image polling", description: "Poll async image jobs submitted with background or async enabled." });
-    }
+    if (model.prefix === "ever") routes.push({ method: "POST", path: "/v1/images/edits", label: "Image edits", description: "OpenAI-compatible multipart image editing." });
+    if (model.prefix === "eve") routes.push({ method: "GET", path: "/v1/images/generations/{request_id}", label: "Image polling", description: "Poll async image jobs submitted with background or async enabled." });
     return routes;
   }
-  if (suffix.includes("stt") || suffix.includes("asr") || suffix.includes("transcription")) {
-    return [
-      { method: "POST" as const, path: "/v1/audio/transcriptions", label: "Speech to text", description: "OpenAI-compatible multipart audio transcription." },
-    ];
-  }
-  if (suffix.includes("tts") || suffix.includes("speech")) {
-    return [
-      { method: "POST" as const, path: "/v1/audio/speech", label: "Text to speech", description: "OpenAI-compatible speech generation." },
-    ];
+  const suffix = modelSuffix(model.id).toLowerCase();
+  for (const [pattern, route] of Object.entries(AUDIO_ROUTE_PATTERNS)) {
+    if (suffix.includes(pattern)) return [route];
   }
   return SUPPORTED_ROUTES;
 };
@@ -135,20 +133,24 @@ const parseModel = (i: any): Model | null => {
   if (!_id) return null;
   const pfx = str(i?.prefix) ?? modelPrefix(_id);
   const access = (i?.access ?? {}) as AccessInfo;
-  const requiredRoles = Array.isArray(access.required_discord_roles)
-    ? access.required_discord_roles.filter((r): r is string => typeof r === "string")
-    : [];
+  const requiredRoles = strArray(access.required_discord_roles);
   const requiresSeemsLegit =
     i?.requires_seems_legit === true ||
     access.requires_seems_legit === true ||
     requiredRoles.includes("seems_legit");
   const out: Model = { id: _id, prefix: pfx, required_roles: requiredRoles };
-  for (const f of [["visibility", str], ["context_window", posInt], ["max_input_tokens", posInt], ["max_output_tokens", posInt]] as [string, typeof str][]) {
-    const v = f[1]((i as any)[f[0]]);
-    if (v) (out as any)[f[0]] = v;
+  const fields: [keyof Model, (v: unknown) => unknown][] = [
+    ["visibility", str],
+    ["context_window", posInt],
+    ["max_input_tokens", posInt],
+    ["max_output_tokens", posInt],
+  ];
+  for (const [key, fn] of fields) {
+    const v = fn((i as any)[key]);
+    if (v !== undefined) (out as any)[key] = v;
   }
-  for (const k of ["supports_images", "supports_audio"]) {
-    if (typeof (i as any)[k] === "boolean") (out as any)[k] = (i as any)[k];
+  for (const k of ["supports_images", "supports_audio"] as const) {
+    if (typeof i?.[k] === "boolean") (out as any)[k] = i[k];
   }
   if (requiresSeemsLegit) out.requires_seems_legit = true;
   return out;
@@ -200,20 +202,19 @@ const fetchModels = async (): Promise<{ payload: any; src: "live" | "snapshot" }
   }
 };
 
+const parseParam = (params: URLSearchParams, key: string): string => params.get(key)?.trim() || "";
+
 const readCatalogParams = () => {
   if (typeof window === "undefined") return { prefixes: [] as string[], types: [] as FilterKey[], query: "" };
   const params = new URLSearchParams(window.location.search);
-  const rawPrefix = params.get("prefix")?.trim() || "";
-  const prefixes = rawPrefix && !/^(all|\*)$/.test(rawPrefix)
-    ? rawPrefix.split(",").map(p => p.trim()).filter(Boolean)
-    : [];
-  const legacyType = params.get("type")?.trim() ||
-    (params.get("seemslegit") === "1" ? "gated" : "");
+  const rawPrefix = parseParam(params, "prefix");
+  const prefixes = rawPrefix && !/^(all|\*)$/.test(rawPrefix) ? rawPrefix.split(",").map(p => p.trim()).filter(Boolean) : [];
+  const legacyType = parseParam(params, "type") || (params.get("seemslegit") === "1" ? "gated" : "");
   const validKeys = new Set<string>(FILTER_OPTIONS);
   return {
     prefixes,
     types: legacyType ? legacyType.split(",").map(t => t.trim()).filter(t => validKeys.has(t)) as FilterKey[] : [],
-    query: params.get("q")?.trim() || "",
+    query: parseParam(params, "q"),
   };
 };
 

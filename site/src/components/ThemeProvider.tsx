@@ -9,7 +9,8 @@
  *
  * For a flash-free first paint, also inject themeInlineBootstrap() into a
  * <script is:inline> in <head> so persisted/system scheme applies before
- * hydration. Lifecycle: initThemeSystem() on mount; cleanup on beforeunload.
+ * hydration. Lifecycle: initThemeSystem() on mount. Singleton persists
+ * across navigations; initialized guard prevents double-init.
  */
 import { useEffect } from "react";
 import {

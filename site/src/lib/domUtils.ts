@@ -19,10 +19,11 @@ export function lockBodyScroll(className: string = "scroll-locked"): void {
   document.documentElement.classList.add(className);
 }
 
-/** Unlock body scroll (undo lockBodyScroll). */
+/** Unlock body scroll (undo lockBodyScroll). Restores scroll position. */
 export function unlockBodyScroll(className: string = "scroll-locked"): void {
   if (typeof document === "undefined") return;
   if (!document.documentElement.classList.contains(className)) return;
   document.documentElement.classList.remove(className);
+  if (lockedScrollY > 0) window.scrollTo(0, lockedScrollY);
   lockedScrollY = 0;
 }

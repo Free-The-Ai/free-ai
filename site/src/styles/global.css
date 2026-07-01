@@ -1158,7 +1158,7 @@ h3 {
     color: var(--muted);
     cursor: pointer;
     opacity: 0;
-    transition: opacity 150ms var(--ease-out-smooth);
+    transition: opacity 150ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
 }
 .copy-btn:hover {
     color: var(--text);
@@ -4085,6 +4085,12 @@ h3 {
         z-index: 98;
         background: oklch(0 0 0 / 0.5);
         backdrop-filter: blur(4px);
+        animation: toc-overlay-in var(--motion-duration, 250ms) var(--motion-easing, var(--ease-out-smooth));
+    }
+
+    @keyframes toc-overlay-in {
+        from { opacity: 0; }
+        to   { opacity: 1; }
     }
 
     .docs-mobile-toc__sheet {
@@ -4116,6 +4122,7 @@ h3 {
     }
 
     @media (prefers-reduced-motion: reduce) {
+        .docs-mobile-toc__overlay,
         .docs-mobile-toc__sheet {
             animation: none;
             transition: none;

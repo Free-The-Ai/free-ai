@@ -48,7 +48,7 @@
   font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
-  transition: box-shadow 200ms var(--ease-out-smooth), background 200ms var(--ease-out-smooth), border-color 200ms var(--ease-out-smooth), color 200ms var(--ease-out-smooth), transform var(--press-dur) var(--ease-out-smooth);
+  transition: box-shadow 200ms var(--ease-out-smooth), background 200ms var(--ease-out-smooth), border-color 200ms var(--ease-out-smooth), color 200ms var(--ease-out-smooth), text-shadow 200ms var(--ease-out-smooth), transform var(--press-dur) var(--ease-out-smooth);
   white-space: nowrap;
 }
 .kb-button:hover {
@@ -261,7 +261,7 @@
 .kb-menu__trigger[data-expanded] { border-color: var(--border-strong); }
 .kb-menu__chevron {
   color: var(--dim);
-  transition: transform 200ms var(--ease-out-smooth);
+  transition: transform 200ms var(--ease-out-smooth), color 200ms var(--ease-out-smooth);
 }
 .kb-menu__trigger[data-expanded] .kb-menu__chevron { transform: rotate(180deg); }
 .kb-menu__chevron--sub { transform: rotate(-90deg); }
@@ -336,8 +336,12 @@
   .kb-text-field__input,
   .kb-text-field__textarea,
   .kb-menu__trigger,
+  .kb-select__trigger,
+  .kb-select__item,
+  .kb-menu__item,
   .kb-select__icon,
   .kb-menu__chevron,
+  .kb-toast__close,
   .kb-toast[data-swipe="cancel"] {
     transition: none;
   }
@@ -395,7 +399,7 @@
     var(--border) 65%
   );
   background-size: 300% 100%;
-  animation: skeletonShimmer 1.8s ease-in-out infinite;
+  animation: skeletonShimmer 1800ms ease-in-out infinite;
 }
 
 @keyframes skeletonShimmer {

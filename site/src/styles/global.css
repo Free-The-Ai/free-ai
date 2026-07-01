@@ -4699,7 +4699,10 @@ body[data-sound-muted="false"]::after {
     .models-cta,
     .docs-start-card,
     .status-card,
-    .nav {
+    .nav,
+    .nav-hamburger,
+    .docs-mobile-toc__trigger,
+    .docs-mobile-toc__link {
         transition: none;
     }
 }

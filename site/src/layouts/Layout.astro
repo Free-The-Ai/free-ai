@@ -87,9 +87,13 @@ const themeBootstrap = themeInlineBootstrap();
 				var hideTimer=null;
 				function hide(){
 					if(hideTimer){clearTimeout(hideTimer);hideTimer=null}
-					var dur = getComputedStyle(document.documentElement).getPropertyValue('--motion-duration').trim() || '200ms';
-					var easing = getComputedStyle(document.documentElement).getPropertyValue('--ease-out-smooth').trim() || 'ease-out';
-				l.style.transition='opacity ' + dur + ' ' + easing;
+					var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+					if (reduce) { l.style.transition='none'; }
+					else {
+						var dur = getComputedStyle(document.documentElement).getPropertyValue('--motion-duration').trim() || '200ms';
+						var easing = getComputedStyle(document.documentElement).getPropertyValue('--ease-out-smooth').trim() || 'ease-out';
+						l.style.transition='opacity ' + dur + ' ' + easing;
+					}
 					l.style.opacity='0';
 					l.style.pointerEvents='none';
 				}

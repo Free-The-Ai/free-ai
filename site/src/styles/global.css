@@ -145,6 +145,18 @@ body {
     scrollbar-color: var(--accent) transparent;
 }
 
+html.scroll-locked,
+html.docs-toc-open {
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
+html.scroll-locked body {
+    position: fixed;
+    width: 100%;
+    top: 0;
+}
+
 body::-webkit-scrollbar {
     width: 6px;
     height: 0;
@@ -4243,12 +4255,6 @@ h3 {
     .docs-mobile-toc__link:active {
         background: var(--control-bg);
         color: var(--text);
-    }
-
-    html.docs-toc-open,
-    html.scroll-locked {
-        overflow: hidden;
-        overscroll-behavior: none;
     }
 
     .docs-sidebar-label {

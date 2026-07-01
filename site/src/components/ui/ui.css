@@ -329,6 +329,18 @@
   .kb-skeleton [data-animate] {
     animation: none;
   }
+  .kb-button:active {
+    transform: none;
+  }
+  .kb-button,
+  .kb-text-field__input,
+  .kb-text-field__textarea,
+  .kb-menu__trigger,
+  .kb-select__icon,
+  .kb-menu__chevron,
+  .kb-toast[data-swipe="cancel"] {
+    transition: none;
+  }
 }
 
 .kb-menu__item {

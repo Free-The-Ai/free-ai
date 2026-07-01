@@ -4657,6 +4657,30 @@ body[data-sound-muted="false"]::after {
         transition: none;
         animation: none;
     }
+    .discord-button:active,
+    .primary-button:active,
+    .ghost-button:active,
+    .home-hero .primary-button:active,
+    .catalog-filter-trigger:active,
+    .model-copy:active {
+        transform: none;
+    }
+    .skip-link,
+    .catalog-filter-caret,
+    .discord-button,
+    .primary-button,
+    .ghost-button,
+    .code-card,
+    .step-card,
+    .panel,
+    .cta-banner,
+    .proof-card,
+    .capability-card,
+    .models-cta,
+    .docs-start-card,
+    .status-card {
+        transition: none;
+    }
 }
 
 /* ── Shiki syntax highlighting ── */

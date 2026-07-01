@@ -464,4 +464,11 @@ const setupKeywords = [
         opacity: 0.65;
         font-size: 0.9rem;
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .setup-card,
+        .setup-card-arrow {
+            transition: none;
+        }
+    }
 </style>

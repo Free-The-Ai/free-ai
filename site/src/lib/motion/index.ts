@@ -5,33 +5,4 @@
  * easing, scale, translate, opacity) adapted to the live pointer/scroll
  * velocity, distance, element size, and reduced-motion preference.
  */
-export {
-  motionConfigure,
-  motionConfig,
-  motionContext,
-  motionReduced,
-  motionFor,
-  motionApply,
-  initMotionSystem,
-  destroyMotionSystem,
-} from "./singleton";
-
-export {
-  computeDuration,
-  computeScale,
-  computeTranslate,
-  computeOpacity,
-  resolveMotion,
-  DEFAULT_CONFIG,
-} from "./engine";
-export { MOTION_PRESETS } from "./presets";
-export type {
-  MotionConfig,
-  MotionContext,
-  MotionIntent,
-  MotionParams,
-  MotionPresetName,
-  MotionPresets,
-  MotionTuning,
-  ReducedMotionMode,
-} from "./types";
+export { motionFor, motionApply } from "./singleton";

@@ -4701,9 +4701,19 @@ body[data-sound-muted="false"]::after {
     .status-card,
     .nav,
     .nav-hamburger,
+    .nav-dropdown-caret,
+    .nav-drawer-link,
+    .nav-drawer-close,
+    .nav-drawer-discord,
+    .status-board,
+    .home-hero .primary-button,
     .docs-mobile-toc__trigger,
     .docs-mobile-toc__link {
         transition: none;
+    }
+    .catalog-filter-content,
+    .catalog-filter-content[data-closed] {
+        animation: none;
     }
 }
 

@@ -199,5 +199,4 @@ export function destroyMotionSystem(): void {
   lastPointerTime = 0;
   scrollSampleTime = 0;
   scrollSampleY = 0;
-  window.removeEventListener("beforeunload", destroyMotionSystem);
 }

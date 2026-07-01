@@ -367,20 +367,25 @@ export function buildPaidPlanJsonLd(
 	 * type object
 	 * desc Structured data for optional paid API plans and request-unit catalog offers.
 	 */
+	const positiveNum = (v: unknown): number | undefined =>
+		typeof v === 'number' && v > 0 ? v : undefined;
+	const priceFromObj = (price: { amount_milli?: number; amount?: number }): string | undefined => {
+		const milli = positiveNum(price.amount_milli);
+		if (milli !== undefined) return String(milli / 1000);
+		return positiveNum(price.amount)?.toString();
+	};
 	const priceForPlan = (paidPlan: (typeof plans)[number]): string => {
-		const milli = paidPlan.price_usd_milli;
-		if (typeof milli === 'number' && milli > 0) return String(milli / 1000);
-		const usd = paidPlan.price_usd;
-		if (typeof usd === 'number' && usd > 0) return String(usd);
+		const milli = positiveNum(paidPlan.price_usd_milli);
+		if (milli !== undefined) return String(milli / 1000);
+		const usd = positiveNum(paidPlan.price_usd);
+		if (usd !== undefined) return String(usd);
 		if (typeof paidPlan.price === 'string') {
 			const cleaned = paidPlan.price.replace(/[^0-9.]/g, '');
 			if (cleaned) return cleaned;
 		}
 		if (paidPlan.price && typeof paidPlan.price === 'object') {
-			const objMilli = paidPlan.price.amount_milli;
-			if (typeof objMilli === 'number' && objMilli > 0) return String(objMilli / 1000);
-			const objAmount = paidPlan.price.amount;
-			if (typeof objAmount === 'number' && objAmount > 0) return String(objAmount);
+			const objPrice = priceFromObj(paidPlan.price);
+			if (objPrice) return objPrice;
 		}
 		return plan.price.replace(/[^0-9.]/g, '');
 	};

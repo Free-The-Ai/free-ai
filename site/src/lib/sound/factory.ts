@@ -326,20 +326,21 @@ function arpeggioFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSyn
     const notes = (tune.notes ?? [523.25, 659.25]).map((n) => n * instrument.pitchMult);
     const noteDuration = (tune.noteDuration ?? 0.1) * instrument.decayMult;
     const noteGap = tune.noteGap ?? 0.12;
-    const finalRing = (tune.meta?.finalRing as number) ?? 0.25;
-    const shimmerCents = (tune.meta?.shimmerCents as number) ?? 0;
+    const meta = (tune.meta ?? {}) as Record<string, unknown>;
+    const finalRing = (meta.finalRing as number) ?? 0.25;
+    const shimmerCents = (meta.shimmerCents as number) ?? 0;
     const oscillators: OscillatorNode[] = [];
     const gainNodes: GainNode[] = [];
-
+    const lastIdx = notes.length - 1;
     for (let i = 0; i < notes.length; i++) {
       const noteTime = time + i * (noteDuration + noteGap);
-      const ring = i === notes.length - 1 ? finalRing : noteDuration;
+      const ring = i === lastIdx ? finalRing : noteDuration;
       const freq = notes[i];
       addArpNote(ctx, noteTime, freq, vol, ring, instrument, oscillators, gainNodes);
       if (tune.harmonics && tune.harmonicRatio) {
         addArpNote(ctx, noteTime, freq * tune.harmonicRatio, (tune.harmonicVolume ?? 0.1) * vol, ring, instrument, oscillators, gainNodes);
       }
-      if (shimmerCents > 0 && i === notes.length - 1) {
+      if (shimmerCents > 0 && i === lastIdx) {
         addArpNote(ctx, noteTime, freq, vol * 0.25, ring, instrument, oscillators, gainNodes, shimmerCents);
       }
     }

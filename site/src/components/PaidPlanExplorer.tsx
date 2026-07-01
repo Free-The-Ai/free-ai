@@ -121,6 +121,14 @@ const formatUnitCost = (value: number): string =>
 const formatUSD = (value: number): string =>
   `$${Number.isInteger(value) ? value.toLocaleString() : value.toLocaleString(undefined, { maximumFractionDigits: 2 })}`;
 
+const priceFromObject = (price: PaidPrice): string | undefined => {
+  const amount = num(price.amount);
+  if (amount !== undefined) return formatUSD(amount);
+  const milli = num(price.amount_milli);
+  if (milli !== undefined) return formatUSD(milli / 1000);
+  return undefined;
+};
+
 const formatPlanPrice = (plan: PaidPlan): string => {
   const milli = num(plan.price_usd_milli);
   if (milli !== undefined) return formatUSD(milli / 1000);
@@ -128,10 +136,8 @@ const formatPlanPrice = (plan: PaidPlan): string => {
   if (usd !== undefined) return formatUSD(usd);
   if (typeof plan.price === "string" && plan.price.trim()) return plan.price.trim();
   if (plan.price && typeof plan.price === "object") {
-    const amount = num(plan.price.amount);
-    if (amount !== undefined) return formatUSD(amount);
-    const amountMilli = num(plan.price.amount_milli);
-    if (amountMilli !== undefined) return formatUSD(amountMilli / 1000);
+    const objPrice = priceFromObject(plan.price);
+    if (objPrice) return objPrice;
   }
   return PLAN_PRICE_FALLBACKS[plan.id] ?? "Paid";
 };
@@ -164,50 +170,68 @@ const strArray = (v: unknown): string[] =>
 const strOrObj = (v: unknown): string | PaidPrice | undefined =>
   typeof v === "string" || (v && typeof v === "object") ? v as string | PaidPrice : undefined;
 
+const firstStr = (...vals: unknown[]): string | undefined => {
+  for (const v of vals) {
+    if (typeof v === "string" && v.trim()) return v.trim();
+  }
+  return undefined;
+};
+
+const objOr = <T extends Record<string, unknown>>(v: unknown, fallback: T): T =>
+  (v !== null && typeof v === "object") ? v as T : fallback;
+
 const normalizePlan = (raw: any): PaidPlan | null => {
-  const id = str(raw?.id);
+  if (!raw || typeof raw !== "object") return null;
+  const { id: rawId, display, visible, purchasable, display_name, description,
+    highlights, limits, model_count, concurrency_limit, providers, models,
+    billing_period, period, price: rawPrice, price_usd, price_usd_milli } = raw;
+  const id = str(rawId);
   if (!id) return null;
-  if (raw?.display === false || raw?.visible === false || raw?.purchasable === false) return null;
-  const price = strOrObj(raw?.price);
+  if (display === false || visible === false || purchasable === false) return null;
+  const price = strOrObj(rawPrice);
+  const periodFromPrice = typeof rawPrice === "object" && rawPrice ? rawPrice.period : undefined;
   return {
     id,
-    display_name: str(raw?.display_name) ?? id,
-    description: str(raw?.description),
-    highlights: strArray(raw?.highlights),
-    limits: raw?.limits && typeof raw.limits === "object" ? raw.limits : {},
-    model_count: num(raw?.model_count),
-    concurrency_limit: num(raw?.concurrency_limit),
-    providers: strArray(raw?.providers),
-    models: strArray(raw?.models),
-    billing_period: str(raw?.billing_period) ?? str(raw?.period) ?? str(raw?.price?.period),
+    display_name: str(display_name) ?? id,
+    description: str(description),
+    highlights: strArray(highlights),
+    limits: objOr(limits, {}),
+    model_count: num(model_count),
+    concurrency_limit: num(concurrency_limit),
+    providers: strArray(providers),
+    models: strArray(models),
+    billing_period: firstStr(billing_period, period, periodFromPrice),
     price,
-    price_usd: num(raw?.price_usd),
-    price_usd_milli: num(raw?.price_usd_milli),
-    purchasable: raw?.purchasable !== false,
+    price_usd: num(price_usd),
+    price_usd_milli: num(price_usd_milli),
+    purchasable: purchasable !== false,
   };
 };
 
 const normalizeModel = (raw: any): PaidModel | null => {
-  const id = str(raw?.id);
+  if (!raw || typeof raw !== "object") return null;
+  const { id: rawId, name, pricing_units, pricing, unit_cost, unit_label,
+    route, plans, context_window, max_input_tokens, max_output_tokens,
+    supports_images, supports_streaming, supports_tool_call, supports_response_schema } = raw;
+  const id = str(rawId);
   if (!id) return null;
-  const unit = num(raw?.pricing_units) ?? num(raw?.pricing?.unit_cost) ?? num(raw?.unit_cost) ?? 1;
-  const display = str(raw?.pricing?.display) ?? str(raw?.unit_label) ?? `${formatUnitCost(unit)} request units`;
-  const context = num(raw?.context_window);
-  const maxIn = num(raw?.max_input_tokens);
+  const pricingObj = typeof pricing === "object" && pricing ? pricing : {};
+  const unit = num(pricing_units) ?? num(pricingObj.unit_cost) ?? num(unit_cost) ?? 1;
+  const display = str(pricingObj.display) ?? str(unit_label) ?? `${formatUnitCost(unit)} request units`;
   const model = {
     id,
-    name: str(raw?.name),
+    name: str(name),
     unit_cost: unit,
     unit_label: display,
-    route: str(raw?.route) ?? routeForModel(id),
-    plans: strArray(raw?.plans),
-    context_window: context,
-    max_input_tokens: maxIn,
-    max_output_tokens: num(raw?.max_output_tokens),
-    supports_images: raw?.supports_images === true,
-    supports_streaming: raw?.supports_streaming === true,
-    supports_tool_call: raw?.supports_tool_call === true,
-    supports_response_schema: raw?.supports_response_schema === true,
+    route: str(route) ?? routeForModel(id),
+    plans: strArray(plans),
+    context_window: num(context_window),
+    max_input_tokens: num(max_input_tokens),
+    max_output_tokens: num(max_output_tokens),
+    supports_images: supports_images === true,
+    supports_streaming: supports_streaming === true,
+    supports_tool_call: supports_tool_call === true,
+    supports_response_schema: supports_response_schema === true,
   };
   const ctx = siteModelContextWindow(model);
   if (ctx > 0) { model.context_window = ctx; model.max_input_tokens = ctx; }

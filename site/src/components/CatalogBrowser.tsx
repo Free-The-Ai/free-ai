@@ -129,13 +129,17 @@ const modelRoutes = (model: Model): RouteInfo[] => {
 };
 
 const parseModel = (i: any): Model | null => {
-  const _id = str(i?.id);
+  if (!i || typeof i !== "object") return null;
+  const { id: rawId, prefix, access: rawAccess, requires_seems_legit,
+    visibility, context_window, max_input_tokens, max_output_tokens,
+    supports_images, supports_audio } = i;
+  const _id = str(rawId);
   if (!_id) return null;
-  const pfx = str(i?.prefix) ?? modelPrefix(_id);
-  const access = (i?.access ?? {}) as AccessInfo;
+  const pfx = str(prefix) ?? modelPrefix(_id);
+  const access = (rawAccess ?? {}) as AccessInfo;
   const requiredRoles = strArray(access.required_discord_roles);
   const requiresSeemsLegit =
-    i?.requires_seems_legit === true ||
+    requires_seems_legit === true ||
     access.requires_seems_legit === true ||
     requiredRoles.includes("seems_legit");
   const out: Model = { id: _id, prefix: pfx, required_roles: requiredRoles };
@@ -145,13 +149,13 @@ const parseModel = (i: any): Model | null => {
     ["max_input_tokens", posInt],
     ["max_output_tokens", posInt],
   ];
+  const fieldMap: Record<string, unknown> = { visibility, context_window, max_input_tokens, max_output_tokens };
   for (const [key, fn] of fields) {
-    const v = fn((i as any)[key]);
+    const v = fn(fieldMap[key as string]);
     if (v !== undefined) (out as any)[key] = v;
   }
-  for (const k of ["supports_images", "supports_audio"] as const) {
-    if (typeof i?.[k] === "boolean") (out as any)[k] = i[k];
-  }
+  if (typeof supports_images === "boolean") out.supports_images = supports_images;
+  if (typeof supports_audio === "boolean") out.supports_audio = supports_audio;
   if (requiresSeemsLegit) out.requires_seems_legit = true;
   return out;
 };

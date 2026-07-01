@@ -9,7 +9,7 @@ export interface MenuRootProps extends Omit<React.ComponentProps<typeof BaseMenu
   side?: Side;
 }
 
-export function MenuRoot({ children, ...rest }: MenuRootProps) {
+function MenuRoot({ children, ...rest }: MenuRootProps) {
   return <BaseMenu.Root {...rest}>{children}</BaseMenu.Root>;
 }
 
@@ -17,7 +17,7 @@ export interface MenuTriggerProps extends Omit<React.ComponentProps<typeof BaseM
   sound?: SoundRole | false;
 }
 
-export function MenuTrigger({ sound, className, onClick, children, ...rest }: MenuTriggerProps) {
+function MenuTrigger({ sound, className, onClick, children, ...rest }: MenuTriggerProps) {
   return (
     <BaseMenu.Trigger
       className={['kb-menu__trigger', className].filter(Boolean).join(' ')}
@@ -38,7 +38,7 @@ export interface MenuContentProps extends Omit<React.ComponentProps<typeof BaseM
   side?: Side;
 }
 
-export function MenuContent({ side = 'bottom', className, children, ...rest }: MenuContentProps) {
+function MenuContent({ side = 'bottom', className, children, ...rest }: MenuContentProps) {
   return (
     <BaseMenu.Portal>
       <BaseMenu.Positioner className="kb-menu__positioner" side={side} collisionPadding={8} {...rest}>
@@ -52,7 +52,7 @@ export function MenuContent({ side = 'bottom', className, children, ...rest }: M
 
 export interface MenuItemProps extends React.ComponentProps<typeof BaseMenu.Item> {}
 
-export function MenuItem({ className, ...rest }: MenuItemProps) {
+function MenuItem({ className, ...rest }: MenuItemProps) {
   return <BaseMenu.Item className={['kb-menu__item', className].filter(Boolean).join(' ')} {...rest} />;
 }
 

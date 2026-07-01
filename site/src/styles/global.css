@@ -338,12 +338,6 @@ pre {
         box-shadow 150ms var(--ease-out-smooth);
 }
 
-.nav-links a:hover,
-.nav-links a.is-active {
-    color: var(--text);
-    background: var(--control-bg);
-}
-
 .nav-actions {
     display: inline-flex;
     align-items: center;
@@ -629,10 +623,6 @@ pre {
     padding: 0 16px;
 }
 
-.discord-button:hover {
-    background: var(--accent-muted);
-}
-
 .donate-button-icon {
     display: inline-flex;
     align-items: center;
@@ -685,7 +675,6 @@ pre {
 }
 
 .primary-button:hover {
-    background: oklch(0.630 0.201 38.3);
     transform: translateY(var(--hover-lift));
 }
 
@@ -989,13 +978,6 @@ h3 {
         border-color 200ms var(--ease-out-smooth),
         background 200ms var(--ease-out-smooth),
         box-shadow 200ms var(--ease-out-smooth);
-}
-
-.proof-card:hover,
-.capability-card:hover,
-.step-card:hover {
-    border-color: var(--border-strong);
-    background: var(--bg);
 }
 
 .code-card,
@@ -1687,7 +1669,6 @@ h3 {
 
 .docs-sidebar a:hover {
     color: var(--text);
-    background: var(--control-bg);
 }
 
 .docs-content {
@@ -2279,7 +2260,6 @@ h3 {
 }
 
 .catalog-summary button:hover {
-    background: var(--control-bg);
     color: var(--text);
 }
 

@@ -438,6 +438,7 @@ pre {
     left: 20px;
     right: 20px;
     z-index: 30;
+    contain: layout style;
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: 10px;
@@ -2106,6 +2107,7 @@ h3 {
 .catalog-filter-content {
     position: relative;
     z-index: 50;
+    contain: layout style;
     width: min(var(--anchor-width, 220px), var(--available-width, 100vw)) !important;
     max-height: min(var(--available-height, 320px), 320px);
     overflow-y: auto;
@@ -4167,6 +4169,7 @@ h3 {
         .docs-mobile-toc__sheet {
             animation: none;
             transition: none;
+            will-change: auto;
         }
     }
 

@@ -189,6 +189,7 @@
   z-index: 100;
 }
 .kb-select__content {
+  contain: layout style;
   width: min(var(--anchor-width, 220px), var(--available-width, 100vw));
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);
@@ -272,6 +273,7 @@
 
 .kb-menu__content {
   z-index: 50;
+  contain: layout style;
   width: min(var(--anchor-width, 220px), var(--available-width, 100vw));
   max-height: min(var(--available-height, 320px), 320px);
   border: 1px solid var(--border-strong);

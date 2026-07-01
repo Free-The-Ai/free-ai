@@ -195,7 +195,7 @@
   background: var(--sk-shell-bg);
   box-shadow: var(--sk-raised-shadow);
   overflow: hidden;
-  animation: selectOpen var(--motion-duration, 150ms) var(--motion-easing, var(--ease-out-smooth));
+  animation: selectOpen var(--motion-duration, 150ms) var(--motion-easing, var(--ease-out-smooth)) forwards;
 }
 @keyframes selectOpen {
   from { opacity: 0; transform: translateY(-4px) scale(0.98); }
@@ -283,7 +283,7 @@
   -webkit-overflow-scrolling: touch;
   padding: 6px;
   transform-origin: var(--transform-origin);
-  animation: menuOpen var(--motion-duration, var(--dropdown-open-dur)) var(--motion-easing, var(--ease-out-smooth));
+  animation: menuOpen var(--motion-duration, var(--dropdown-open-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
 }
 
 .kb-select__listbox,
@@ -322,6 +322,8 @@
   .kb-menu__content,
   .kb-menu__content[data-closed],
   .kb-toast,
+  .kb-toast[data-opened],
+  .kb-toast[data-closed],
   .kb-toast[data-swipe="end"],
   .kb-select__content,
   .kb-skeleton [data-animate] {
@@ -423,10 +425,10 @@
 }
 
 .kb-toast[data-opened] {
-  animation: toastIn var(--motion-duration, 200ms) var(--motion-easing, cubic-bezier(0.16, 1, 0.3, 1));
+  animation: toastIn var(--motion-duration, 200ms) var(--motion-easing, var(--ease-out-expo)) forwards;
 }
 .kb-toast[data-closed] {
-  animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+  animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, var(--ease-out-expo)) forwards;
 }
 .kb-toast[data-swipe="move"] {
   transform: translateX(var(--toast-swipe-movement-x, var(--kb-toast-swipe-move-x, 0px)));
@@ -436,7 +438,7 @@
   transition: transform 200ms var(--ease-out-smooth);
 }
 .kb-toast[data-swipe="end"] {
-  animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
+  animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, var(--ease-out-expo)) forwards;
 }
 
 .kb-toast__content {

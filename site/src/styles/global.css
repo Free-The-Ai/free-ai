@@ -636,6 +636,7 @@ pre {
     color: var(--donate-text);
     text-decoration: underline;
     text-underline-offset: 2px;
+    transition: color 150ms var(--ease-out-smooth), text-shadow 150ms var(--ease-out-smooth);
 }
 
 .footer-support a:hover {
@@ -2106,7 +2107,7 @@ h3 {
     background: var(--sk-shell-bg);
     box-shadow: var(--sk-raised-crisp-shadow), 0 18px 36px oklch(0 0 0 / 0.5);
     transform-origin: var(--transform-origin);
-    animation: menuOpen var(--motion-duration, var(--dropdown-open-dur)) var(--motion-easing, var(--ease-out-smooth));
+    animation: menuOpen var(--motion-duration, var(--dropdown-open-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
 }
 
 .catalog-filter-content[data-closed] {
@@ -3501,6 +3502,11 @@ h3 {
     border-radius: var(--radius);
     background: var(--sk-shell-bg);
     box-shadow: var(--sk-raised-shadow);
+}
+
+.nav-drawer-close,
+.nav-drawer-discord,
+.status-board {
     transition:
         background 200ms var(--ease-out-smooth),
         border-color 200ms var(--ease-out-smooth),
@@ -4097,7 +4103,7 @@ h3 {
         z-index: 98;
         background: oklch(0 0 0 / 0.5);
         backdrop-filter: blur(4px);
-        animation: toc-overlay-in var(--motion-duration, 250ms) var(--motion-easing, var(--ease-out-smooth));
+        animation: toc-overlay-in var(--motion-duration, 250ms) var(--motion-easing, var(--ease-out-smooth)) forwards;
     }
 
     @keyframes toc-overlay-in {
@@ -4118,7 +4124,7 @@ h3 {
         max-height: 70vh;
         overflow-y: auto;
         overscroll-behavior: contain;
-        animation: toc-sheet-up var(--motion-duration, 250ms) var(--motion-easing, var(--ease-out-expo));
+        animation: toc-sheet-up var(--motion-duration, 250ms) var(--motion-easing, var(--ease-out-expo)) forwards;
         will-change: transform;
         transition: transform var(--motion-duration, 280ms) var(--motion-easing, var(--ease-out-expo));
         touch-action: pan-y;
@@ -4649,6 +4655,7 @@ body[data-sound-muted="false"]::after {
     .nav-dropdown-panel,
     .hamburger-bar {
         transition: none;
+        animation: none;
     }
 }
 

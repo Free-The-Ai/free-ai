@@ -126,7 +126,7 @@ export function themeConfigure(partial?: Partial<ThemeConfig>): void {
 
 const SCHEME_CYCLE: ColorScheme[] = ["dark", "midnight"];
 
-export function themeToggleScheme(): ColorScheme {
+function themeToggleScheme(): ColorScheme {
   const idx = SCHEME_CYCLE.indexOf(config.scheme);
   const next = SCHEME_CYCLE[(idx + 1) % SCHEME_CYCLE.length];
   themeConfigure({ scheme: next });
@@ -157,13 +157,6 @@ export function initThemeSystem(): void {
 
   // Expose globally for inline Layout.astro scripts (theme toggle button, etc.)
   (window as unknown as Record<string, unknown>).__themeToggle = themeToggleScheme;
-}
-
-function destroyThemeSystem(): void {
-  if (!initialized) return;
-  initialized = false;
-  contrastMql?.removeEventListener("change", onContrastChange);
-  contrastMql = null;
 }
 
 /**

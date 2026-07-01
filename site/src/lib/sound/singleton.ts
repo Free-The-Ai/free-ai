@@ -244,7 +244,6 @@ export function initSoundSystem(): void {
   if (typeof window !== "undefined") {
     (window as any).__soundPlay = soundPlay;
     (window as any).__soundToggleMute = soundToggleMute;
-    (window as any).__soundIsMuted = soundIsMuted;
   }
 
   // Cleanup on tab close only — module-level state persists across navigations.
@@ -274,7 +273,6 @@ function destroySoundSystem(): void {
   if (typeof window !== "undefined") {
     delete (window as any).__soundPlay;
     delete (window as any).__soundToggleMute;
-    delete (window as any).__soundIsMuted;
   }
   closeAudioContext();
 }

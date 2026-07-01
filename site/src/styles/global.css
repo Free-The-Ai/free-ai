@@ -586,8 +586,6 @@ pre {
     gap: 10px;
     min-height: var(--control-height);
     padding: var(--control-padding);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
     text-decoration: none;
     font-size: 0.95rem;
     font-weight: 600;
@@ -659,11 +657,7 @@ pre {
 }
 
 .primary-button {
-    border-color: var(--accent);
-    background: var(--accent);
-    color: var(--accent-text-strong);
     font-weight: 600;
-    text-shadow: var(--accent-text-glow);
 }
 
 .primary-button:hover {
@@ -746,7 +740,6 @@ pre {
 
 .ghost-button {
     border-color: var(--border);
-    background: transparent;
     color: var(--muted);
     font-weight: 500;
 }
@@ -909,9 +902,6 @@ h3 {
     gap: 8px;
     min-height: 30px;
     padding: 0 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
     color: var(--muted);
     font-family: var(--font-mono);
     font-size: 0.68rem;
@@ -939,13 +929,6 @@ h3 {
 
 .code-card,
 .panel {
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
-}
-
-.code-card,
-.panel {
     transition:
         border-color 200ms var(--ease-out-smooth),
         background 200ms var(--ease-out-smooth),
@@ -960,9 +943,6 @@ h3 {
     gap: 20px;
     min-width: 0;
     padding: 24px 22px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
 }
 
 .hero-code-card {
@@ -1016,9 +996,6 @@ h3 {
     min-width: 0;
     padding: 16px;
     overflow: auto;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--code-bg);
     color: var(--code-text);
     line-height: 1.6;
     font-size: 0.8rem;
@@ -1122,9 +1099,6 @@ h3 {
     justify-content: center;
     width: 28px;
     height: 28px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
     color: var(--muted);
     cursor: pointer;
     opacity: 0;
@@ -1205,9 +1179,6 @@ h3 {
     gap: 8px 12px;
     min-width: 0;
     padding: 18px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
     color: var(--text);
     text-decoration: none;
 }
@@ -1369,8 +1340,6 @@ h3 {
     gap: 12px;
     align-items: center;
     padding: 12px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
     background: var(--bg);
 }
 
@@ -1632,9 +1601,6 @@ h3 {
 
 .docs-content .kb-accordion {
     overflow: hidden;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
 }
 
 .docs-content .kb-accordion__trigger {
@@ -1886,8 +1852,6 @@ h3 {
     align-items: center;
     min-height: 28px;
     padding: 0 9px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
     background: var(--bg);
     color: var(--muted);
     font-family: var(--font-mono);
@@ -2138,8 +2102,6 @@ h3 {
     gap: 4px;
     height: 32px;
     padding: 0 10px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
     background: transparent;
     color: var(--muted);
     font-family: var(--font-mono);
@@ -2648,9 +2610,6 @@ h3 {
     height: 150px;
     min-height: 150px;
     padding: 16px 42px 16px 16px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
     transition:
         border-color 150ms var(--ease-out-smooth),
         background 150ms var(--ease-out-smooth),
@@ -2734,9 +2693,6 @@ h3 {
     width: 26px;
     height: 26px;
     padding: 0;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: var(--surface);
     color: var(--muted);
     cursor: pointer;
     font-size: 14px;
@@ -2808,7 +2764,6 @@ h3 {
 
 .status-footnote,
 .status-alert {
-    border: 1px solid var(--border);
     background: var(--control-bg);
 }
 
@@ -3267,7 +3222,6 @@ h3 {
     box-sizing: border-box;
     border-radius: 14px 14px 0 0;
     border-top: 1px solid var(--border);
-    background: var(--surface);
     padding-bottom: env(safe-area-inset-bottom, 0px);
     outline: 0;
     overflow: hidden;

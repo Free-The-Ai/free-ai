@@ -966,7 +966,8 @@ h3 {
     background: var(--surface);
     transition:
         border-color 200ms var(--ease-out-smooth),
-        background 200ms var(--ease-out-smooth);
+        background 200ms var(--ease-out-smooth),
+        box-shadow 200ms var(--ease-out-smooth);
 }
 
 .proof-card:hover,
@@ -1238,7 +1239,8 @@ h3 {
     text-decoration: none;
     transition:
         border-color 200ms var(--ease-out-smooth),
-        background 200ms var(--ease-out-smooth);
+        background 200ms var(--ease-out-smooth),
+        box-shadow 200ms var(--ease-out-smooth);
 }
 
 .docs-start-card:hover {
@@ -1406,6 +1408,7 @@ h3 {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--bg);
+    transition: border-color 150ms var(--ease-out-smooth), background 150ms var(--ease-out-smooth), box-shadow 150ms var(--ease-out-smooth);
 }
 
 .model-leaderboard-row span {
@@ -2250,7 +2253,8 @@ h3 {
     transition:
         border-color 150ms var(--ease-out-smooth),
         color 150ms var(--ease-out-smooth),
-        background 150ms var(--ease-out-smooth);
+        background 150ms var(--ease-out-smooth),
+        box-shadow 150ms var(--ease-out-smooth);
 }
 
 .catalog-summary button:hover {
@@ -3591,6 +3595,10 @@ h3 {
 .nav-drawer-discord:hover {
     color: var(--accent-text-strong);
     text-shadow: var(--accent-text-glow);
+}
+
+.nav-drawer-link {
+    transition: color 200ms var(--ease-out-smooth), background 200ms var(--ease-out-smooth), box-shadow 200ms var(--ease-out-smooth);
 }
 
 .ghost-button:hover,

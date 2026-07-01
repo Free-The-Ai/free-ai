@@ -288,7 +288,7 @@ const jsonLd = [
         font-size: 0.78rem;
         text-decoration: none;
         width: fit-content;
-        transition: border-color 150ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth);
+        transition: border-color 150ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth), text-shadow 150ms var(--ease-out-smooth);
     }
 
     .team-github:hover {
@@ -353,6 +353,7 @@ const jsonLd = [
         text-decoration: none;
         border-bottom: 1px solid var(--sk-border);
         padding-bottom: 2px;
+        transition: color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
     }
 
     .team-secondary:hover {
@@ -367,8 +368,12 @@ const jsonLd = [
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .team-card {
+        .team-card,
+        .team-card:hover,
+        .team-github,
+        .team-secondary {
             transition: none;
+            transform: none;
         }
     }
 </style>

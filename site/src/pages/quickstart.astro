@@ -541,4 +541,13 @@ const highlightedInstallJs = await highlight(installJs, "bash");
         font-size: 0.85rem;
         line-height: 1.5;
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .quickstart-secondary,
+        .quickstart-link,
+        .quickstart-link:hover {
+            transition: none;
+            transform: none;
+        }
+    }
 </style>

@@ -467,8 +467,12 @@ const setupKeywords = [
 
     @media (prefers-reduced-motion: reduce) {
         .setup-card,
-        .setup-card-arrow {
+        .setup-card:hover,
+        .setup-card-arrow,
+        .setup-path-card,
+        .setup-secondary {
             transition: none;
+            transform: none;
         }
     }
 </style>

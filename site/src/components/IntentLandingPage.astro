@@ -270,6 +270,7 @@ const jsonLd = [
         text-decoration: none;
         border-bottom: 1px solid var(--sk-border);
         padding-bottom: 2px;
+        transition: color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
     }
 
     .intent-secondary:hover {
@@ -485,6 +486,16 @@ const jsonLd = [
 
         .intent-hero h1 {
             letter-spacing: -0.04em;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .intent-guide-card,
+        .intent-secondary {
+            transition: none;
+        }
+        .intent-guide-card:hover {
+            transform: none;
         }
     }
 </style>

@@ -589,6 +589,7 @@ pre {
         border-color 200ms var(--ease-out-smooth),
         box-shadow 200ms var(--ease-out-smooth),
         color 200ms var(--ease-out-smooth),
+        text-shadow 200ms var(--ease-out-smooth),
         transform var(--press-dur) var(--ease-out-smooth);
 }
 .discord-button:active,
@@ -1153,7 +1154,7 @@ h3 {
     color: var(--muted);
     cursor: pointer;
     opacity: 0;
-    transition: opacity 150ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
+    transition: opacity 150ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth), background 150ms var(--ease-out-smooth), box-shadow 150ms var(--ease-out-smooth);
 }
 .copy-btn:hover {
     color: var(--text);
@@ -2207,7 +2208,8 @@ h3 {
         border-color 150ms var(--ease-out-smooth),
         background 150ms var(--ease-out-smooth),
         color 150ms var(--ease-out-smooth),
-        text-shadow 150ms var(--ease-out-smooth);
+        text-shadow 150ms var(--ease-out-smooth),
+        box-shadow 150ms var(--ease-out-smooth);
     white-space: nowrap;
 }
 
@@ -2817,6 +2819,7 @@ h3 {
         opacity 150ms var(--ease-out-smooth),
         color 150ms var(--ease-out-smooth),
         border-color 150ms var(--ease-out-smooth),
+        box-shadow 150ms var(--ease-out-smooth),
         transform var(--press-dur) var(--ease-out-smooth);
 }
 .model-card:hover .model-copy {
@@ -3511,7 +3514,8 @@ h3 {
         background 200ms var(--ease-out-smooth),
         border-color 200ms var(--ease-out-smooth),
         box-shadow 200ms var(--ease-out-smooth),
-        color 200ms var(--ease-out-smooth);
+        color 200ms var(--ease-out-smooth),
+        text-shadow 200ms var(--ease-out-smooth);
 }
 
 .nav {
@@ -4006,6 +4010,8 @@ h3 {
         transition:
             border-color 200ms var(--ease-out-smooth),
             background 200ms var(--ease-out-smooth),
+            color 200ms var(--ease-out-smooth),
+            box-shadow 200ms var(--ease-out-smooth),
             transform var(--press-dur) var(--ease-out-smooth);
     }
 

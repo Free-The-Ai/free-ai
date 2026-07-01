@@ -265,7 +265,7 @@ const setupKeywords = [
         box-shadow: var(--sk-inset-shadow);
         color: var(--text);
         text-decoration: none;
-        transition: border-color 160ms ease, transform 160ms ease;
+        transition: border-color 160ms var(--ease-out-smooth), transform 160ms var(--ease-out-smooth);
     }
 
     .setup-path-card:hover {
@@ -342,7 +342,7 @@ const setupKeywords = [
         box-shadow: var(--sk-inset-shadow);
         text-decoration: none;
         color: var(--text);
-        transition: border-color 200ms ease, transform 200ms ease, box-shadow 200ms ease;
+        transition: border-color 200ms var(--ease-out-smooth), transform 200ms var(--ease-out-smooth), box-shadow 200ms var(--ease-out-smooth);
         min-height: 214px;
     }
 
@@ -370,7 +370,7 @@ const setupKeywords = [
         font-size: 1rem;
         color: var(--accent-text);
         opacity: 0.65;
-        transition: opacity 150ms ease, transform 200ms ease;
+        transition: opacity 150ms var(--ease-out-smooth), transform 200ms var(--ease-out-smooth);
     }
 
     .setup-card:hover .setup-card-arrow {

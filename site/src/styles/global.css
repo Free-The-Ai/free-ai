@@ -3109,6 +3109,7 @@ h3 {
     padding: 24px 26px 0;
     min-width: 0;
     touch-action: none;
+    user-select: none;
 }
 
 .provider-popover .popover-heading {
@@ -3353,6 +3354,7 @@ h3 {
     height: 88dvh;
     max-height: 88dvh;
     pointer-events: auto;
+    touch-action: pan-y;
     box-sizing: border-box;
     border-radius: 14px 14px 0 0;
     border-top: 1px solid var(--border);
@@ -3380,6 +3382,8 @@ h3 {
     border-radius: 2px;
     background: var(--border-strong);
     flex-shrink: 0;
+    touch-action: none;
+    user-select: none;
 }
 
 .nav-drawer-content {
@@ -4182,6 +4186,7 @@ h3 {
         justify-content: center;
         cursor: grab;
         touch-action: none;
+        user-select: none;
         -webkit-tap-highlight-color: transparent;
     }
 

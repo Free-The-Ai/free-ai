@@ -440,6 +440,8 @@
   box-shadow: 0 12px 32px oklch(0 0 0 / 0.45);
   pointer-events: auto;
   overflow: hidden;
+  touch-action: pan-y;
+  user-select: none;
 }
 
 .kb-toast[data-opened] {

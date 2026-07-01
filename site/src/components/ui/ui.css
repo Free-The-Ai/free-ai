@@ -190,6 +190,7 @@
 }
 .kb-select__content {
   contain: layout style;
+  transform-origin: var(--transform-origin);
   width: min(var(--anchor-width, 220px), var(--available-width, 100vw));
   border: 1px solid var(--border-strong);
   border-radius: var(--radius);

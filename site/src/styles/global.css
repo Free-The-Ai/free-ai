@@ -141,6 +141,7 @@ body {
     overflow-y: scroll;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
+    text-rendering: geometricPrecision;
     scrollbar-width: thin;
     scrollbar-color: var(--accent) transparent;
 }
@@ -164,6 +165,11 @@ body::-webkit-scrollbar {
 
 body::-webkit-scrollbar-track {
     background: transparent;
+}
+
+a, button, [role="button"], [role="tab"], [role="link"],
+input[type="checkbox"], input[type="radio"], label, summary {
+    -webkit-tap-highlight-color: transparent;
 }
 
 body::-webkit-scrollbar-thumb {
@@ -2105,12 +2111,6 @@ h3 {
     text-shadow: none;
 }
 
-.catalog-filter-caret {
-    font-size: 16px;
-    color: var(--dim);
-    transition: transform 200ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth);
-}
-
 .catalog-filter-trigger[data-expanded] .kb-menu__chevron {
     transform: rotate(180deg);
     color: var(--accent-text);
@@ -3799,6 +3799,8 @@ h3 {
 }
 
 .status-card::before {
+    content: "";
+    position: absolute;
     inset: 0 0 auto 0;
     width: auto;
     height: 1px;
@@ -4692,6 +4694,9 @@ body[data-sound-muted="false"]::after {
         transition: none;
     }
     .nav-dropdown-panel,
+    .nav-dropdown:hover .nav-dropdown-panel,
+    .nav-dropdown:focus-within .nav-dropdown-panel,
+    .nav-dropdown.is-open .nav-dropdown-panel,
     .hamburger-bar {
         transition: none;
         animation: none;
@@ -4705,7 +4710,6 @@ body[data-sound-muted="false"]::after {
         transform: none;
     }
     .skip-link,
-    .catalog-filter-caret,
     .discord-button,
     .primary-button,
     .ghost-button,
@@ -4726,6 +4730,8 @@ body[data-sound-muted="false"]::after {
     .nav-drawer-discord,
     .status-board,
     .home-hero .primary-button,
+    .catalog-filter-trigger,
+    .model-copy,
     .docs-mobile-toc__trigger,
     .docs-mobile-toc__link {
         transition: none;

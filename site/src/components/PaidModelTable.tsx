@@ -6,6 +6,7 @@ import type { SelectOption } from "./ui";
 interface PaidModel {
   id: string;
   name?: string;
+  prefix?: string;
   unit_cost: number;
   unit_label: string;
   route: string;
@@ -88,7 +89,7 @@ function PaidModelRow({ model }: { model: PaidModel }) {
           </span>
         )}
       </span>
-      <span className="pricing-route-pill" data-label="Prefix">{model.prefix}/*</span>
+      <span className="pricing-route-pill" data-label="Prefix">{model.prefix ?? model.id}/*</span>
       <span className="pricing-route-pill" data-label="Route">{model.route}</span>
       <span className="paid-model-plans" data-label="Plan">
         {(model.plans ?? []).map((plan) => (

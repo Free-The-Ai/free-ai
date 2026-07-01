@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, type CSSProperties } from "react";
 
 export interface DitherShaderProps {
   w?: number;
@@ -127,10 +127,10 @@ export default function DitherShader(props: DitherShaderProps) {
         inset: 0,
         width: "100%",
         height: "100%",
-        "image-rendering": "pixelated",
-        "pointer-events": "none",
+        imageRendering: "pixelated",
+        pointerEvents: "none",
         opacity: 1,
-      }}
+      } as CSSProperties}
     />
   );
 }

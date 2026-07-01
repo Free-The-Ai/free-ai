@@ -94,7 +94,7 @@ const TYPE_PREDICATES: Record<FilterKey, (m: Model) => boolean> = {
   chat: (m) => !modelSupportsAudio(m) && !modelSupportsImage(m),
   image: (m) => modelSupportsImage(m),
   audio: (m) => modelSupportsAudio(m),
-  gated: (m) => m.requires_seems_legit,
+  gated: (m) => !!m.requires_seems_legit,
   long: (m) => modelContext(m) >= 128_000,
 };
 
@@ -616,7 +616,7 @@ export default function CatalogBrowser() {
             .map(parseModel)
             .filter((m: Model | null): m is Model => m !== null)
             .filter((m: Model) => !DISABLED.has(m.prefix))
-            .sort((a, b) => collator.compare(a.id, b.id))
+            .sort((a: Model, b: Model) => collator.compare(a.id, b.id))
         );
         if (payload?.policy && typeof payload.policy === "object") setPolicy(payload.policy as Policy);
         setSource(src);
@@ -651,7 +651,7 @@ export default function CatalogBrowser() {
     const label = policy?.seems_legit_required_role_label;
     const normalized = label?.toLowerCase().replace(/[\s-]+/g, "_");
     if (!normalized || normalized === "seems_legit") return "Verified members";
-    return label;
+    return label ?? "Verified members";
   };
 
   const visibleTypeOptions = useMemo((): FilterKey[] => {
@@ -713,7 +713,7 @@ export default function CatalogBrowser() {
       />
 
       {selected && (
-        <ModelDetailModal model={selected} onClose={() => setSelected(null)} verifiedLabel={verifiedMemberLabel()} />
+        <ModelDetailModal model={selected} onClose={() => setSelected(null)} verifiedLabel={verifiedMemberLabel() ?? "Verified members"} />
       )}
     </div>
   );

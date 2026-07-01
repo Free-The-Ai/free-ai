@@ -4,9 +4,10 @@
  * Called at build time in Astro frontmatter — no client-side JS overhead.
  */
 import { codeToHtml } from "shiki";
+import type { ShikiTransformer } from "shiki";
 
 /** Strips Shiki's inline background-color so our --code-bg CSS var applies without !important. */
-const stripPreBackground = {
+const stripPreBackground: ShikiTransformer = {
 	name: "strip-pre-background",
 	pre(node) {
 		if (typeof node.properties?.style === "string") {

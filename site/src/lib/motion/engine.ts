@@ -110,9 +110,9 @@ export function computeTranslate(
   return exitLike.includes(context.intent) ? -Math.abs(baseTranslate) : Math.abs(baseTranslate);
 }
 
-/** Opacity start for fades: enters/swaps/reveals start invisible. */
+/** Opacity start for fades: enters/swaps/exits start invisible. */
 export function computeOpacity(context: MotionContext): number {
-  const transparent: MotionIntent[] = ["enter", "exit", "swap", "reveal"];
+  const transparent: MotionIntent[] = ["enter", "exit", "swap"];
   return transparent.includes(context.intent) ? 0 : 1;
 }
 

@@ -94,11 +94,7 @@ export type TuneType =
   | "rise"
   | "drop"
   | "chime"
-  | "arpeggio"
-  | "chord"
-  | "burst"
-  | "pulse"
-  | "wobble";
+  | "arpeggio";
 
 export interface BaseTune {
   type: TuneType;
@@ -139,9 +135,7 @@ export type SoundSynthesizer = (
   options: PlaySoundOptions,
 ) => SoundPlayback;
 
-export type SoundSource = SoundSynthesizer | string;
-
-export type SoundPack = Record<SoundRole, SoundSource>;
+export type SoundPack = Record<SoundRole, SoundSynthesizer>;
 
 // ── Config ──
 
@@ -150,6 +144,5 @@ export interface SensoryConfig {
   volume: number;
   theme: SoundPackName | (string & {});
   categories: Record<SoundCategory, boolean>;
-  overrides: Partial<Record<SoundRole, string>>;
   reducedMotion: "inherit" | "force-off" | "force-on";
 }

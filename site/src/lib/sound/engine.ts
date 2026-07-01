@@ -6,7 +6,6 @@
 import type {
   PlaySoundOptions,
   SoundPlayback,
-  SoundSource,
   SoundSynthesizer,
 } from "./types";
 
@@ -47,31 +46,6 @@ export function closeAudioContext(): void {
     audioCtx.close();
   }
   audioCtx = null;
-  bufferCache.clear();
-}
-
-// ── Buffer cache for decoded audio ──
-
-const bufferCache = new Map<string, AudioBuffer>();
-
-async function decodeAudioData(source: string): Promise<AudioBuffer> {
-  const cached = bufferCache.get(source);
-  if (cached) return cached;
-
-  const ctx = getAudioContext();
-  let arrayBuffer: ArrayBuffer;
-
-  if (source.startsWith("data:") || source.startsWith("blob:")) {
-    const resp = await fetch(source);
-    arrayBuffer = await resp.arrayBuffer();
-  } else {
-    const resp = await fetch(source);
-    arrayBuffer = await resp.arrayBuffer();
-  }
-
-  const buffer = await ctx.decodeAudioData(arrayBuffer);
-  bufferCache.set(source, buffer);
-  return buffer;
 }
 
 // ── Active playback tracking (anti-overlap) ──
@@ -80,12 +54,8 @@ let activePlayback: SoundPlayback | null = null;
 
 // ── Public API ──
 
-function isSynthesizer(source: SoundSource): source is SoundSynthesizer {
-  return typeof source === "function";
-}
-
 export function playSound(
-  source: SoundSource,
+  source: SoundSynthesizer,
   options: PlaySoundOptions = {},
 ): SoundPlayback | null {
   // Cancel previous sound on rapid re-trigger
@@ -112,58 +82,11 @@ export function playSound(
 }
 
 function playSoundImmediate(
-  source: SoundSource,
+  source: SoundSynthesizer,
   options: PlaySoundOptions = {},
 ): SoundPlayback | null {
   const ctx = getAudioContext();
-
-  if (isSynthesizer(source)) {
-    const playback = source(ctx, options);
-    activePlayback = playback;
-    return playback;
-  }
-
-  // String source — decode and play via BufferSource
-  let stopped = false;
-  let sourceNode: AudioBufferSourceNode | null = null;
-  let gainNode: GainNode | null = null;
-
-  const playback: SoundPlayback = {
-    stop() {
-      if (stopped) return;
-      stopped = true;
-      try {
-        sourceNode?.stop();
-      } catch {
-        // already stopped
-      }
-    },
-  };
-
-  decodeAudioData(source)
-    .then((buffer) => {
-      if (stopped) return;
-      sourceNode = ctx.createBufferSource();
-      sourceNode.buffer = buffer;
-      sourceNode.playbackRate.value = options.playbackRate ?? 1;
-
-      gainNode = ctx.createGain();
-      gainNode.gain.value = options.volume ?? 1;
-
-      sourceNode.connect(gainNode);
-      gainNode.connect(ctx.destination);
-
-      sourceNode.onended = () => {
-        if (activePlayback === playback) activePlayback = null;
-        options.onEnd?.();
-      };
-
-      sourceNode.start();
-    })
-    .catch(() => {
-      // Decode failed — silent fallback
-    });
-
+  const playback = source(ctx, options);
   activePlayback = playback;
   return playback;
 }

@@ -347,89 +347,6 @@ function arpeggioFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSyn
   };
 }
 
-// ── Chord ── (simultaneous notes)
-
-function chordFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
-  return (ctx, options) => {
-    const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
-    const notes = (tune.notes ?? [261.63, 329.63, 392.0]).map((n) => n * instrument.pitchMult);
-    const normFactor = 1 / Math.sqrt(notes.length);
-    const oscillators: OscillatorNode[] = [];
-    const gainNodes: GainNode[] = [];
-
-    for (const freq of notes) {
-      const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
-      gainNodes.push(connectOscVoice(ctx, osc, time, vol * normFactor, duration, instrument));
-      oscillators.push(osc);
-    }
-    return makePlayback(oscillators, gainNodes, options.onEnd);
-  };
-}
-
-// ── Burst ── (noise with bandpass sweep)
-
-function burstFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
-  return (ctx, options) => {
-    const { time, vol, duration } = extractParams(ctx, tune, options, instrument, 0.5);
-    createNoiseBurstVoice(ctx, duration, time, vol, instrument, {
-      decayConstant: 30,
-      filterFreq: instrument.filterFreq,
-      filterQ: instrument.q,
-      filterSweep: { start: instrument.filterFreq, end: instrument.filterFreq * 0.3 },
-    });
-    return makePlayback([], [], options.onEnd);
-  };
-}
-
-// ── Pulse ── (repeating oscillator pattern)
-
-function pulseFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
-  return (ctx, options) => {
-    const { time, vol } = extractParams(ctx, tune, options, instrument);
-    const freq = (tune.frequency ?? 440) * instrument.pitchMult;
-    const count = tune.pulseCount ?? 3;
-    const pulseDur = tune.duration / count;
-    const oscillators: OscillatorNode[] = [];
-    const gainNodes: GainNode[] = [];
-
-    for (let i = 0; i < count; i++) {
-      const t = time + i * pulseDur;
-      const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
-      const gain = createEnvelopedGain(ctx, t, vol, pulseDur * 0.6, { ...instrument, decayMult: 1 });
-      osc.connect(gain); gain.connect(ctx.destination);
-      osc.start(t); osc.stop(t + pulseDur);
-      oscillators.push(osc); gainNodes.push(gain);
-    }
-    return makePlayback(oscillators, gainNodes, options.onEnd);
-  };
-}
-
-// ── Wobble ── (oscillator + LFO frequency modulation)
-
-function wobbleFactory(tune: BaseTune, instrument: InstrumentConfig): SoundSynthesizer {
-  return (ctx, options) => {
-    const { time, vol, duration } = extractParams(ctx, tune, options, instrument);
-    const freq = (tune.frequency ?? 440) * instrument.pitchMult;
-    const modFreq = tune.modFreq ?? 8;
-    const modDepth = tune.modDepth ?? 30;
-
-    const osc = createOscillator(ctx, freq, { ...instrument, pitchMult: 1 });
-    const lfo = ctx.createOscillator();
-    lfo.type = "sine";
-    lfo.frequency.value = modFreq;
-    const lfoGain = ctx.createGain();
-    lfoGain.gain.value = modDepth * instrument.pitchMult;
-    lfo.connect(lfoGain);
-    lfoGain.connect(osc.frequency);
-
-    const gain = connectOscVoice(ctx, osc, time, vol, duration, instrument);
-    lfo.start(time);
-    lfo.stop(time + duration + 0.05);
-
-    return makePlayback([osc, lfo], [gain], options.onEnd);
-  };
-}
-
 // ── Factory Registry ──
 
 const FACTORIES: Record<string, (tune: BaseTune, instrument: InstrumentConfig) => SoundSynthesizer> = {
@@ -442,10 +359,6 @@ const FACTORIES: Record<string, (tune: BaseTune, instrument: InstrumentConfig) =
   drop: dropFactory,
   chime: chimeFactory,
   arpeggio: arpeggioFactory,
-  chord: chordFactory,
-  burst: burstFactory,
-  pulse: pulseFactory,
-  wobble: wobbleFactory,
 };
 
 export function createSynthesizer(

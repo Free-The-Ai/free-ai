@@ -13,13 +13,11 @@
     --accent-muted: oklch(0.659 0.192 40.1 / 0.1);
     --donate: oklch(0.750 0.173 353.8);
     --donate-text: oklch(0.916 0 0);
-    --donate-muted: oklch(0.750 0.173 353.8 / 0.12);
     --danger: oklch(0.673 0.215 25.0);
     --amber: oklch(0.666 0.157 58.3);
     --radius: 6px;
     --radius-sm: 4px;
     --radius-full: 99px;
-    --section-gap: 64px;
     --control-height: 40px;
     --control-height-sm: 32px;
     --control-height-lg: 48px;
@@ -32,7 +30,6 @@
     --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
     --font-serif: "STIX Two Text", "Georgia", serif;
     --font-mono: "JetBrains Mono", "IBM Plex Mono", "Consolas", monospace;
-    --sk-bg-solid: oklch(0.154 0 0);
     --sk-shell-bg: linear-gradient(180deg, oklch(0.244 0 0) 0%, oklch(0.213 0 0) 100%);
     --sk-inset-bg: linear-gradient(180deg, oklch(0.178 0 0) 0%, oklch(0.209 0 0) 100%);
     --sk-border: oklch(1 0 0 / 0.08);
@@ -54,7 +51,6 @@
     /* ── Motion system — fast, crisp, responsive ── */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     --ease-out-smooth: cubic-bezier(0.22, 1, 0.36, 1);
-    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
     --ease-in-smooth: cubic-bezier(0.4, 0, 1, 1);
 
     /* Dropdown / popover */
@@ -72,17 +68,14 @@
 }
 
 /* ── View Transitions: COMPLETELY INVISIBLE — loader element handles masking ── */
-::view-transition-group(root),
-::view-transition-group(main-content) {
+::view-transition-group(root) {
     animation: none;
     animation-duration: 0s;
 }
-::view-transition-old(root),
-::view-transition-old(main-content) {
+::view-transition-old(root) {
     display: none;
 }
-::view-transition-new(root),
-::view-transition-new(main-content) {
+::view-transition-new(root) {
     animation: none;
     animation-duration: 0s;
 }

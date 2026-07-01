@@ -61,7 +61,6 @@ const DENSITIES: Record<Density, ThemeTokens> = {
     "--control-padding": "0 12px",
     "--control-padding-sm": "0 8px",
     "--control-padding-lg": "0 16px",
-    "--section-gap": "48px",
     "--radius": "5px",
     "--radius-sm": "3px",
   },
@@ -72,7 +71,6 @@ const DENSITIES: Record<Density, ThemeTokens> = {
     "--control-padding": "0 18px",
     "--control-padding-sm": "0 12px",
     "--control-padding-lg": "0 24px",
-    "--section-gap": "64px",
     "--radius": "6px",
     "--radius-sm": "4px",
   },
@@ -83,7 +81,6 @@ const DENSITIES: Record<Density, ThemeTokens> = {
     "--control-padding": "0 22px",
     "--control-padding-sm": "0 16px",
     "--control-padding-lg": "0 28px",
-    "--section-gap": "80px",
     "--radius": "8px",
     "--radius-sm": "5px",
   },
@@ -126,5 +123,3 @@ export function resolveTokens(
   tokens["--font-scale"] = tokens["--font-scale"] ?? "1";
   return tokens;
 }
-
-export { SCHEMES, DENSITIES, TYPOGRAPHY };

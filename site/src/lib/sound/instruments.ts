@@ -3,7 +3,7 @@
  * Each instrument defines a timbral character applied to all tunes.
  */
 
-import type { InstrumentConfig, OscillatorWaveform } from "./types";
+import type { InstrumentConfig } from "./types";
 
 // ── 9 Built-in Instrument Presets ──
 

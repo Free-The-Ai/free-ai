@@ -11,12 +11,10 @@
  *
  * Public API:
  *   themeConfigure(partial) — set scheme/density/typography/scale/contrast
- *   themeGet()              — read the current ThemeState
  *   themeToggleScheme()     — cycle dark → midnight
  *   initThemeSystem()       — start system-preference detection + persistence
- *   destroyThemeSystem()    — cleanup
  */
-import type { ColorScheme, ThemeConfig, ThemeState, ThemeTokens } from "./types";
+import type { ColorScheme, ThemeConfig, ThemeTokens } from "./types";
 import { resolveTokens } from "./presets";
 
 // ── Module-level state ──
@@ -36,7 +34,6 @@ let tokens: ThemeTokens = {};
 let systemScheme = false;
 let initialized = false;
 
-let schemeMql: MediaQueryList | null = null;
 let contrastMql: MediaQueryList | null = null;
 
 // ── Token application ──
@@ -103,23 +100,9 @@ function persist(): void {
 
 // ── System preference detection ──
 
-function detectSystemScheme(): ColorScheme {
-  if (typeof window === "undefined" || !window.matchMedia) return "dark";
-  return "dark";
-}
-
 function detectSystemContrast(): boolean {
   if (typeof window === "undefined" || !window.matchMedia) return false;
   return window.matchMedia("(prefers-contrast: more)").matches;
-}
-
-function onSchemeChange(event: MediaQueryListEvent): void {
-  // Only auto-follow the system if the user hasn't explicitly chosen a scheme.
-  if (systemScheme) {
-    config.scheme = "dark";
-    applyTokens();
-    persist();
-  }
 }
 
 function onContrastChange(event: MediaQueryListEvent): void {
@@ -141,10 +124,6 @@ export function themeConfigure(partial?: Partial<ThemeConfig>): void {
   if (!partial.scheme) systemScheme = wasSystem;
 }
 
-export function themeGet(): ThemeState {
-  return { config: { ...config }, tokens: { ...tokens }, systemScheme };
-}
-
 const SCHEME_CYCLE: ColorScheme[] = ["dark", "midnight"];
 
 export function themeToggleScheme(): ColorScheme {
@@ -152,13 +131,6 @@ export function themeToggleScheme(): ColorScheme {
   const next = SCHEME_CYCLE[(idx + 1) % SCHEME_CYCLE.length];
   themeConfigure({ scheme: next });
   return next;
-}
-
-export function themeToggleDensity() {
-  const cycle = ["compact", "comfortable", "spacious"] as const;
-  const idx = cycle.indexOf(config.density);
-  themeConfigure({ density: cycle[(idx + 1) % cycle.length] });
-  return config.density;
 }
 
 // ── Lifecycle ──
@@ -173,31 +145,24 @@ export function initThemeSystem(): void {
     config = { ...DEFAULT_CONFIG, ...persisted };
     systemScheme = false;
   } else {
-    // No stored preference — follow the system scheme + contrast.
-    config.scheme = detectSystemScheme();
+    // No stored preference — default to dark scheme, detect system contrast.
+    config.scheme = "dark";
     config.highContrast = detectSystemContrast();
     systemScheme = true;
   }
   applyTokens();
-
-  schemeMql = null;
 
   contrastMql = window.matchMedia("(prefers-contrast: more)");
   contrastMql.addEventListener("change", onContrastChange);
 
   // Expose globally for inline Layout.astro scripts (theme toggle button, etc.)
   (window as unknown as Record<string, unknown>).__themeToggle = themeToggleScheme;
-  (window as unknown as Record<string, unknown>).__themeToggleDensity = themeToggleDensity;
-  (window as unknown as Record<string, unknown>).__themeGet = themeGet;
 }
 
-export function destroyThemeSystem(): void {
+function destroyThemeSystem(): void {
   if (!initialized) return;
   initialized = false;
-  schemeMql?.removeEventListener("change", onSchemeChange);
-  schemeMql = null;
   contrastMql?.removeEventListener("change", onContrastChange);
-  schemeMql = null;
   contrastMql = null;
 }
 

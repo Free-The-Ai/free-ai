@@ -28,11 +28,3 @@ export interface ThemeConfig {
 
 /** A flat map of CSS custom property → value. */
 export type ThemeTokens = Record<string, string>;
-
-export interface ThemeState {
-  config: ThemeConfig;
-  /** The resolved token map currently applied to :root. */
-  tokens: ThemeTokens;
-  /** Whether the scheme came from a system preference (for auto-toggle UI). */
-  systemScheme: boolean;
-}

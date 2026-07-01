@@ -429,7 +429,7 @@
   animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
 }
 .kb-toast[data-swipe="move"] {
-  transform: translateX(var(--kb-toast-swipe-move-x));
+  transform: translateX(var(--toast-swipe-movement-x, var(--kb-toast-swipe-move-x, 0px)));
 }
 .kb-toast[data-swipe="cancel"] {
   transform: translateX(0);

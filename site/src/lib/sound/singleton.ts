@@ -20,7 +20,7 @@ import type {
   SoundPlayback,
   SoundRole,
   PlaySoundOptions,
-  SoundSource,
+  SoundSynthesizer,
 } from "./types";
 import { ALL_SOUND_ROLES } from "./types";
 import {
@@ -46,7 +46,6 @@ const DEFAULT_CONFIG: SensoryConfig = {
   volume: 0.35,
   theme: "aero",
   categories: { ...DEFAULT_CATEGORIES },
-  overrides: {},
   reducedMotion: "inherit",
 };
 
@@ -67,11 +66,9 @@ function parseRole(role: SoundRole): { category: SoundCategory; name: string } {
   };
 }
 
-function resolveRole(role: SoundRole): SoundSource | null {
+function resolveRole(role: SoundRole): SoundSynthesizer | null {
   const { category } = parseRole(role);
   if (!config.categories[category]) return null;
-  const override = config.overrides[role];
-  if (override) return override;
   const theme = config.theme as SoundPackName;
   const pack = soundPacks[theme] ?? soundPacks.aero;
   return pack[role] ?? null;
@@ -86,13 +83,7 @@ export function soundConfigure(partial?: Partial<SensoryConfig>): void {
     ...DEFAULT_CONFIG,
     ...partial,
     categories: { ...DEFAULT_CATEGORIES, ...partial.categories },
-    overrides: { ...DEFAULT_CONFIG.overrides, ...partial.overrides },
   };
-}
-
-/** Get current config (for Toast and other module-level consumers). */
-function soundConfig(): SensoryConfig & { reducedMotion: boolean } {
-  return { ...config, reducedMotion };
 }
 
 /** Check if sounds are currently enabled. */

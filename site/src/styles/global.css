@@ -108,8 +108,9 @@ textarea:focus-visible {
 /* ── Skip-to-content link ── */
 .skip-link {
     position: fixed;
-    top: -100%;
+    top: 8px;
     left: 16px;
+    transform: translateY(-300%);
     z-index: 10000;
     padding: 8px 16px;
     background: var(--accent);
@@ -118,10 +119,10 @@ textarea:focus-visible {
     font-size: 0.875rem;
     border-radius: var(--radius-sm);
     text-decoration: none;
-    transition: top 0.2s var(--ease-out-smooth);
+    transition: transform 0.2s var(--ease-out-smooth);
 }
 .skip-link:focus {
-    top: 8px;
+    transform: translateY(0);
     outline: 2px solid oklch(1.000 0 0);
     outline-offset: 2px;
 }
@@ -4577,76 +4578,6 @@ body[data-sound-muted="false"]::after {
     content: "Sound on";
     color: oklch(1.000 0 0);
     background: oklch(0.627 0.170 149.2 / 0.85);
-}
-
-/* ── Micro-interaction utilities (transitions.dev-inspired) ── */
-
-/* Button press — scale down on active, spring back on release */
-.t-press {
-    transition: transform var(--press-dur) var(--ease-out-smooth);
-}
-.t-press:active {
-    transform: scale(var(--press-scale));
-}
-
-/* Card hover lift with shadow growth */
-.t-card {
-    transition:
-        transform var(--hover-dur) var(--ease-out-smooth),
-        box-shadow var(--hover-dur) var(--ease-out-smooth);
-}
-.t-card:hover {
-    transform: translateY(var(--hover-lift));
-    box-shadow: var(--sk-raised-shadow);
-}
-
-/* Text swap — exit up with scale, enter from below */
-.t-text-exit {
-    animation: text-swap-out var(--motion-duration, var(--text-swap-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
-}
-.t-text-enter {
-    animation: text-swap-in var(--motion-duration, var(--text-swap-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
-}
-
-/* Icon swap — exit shrinks, enter grows */
-.t-icon-exit {
-    animation: icon-swap-out var(--motion-duration, var(--icon-swap-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
-}
-.t-icon-enter {
-    animation: icon-swap-in var(--motion-duration, var(--icon-swap-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
-}
-
-/* Modal enter/exit with scale */
-.t-modal-enter {
-    animation: modal-enter var(--motion-duration, var(--modal-open-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
-}
-.t-modal-exit {
-    animation: modal-exit var(--motion-duration, var(--modal-close-dur)) var(--motion-easing, var(--ease-in-smooth)) forwards;
-}
-
-/* Dropdown enter/exit */
-.t-dropdown-enter {
-    animation: dropdown-open var(--motion-duration, var(--dropdown-open-dur)) var(--motion-easing, var(--ease-out-smooth)) forwards;
-    transform-origin: top center;
-}
-.t-dropdown-exit {
-    animation: dropdown-close var(--motion-duration, var(--dropdown-close-dur)) var(--motion-easing, var(--ease-in-smooth)) forwards;
-    transform-origin: top center;
-}
-
-/* Digit pop-in — staggered entrance for number animations */
-.t-digit-pop {
-    animation: digit-pop var(--motion-duration, var(--digit-dur)) var(--motion-easing, var(--ease-spring)) backwards;
-}
-
-/* Focus ring transition */
-.t-focus {
-    transition: box-shadow var(--focus-dur) var(--ease-out-smooth), outline var(--focus-dur) var(--ease-out-smooth);
-}
-.t-focus:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-    box-shadow: var(--sk-accent-glow);
 }
 
 /* ── Stagger entrance animation — 40ms between items ── */

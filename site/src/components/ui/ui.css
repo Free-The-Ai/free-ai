@@ -197,6 +197,10 @@
   overflow: hidden;
   animation: selectOpen var(--motion-duration, 150ms) var(--motion-easing, var(--ease-out-smooth));
 }
+@keyframes selectOpen {
+  from { opacity: 0; transform: translateY(-4px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
 .kb-select__content[data-entering],
 .kb-select__content[style*="display: none"] + .kb-select__content {
   opacity: 0;
@@ -423,7 +427,7 @@
 }
 .kb-toast[data-swipe="cancel"] {
   transform: translateX(0);
-  transition: transform 200ms var(--ease-out-smooth)-out;
+  transition: transform 200ms var(--ease-out-smooth);
 }
 .kb-toast[data-swipe="end"] {
   animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, cubic-bezier(0.16, 1, 0.3, 1)) forwards;
@@ -491,20 +495,6 @@
 .kb-toast__close:hover {
   color: var(--text);
   background: var(--control-bg);
-}
-
-.kb-toast__progress-track {
-  height: 3px;
-  width: 100%;
-  background: var(--border);
-  border-radius: 2px;
-  overflow: hidden;
-}
-.kb-toast__progress-fill {
-  background: var(--accent);
-  height: 100%;
-  width: var(--kb-toast-progress-fill-width);
-  transition: width 180ms linear;
 }
 
 @keyframes toastIn {

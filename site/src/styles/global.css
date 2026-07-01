@@ -594,6 +594,7 @@ pre {
     transition:
         background 200ms var(--ease-out-smooth),
         border-color 200ms var(--ease-out-smooth),
+        box-shadow 200ms var(--ease-out-smooth),
         color 200ms var(--ease-out-smooth),
         transform var(--press-dur) var(--ease-out-smooth);
 }
@@ -3698,7 +3699,9 @@ h3 {
     background: var(--sk-shell-bg);
     transition:
         border-color 150ms var(--ease-out-smooth),
-        box-shadow 150ms var(--ease-out-smooth);
+        background 150ms var(--ease-out-smooth),
+        transform var(--hover-dur) var(--ease-out-smooth),
+        box-shadow var(--hover-dur) var(--ease-out-smooth);
 }
 
 .model-card:hover {
@@ -4579,7 +4582,7 @@ body[data-sound-muted="false"]::after {
     font: 500 13px/1.4 var(--font-sans);
     letter-spacing: 0.3px;
     pointer-events: none;
-    animation: mute-flash 1.1s ease-out forwards;
+    animation: mute-flash 1.1s var(--ease-out-smooth) forwards;
 }
 
 body[data-sound-muted="true"]::after {
@@ -4671,4 +4674,4 @@ body[data-sound-muted="false"]::after {
 .docs-code-group:has(.shiki-wrapper):hover .copy-btn {
     opacity: 1;
 }
-/* trigger reload */
+

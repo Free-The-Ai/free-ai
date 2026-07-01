@@ -225,6 +225,7 @@
   font-weight: 500;
   cursor: pointer;
   outline: none;
+  transition: background 120ms var(--ease-out-smooth), box-shadow 120ms var(--ease-out-smooth), color 120ms var(--ease-out-smooth);
 }
 .kb-select__item[data-highlighted] {
   background: var(--sk-inset-bg);
@@ -340,6 +341,7 @@
   font-weight: 500;
   cursor: pointer;
   outline: none;
+  transition: background 120ms var(--ease-out-smooth), box-shadow 120ms var(--ease-out-smooth), color 120ms var(--ease-out-smooth);
 }
 .kb-menu__item[data-highlighted] {
   background: var(--sk-inset-bg);
@@ -495,6 +497,7 @@
   line-height: 1;
   cursor: pointer;
   margin-top: -1px;
+  transition: color 120ms var(--ease-out-smooth), background 120ms var(--ease-out-smooth);
 }
 .kb-toast__close:hover {
   color: var(--text);

@@ -55,6 +55,7 @@ const DEFAULT_CONFIG: SensoryConfig = {
 let config: SensoryConfig = { ...DEFAULT_CONFIG };
 let reducedMotion = false;
 let initialized = false;
+let soundReducedMql: MediaQueryList | null = null;
 
 // ── Role resolution ──
 
@@ -204,6 +205,10 @@ function handleScroll() {
   soundPlay("navigation.scroll", { volume: 0.15 + velocityMult * 0.1 });
 }
 
+function onSoundReducedMotionChange(event: MediaQueryListEvent): void {
+  reducedMotion = event.matches;
+}
+
 /** Initialize the sound system. Call from onMount in SoundProvider. */
 export function initSoundSystem(): void {
   if (initialized) return;
@@ -214,11 +219,9 @@ export function initSoundSystem(): void {
 
   // Reduced motion detection
   if (config.reducedMotion === "inherit" && typeof window !== "undefined") {
-    const mql = window.matchMedia("(prefers-reduced-motion: reduce)");
-    reducedMotion = mql.matches;
-    mql.addEventListener("change", (e: MediaQueryListEvent) => {
-      reducedMotion = e.matches;
-    });
+    soundReducedMql = window.matchMedia("(prefers-reduced-motion: reduce)");
+    reducedMotion = soundReducedMql.matches;
+    soundReducedMql.addEventListener("change", onSoundReducedMotionChange);
   } else if (config.reducedMotion === "force-off") {
     reducedMotion = true;
   }
@@ -275,6 +278,8 @@ function destroySoundSystem(): void {
   document.removeEventListener("pointerenter", handlePointerEnter);
   window.removeEventListener("scroll", handleScroll);
   window.removeEventListener("beforeunload", destroySoundSystem);
+  soundReducedMql?.removeEventListener("change", onSoundReducedMotionChange);
+  soundReducedMql = null;
   if (typeof window !== "undefined") {
     delete (window as any).__soundPlay;
     delete (window as any).__soundToggleMute;

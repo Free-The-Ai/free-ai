@@ -63,8 +63,9 @@ function applyReducedMotionMode(): void {
     reduced = true;
   } else if (config.reducedMotion === "force-on") {
     reduced = false;
+  } else if (reducedMotionMql) {
+    reduced = reducedMotionMql.matches;
   }
-  // "inherit" defers to the matchMedia listener set in initMotionSystem.
 }
 
 // ── Signal handlers ──
@@ -189,5 +190,14 @@ export function destroyMotionSystem(): void {
   window.removeEventListener("pointerup", onPointerUp);
   window.removeEventListener("pointercancel", onPointerUp);
   window.removeEventListener("scroll", onScroll);
+  window.removeEventListener("beforeunload", destroyMotionSystem);
+
+  pointerVelocity = 0;
+  scrollVelocity = 0;
+  lastPointerX = 0;
+  lastPointerY = 0;
+  lastPointerTime = 0;
+  scrollSampleTime = 0;
+  scrollSampleY = 0;
   window.removeEventListener("beforeunload", destroyMotionSystem);
 }

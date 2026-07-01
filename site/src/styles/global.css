@@ -2969,7 +2969,6 @@ h3 {
     box-shadow: var(--sk-raised-shadow);
     cursor: pointer;
     user-select: none;
-    -webkit-tap-highlight-color: transparent;
     transition: box-shadow 200ms var(--ease-out-smooth), border-color 200ms var(--ease-out-smooth);
 }
 .status-card:hover {
@@ -3292,7 +3291,6 @@ h3 {
         text-shadow 150ms var(--ease-out-smooth),
         transform var(--press-dur) var(--ease-out-smooth);
     cursor: pointer;
-    -webkit-tap-highlight-color: transparent;
 }
 
 .bottom-tab-icon {
@@ -4128,7 +4126,6 @@ h3 {
         transition:
             background 150ms var(--ease-out-smooth),
             border-color 150ms var(--ease-out-smooth);
-        -webkit-tap-highlight-color: transparent;
     }
 
     .docs-mobile-toc__trigger:active {
@@ -4245,7 +4242,6 @@ h3 {
             background 150ms var(--ease-out-smooth),
             color 150ms var(--ease-out-smooth),
             border-color 150ms var(--ease-out-smooth);
-        -webkit-tap-highlight-color: transparent;
     }
 
     .docs-mobile-toc__link.is-active {

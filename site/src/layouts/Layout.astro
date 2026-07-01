@@ -2,7 +2,6 @@
 import BaseHead from '../components/BaseHead.astro';
 import Logo from '../components/Logo.astro';
 import NavDrawer from '../components/NavDrawer';
-import SmoothScroll from '../components/SmoothScroll';
 import SoundProvider from '../components/SoundProvider';
 import MotionProvider from '../components/MotionProvider';
 import ThemeProvider from '../components/ThemeProvider';
@@ -235,8 +234,7 @@ const themeBootstrap = themeInlineBootstrap();
 			<NavDrawer currentPath={currentPath} client:load />
 
 			<ToastRegion client:load />
-		<SmoothScroll client:load />
-	</div>
+		</div>
 
 	<script>
 		// Auto-decorate interactive elements with sound hints

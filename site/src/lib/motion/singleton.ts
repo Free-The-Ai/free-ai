@@ -143,8 +143,7 @@ export function motionFor(
 /**
  * Write computed parameters onto an element as CSS custom properties so
  * CSS-driven animations read runtime values instead of fixed tokens.
- * Sets: --motion-duration, --motion-easing, --motion-scale,
- *       --motion-translate, --motion-opacity.
+ * Sets: --motion-duration, --motion-easing.
  */
 export function motionApply(
   el: HTMLElement,
@@ -153,9 +152,6 @@ export function motionApply(
   const style = el.style;
   style.setProperty("--motion-duration", `${params.duration}ms`);
   style.setProperty("--motion-easing", params.easing);
-  style.setProperty("--motion-scale", String(params.scale));
-  style.setProperty("--motion-translate", `${params.translate}px`);
-  style.setProperty("--motion-opacity", String(params.opacity));
 }
 
 // ── Lifecycle ──

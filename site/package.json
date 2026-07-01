@@ -11,11 +11,9 @@
     "dependencies": {
         "@astrojs/react": "^4.4.2",
         "@base-ui/react": "^1.6.0",
-        "@types/three": "^0.184.1",
         "react": "^19.2.7",
         "react-dom": "^19.2.7",
-        "shiki": "^3.21.0",
-        "three": "^0.184.0"
+        "shiki": "^3.21.0"
     },
     "devDependencies": {
         "@astrojs/sitemap": "^3.7.0",

@@ -379,7 +379,6 @@
 }
 .kb-menu__item[data-disabled] { opacity: 0.4; cursor: not-allowed; }
 .kb-menu__item-label { flex: 1; }
-.kb-menu__item-description { color: var(--dim); font-size: 0.8rem; }
 .kb-menu__sub-trigger[data-expanded] .kb-menu__chevron--sub { color: var(--amber); }
 .kb-menu__separator {
   height: 1px;

@@ -183,4 +183,10 @@ const jsonLd = [
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 16px;
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .support-secondary {
+            transition: none;
+        }
+    }
 </style>

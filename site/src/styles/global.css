@@ -157,6 +157,7 @@ body::-webkit-scrollbar-track {
 body::-webkit-scrollbar-thumb {
     background: var(--accent);
     border-radius: 0;
+    transition: background 150ms var(--ease-out-smooth);
 }
 
 body::-webkit-scrollbar-thumb:hover {
@@ -316,7 +317,9 @@ pre {
     font-weight: 500;
     transition:
         color 150ms var(--ease-out-smooth),
-        background 150ms var(--ease-out-smooth);
+        background 150ms var(--ease-out-smooth),
+        border-color 150ms var(--ease-out-smooth),
+        box-shadow 150ms var(--ease-out-smooth);
 }
 
 .nav-links a:hover,
@@ -1699,7 +1702,7 @@ h3 {
 .docs-content .kb-accordion__trigger {
     padding: 14px 16px;
     font-weight: 600;
-    transition: background 150ms var(--ease-out-smooth);
+    transition: background 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth), box-shadow 150ms var(--ease-out-smooth);
 }
 
 .docs-content .kb-accordion__trigger:hover {
@@ -2054,6 +2057,7 @@ h3 {
     font-size: 0.66rem;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    transition: color 150ms var(--ease-out-smooth);
 }
 
 .catalog-filter-trigger.is-active .catalog-filter-label,
@@ -2175,6 +2179,7 @@ h3 {
 .catalog-filter-option-count {
     color: var(--dim);
     font-size: 0.7rem;
+    transition: color 120ms var(--ease-out-smooth);
 }
 
 .catalog-filter-menu-item.is-active .catalog-filter-option-count {
@@ -2230,6 +2235,7 @@ h3 {
 
 .catalog-chip span {
     color: var(--dim);
+    transition: color 150ms var(--ease-out-smooth);
 }
 
 .catalog-chip.is-active span {
@@ -4692,7 +4698,8 @@ body[data-sound-muted="false"]::after {
     .capability-card,
     .models-cta,
     .docs-start-card,
-    .status-card {
+    .status-card,
+    .nav {
         transition: none;
     }
 }

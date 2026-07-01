@@ -116,4 +116,10 @@ const jsonLd = buildDefaultPageJsonLd();
         color: var(--accent-text);
         border-color: oklch(0.659 0.192 40.1 / 0.42);
     }
+
+    @media (prefers-reduced-motion: reduce) {
+        .not-found-secondary {
+            transition: none;
+        }
+    }
 </style>

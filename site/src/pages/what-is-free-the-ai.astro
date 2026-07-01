@@ -332,6 +332,7 @@ const jsonLd = [
         text-decoration: none;
         border-bottom: 1px solid var(--sk-border);
         padding-bottom: 2px;
+        transition: color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
     }
 
     .explainer-secondary:hover {
@@ -342,6 +343,13 @@ const jsonLd = [
     @media (max-width: 560px) {
         .explainer-shell {
             padding: 22px;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .explainer-link,
+        .explainer-secondary {
+            transition: none;
         }
     }
 </style>

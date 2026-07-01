@@ -119,7 +119,7 @@ textarea:focus-visible {
     font-size: 0.875rem;
     border-radius: var(--radius-sm);
     text-decoration: none;
-    transition: transform 0.2s var(--ease-out-smooth);
+    transition: transform 200ms var(--ease-out-smooth);
 }
 .skip-link:focus {
     transform: translateY(0);

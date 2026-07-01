@@ -37,8 +37,6 @@ let scrollVelocity = 0; // px/ms
 let lastPointerX = 0;
 let lastPointerY = 0;
 let lastPointerTime = 0;
-let lastScrollY = 0;
-let lastScrollTime = 0;
 let scrollSampleTime = 0;
 let scrollSampleY = 0;
 
@@ -105,8 +103,6 @@ function onScroll(): void {
     scrollSampleTime = now;
     scrollSampleY = y;
   }
-  lastScrollY = y;
-  lastScrollTime = now;
 }
 
 function onReducedMotionChange(event: MediaQueryListEvent): void {
@@ -181,10 +177,8 @@ export function initMotionSystem(): void {
   window.addEventListener("pointercancel", onPointerUp, { passive: true });
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  lastScrollY = window.scrollY;
-  lastScrollTime = performance.now();
-  scrollSampleTime = lastScrollTime;
-  scrollSampleY = lastScrollY;
+  scrollSampleTime = performance.now();
+  scrollSampleY = window.scrollY;
 
   window.addEventListener("beforeunload", destroyMotionSystem);
 }

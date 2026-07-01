@@ -16,9 +16,6 @@ export {
   destroyMotionSystem,
 } from "./singleton";
 
-export { useMotion } from "./primitives";
-export type { MotionController, MotionInput } from "./primitives";
-
 export {
   computeDuration,
   computeScale,

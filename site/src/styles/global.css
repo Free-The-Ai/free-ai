@@ -585,8 +585,7 @@ pre {
 }
 
 .discord-button,
-.primary-button,
-.ghost-button {
+.primary-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -608,8 +607,7 @@ pre {
         transform var(--press-dur) var(--ease-out-smooth);
 }
 .discord-button:active,
-.primary-button:active,
-.ghost-button:active {
+.primary-button:active {
     transform: scale(var(--press-scale));
 }
 
@@ -757,12 +755,6 @@ pre {
     background: transparent;
     color: var(--muted);
     font-weight: 500;
-}
-
-.ghost-button:hover {
-    border-color: var(--border-strong);
-    background: var(--control-bg);
-    color: var(--text);
 }
 
 main {
@@ -974,6 +966,10 @@ h3 {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--surface);
+}
+
+.code-card,
+.panel {
     transition:
         border-color 200ms var(--ease-out-smooth),
         background 200ms var(--ease-out-smooth),
@@ -1240,15 +1236,6 @@ h3 {
     background: var(--surface);
     color: var(--text);
     text-decoration: none;
-    transition:
-        border-color 200ms var(--ease-out-smooth),
-        background 200ms var(--ease-out-smooth),
-        box-shadow 200ms var(--ease-out-smooth);
-}
-
-.docs-start-card:hover {
-    border-color: var(--border-strong);
-    background: var(--bg);
 }
 
 .docs-start-icon {
@@ -1411,7 +1398,6 @@ h3 {
     border: 1px solid var(--border);
     border-radius: var(--radius);
     background: var(--bg);
-    transition: border-color 150ms var(--ease-out-smooth), background 150ms var(--ease-out-smooth), box-shadow 150ms var(--ease-out-smooth);
 }
 
 .model-leaderboard-row span {
@@ -2208,18 +2194,7 @@ h3 {
     font-family: var(--font-mono);
     font-size: 0.76rem;
     cursor: pointer;
-    transition:
-        border-color 150ms var(--ease-out-smooth),
-        background 150ms var(--ease-out-smooth),
-        color 150ms var(--ease-out-smooth),
-        text-shadow 150ms var(--ease-out-smooth),
-        box-shadow 150ms var(--ease-out-smooth);
     white-space: nowrap;
-}
-
-.catalog-chip:hover {
-    border-color: var(--border-strong);
-    background: var(--control-bg);
 }
 
 .catalog-chip.is-active {
@@ -2231,7 +2206,6 @@ h3 {
 
 .catalog-chip span {
     color: var(--dim);
-    transition: color 150ms var(--ease-out-smooth);
 }
 
 .catalog-chip.is-active span {
@@ -3510,8 +3484,6 @@ h3 {
     box-shadow: var(--sk-raised-shadow);
 }
 
-.nav-drawer-close,
-.nav-drawer-discord,
 .status-board {
     transition:
         background 200ms var(--ease-out-smooth),
@@ -3530,7 +3502,6 @@ h3 {
 
 .nav-links a:hover,
 .nav-links a.is-active,
-.ghost-button:hover,
 .docs-sidebar,
 .docs-sidebar a:hover,
 .docs-content .kb-accordion__trigger:hover,
@@ -3551,8 +3522,7 @@ h3 {
     box-shadow: var(--sk-inset-shadow);
 }
 
-.discord-button,
-.nav-drawer-discord {
+.discord-button {
     border-color: oklch(0.659 0.192 40.1 / 0.48);
     color: var(--accent-text);
     text-shadow: var(--accent-text-glow);
@@ -3570,15 +3540,8 @@ h3 {
 
 .discord-button:hover,
 .primary-button:hover,
-.nav-drawer-discord:hover,
-.catalog-chip:hover,
 .catalog-summary button:hover,
-.model-card:hover,
-.docs-start-card:hover,
-.model-leaderboard-row:hover,
-.proof-card:hover,
-.capability-card:hover,
-.step-card:hover {
+.model-card:hover {
     border-color: var(--border-strong);
     background: var(--sk-shell-bg);
     box-shadow: var(--sk-raised-shadow), var(--sk-accent-glow);
@@ -3590,22 +3553,13 @@ h3 {
     text-shadow: var(--accent-text-glow);
 }
 
-.discord-button:hover,
-.nav-drawer-discord:hover {
+.discord-button:hover {
     color: var(--accent-text-strong);
     text-shadow: var(--accent-text-glow);
 }
 
-.nav-drawer-link {
-    transition: color 200ms var(--ease-out-smooth), background 200ms var(--ease-out-smooth), box-shadow 200ms var(--ease-out-smooth);
-}
-
-.ghost-button:hover,
 .nav-links a:hover,
-.nav-links a.is-active,
-.catalog-chip.is-active,
-.nav-drawer-link:hover,
-.nav-drawer-close:hover {
+.nav-links a.is-active {
     color: var(--text);
     background: var(--sk-inset-bg);
     box-shadow: var(--sk-inset-shadow);
@@ -3689,8 +3643,7 @@ h3 {
 }
 
 .copy-btn:hover,
-.model-copy:hover,
-.nav-hamburger:hover {
+.model-copy:hover {
     border-color: var(--border-strong);
     color: var(--text);
     box-shadow: var(--sk-raised-shadow), var(--sk-accent-glow);
@@ -4016,21 +3969,6 @@ h3 {
         background: transparent;
         cursor: pointer;
         justify-self: end;
-        transition:
-            border-color 200ms var(--ease-out-smooth),
-            background 200ms var(--ease-out-smooth),
-            color 200ms var(--ease-out-smooth),
-            box-shadow 200ms var(--ease-out-smooth),
-            transform var(--press-dur) var(--ease-out-smooth);
-    }
-
-    .nav-hamburger:hover {
-        border-color: var(--border-strong);
-        background: var(--control-bg);
-    }
-
-    .nav-hamburger:active {
-        transform: scale(0.95);
     }
 
     .hamburger-bar {
@@ -4039,9 +3977,6 @@ h3 {
         height: 2px;
         background: var(--text);
         border-radius: 1px;
-        transition:
-            transform 200ms var(--ease-out-smooth),
-            opacity 200ms var(--ease-out-smooth);
     }
 
     .nav-hamburger[aria-expanded="true"] .hamburger-bar:nth-child(1),
@@ -4651,14 +4586,12 @@ body[data-sound-muted="false"]::after {
     .nav-dropdown-panel,
     .nav-dropdown:hover .nav-dropdown-panel,
     .nav-dropdown:focus-within .nav-dropdown-panel,
-    .nav-dropdown.is-open .nav-dropdown-panel,
-    .hamburger-bar {
+    .nav-dropdown.is-open .nav-dropdown-panel {
         transition: none;
         animation: none;
     }
     .discord-button:active,
     .primary-button:active,
-    .ghost-button:active,
     .home-hero .primary-button:active,
     .catalog-filter-trigger:active,
     .model-copy:active {
@@ -4667,22 +4600,11 @@ body[data-sound-muted="false"]::after {
     .skip-link,
     .discord-button,
     .primary-button,
-    .ghost-button,
     .code-card,
-    .step-card,
     .panel,
-    .cta-banner,
-    .proof-card,
-    .capability-card,
-    .models-cta,
-    .docs-start-card,
     .status-card,
     .nav,
-    .nav-hamburger,
     .nav-dropdown-caret,
-    .nav-drawer-link,
-    .nav-drawer-close,
-    .nav-drawer-discord,
     .status-board,
     .home-hero .primary-button,
     .catalog-filter-trigger,

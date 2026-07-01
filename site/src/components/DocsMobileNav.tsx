@@ -105,7 +105,8 @@ export default function DocsMobileNav() {
     const el = document.getElementById(id);
     if (el) {
       close();
-      setTimeout(() => el.scrollIntoView({ behavior: "smooth" }), 50);
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      setTimeout(() => el.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth' }), 50);
     }
   }, [close]);
 

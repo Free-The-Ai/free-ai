@@ -4627,6 +4627,10 @@ body[data-sound-muted="false"]::after {
     .nav-drawer-popup {
         transition: none;
     }
+    .nav-dropdown-panel,
+    .hamburger-bar {
+        transition: none;
+    }
 }
 
 /* ── Shiki syntax highlighting ── */

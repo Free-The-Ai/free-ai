@@ -2816,7 +2816,8 @@ h3 {
     transition:
         opacity 150ms var(--ease-out-smooth),
         color 150ms var(--ease-out-smooth),
-        border-color 150ms var(--ease-out-smooth);
+        border-color 150ms var(--ease-out-smooth),
+        transform var(--press-dur) var(--ease-out-smooth);
 }
 .model-card:hover .model-copy {
     opacity: 1;
@@ -2919,7 +2920,7 @@ h3 {
     font-family: inherit;
     font-size: 0.8rem;
     cursor: pointer;
-    transition: border-color 150ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth);
+    transition: border-color 150ms var(--ease-out-smooth), color 150ms var(--ease-out-smooth), text-shadow 150ms var(--ease-out-smooth);
 }
 .status-grid-empty-clear:hover {
     border-color: var(--accent);
@@ -3256,7 +3257,9 @@ h3 {
     transition:
         color 150ms var(--ease-out-smooth),
         background 150ms var(--ease-out-smooth),
-        border-color 150ms var(--ease-out-smooth);
+        border-color 150ms var(--ease-out-smooth),
+        text-shadow 150ms var(--ease-out-smooth),
+        transform var(--press-dur) var(--ease-out-smooth);
     cursor: pointer;
     -webkit-tap-highlight-color: transparent;
 }
@@ -3401,7 +3404,8 @@ h3 {
     font-weight: 600;
     transition:
         background 150ms var(--ease-out-smooth),
-        border-color 150ms var(--ease-out-smooth);
+        border-color 150ms var(--ease-out-smooth),
+        box-shadow 150ms var(--ease-out-smooth);
 }
 .more-menu-link:hover {
     background: var(--control-bg);
@@ -3435,7 +3439,7 @@ h3 {
     color: var(--muted);
     font-size: 0.82rem;
     text-decoration: none;
-    transition: color 150ms var(--ease-out-smooth);
+    transition: color 150ms var(--ease-out-smooth), text-shadow 150ms var(--ease-out-smooth);
 }
 
 .footer-links a:hover {
@@ -3991,7 +3995,8 @@ h3 {
         justify-self: end;
         transition:
             border-color 200ms var(--ease-out-smooth),
-            background 200ms var(--ease-out-smooth);
+            background 200ms var(--ease-out-smooth),
+            transform var(--press-dur) var(--ease-out-smooth);
     }
 
     .nav-hamburger:hover {

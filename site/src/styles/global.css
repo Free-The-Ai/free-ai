@@ -70,14 +70,12 @@
 /* ── View Transitions: COMPLETELY INVISIBLE — loader element handles masking ── */
 ::view-transition-group(root) {
     animation: none;
-    animation-duration: 0s;
 }
 ::view-transition-old(root) {
     display: none;
 }
 ::view-transition-new(root) {
     animation: none;
-    animation-duration: 0s;
 }
 
 
@@ -2770,10 +2768,6 @@ h3 {
         transition: none;
         transform: none;
     }
-    .catalog-filter-content,
-    .catalog-filter-content[data-closed] {
-        animation: none;
-    }
 }
 
 .model-card.is-image {
@@ -4601,10 +4595,6 @@ h3 {
 }
 
 @media (max-width: 820px) {
-    .site-header {
-        background: transparent;
-    }
-
     .nav,
     .nav-hamburger {
         background: var(--sk-shell-bg);

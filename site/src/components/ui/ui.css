@@ -198,9 +198,16 @@
   overflow: hidden;
   animation: selectOpen var(--motion-duration, 150ms) var(--motion-easing, var(--ease-out-smooth)) forwards;
 }
+.kb-select__content[data-closed] {
+  animation: selectClose var(--motion-duration, 120ms) var(--motion-easing, var(--ease-in-smooth)) forwards;
+}
 @keyframes selectOpen {
   from { opacity: 0; transform: translateY(-4px) scale(0.98); }
   to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+@keyframes selectClose {
+  from { opacity: 1; transform: translateY(0) scale(1); }
+  to   { opacity: 0; transform: translateY(-4px) scale(0.98); }
 }
 .kb-select__content[data-entering],
 .kb-select__content[style*="display: none"] + .kb-select__content {
@@ -328,6 +335,7 @@
   .kb-toast[data-closed],
   .kb-toast[data-swipe="end"],
   .kb-select__content,
+  .kb-select__content[data-closed],
   .kb-skeleton [data-animate] {
     animation: none;
   }

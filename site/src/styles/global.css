@@ -4245,7 +4245,9 @@ h3 {
         color: var(--text);
     }
 
-    html.docs-toc-open {
+    html.docs-toc-open,
+    html.scroll-locked {
+        overflow: hidden;
         overscroll-behavior: none;
     }
 

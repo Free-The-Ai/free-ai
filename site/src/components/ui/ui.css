@@ -319,7 +319,11 @@
 
 @media (prefers-reduced-motion: reduce) {
   .kb-menu__content,
-  .kb-menu__content[data-closed] {
+  .kb-menu__content[data-closed],
+  .kb-toast,
+  .kb-toast[data-swipe="end"],
+  .kb-select__content,
+  .kb-skeleton [data-animate] {
     animation: none;
   }
 }

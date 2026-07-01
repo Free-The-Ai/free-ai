@@ -4115,6 +4115,13 @@ h3 {
         }
     }
 
+    @media (prefers-reduced-motion: reduce) {
+        .docs-mobile-toc__sheet {
+            animation: none;
+            transition: none;
+        }
+    }
+
     .docs-mobile-toc__handle {
         width: 64px;
         height: 28px;
@@ -4608,6 +4615,11 @@ body[data-sound-muted="false"]::after {
         animation: none;
         opacity: 1;
         transform: none;
+    }
+    body[data-sound-muted]::after,
+    .home-hero .primary-button::before {
+        animation: none;
+        transition: none;
     }
 }
 

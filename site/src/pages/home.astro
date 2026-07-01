@@ -404,6 +404,7 @@ const pageDescription =
         background: oklch(0.750 0.173 353.8 / 0.1);
         color: oklch(0.916 0 0);
         text-shadow: 0 0 10px oklch(0.750 0.173 353.8 / 0.32);
+        transition: border-color 160ms var(--ease-out-smooth), background 160ms var(--ease-out-smooth), color 160ms var(--ease-out-smooth);
     }
 
     .home-support-button:hover {
@@ -419,6 +420,7 @@ const pageDescription =
         text-decoration: none;
         border-bottom: 1px solid var(--sk-border);
         padding-bottom: 2px;
+        transition: color 160ms var(--ease-out-smooth), border-color 160ms var(--ease-out-smooth);
     }
 
     .home-support-link:hover {
@@ -511,7 +513,8 @@ const pageDescription =
     @media (prefers-reduced-motion: reduce) {
         .home-path-grid a,
         .home-path-grid a:hover,
-        .home-path-grid a:active {
+        .home-path-grid a:active,
+        .hero-link {
             transition: none;
             transform: none;
         }

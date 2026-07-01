@@ -329,6 +329,20 @@ const pageKeywords = [
         text-underline-offset: 2px;
     }
 
+    .setup-secondary {
+        color: var(--muted);
+        font-size: 0.92rem;
+        text-decoration: none;
+        border-bottom: 1px solid var(--sk-border);
+        padding-bottom: 2px;
+        transition: color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
+    }
+
+    .setup-secondary:hover {
+        color: var(--accent-text);
+        border-color: oklch(0.659 0.192 40.1 / 0.42);
+    }
+
     .setup-detail-trail strong {
         color: var(--text);
         font-weight: 600;

@@ -1704,6 +1704,7 @@ h3 {
 .docs-content .kb-accordion__trigger {
     padding: 14px 16px;
     font-weight: 600;
+    transition: background 150ms var(--ease-out-smooth);
 }
 
 .docs-content .kb-accordion__trigger:hover {
@@ -2028,7 +2029,9 @@ h3 {
         border-color 150ms var(--ease-out-smooth),
         background 150ms var(--ease-out-smooth),
         box-shadow 150ms var(--ease-out-smooth),
-        transform var(--press-dur) var(--ease-out-smooth);
+        transform var(--press-dur) var(--ease-out-smooth),
+        color 150ms var(--ease-out-smooth),
+        text-shadow 150ms var(--ease-out-smooth);
 }
 .catalog-filter-trigger:active {
     transform: scale(var(--press-scale));
@@ -2130,7 +2133,7 @@ h3 {
     font-family: var(--font-mono);
     font-size: 0.78rem;
     cursor: pointer;
-    transition: background 120ms var(--ease-out-smooth), color 120ms var(--ease-out-smooth);
+    transition: background 120ms var(--ease-out-smooth), color 120ms var(--ease-out-smooth), text-shadow 120ms var(--ease-out-smooth);
     user-select: none;
 }
 
@@ -2212,7 +2215,8 @@ h3 {
     transition:
         border-color 150ms var(--ease-out-smooth),
         background 150ms var(--ease-out-smooth),
-        color 150ms var(--ease-out-smooth);
+        color 150ms var(--ease-out-smooth),
+        text-shadow 150ms var(--ease-out-smooth);
     white-space: nowrap;
 }
 
@@ -2705,6 +2709,7 @@ h3 {
     text-decoration: none;
     border-bottom: 1px solid var(--sk-border);
     padding-bottom: 2px;
+    transition: color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
 }
 
 .model-modal-docs:hover {
@@ -2744,6 +2749,10 @@ h3 {
     .model-card[role="button"]:active {
         transition: none;
         transform: none;
+    }
+    .catalog-filter-content,
+    .catalog-filter-content[data-closed] {
+        animation: none;
     }
 }
 
@@ -3502,6 +3511,11 @@ h3 {
     border-radius: var(--radius);
     background: var(--sk-shell-bg);
     box-shadow: var(--sk-raised-shadow);
+    transition:
+        background 200ms var(--ease-out-smooth),
+        border-color 200ms var(--ease-out-smooth),
+        box-shadow 200ms var(--ease-out-smooth),
+        color 200ms var(--ease-out-smooth);
 }
 
 .nav {

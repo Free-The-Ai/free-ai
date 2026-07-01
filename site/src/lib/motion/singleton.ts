@@ -50,11 +50,11 @@ export function motionConfigure(partial?: Partial<MotionConfig>): void {
   if (partial.reducedMotion) applyReducedMotionMode();
 }
 
-export function motionConfig(): MotionConfig {
+function motionConfig(): MotionConfig {
   return { ...config };
 }
 
-export function motionReduced(): boolean {
+function motionReduced(): boolean {
   return reduced;
 }
 
@@ -115,7 +115,7 @@ function onReducedMotionChange(event: MediaQueryListEvent): void {
 // ── Context snapshot ──
 
 /** Read the current live interaction context (pointer + scroll velocity). */
-export function motionContext(intent: MotionIntent): MotionContext {
+function motionContext(intent: MotionIntent): MotionContext {
   return {
     intent,
     pointerVelocity,
@@ -180,7 +180,7 @@ export function initMotionSystem(): void {
   window.addEventListener("beforeunload", destroyMotionSystem);
 }
 
-export function destroyMotionSystem(): void {
+function destroyMotionSystem(): void {
   if (!initialized) return;
   initialized = false;
 

@@ -51,7 +51,7 @@ const EASING_BY_INTENT: Record<MotionIntent, string> = {
  * - A faster scroll marginally speeds up scroll-driven reveals.
  * - Result is clamped to [minDuration, maxDuration] then scaled globally.
  */
-export function computeDuration(
+function computeDuration(
   context: MotionContext,
   tuning: Required<Pick<MotionTuning, "baseVelocity" | "minDuration" | "maxDuration">>,
   config: MotionConfig,
@@ -88,7 +88,7 @@ export function computeDuration(
  * Compute the pre-transform scale. Bigger elements get a smaller delta so the
  * motion stays subtle; small elements can afford a larger pop.
  */
-export function computeScale(
+function computeScale(
   context: MotionContext,
   scaleDelta: number,
   config: MotionConfig,
@@ -102,7 +102,7 @@ export function computeScale(
 }
 
 /** Translate distance, signed by intent direction (exits move outward). */
-export function computeTranslate(
+function computeTranslate(
   context: MotionContext,
   baseTranslate: number,
 ): number {
@@ -111,7 +111,7 @@ export function computeTranslate(
 }
 
 /** Opacity start for fades: enters/swaps/exits start invisible. */
-export function computeOpacity(context: MotionContext): number {
+function computeOpacity(context: MotionContext): number {
   const transparent: MotionIntent[] = ["enter", "exit", "swap"];
   return transparent.includes(context.intent) ? 0 : 1;
 }

@@ -70,19 +70,7 @@ export interface MotionTuning {
 
 // ── Presets ──
 
-export type MotionPresetName =
-  | "dropdown"
-  | "modal"
-  | "panel"
-  | "popover"
-  | "tooltip"
-  | "toast"
-  | "press"
-  | "hover"
-  | "digit"
-  | "textSwap"
-  | "iconSwap"
-  | "reveal";
+export type MotionPresetName = "panel";
 
 export type MotionPresets = Record<MotionPresetName, MotionTuning>;
 

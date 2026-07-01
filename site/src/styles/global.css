@@ -443,6 +443,7 @@ pre {
     gap: 10px;
     max-height: min(560px, calc(100vh - 110px));
     overflow: auto;
+    overscroll-behavior: contain;
     padding: 14px;
     margin-top: 2px;
     border: 1px solid var(--sk-border);
@@ -1645,6 +1646,7 @@ h3 {
     align-self: start;
     max-height: calc(100vh - 120px);
     overflow: auto;
+    overscroll-behavior: contain;
 }
 
 .docs-sidebar-label {
@@ -2194,6 +2196,7 @@ h3 {
     align-items: center;
     max-height: 96px;
     overflow: auto;
+    overscroll-behavior: contain;
     padding-right: 4px;
     scrollbar-width: thin;
     scrollbar-color: var(--border-strong) transparent;
@@ -3318,7 +3321,7 @@ h3 {
 .nav-drawer-backdrop {
     position: fixed;
     inset: 0;
-    z-index: 98;
+    z-index: 101;
     background: oklch(0 0 0 / 0.55);
     backdrop-filter: blur(4px);
     opacity: calc(0.55 * (1 - var(--drawer-swipe-progress, 0)));
@@ -3332,7 +3335,7 @@ h3 {
 .nav-drawer-viewport {
     position: fixed;
     inset: 0;
-    z-index: 99;
+    z-index: 102;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -4120,7 +4123,7 @@ h3 {
     .docs-mobile-toc__overlay {
         position: fixed;
         inset: 0;
-        z-index: 98;
+        z-index: 101;
         background: oklch(0 0 0 / 0.5);
         backdrop-filter: blur(4px);
         animation: toc-overlay-in var(--motion-duration, 250ms) var(--motion-easing, var(--ease-out-smooth)) forwards;
@@ -4136,7 +4139,7 @@ h3 {
         bottom: 0;
         left: 0;
         right: 0;
-        z-index: 99;
+        z-index: 102;
         background: var(--surface);
         border-top: 1px solid var(--border);
         border-radius: 14px 14px 0 0;

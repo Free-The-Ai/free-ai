@@ -4621,6 +4621,12 @@ body[data-sound-muted="false"]::after {
         animation: none;
         transition: none;
     }
+    .responsive-drawer-backdrop,
+    .responsive-drawer-popup,
+    .nav-drawer-backdrop,
+    .nav-drawer-popup {
+        transition: none;
+    }
 }
 
 /* ── Shiki syntax highlighting ── */

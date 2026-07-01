@@ -96,7 +96,11 @@ export default function DitherShader(props: DitherShaderProps) {
     }
 
     draw(0);
-    loop(0);
+
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+    if (!reduceMotion.matches) {
+      loop(0);
+    }
 
     let obs: IntersectionObserver | undefined;
 

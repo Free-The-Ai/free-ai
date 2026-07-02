@@ -141,6 +141,7 @@ const jsonLd = [
     }
 
     .paid-plan-option {
+        position: relative;
         display: grid;
         gap: 14px;
         min-width: 0;
@@ -162,6 +163,23 @@ const jsonLd = [
             0 0 0 1px oklch(0.659 0.192 40.1 / 0.18),
             0 20px 50px oklch(0.659 0.192 40.1 / 0.08);
         transform: translateY(-2px);
+    }
+
+    .paid-plan-badge {
+        position: absolute;
+        top: -10px;
+        right: 14px;
+        padding: 4px 10px;
+        border: 1px solid var(--accent);
+        border-radius: var(--radius-sm);
+        background: var(--accent);
+        color: var(--accent-text-strong);
+        font-family: var(--font-mono);
+        font-size: 0.65rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        text-shadow: var(--accent-text-glow);
     }
 
     .paid-plan-option-top,

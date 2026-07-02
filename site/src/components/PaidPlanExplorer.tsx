@@ -293,6 +293,7 @@ function PlanCard(props: {
   };
   return (
     <article className={`paid-plan-option${props.active ? " is-active" : ""}`}>
+      {props.active && <span className="paid-plan-badge">Recommended</span>}
       <div className="paid-plan-option-top">
         <span className="pricing-route-pill">{copy.tag}</span>
         <span className="paid-plan-option-price">

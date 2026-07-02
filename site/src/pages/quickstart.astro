@@ -228,10 +228,16 @@ const highlightedInstallJs = await highlight(installJs, "bash");
             </header>
             <div class="quickstart-grid">
                 <div class="quickstart-snippet">
+                    <button class="copy-btn" type="button" aria-label="Copy Python install command">
+                        <span class="material-symbols-outlined">content_copy</span>
+                    </button>
                     <header><strong>Python</strong></header>
                     <pre set:html={highlightedInstallPython} />
                 </div>
                 <div class="quickstart-snippet">
+                    <button class="copy-btn" type="button" aria-label="Copy Node.js install command">
+                        <span class="material-symbols-outlined">content_copy</span>
+                    </button>
                     <header><strong>Node.js</strong></header>
                     <pre set:html={highlightedInstallJs} />
                 </div>
@@ -250,6 +256,13 @@ const highlightedInstallJs = await highlight(installJs, "bash");
                     </p>
                 </div>
             </header>
+            <div class="quickstart-snippet">
+                <button class="copy-btn" type="button" aria-label="Copy base URL">
+                    <span class="material-symbols-outlined">content_copy</span>
+                </button>
+                <header><strong>Base URL</strong></header>
+                <pre><code>https://api.freetheai.xyz/v1</code></pre>
+            </div>
         </section>
 
         <section class="section shell quickstart-step" id="step-request">
@@ -264,14 +277,23 @@ const highlightedInstallJs = await highlight(installJs, "bash");
                 </div>
             </header>
             <div class="quickstart-snippet">
+                <button class="copy-btn" type="button" aria-label="Copy Python example">
+                    <span class="material-symbols-outlined">content_copy</span>
+                </button>
                 <header><strong>Python</strong></header>
                 <pre set:html={highlightedPython} />
             </div>
             <div class="quickstart-snippet">
+                <button class="copy-btn" type="button" aria-label="Copy JavaScript example">
+                    <span class="material-symbols-outlined">content_copy</span>
+                </button>
                 <header><strong>JavaScript / TypeScript</strong></header>
                 <pre set:html={highlightedJs} />
             </div>
             <div class="quickstart-snippet">
+                <button class="copy-btn" type="button" aria-label="Copy curl example">
+                    <span class="material-symbols-outlined">content_copy</span>
+                </button>
                 <header><strong>curl</strong></header>
                 <pre set:html={highlightedCurl} />
             </div>
@@ -453,11 +475,16 @@ const highlightedInstallJs = await highlight(installJs, "bash");
     }
 
     .quickstart-snippet {
+        position: relative;
         border: 1px solid var(--sk-border);
         border-radius: var(--radius-sm);
         background: var(--sk-inset-bg);
         box-shadow: var(--sk-inset-shadow);
         overflow: hidden;
+    }
+
+    .quickstart-snippet:hover .copy-btn {
+        opacity: 1;
     }
 
     .quickstart-snippet header {
@@ -476,6 +503,11 @@ const highlightedInstallJs = await highlight(installJs, "bash");
         overflow-x: auto;
         font-size: 0.85rem;
         line-height: 1.55;
+    }
+
+    .quickstart-snippet .copy-btn {
+        top: 6px;
+        right: 6px;
     }
 
     .quickstart-next {

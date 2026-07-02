@@ -670,12 +670,6 @@ export default function CatalogBrowser() {
 
   return (
     <div className="panel catalog-panel">
-      <div className="catalog-panel-head">
-        <div>
-          <h3>Models</h3>
-        </div>
-      </div>
-
       <CatalogFiltersToolbar
         query={query} setQuery={setQuery} setPage={setPage}
         prefixes={prefixes} togglePrefix={togglePrefix} prefixCounts={prefixCounts}

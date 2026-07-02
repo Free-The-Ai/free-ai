@@ -345,12 +345,6 @@ export default function ProviderStatusGrid() {
 
     return (
         <div className="status-board">
-            <div className="status-board-head">
-                <div>
-                    <h1>Status</h1>
-                </div>
-            </div>
-
             {failed && (
                 <div className="status-alert">
                     Health data did not load. Retrying automatically.

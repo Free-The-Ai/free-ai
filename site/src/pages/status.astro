@@ -28,6 +28,64 @@ const jsonLd = [
 	currentPath="/status"
 >
 	<main class="status-main">
+		<section class="status-hero shell">
+			<span class="eyebrow">Live status</span>
+			<h1>Provider health</h1>
+			<p class="status-lede">
+				Real-time signals from the FreeTheAi API. Each card shows a provider
+				prefix, recent request volume, and error rates over the last 30 and
+				60 minutes.
+			</p>
+			<a href="https://api.freetheai.xyz/v1/health" target="_blank" rel="noreferrer" class="status-api-link">
+				Open /v1/health <span aria-hidden="true">&rarr;</span>
+			</a>
+		</section>
 		<ProviderStatusGrid client:load />
 	</main>
 </Layout>
+
+<style>
+	.status-hero {
+		display: grid;
+		gap: 12px;
+		padding: clamp(28px, 4.6vw, 52px);
+		text-align: center;
+		justify-items: center;
+	}
+
+	.status-hero .eyebrow {
+		color: var(--dim);
+		font-family: var(--font-mono);
+		font-size: 0.7rem;
+		letter-spacing: 0.12em;
+		text-transform: uppercase;
+	}
+
+	.status-hero h1 {
+		margin: 0;
+		font-size: clamp(2.35rem, 4.7vw, 3.6rem);
+		line-height: 1.04;
+		letter-spacing: -0.045em;
+	}
+
+	.status-lede {
+		margin: 0;
+		max-width: 62ch;
+		color: var(--muted);
+		font-size: 1.02rem;
+		line-height: 1.6;
+		text-wrap: pretty;
+	}
+
+	.status-api-link {
+		color: var(--accent-text);
+		font-size: 0.9rem;
+		text-decoration: none;
+		font-weight: 500;
+	}
+
+	.status-api-link:hover {
+		text-decoration: underline;
+		text-underline-offset: 3px;
+	}
+</style>

@@ -4,8 +4,8 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "astro dev",
-        "build": "astro build",
+        "dev": "node scripts/sync-models.mjs && astro dev",
+        "build": "node scripts/sync-models.mjs && astro build",
         "preview": "astro preview"
     },
     "dependencies": {

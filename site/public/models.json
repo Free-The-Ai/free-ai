@@ -1416,7 +1416,7 @@
       "visibility": "role_gated"
     }
   ],
-  "generated_at": "2026-07-02T22:45:31Z",
+  "generated_at": "2026-07-02T22:46:41Z",
   "object": "model_catalog",
   "policy": {
     "invite_tiers": [

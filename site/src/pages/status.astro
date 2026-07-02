@@ -29,7 +29,8 @@ const jsonLd = [
 >
 	<main class="status-main">
 		<section class="status-hero shell">
-			<span class="eyebrow">Live status</span>
+			<div class="status-hero-glow" aria-hidden="true"></div>
+			<span class="eyebrow status-live-eyebrow">Live status</span>
 			<h1>Provider health</h1>
 			<p class="status-lede">
 				Real-time signals from the FreeTheAi API. Each card shows a provider
@@ -40,25 +41,118 @@ const jsonLd = [
 				Open /v1/health <span aria-hidden="true">&rarr;</span>
 			</a>
 		</section>
+
+		<section class="status-summary shell" aria-label="Summary statistics">
+			<div class="status-summary-item">
+				<span class="status-summary-value" id="stat-total">--</span>
+				<span class="status-summary-label">Total providers</span>
+			</div>
+			<div class="status-summary-item">
+				<span class="status-summary-value status-summary-up" id="stat-healthy">--</span>
+				<span class="status-summary-label">Healthy</span>
+			</div>
+			<div class="status-summary-item">
+				<span class="status-summary-value status-summary-degraded" id="stat-degraded">--</span>
+				<span class="status-summary-label">Degraded</span>
+			</div>
+		</section>
+
 		<ProviderStatusGrid client:load />
+
+		<p class="status-footer-note shell">
+			This page auto-refreshes every 30 seconds. Last updated:
+			<time id="status-last-updated">--</time>
+		</p>
 	</main>
+
+	<script is:inline>
+		function updateTimestamp() {
+			var el = document.getElementById('status-last-updated');
+			if (!el) return;
+			el.textContent = new Date().toLocaleTimeString([], {
+				hour: '2-digit',
+				minute: '2-digit',
+				second: '2-digit',
+			});
+		}
+		updateTimestamp();
+		setInterval(updateTimestamp, 1000);
+
+		function syncStats() {
+			var cards = document.querySelectorAll('.status-card');
+			var total = cards.length;
+			var healthy = document.querySelectorAll('.status-card.is-up').length;
+			var degraded = document.querySelectorAll('.status-card.is-degraded, .status-card.is-down').length;
+			var elTotal = document.getElementById('stat-total');
+			var elHealthy = document.getElementById('stat-healthy');
+			var elDegraded = document.getElementById('stat-degraded');
+			if (elTotal) elTotal.textContent = total;
+			if (elHealthy) elHealthy.textContent = healthy;
+			if (elDegraded) elDegraded.textContent = degraded;
+		}
+		syncStats();
+		var observer = new MutationObserver(syncStats);
+		var grid = document.querySelector('.status-grid');
+		if (grid) observer.observe(grid, { childList: true, subtree: true });
+	</script>
 </Layout>
 
-<style>
+<style is:global>
 	.status-hero {
+		position: relative;
 		display: grid;
 		gap: 12px;
 		padding: clamp(28px, 4.6vw, 52px);
 		text-align: center;
 		justify-items: center;
+		overflow: hidden;
 	}
 
-	.status-hero .eyebrow {
+	.status-hero-glow {
+		position: absolute;
+		inset: -100px auto auto 50%;
+		width: 480px;
+		height: 480px;
+		transform: translateX(-50%);
+		border-radius: 50%;
+		background:
+			radial-gradient(circle, oklch(0.659 0.192 40.1 / 0.16), transparent 62%),
+			radial-gradient(circle at 65% 60%, oklch(0.827 0.113 55.9 / 0.08), transparent 48%);
+		pointer-events: none;
+		z-index: 0;
+	}
+
+	.status-hero > *:not(.status-hero-glow) {
+		position: relative;
+		z-index: 1;
+	}
+
+	.status-live-eyebrow {
 		color: var(--dim);
 		font-family: var(--font-mono);
 		font-size: 0.7rem;
 		letter-spacing: 0.12em;
 		text-transform: uppercase;
+		position: relative;
+		padding-left: 14px;
+	}
+
+	.status-live-eyebrow::before {
+		content: "";
+		position: absolute;
+		left: 0;
+		top: 50%;
+		transform: translateY(-50%);
+		width: 7px;
+		height: 7px;
+		border-radius: 50%;
+		background: oklch(0.659 0.192 40.1);
+		animation: status-pulse 2s var(--ease-out-smooth) infinite;
+	}
+
+	@keyframes status-pulse {
+		0%, 100% { opacity: 1; box-shadow: 0 0 0 0 oklch(0.659 0.192 40.1 / 0.5); }
+		50% { opacity: 0.6; box-shadow: 0 0 0 5px oklch(0.659 0.192 40.1 / 0); }
 	}
 
 	.status-hero h1 {
@@ -87,5 +181,49 @@ const jsonLd = [
 	.status-api-link:hover {
 		text-decoration: underline;
 		text-underline-offset: 3px;
+	}
+
+	.status-summary {
+		display: flex;
+		justify-content: center;
+		gap: clamp(20px, 5vw, 56px);
+		padding: clamp(16px, 3vw, 28px) clamp(20px, 4vw, 40px);
+		flex-wrap: wrap;
+	}
+
+	.status-summary-item {
+		display: grid;
+		justify-items: center;
+		gap: 4px;
+	}
+
+	.status-summary-value {
+		font-family: var(--font-mono);
+		font-size: clamp(1.6rem, 3vw, 2.2rem);
+		font-weight: 600;
+		color: var(--text);
+		line-height: 1;
+	}
+
+	.status-summary-up { color: oklch(0.72 0.15 145); }
+	.status-summary-degraded { color: oklch(0.72 0.15 50); }
+
+	.status-summary-label {
+		font-size: 0.78rem;
+		color: var(--dim);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+	}
+
+	.status-footer-note {
+		text-align: center;
+		color: var(--dim);
+		font-size: 0.82rem;
+		padding: clamp(20px, 4vw, 36px) clamp(20px, 4vw, 40px) clamp(32px, 6vw, 56px);
+	}
+
+	.status-footer-note time {
+		color: var(--muted);
+		font-family: var(--font-mono);
 	}
 </style>

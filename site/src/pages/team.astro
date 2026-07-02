@@ -100,6 +100,7 @@ const jsonLd = [
 >
     <main class="team-main">
         <section class="team-hero shell">
+            <div class="team-hero-glow" aria-hidden="true"></div>
             <span class="eyebrow">Team</span>
             <h1>The people behind FreeTheAi.</h1>
             <p class="team-lede">
@@ -111,10 +112,26 @@ const jsonLd = [
             </p>
         </section>
 
+        <section class="team-stats shell" aria-label="Team and community stats">
+            <div class="team-stat">
+                <span class="team-stat-num">{team.length}</span>
+                <span class="team-stat-label">Team members</span>
+            </div>
+            <div class="team-stat">
+                <span class="team-stat-num">100%</span>
+                <span class="team-stat-label">Open source</span>
+            </div>
+            <div class="team-stat">
+                <span class="team-stat-num">2,000+</span>
+                <span class="team-stat-label">Discord community</span>
+            </div>
+        </section>
+
         <section class="section shell team-grid-section">
             <div class="team-grid">
                 {team.map((member) => (
                     <article class="team-card">
+                        <div class="team-card-glow" aria-hidden="true"></div>
                         <div class="team-card-top">
                             <img
                                 class="team-avatar"
@@ -145,26 +162,28 @@ const jsonLd = [
         </section>
 
         <section class="section shell team-foot-section">
-            <header class="section-head">
-                <span class="eyebrow">Open source</span>
-                <h2>Build with us.</h2>
-            </header>
-            <p class="team-foot-lede">
-                FreeTheAi is open source. Issues, pull requests, and feature
-                ideas are welcome on the public repo. The Discord is the fastest
-                way to reach the team.
-            </p>
-            <div class="team-foot-links">
-                <a class="primary-button" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
-                    <span>Star the repo</span>
-                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                </a>
-                <a class="team-secondary" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
-                    Join the Discord
-                </a>
-                <a class="team-secondary" href="/quickstart">
-                    Try the quickstart
-                </a>
+            <div class="team-foot-card">
+                <header class="section-head">
+                    <span class="eyebrow">Open source</span>
+                    <h2>Build with us.</h2>
+                </header>
+                <p class="team-foot-lede">
+                    FreeTheAi is open source. Issues, pull requests, and feature
+                    ideas are welcome on the public repo. The Discord is the fastest
+                    way to reach the team.
+                </p>
+                <div class="team-foot-links">
+                    <a class="primary-button" href={siteConfig.socials.github} target="_blank" rel="noreferrer">
+                        <span>Star the repo</span>
+                        <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+                    </a>
+                    <a class="team-secondary" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+                        Join the Discord
+                    </a>
+                    <a class="team-secondary" href="/quickstart">
+                        Try the quickstart
+                    </a>
+                </div>
             </div>
         </section>
     </main>
@@ -176,10 +195,28 @@ const jsonLd = [
         padding: 22px 0 64px;
     }
 
+    /* ── Hero with radial glow ── */
     .team-hero {
+        position: relative;
         display: grid;
         gap: 12px;
         padding: clamp(28px, 4.6vw, 52px);
+        overflow: hidden;
+    }
+
+    .team-hero-glow {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 30% 30%, oklch(0.659 0.192 40.1 / 0.24), transparent 54%);
+        pointer-events: none;
+        z-index: 0;
+    }
+
+    .team-hero > .eyebrow,
+    .team-hero > h1,
+    .team-hero > .team-lede {
+        position: relative;
+        z-index: 1;
     }
 
     .team-hero h1 {
@@ -203,6 +240,53 @@ const jsonLd = [
         text-underline-offset: 2px;
     }
 
+    /* ── Stats strip ── */
+    .team-stats {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0;
+        padding: 0 16px;
+    }
+
+    .team-stat {
+        flex: 1 1 0;
+        min-width: 120px;
+        display: grid;
+        gap: 2px;
+        padding: 14px 16px;
+        border: 1px solid var(--sk-border);
+        border-right: none;
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+    }
+
+    .team-stat:last-child {
+        border-right: 1px solid var(--sk-border);
+        border-radius: 0 var(--radius) var(--radius) 0;
+    }
+
+    .team-stat:first-child {
+        border-radius: var(--radius) 0 0 var(--radius);
+    }
+
+    .team-stat-num {
+        font-family: var(--font-mono);
+        font-size: 1.3rem;
+        font-weight: 600;
+        color: var(--accent-text);
+        text-shadow: var(--accent-text-glow);
+        line-height: 1.2;
+    }
+
+    .team-stat-label {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--dim);
+    }
+
+    /* ── Team grid ── */
     .team-grid-section {
         padding: clamp(22px, 3.8vw, 36px);
     }
@@ -222,13 +306,34 @@ const jsonLd = [
         border-radius: var(--radius);
         background: var(--sk-inset-bg);
         box-shadow: var(--sk-inset-shadow);
+        overflow: hidden;
         transition: border-color 200ms var(--ease-out-smooth), box-shadow 200ms var(--ease-out-smooth), transform 200ms var(--ease-out-smooth);
+    }
+
+    .team-card-glow {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(135deg, oklch(0.659 0.192 40.1 / 0.08), transparent 60%);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 200ms var(--ease-out-smooth);
     }
 
     .team-card:hover {
         border-color: oklch(0.659 0.192 40.1 / 0.35);
         box-shadow: var(--sk-inset-shadow), 0 0 0 1px oklch(0.659 0.192 40.1 / 0.16);
         transform: translateY(-2px);
+    }
+
+    .team-card:hover .team-card-glow {
+        opacity: 1;
+    }
+
+    .team-card > .team-card-top,
+    .team-card > .team-bio,
+    .team-card > .team-github {
+        position: relative;
+        z-index: 1;
     }
 
     .team-card-top {
@@ -238,13 +343,13 @@ const jsonLd = [
     }
 
     .team-avatar {
-        width: 60px;
-        height: 60px;
+        width: 80px;
+        height: 80px;
         border-radius: 50%;
-        border: 1px solid var(--sk-border);
+        border: 2px solid oklch(0.659 0.192 40.1 / 0.3);
         background: var(--bg);
         object-fit: cover;
-        box-shadow: var(--sk-inset-shadow);
+        box-shadow: var(--sk-inset-shadow), 0 0 12px oklch(0.659 0.192 40.1 / 0.12);
     }
 
     .team-card-meta h2 {
@@ -257,15 +362,16 @@ const jsonLd = [
     .team-role {
         display: inline-block;
         margin-top: 4px;
-        padding: 2px 8px;
-        border: 1px solid var(--sk-border);
+        padding: 2px 10px;
+        border: 1px solid oklch(0.659 0.192 40.1 / 0.28);
         border-radius: var(--radius-full);
-        background: var(--sk-shell-bg);
+        background: oklch(0.659 0.192 40.1 / 0.12);
         color: var(--accent-text);
         font-family: var(--font-mono);
         font-size: 0.7rem;
         letter-spacing: 0.04em;
         text-transform: uppercase;
+        text-shadow: 0 0 8px oklch(0.659 0.192 40.1 / 0.2);
     }
 
     .team-bio {
@@ -301,30 +407,56 @@ const jsonLd = [
         font-size: 16px;
     }
 
+    /* ── Build with us CTA with gradient accent border ── */
     .team-foot-section {
-        display: grid;
-        gap: 14px;
         padding: clamp(22px, 3.8vw, 36px);
     }
 
-    .team-foot-section .section-head {
+    .team-foot-card {
+        position: relative;
+        display: grid;
+        gap: 14px;
+        padding: clamp(22px, 3.4vw, 32px);
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+        overflow: hidden;
+    }
+
+    .team-foot-card::before {
+        content: "";
+        position: absolute;
+        inset: 0 auto 0 0;
+        width: 3px;
+        background: linear-gradient(180deg, oklch(0.659 0.192 40.1), oklch(0.827 0.113 55.9));
+        pointer-events: none;
+    }
+
+    .team-foot-card > * {
+        position: relative;
+        z-index: 1;
+    }
+
+    .team-foot-card .section-head {
         display: grid;
         gap: 4px;
     }
 
-    .team-foot-section h2 {
+    .team-foot-card h2 {
         margin: 0;
         font-family: var(--font-serif);
         font-size: 1.5rem;
         letter-spacing: -0.02em;
     }
 
-    .team-foot-section .eyebrow {
-        color: var(--dim);
+    .team-foot-card .eyebrow {
+        color: var(--accent-text);
         font-family: var(--font-mono);
         font-size: 0.7rem;
         letter-spacing: 0.12em;
         text-transform: uppercase;
+        text-shadow: var(--accent-text-glow);
     }
 
     .team-foot-lede {
@@ -365,11 +497,22 @@ const jsonLd = [
         .team-card {
             padding: 18px;
         }
+
+        .team-stats {
+            gap: 8px;
+        }
+
+        .team-stat {
+            flex: 1 1 100%;
+            border: 1px solid var(--sk-border);
+            border-radius: var(--radius);
+        }
     }
 
     @media (prefers-reduced-motion: reduce) {
         .team-card,
         .team-card:hover,
+        .team-card-glow,
         .team-github,
         .team-secondary {
             transition: none;

@@ -7,6 +7,7 @@ export interface DitherShaderProps {
   speed?: number;
   interval?: number;
   pauseWhenOffscreen?: boolean;
+  cellSize?: number;
 }
 
 const VERT = `#version 300 es
@@ -86,18 +87,21 @@ function createProgram(gl: WebGL2RenderingContext): WebGLProgram {
 export default function DitherShader(props: DitherShaderProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const W = () => props.w ?? 60;
-  const H = () => props.h ?? 38;
   const amp = () => props.amplitude ?? 0.32;
   const spd = () => props.speed ?? 1;
   const ivl = () => props.interval ?? 200;
+  const cell = () => props.cellSize ?? 16;
 
   useEffect(() => {
     const canvas = canvasRef.current;
     if (!canvas || typeof window === "undefined") return;
 
-    const w = W();
-    const h = H();
+    const rect = canvas.getBoundingClientRect();
+    const vw = rect.width || window.innerWidth;
+    const vh = rect.height || window.innerHeight;
+    const cs = cell();
+    let w = Math.max(8, Math.round(vw / cs));
+    let h = Math.max(8, Math.round(vh / cs));
     canvas.width = w;
     canvas.height = h;
 
@@ -123,6 +127,23 @@ export default function DitherShader(props: DitherShaderProps) {
     gl.uniform2f(u_res, w, h);
     gl.uniform1f(u_amp, amp());
     gl.viewport(0, 0, w, h);
+
+    function resize() {
+      const r = canvasRef.current!.getBoundingClientRect();
+      const pw = r.width || window.innerWidth;
+      const ph = r.height || window.innerHeight;
+      const nw = Math.max(8, Math.round(pw / cs));
+      const nh = Math.max(8, Math.round(ph / cs));
+      if (nw === w && nh === h) return;
+      w = nw; h = nh;
+      const cv = canvasRef.current!;
+      cv.width = w;
+      cv.height = h;
+      ctx.uniform2f(u_res, w, h);
+      ctx.viewport(0, 0, w, h);
+      render(performance.now());
+    }
+    window.addEventListener("resize", resize);
 
     let raf = 0;
     let last = 0;
@@ -162,6 +183,7 @@ export default function DitherShader(props: DitherShaderProps) {
     return () => {
       cancelAnimationFrame(raf);
       obs?.disconnect();
+      window.removeEventListener("resize", resize);
       ctx.deleteProgram(prog);
       ctx.deleteBuffer(buf);
     };

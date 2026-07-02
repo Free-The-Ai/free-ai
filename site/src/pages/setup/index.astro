@@ -93,6 +93,17 @@ const setupKeywords = [
             </div>
         </section>
 
+        <div class="section shell setup-search-shell">
+            <div class="search-field">
+                <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                <input
+                    type="search"
+                    placeholder="Filter guides by client, model, or keyword..."
+                    data-filter-target=".setup-card"
+                />
+            </div>
+        </div>
+
         <section class="section shell setup-path-section">
             <header class="setup-section-head">
                 <span class="eyebrow">Popular paths</span>
@@ -118,34 +129,61 @@ const setupKeywords = [
             </div>
         </section>
 
-        {CATEGORY_ORDER.flatMap((category) => {
-            const guides = guidesByCategory[category];
-            if (!guides || guides.length === 0) return [];
-            return [
-                <section class="section shell setup-section" id={category}>
-                    <header class="setup-section-head">
-                        <span class="eyebrow">{CATEGORY_LABELS[category]}</span>
-                        <h2>{guides.length} {guides.length === 1 ? "guide" : "guides"}</h2>
-                        <p>{CATEGORY_DESCRIPTIONS[category]}</p>
-                    </header>
-                    <div class="setup-grid">
-                        {guides.map((guide) => (
-                            <a class="setup-card" href={`/setup/${guide.slug}`}>
-                                <header class="setup-card-head">
-                                    <h3>{guide.name}</h3>
-                                    <span class="setup-card-arrow" aria-hidden="true">&rarr;</span>
-                                </header>
-                                <p class="setup-card-tagline">{guide.tagline}</p>
-                                <p class="setup-card-summary">{guide.summary}</p>
-                                <div class="setup-card-foot">
-                                    <span class="setup-card-go">View setup &rarr;</span>
-                                </div>
-                            </a>
-                        ))}
-                    </div>
-                </section>,
-            ];
-        })}
+        {(() => {
+            let renderedFirst = false;
+            return CATEGORY_ORDER.flatMap((category) => {
+                const guides = guidesByCategory[category];
+                if (!guides || guides.length === 0) return [];
+                return [
+                    <section class="section shell setup-section" id={category}>
+                        <header class="setup-section-head">
+                            <span class="eyebrow">{CATEGORY_LABELS[category]}</span>
+                            <h2>{guides.length} {guides.length === 1 ? "guide" : "guides"}</h2>
+                            <p>{CATEGORY_DESCRIPTIONS[category]}</p>
+                        </header>
+                        <div class="setup-grid">
+                            {guides.map((guide) => {
+                                const isFirst = !renderedFirst;
+                                if (isFirst) renderedFirst = true;
+                                return (
+                                    <a class="setup-card" href={`/setup/${guide.slug}`} style="position: relative;">
+                                        {isFirst && <span class="popular-badge">Popular</span>}
+                                        <header class="setup-card-head">
+                                            <h3>{guide.name}</h3>
+                                            <span class="setup-card-arrow" aria-hidden="true">&rarr;</span>
+                                        </header>
+                                        <p class="setup-card-tagline">{guide.tagline}</p>
+                                        <p class="setup-card-summary">{guide.summary}</p>
+                                        <div class="setup-card-foot">
+                                            <span class="setup-card-go">View setup &rarr;</span>
+                                        </div>
+                                    </a>
+                                );
+                            })}
+                        </div>
+                    </section>,
+                ];
+            });
+        })()}
+
+        <script is:inline>
+            (function () {
+                const input = document.querySelector('[data-filter-target=".setup-card"]');
+                if (!input) return;
+                const cards = [...document.querySelectorAll('.setup-card')];
+                input.addEventListener('input', function () {
+                    const term = input.value.trim().toLowerCase();
+                    cards.forEach(function (card) {
+                        const match = !term || card.textContent.toLowerCase().includes(term);
+                        card.style.display = match ? '' : 'none';
+                    });
+                    document.querySelectorAll('.setup-section').forEach(function (section) {
+                        const visible = section.querySelectorAll('.setup-card:not([style*="display: none"])').length;
+                        section.style.display = visible ? '' : 'none';
+                    });
+                });
+            })();
+        </script>
 
         <section class="section shell setup-foot-section">
             <header class="section-head">

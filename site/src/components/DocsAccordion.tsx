@@ -23,32 +23,29 @@ interface DocsAccordionProps {
     endpoints: [string, string, string][];
 }
 
+function CopyButton() {
+    return (
+        <button
+            className="copy-btn"
+            type="button"
+            title="Copy"
+            aria-label="Copy to clipboard"
+        >
+            <span className="material-symbols-outlined">content_copy</span>
+        </button>
+    );
+}
+
 function CodeBlock(props: { code: string; lang?: string; html?: string }) {
     return (
         <div className="docs-code-group">
             {props.lang ? (
                 <div className="docs-code-bar">
                     <span className="docs-code-lang">{props.lang}</span>
-                    <button
-                        className="copy-btn"
-                        type="button"
-                        title="Copy"
-                        aria-label="Copy to clipboard"
-                    >
-                        <span className="material-symbols-outlined">
-                            content_copy
-                        </span>
-                    </button>
+                    <CopyButton />
                 </div>
             ) : (
-                <button
-                    className="copy-btn"
-                    type="button"
-                    title="Copy"
-                    aria-label="Copy to clipboard"
-                >
-                    <span className="material-symbols-outlined">content_copy</span>
-                </button>
+                <CopyButton />
             )}
             {props.html ? (
                 <div className="shiki-wrapper" dangerouslySetInnerHTML={{ __html: props.html }} />
@@ -110,20 +107,26 @@ function DocsErrorsSection() {
                     you should branch on; <code>message</code> is the
                     human-readable string.
                 </p>
-                <pre><code>{`{
+                <div className="docs-code-group">
+                    <CopyButton />
+                    <pre><code>{`{
   "error": {
     "message": "human readable message",
     "type": "machine_readable_type"
   }
 }`}</code></pre>
+                </div>
                 <p>
                     Streaming requests can fail mid-stream after the SSE
                     connection has already opened. In that case the API
                     sends an error event followed by <code>data: [DONE]</code>:
                 </p>
-                <pre><code>{`data: {"error":{"message":"provider temporarily unavailable","type":"provider_error"}}
+                <div className="docs-code-group">
+                    <CopyButton />
+                    <pre><code>{`data: {"error":{"message":"provider temporarily unavailable","type":"provider_error"}}
 
 data: [DONE]`}</code></pre>
+                </div>
                 <p>
                     Some provider errors include a short public
                     diagnostic id you can quote in Discord support, for
@@ -244,7 +247,7 @@ export default function DocsAccordion(props: DocsAccordionProps) {
                     <div className="docs-table">
                         {props.endpoints.map(([method, route, desc], i) => (
                             <div className="docs-row" key={i}>
-                                <code>{method}</code>
+                                <span className={`docs-method ${method.toLowerCase()}`}>{method}</span>
                                 <code>{route}</code>
                                 <span>{desc}</span>
                             </div>

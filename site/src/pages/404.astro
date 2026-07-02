@@ -20,6 +20,28 @@ const jsonLd = buildDefaultPageJsonLd();
                 The page you tried to open doesn't exist. The free OpenAI-compatible
                 API and the full site are still right here.
             </p>
+            <div class="not-found-search">
+                <label class="sr-only" for="not-found-search">Search the site</label>
+                <input
+                    type="search"
+                    id="not-found-search"
+                    list="site-pages"
+                    placeholder="Search pages..."
+                    aria-label="Search pages"
+                />
+                <datalist id="site-pages">
+                    <option value="/home">Home</option>
+                    <option value="/docs">API docs</option>
+                    <option value="/models">Model catalog</option>
+                    <option value="/pricing">Pricing</option>
+                    <option value="/status">Status</option>
+                    <option value="/quickstart">Quickstart</option>
+                    <option value="/setup">Setup guides</option>
+                    <option value="/roleplay-api">Roleplay API</option>
+                    <option value="/coding-agent-api">Coding agent API</option>
+                    <option value="/openai-compatible-api">OpenAI-compatible API</option>
+                </datalist>
+            </div>
             <div class="not-found-links">
                 <a class="primary-button" href="/home">
                     <span>Back to home</span>
@@ -41,6 +63,20 @@ const jsonLd = buildDefaultPageJsonLd();
 			setTimeout(function () { poll(attempts - 1); }, 100);
 		}
 	})(50);
+
+	(function () {
+		var input = document.getElementById('not-found-search');
+		if (!input) return;
+		input.addEventListener('keydown', function (e) {
+			if (e.key !== 'Enter') return;
+			var value = input.value.trim();
+			if (value.charAt(0) === '/') {
+				location.href = value;
+			} else if (value) {
+				location.href = '/models';
+			}
+		});
+	})();
 </script>
 
 <style is:global>

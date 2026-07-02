@@ -163,10 +163,48 @@ const endpoints = [
             </aside>
 
             <div class="docs-content">
-                <div class="docs-content-head">
-                    <h1>API Docs</h1>
-                    <p>Chat, models, signup, and check-in - one key, one base URL.</p>
+                <div class="docs-content-head docs-hero">
+                    <span class="eyebrow">API Docs</span>
+                    <h1>One key, one base URL.</h1>
+                    <p>
+                        OpenAI-compatible chat, Anthropic-style messages, image
+                        generation, audio, and the full model catalog. Same key,
+                        same base URL.
+                    </p>
+                    <div class="docs-hero-meta">
+                        <span class="docs-hero-stat">
+                            <strong>{endpoints.length}</strong> endpoints
+                        </span>
+                        <span class="docs-hero-stat">
+                            <strong>3</strong> formats
+                        </span>
+                        <span class="docs-hero-stat">
+                            <strong>0¢</strong> free tier
+                        </span>
+                    </div>
+                    <div class="search-field docs-hero-search">
+                        <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                        <input
+                            type="search"
+                            placeholder="Filter sections and endpoints..."
+                            data-filter-target=".docs-section"
+                        />
+                    </div>
                 </div>
+                <script is:inline>
+                    (function () {
+                        const input = document.querySelector('[data-filter-target=".docs-section"]');
+                        if (!input) return;
+                        const sections = [...document.querySelectorAll('.docs-section')];
+                        input.addEventListener('input', function () {
+                            const term = input.value.trim().toLowerCase();
+                            sections.forEach(function (section) {
+                                const match = !term || section.textContent.toLowerCase().includes(term);
+                                section.style.display = match ? '' : 'none';
+                            });
+                        });
+                    })();
+                </script>
                 <DocsAccordion
                     baseSnippet={baseSnippet}
                     chatCurlSnippet={chatCurlSnippet}

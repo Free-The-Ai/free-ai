@@ -171,9 +171,18 @@ const jsonLd = [
                         client-specific gotchas.
                     </p>
                 </header>
+                <div class="search-field">
+                    <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                    <input
+                        type="search"
+                        placeholder="Filter guides..."
+                        data-filter-target=".intent-guide-card"
+                    />
+                </div>
                 <div class="intent-guide-grid">
-                    {guides.map((guide) => (
-                        <a class="intent-guide-card" href={`/setup/${guide.slug}`}>
+                    {guides.map((guide, index) => (
+                        <a class="intent-guide-card" href={`/setup/${guide.slug}`} style="position: relative;">
+                            {index === 0 && <span class="popular-badge">Popular</span>}
                             <span>{guide.categoryLabel}</span>
                             <strong>{guide.name}</strong>
                             <p>{guide.tagline}</p>
@@ -183,6 +192,21 @@ const jsonLd = [
                 </div>
             </section>
         )}
+
+        <script is:inline>
+            (function () {
+                const input = document.querySelector('[data-filter-target=".intent-guide-card"]');
+                if (!input) return;
+                const cards = [...document.querySelectorAll('.intent-guide-card')];
+                input.addEventListener('input', function () {
+                    const term = input.value.trim().toLowerCase();
+                    cards.forEach(function (card) {
+                        const match = !term || card.textContent.toLowerCase().includes(term);
+                        card.style.display = match ? '' : 'none';
+                    });
+                });
+            })();
+        </script>
 
         <section class="section shell intent-faq-section">
             <header class="intent-section-head">

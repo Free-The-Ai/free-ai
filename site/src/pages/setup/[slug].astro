@@ -152,6 +152,25 @@ const pageKeywords = [
     keywords={pageKeywords}
 >
     <main class="setup-detail-main">
+        <div class="setup-scroll-progress" aria-hidden="true">
+            <span id="setup-progress-fill"></span>
+        </div>
+        <script is:inline>
+            (function () {
+                const fill = document.getElementById('setup-progress-fill');
+                if (!fill) return;
+                function update() {
+                    const doc = document.documentElement;
+                    const scrollTop = window.scrollY || doc.scrollTop;
+                    const height = doc.scrollHeight - doc.clientHeight;
+                    const pct = height > 0 ? Math.round((scrollTop / height) * 100) : 0;
+                    fill.style.width = pct + '%';
+                }
+                window.addEventListener('scroll', update, { passive: true });
+                window.addEventListener('resize', update, { passive: true });
+                update();
+            })();
+        </script>
         <nav class="setup-detail-trail" aria-label="Breadcrumb">
             <a href="/setup">All setup guides</a>
             <span aria-hidden="true">&rarr;</span>
@@ -167,9 +186,12 @@ const pageKeywords = [
             <p class="setup-detail-summary">{guide.summary}</p>
 
             <div class="setup-detail-meta">
-                <div>
+                <div class="setup-meta-copyable">
                     <span>Base URL</span>
                     <code>{guide.baseUrl}</code>
+                    <button class="copy-btn" type="button" title="Copy base URL" aria-label="Copy base URL">
+                        <span class="material-symbols-outlined">content_copy</span>
+                    </button>
                 </div>
                 {guide.apiPath && (
                     <div>
@@ -223,6 +245,12 @@ const pageKeywords = [
             <header class="setup-detail-step-head">
                 <span class="eyebrow">Step by step</span>
                 <h2>Connect {guide.name} to FreeTheAi.</h2>
+                <div class="setup-progress" aria-label="Setup progress">
+                    <div class="setup-progress-track">
+                        <div class="setup-progress-fill" style="width: 100%;"></div>
+                    </div>
+                    <span class="setup-progress-text">{guide.steps.length} steps</span>
+                </div>
             </header>
             <ol class="setup-detail-list">
                 {prepared.map(({ step, codeHtml }, index) => (
@@ -233,9 +261,12 @@ const pageKeywords = [
                                 <h3>{step.title}</h3>
                                 <p>{step.body}</p>
                                 {step.code && codeHtml && (
-                                    <div class="setup-detail-snippet">
-                                        <header>
-                                            <strong>{step.code.lang}</strong>
+                                    <div class="setup-detail-snippet docs-code-group">
+                                        <header class="docs-code-bar">
+                                            <span class="docs-code-lang">{step.code.lang}</span>
+                                            <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard">
+                                                <span class="material-symbols-outlined">content_copy</span>
+                                            </button>
                                         </header>
                                         <pre set:html={codeHtml} />
                                     </div>

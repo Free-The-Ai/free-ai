@@ -71,11 +71,11 @@ export function playSound(
   // ensureResumed(), so by the next microtask the context should be running.
   if (!resumed && ctx.state !== "running") {
     let stopped = false;
-    const placeholder: SoundPlayback = { stop() { stopped = true; } };
+    const queued: SoundPlayback = { stop() { stopped = true; } };
     ensureResumed().then(() => {
       if (!stopped) playSoundImmediate(source, options);
     });
-    return placeholder;
+    return queued;
   }
 
   return playSoundImmediate(source, options);

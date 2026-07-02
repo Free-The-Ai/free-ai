@@ -25,6 +25,16 @@ function generateSoundPack(instrument: InstrumentConfig): SoundPack {
   return pack as SoundPack;
 }
 
+// ── Shared helpers ──
+
+/** Stop a Web Audio node, ignoring only the expected already-stopped error. */
+function safeStop(node: { stop(): void }): void {
+  try { node.stop(); } catch (error) {
+    const isAlreadyStopped = error instanceof Error && error.name === "InvalidStateError";
+    if (!isAlreadyStopped) throw error;
+  }
+}
+
 // ── Helper for note-sequence hero sounds ──
 
 type SeqOpts = { gap: number; dur: number; decayMult?: number; pad?: number; shimmerVol?: number; partials?: number[]; partialVol?: number; partialDur?: number };
@@ -48,7 +58,7 @@ function playSequence(
     if (opts.shimmerVol) oscs.push(...addShimmer(ctx, t, freq, vol * opts.shimmerVol, opts.dur, pad, conf));
     if (opts.partials) oscs.push(...addPartials(ctx, t, freq, vol, pad, conf, opts));
   }
-  return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
+  return { stop() { for (const o of oscs) safeStop(o); } };
 }
 
 function addShimmer(ctx: AudioContext, t: number, freq: number, vol: number, dur: number, pad: number, conf: InstrumentConfig): OscillatorNode[] {
@@ -75,7 +85,7 @@ function addPartials(ctx: AudioContext, t: number, freq: number, vol: number, pa
 
 /** Merge multiple playbacks into one (for layering). */
 function mergePlayback(...pbs: SoundPlayback[]): SoundPlayback {
-  return { stop() { for (const p of pbs) try { p.stop(); } catch {} } };
+  return { stop() { for (const p of pbs) safeStop(p); } };
 }
 
 /** Play a single note with envelope, returns the oscillator. */
@@ -134,7 +144,7 @@ function organicHeroComplete(instrument: InstrumentConfig): SoundSynthesizer {
     const base = playSequence(ctx, time, vol,
       [261.63, 392.0, 329.63, 440.0, 523.25], instrument, { gap: 0.14, dur: 0.3 });
     const body = playNote(ctx, time, 261.63 * 2.8, vol * 0.1, 0.6, instrument);
-    return mergePlayback(base, { stop() { try { body.stop(); } catch {} } });
+    return mergePlayback(base, { stop() { safeStop(body); } });
   };
 }
 
@@ -146,7 +156,7 @@ function industrialHeroComplete(instrument: InstrumentConfig): SoundSynthesizer 
       ...playChord(ctx, time, [164.81, 246.94, 329.63], vol * 0.8, 0.5, instrument),
       ...playArp(ctx, time + 0.3, [329.63, 392.0, 493.88, 659.25], vol, 0.15, 0.08, instrument),
     ];
-    return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
+    return { stop() { for (const o of oscs) safeStop(o); } };
   };
 }
 
@@ -158,7 +168,7 @@ function industrialHeroMilestone(instrument: InstrumentConfig): SoundSynthesizer
       ...playChord(ctx, time, [164.81, 246.94], vol, 0.3, { ...instrument, decayMult: 0.6 }),
       playNote(ctx, time + 0.15, 329.63, vol * 0.8, 0.2, { ...instrument, decayMult: 0.6 }),
     ];
-    return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
+    return { stop() { for (const o of oscs) safeStop(o); } };
   };
 }
 
@@ -170,7 +180,7 @@ function retroHeroComplete(instrument: InstrumentConfig): SoundSynthesizer {
       ...playChord(ctx, time, [220.0, 261.63, 329.63], vol * 0.5, 0.4, instrument, 6),
       ...playArp(ctx, time + 0.4, [440.0, 523.25, 659.25, 880.0], vol, 0.12, 0.08, { ...instrument, decayMult: 1.1 }),
     ];
-    return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
+    return { stop() { for (const o of oscs) safeStop(o); } };
   };
 }
 
@@ -182,7 +192,7 @@ function retroHeroMilestone(instrument: InstrumentConfig): SoundSynthesizer {
       ...playChord(ctx, time, [220.0, 261.63, 329.63], vol * 0.4, 0.25, instrument, 6),
       playNote(ctx, time + 0.2, 440.0, vol, 0.2, instrument),
     ];
-    return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
+    return { stop() { for (const o of oscs) safeStop(o); } };
   };
 }
 
@@ -195,7 +205,7 @@ function crispHeroComplete(instrument: InstrumentConfig): SoundSynthesizer {
     for (let i = 0; i < notes.length; i++) {
       oscs.push(crispNote(ctx, time + i * 0.05, notes[i], vol, instrument, 0.12));
     }
-    return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
+    return { stop() { for (const o of oscs) safeStop(o); } };
   };
 }
 
@@ -208,7 +218,7 @@ function crispHeroMilestone(instrument: InstrumentConfig): SoundSynthesizer {
     for (let i = 0; i < notes.length; i++) {
       oscs.push(crispNote(ctx, time + i * 0.06, notes[i], vol, instrument, 0.1));
     }
-    return { stop() { for (const o of oscs) try { o.stop(); } catch {} } };
+    return { stop() { for (const o of oscs) safeStop(o); } };
   };
 }
 

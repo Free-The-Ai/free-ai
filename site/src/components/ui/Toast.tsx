@@ -4,7 +4,7 @@ import type { ToastManager } from '@base-ui/react/toast';
 const toastManager: ToastManager = Toast.createToastManager();
 
 if (typeof window !== 'undefined') {
-  (window as any).__toastManager = toastManager;
+  (window as unknown as Record<string, unknown>).__toastManager = toastManager;
 }
 
 const TOAST_ICONS: Record<string, string> = {

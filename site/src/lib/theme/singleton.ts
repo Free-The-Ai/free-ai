@@ -84,7 +84,8 @@ function loadPersisted(): Partial<ThemeConfig> | null {
   try {
     const raw = localStorage.getItem(STORAGE_KEY);
     return raw ? (JSON.parse(raw) as Partial<ThemeConfig>) : null;
-  } catch {
+  } catch (error) {
+    console.error("Failed to load persisted theme", error);
     return null;
   }
 }
@@ -93,8 +94,8 @@ function persist(): void {
   if (typeof localStorage === "undefined") return;
   try {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(config));
-  } catch {
-    // localStorage may be unavailable (private mode) — fail silently.
+  } catch (error) {
+    console.error("Failed to persist theme", error);
   }
 }
 

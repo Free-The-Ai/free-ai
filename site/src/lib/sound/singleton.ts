@@ -242,8 +242,8 @@ export function initSoundSystem(): void {
 
   // Expose sound API globally for Layout.astro scripts (page navigation, mute toggle, etc.)
   if (typeof window !== "undefined") {
-    (window as any).__soundPlay = soundPlay;
-    (window as any).__soundToggleMute = soundToggleMute;
+    (window as unknown as Record<string, unknown>).__soundPlay = soundPlay;
+    (window as unknown as Record<string, unknown>).__soundToggleMute = soundToggleMute;
   }
 
   // Cleanup on tab close only — module-level state persists across navigations.
@@ -271,8 +271,8 @@ function destroySoundSystem(): void {
   soundReducedMql?.removeEventListener("change", onSoundReducedMotionChange);
   soundReducedMql = null;
   if (typeof window !== "undefined") {
-    delete (window as any).__soundPlay;
-    delete (window as any).__soundToggleMute;
+    delete (window as unknown as Record<string, unknown>).__soundPlay;
+    delete (window as unknown as Record<string, unknown>).__soundToggleMute;
   }
   closeAudioContext();
 }

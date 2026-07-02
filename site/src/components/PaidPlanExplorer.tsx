@@ -180,58 +180,54 @@ const firstStr = (...vals: unknown[]): string | undefined => {
 const objOr = <T extends Record<string, unknown>>(v: unknown, fallback: T): T =>
   (v !== null && typeof v === "object") ? v as T : fallback;
 
-const normalizePlan = (raw: any): PaidPlan | null => {
+const normalizePlan = (raw: unknown): PaidPlan | null => {
   if (!raw || typeof raw !== "object") return null;
-  const { id: rawId, display, visible, purchasable, display_name, description,
-    highlights, limits, model_count, concurrency_limit, providers, models,
-    billing_period, period, price: rawPrice, price_usd, price_usd_milli } = raw;
-  const id = str(rawId);
+  const r = raw as Record<string, unknown>;
+  const id = str(r.id);
   if (!id) return null;
-  if (display === false || visible === false || purchasable === false) return null;
-  const price = strOrObj(rawPrice);
-  const periodFromPrice = typeof rawPrice === "object" && rawPrice ? rawPrice.period : undefined;
+  if (r.display === false || r.visible === false || r.purchasable === false) return null;
+  const price = strOrObj(r.price);
+  const periodFromPrice = typeof r.price === "object" && r.price ? (r.price as Record<string, unknown>).period : undefined;
   return {
     id,
-    display_name: str(display_name) ?? id,
-    description: str(description),
-    highlights: strArray(highlights),
-    limits: objOr(limits, {}),
-    model_count: num(model_count),
-    concurrency_limit: num(concurrency_limit),
-    providers: strArray(providers),
-    models: strArray(models),
-    billing_period: firstStr(billing_period, period, periodFromPrice),
+    display_name: str(r.display_name) ?? id,
+    description: str(r.description),
+    highlights: strArray(r.highlights),
+    limits: objOr(r.limits, {}),
+    model_count: num(r.model_count),
+    concurrency_limit: num(r.concurrency_limit),
+    providers: strArray(r.providers),
+    models: strArray(r.models),
+    billing_period: firstStr(r.billing_period, r.period, periodFromPrice),
     price,
-    price_usd: num(price_usd),
-    price_usd_milli: num(price_usd_milli),
-    purchasable: purchasable !== false,
+    price_usd: num(r.price_usd),
+    price_usd_milli: num(r.price_usd_milli),
+    purchasable: r.purchasable !== false,
   };
 };
 
-const normalizeModel = (raw: any): PaidModel | null => {
+const normalizeModel = (raw: unknown): PaidModel | null => {
   if (!raw || typeof raw !== "object") return null;
-  const { id: rawId, name, pricing_units, pricing, unit_cost, unit_label,
-    route, plans, context_window, max_input_tokens, max_output_tokens,
-    supports_images, supports_streaming, supports_tool_call, supports_response_schema } = raw;
-  const id = str(rawId);
+  const r = raw as Record<string, unknown>;
+  const id = str(r.id);
   if (!id) return null;
-  const pricingObj = typeof pricing === "object" && pricing ? pricing : {};
-  const unit = num(pricing_units) ?? num(pricingObj.unit_cost) ?? num(unit_cost) ?? 1;
-  const display = str(pricingObj.display) ?? str(unit_label) ?? `${formatUnitCost(unit)} request units`;
+  const pricingObj = typeof r.pricing === "object" && r.pricing ? (r.pricing as Record<string, unknown>) : {};
+  const unit = num(r.pricing_units) ?? num(pricingObj.unit_cost) ?? num(r.unit_cost) ?? 1;
+  const display = str(pricingObj.display) ?? str(r.unit_label) ?? `${formatUnitCost(unit)} request units`;
   const model = {
     id,
-    name: str(name),
+    name: str(r.name),
     unit_cost: unit,
     unit_label: display,
-    route: str(route) ?? routeForModel(id),
-    plans: strArray(plans),
-    context_window: num(context_window),
-    max_input_tokens: num(max_input_tokens),
-    max_output_tokens: num(max_output_tokens),
-    supports_images: supports_images === true,
-    supports_streaming: supports_streaming === true,
-    supports_tool_call: supports_tool_call === true,
-    supports_response_schema: supports_response_schema === true,
+    route: str(r.route) ?? routeForModel(id),
+    plans: strArray(r.plans),
+    context_window: num(r.context_window),
+    max_input_tokens: num(r.max_input_tokens),
+    max_output_tokens: num(r.max_output_tokens),
+    supports_images: r.supports_images === true,
+    supports_streaming: r.supports_streaming === true,
+    supports_tool_call: r.supports_tool_call === true,
+    supports_response_schema: r.supports_response_schema === true,
   };
   const ctx = siteModelContextWindow(model);
   if (ctx > 0) { model.context_window = ctx; model.max_input_tokens = ctx; }

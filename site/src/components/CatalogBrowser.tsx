@@ -128,18 +128,18 @@ const modelRoutes = (model: Model): RouteInfo[] => {
   return SUPPORTED_ROUTES;
 };
 
-const parseModel = (i: any): Model | null => {
+const parseModel = (i: unknown): Model | null => {
   if (!i || typeof i !== "object") return null;
-  const { id: rawId, prefix, access: rawAccess, requires_seems_legit,
-    visibility, context_window, max_input_tokens, max_output_tokens,
-    supports_images, supports_audio } = i;
+  const raw = i as Record<string, unknown>;
+  const rawId = raw.id;
+  const rawAccess = raw.access;
   const _id = str(rawId);
   if (!_id) return null;
-  const pfx = str(prefix) ?? modelPrefix(_id);
+  const pfx = str(raw.prefix) ?? modelPrefix(_id);
   const access = (rawAccess ?? {}) as AccessInfo;
   const requiredRoles = strArray(access.required_discord_roles);
   const requiresSeemsLegit =
-    requires_seems_legit === true ||
+    raw.requires_seems_legit === true ||
     access.requires_seems_legit === true ||
     requiredRoles.includes("seems_legit");
   const out: Model = { id: _id, prefix: pfx, required_roles: requiredRoles };
@@ -149,13 +149,12 @@ const parseModel = (i: any): Model | null => {
     ["max_input_tokens", posInt],
     ["max_output_tokens", posInt],
   ];
-  const fieldMap: Record<string, unknown> = { visibility, context_window, max_input_tokens, max_output_tokens };
   for (const [key, fn] of fields) {
-    const v = fn(fieldMap[key as string]);
-    if (v !== undefined) (out as any)[key] = v;
+    const v = fn(raw[key]);
+    if (v !== undefined) (out as unknown as Record<string, unknown>)[key] = v;
   }
-  if (typeof supports_images === "boolean") out.supports_images = supports_images;
-  if (typeof supports_audio === "boolean") out.supports_audio = supports_audio;
+  if (typeof raw.supports_images === "boolean") out.supports_images = raw.supports_images;
+  if (typeof raw.supports_audio === "boolean") out.supports_audio = raw.supports_audio;
   if (requiresSeemsLegit) out.requires_seems_legit = true;
   return out;
 };
@@ -191,7 +190,7 @@ const typeButtonLabel = (sel: Set<FilterKey>, labels: Record<FilterKey, string>)
   return `${sel.size} capabilities`;
 };
 
-const fetchModels = async (): Promise<{ payload: any; src: "live" | "snapshot" }> => {
+const fetchModels = async (): Promise<{ payload: unknown; src: "live" | "snapshot" }> => {
   try {
     const res = await fetch(LIVE_ENDPOINT, {
       headers: { Accept: "application/json", Authorization: `Bearer ${LIVE_KEY}` },
@@ -615,7 +614,8 @@ export default function CatalogBrowser() {
       try {
         const { payload, src } = await fetchModels();
         if (cancelled) return;
-        const items = Array.isArray(payload?.data) ? payload.data : [];
+        const payloadRecord = payload && typeof payload === "object" ? (payload as Record<string, unknown>) : null;
+        const items = Array.isArray(payloadRecord?.data) ? payloadRecord.data : [];
         setAllModels(
           items
             .map(parseModel)
@@ -623,7 +623,7 @@ export default function CatalogBrowser() {
             .filter((m: Model) => !DISABLED.has(m.prefix))
             .sort((a: Model, b: Model) => collator.compare(a.id, b.id))
         );
-        if (payload?.policy && typeof payload.policy === "object") setPolicy(payload.policy as Policy);
+        if (payloadRecord?.policy && typeof payloadRecord.policy === "object") setPolicy(payloadRecord.policy as Policy);
         setSource(src);
       } catch (err) {
         if (cancelled) return;

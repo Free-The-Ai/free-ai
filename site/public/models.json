@@ -114,7 +114,7 @@
         "required_discord_roles": [],
         "requires_seems_legit": false
       },
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "eve/gpt-image-2",
       "object": "model",
       "owned_by": "gateway",
@@ -129,7 +129,7 @@
         "required_discord_roles": [],
         "requires_seems_legit": false
       },
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "eve/gpt-image-2-low",
       "object": "model",
       "owned_by": "gateway",
@@ -144,7 +144,7 @@
         "required_discord_roles": [],
         "requires_seems_legit": false
       },
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "eve/gpt-image-2-medium",
       "object": "model",
       "owned_by": "gateway",
@@ -156,199 +156,13 @@
     {
       "access": {
         "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3-pro-image",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3-pro-image-1k",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3-pro-image-2k",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3-pro-image-4k",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3-pro-image-512",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3.1-flash-image",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3.1-flash-image-1k",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3.1-flash-image-2k",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3.1-flash-image-4k",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 1782691666,
-      "id": "ever/gemini-3.1-flash-image-512",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_images": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "context_window": 32000,
-      "created": 1782691666,
-      "id": "ever/gemini-3.1-flash-lite",
-      "max_input_tokens": 32000,
-      "max_output_tokens": 8192,
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_chat": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "context_window": 32000,
-      "created": 1782691666,
-      "id": "ever/gemini-3.5-flash",
-      "max_input_tokens": 32000,
-      "max_output_tokens": 8192,
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "ever",
-      "requires_seems_legit": false,
-      "supports_chat": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
         "required_discord_roles": [
           "seems_legit"
         ],
         "requires_seems_legit": true
       },
       "context_window": 16000,
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "exa/search",
       "max_input_tokens": 16000,
       "max_output_tokens": 4096,
@@ -368,7 +182,7 @@
         "requires_seems_legit": true
       },
       "context_window": 16000,
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "exa/search-deep",
       "max_input_tokens": 16000,
       "max_output_tokens": 4096,
@@ -388,7 +202,7 @@
         "requires_seems_legit": true
       },
       "context_window": 16000,
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "exa/search-fast",
       "max_input_tokens": 16000,
       "max_output_tokens": 4096,
@@ -674,11 +488,11 @@
         "required_discord_roles": [],
         "requires_seems_legit": false
       },
-      "context_window": 1048756,
-      "created": 1777398589,
-      "id": "kai/openrouter/owl-alpha",
-      "max_input_tokens": 1048756,
-      "max_output_tokens": 262144,
+      "context_window": 262144,
+      "created": 1777388504,
+      "id": "kai/poolside/laguna-m.1:free",
+      "max_input_tokens": 262144,
+      "max_output_tokens": 32768,
       "object": "model",
       "owned_by": "gateway",
       "prefix": "kai",
@@ -693,8 +507,8 @@
         "requires_seems_legit": false
       },
       "context_window": 262144,
-      "created": 1777388504,
-      "id": "kai/poolside/laguna-m.1:free",
+      "created": 1783002429,
+      "id": "kai/poolside/laguna-xs-2.1:free",
       "max_input_tokens": 262144,
       "max_output_tokens": 32768,
       "object": "model",
@@ -738,57 +552,6 @@
       "prefix": "kai",
       "requires_seems_legit": false,
       "supports_chat": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "context_window": 262144,
-      "created": 0,
-      "id": "mim/mimo-v2-omni",
-      "max_input_tokens": 262144,
-      "max_output_tokens": 32768,
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "mim",
-      "requires_seems_legit": false,
-      "supports_chat": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "context_window": 1048576,
-      "created": 0,
-      "id": "mim/mimo-v2-pro",
-      "max_input_tokens": 1048576,
-      "max_output_tokens": 131072,
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "mim",
-      "requires_seems_legit": false,
-      "supports_chat": true,
-      "visibility": "site_catalog"
-    },
-    {
-      "access": {
-        "available": true,
-        "required_discord_roles": [],
-        "requires_seems_legit": false
-      },
-      "created": 0,
-      "id": "mim/mimo-v2-tts",
-      "object": "model",
-      "owned_by": "gateway",
-      "prefix": "mim",
-      "requires_seems_legit": false,
-      "supports_audio": true,
       "visibility": "site_catalog"
     },
     {
@@ -894,7 +657,7 @@
         "requires_seems_legit": false
       },
       "context_window": 1000000,
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "min/minimax-m3",
       "max_input_tokens": 1000000,
       "max_output_tokens": 32000,
@@ -911,7 +674,7 @@
         "required_discord_roles": [],
         "requires_seems_legit": false
       },
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "olm/deepseek-v3.1",
       "object": "model",
       "owned_by": "gateway",
@@ -926,7 +689,7 @@
         "required_discord_roles": [],
         "requires_seems_legit": false
       },
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "olm/deepseek-v4-pro",
       "object": "model",
       "owned_by": "gateway",
@@ -941,7 +704,7 @@
         "required_discord_roles": [],
         "requires_seems_legit": false
       },
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "olm/kimi-k2.7-code",
       "object": "model",
       "owned_by": "gateway",
@@ -957,7 +720,7 @@
         "requires_seems_legit": false
       },
       "context_window": 200000,
-      "created": 1782691666,
+      "created": 1783032093,
       "id": "opc/big-pickle",
       "max_input_tokens": 200000,
       "max_output_tokens": 32000,
@@ -975,7 +738,7 @@
         "requires_seems_legit": false
       },
       "context_window": 200000,
-      "created": 1782691666,
+      "created": 1783032093,
       "id": "opc/deepseek-v4-flash-free",
       "max_input_tokens": 200000,
       "max_output_tokens": 128000,
@@ -993,7 +756,7 @@
         "requires_seems_legit": false
       },
       "context_window": 200000,
-      "created": 1782691666,
+      "created": 1783032093,
       "id": "opc/mimo-v2.5-free",
       "max_input_tokens": 200000,
       "max_output_tokens": 32000,
@@ -1011,7 +774,7 @@
         "requires_seems_legit": false
       },
       "context_window": 1000000,
-      "created": 1782691666,
+      "created": 1783032093,
       "id": "opc/nemotron-3-ultra-free",
       "max_input_tokens": 1000000,
       "max_output_tokens": 128000,
@@ -1029,7 +792,7 @@
         "requires_seems_legit": false
       },
       "context_window": 256000,
-      "created": 1782691666,
+      "created": 1783032093,
       "id": "opc/north-mini-code-free",
       "max_input_tokens": 256000,
       "max_output_tokens": 64000,
@@ -1049,7 +812,7 @@
         "requires_seems_legit": true
       },
       "context_window": 16000,
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "pplx/search",
       "max_input_tokens": 16000,
       "max_output_tokens": 4096,
@@ -1063,12 +826,570 @@
     {
       "access": {
         "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 4000,
+      "created": 1783032092,
+      "id": "sun/chirp-v3-0",
+      "max_input_tokens": 4000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "sun",
+      "requires_seems_legit": false,
+      "supports_audio": true,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 4000,
+      "created": 1783032092,
+      "id": "sun/chirp-v3-5",
+      "max_input_tokens": 4000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "sun",
+      "requires_seems_legit": false,
+      "supports_audio": true,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 4000,
+      "created": 1783032092,
+      "id": "sun/chirp-v4",
+      "max_input_tokens": 4000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "sun",
+      "requires_seems_legit": false,
+      "supports_audio": true,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 4000,
+      "created": 1783032092,
+      "id": "sun/chirp-v4-5",
+      "max_input_tokens": 4000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "sun",
+      "requires_seems_legit": false,
+      "supports_audio": true,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 4000,
+      "created": 1783032092,
+      "id": "sun/chirp-v4-5-plus",
+      "max_input_tokens": 4000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "sun",
+      "requires_seems_legit": false,
+      "supports_audio": true,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 4000,
+      "created": 1783032092,
+      "id": "sun/chirp-v5",
+      "max_input_tokens": 4000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "sun",
+      "requires_seems_legit": false,
+      "supports_audio": true,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 4000,
+      "created": 1783032092,
+      "id": "sun/chirp-v5-5",
+      "max_input_tokens": 4000,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "sun",
+      "requires_seems_legit": false,
+      "supports_audio": true,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/claude-haiku-4-5-20251001",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/claude-opus-4-5-20251101",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/claude-opus-4-6",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/claude-opus-4-7",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/claude-opus-4-8",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/claude-sonnet-4-6",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/deepseek-v4-flash",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/deepseek-v4-pro",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/gemini-2.0-flash",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/gemini-2.0-pro",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/gemini-2.5-flash",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/gemini-2.5-pro",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/gemini-3-flash-preview",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/gemini-3.1-pro-preview",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/gemini-3.5-flash",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/glm-5.2",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/gpt-5.5",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/kimi-k2.5",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/kimi-k2.7-code",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 1048576,
+      "created": 1783032092,
+      "id": "vova/mimo-v2.5",
+      "max_input_tokens": 1048576,
+      "max_output_tokens": 131072,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 1048576,
+      "created": 1783032092,
+      "id": "vova/mimo-v2.5-pro",
+      "max_input_tokens": 1048576,
+      "max_output_tokens": 131072,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 1048576,
+      "created": 1783032092,
+      "id": "vova/mimo-v2.5-pro-ultraspeed",
+      "max_input_tokens": 1048576,
+      "max_output_tokens": 131072,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/minimax-m2.7",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
+        "required_discord_roles": [],
+        "requires_seems_legit": false
+      },
+      "context_window": 200000,
+      "created": 1783032092,
+      "id": "vova/minimax-m3",
+      "max_input_tokens": 200000,
+      "max_output_tokens": 65536,
+      "object": "model",
+      "owned_by": "gateway",
+      "prefix": "vova",
+      "requires_seems_legit": false,
+      "supports_chat": true,
+      "visibility": "site_catalog"
+    },
+    {
+      "access": {
+        "available": true,
         "required_discord_roles": [
           "seems_legit"
         ],
         "requires_seems_legit": true
       },
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "xai/grok-stt",
       "object": "model",
       "owned_by": "gateway",
@@ -1085,7 +1406,7 @@
         ],
         "requires_seems_legit": true
       },
-      "created": 1782691666,
+      "created": 1783032092,
       "id": "xai/grok-tts",
       "object": "model",
       "owned_by": "gateway",
@@ -1095,7 +1416,7 @@
       "visibility": "role_gated"
     }
   ],
-  "generated_at": "2026-06-29T00:17:14Z",
+  "generated_at": "2026-07-02T22:45:31Z",
   "object": "model_catalog",
   "policy": {
     "invite_tiers": [

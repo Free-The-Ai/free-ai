@@ -48,65 +48,73 @@ const pageDescription =
     currentPath="/home"
 >
     <main>
-        <!-- Hero -->
+        <!-- Hero: value prop + live code preview -->
         <section class="home-hero">
-            <div class="home-hero-inner">
-                <h1 class="home-hero-logo">
-                    <Logo
-                        width={520}
-                        label="FreeTheAi"
-                        class="home-hero-logo-svg"
-                    />
-                    <span class="sr-only">FreeTheAi — free OpenAI-compatible API</span>
-                </h1>
-                <p class="home-hero-lead">
-                    OpenAI-compatible. 60+ active models.<br />No card. No catch.
-                </p>
-                <div class="home-hero-cta">
+            <div class="home-hero-grid">
+                <div class="home-hero-copy">
+                    <h1 class="home-hero-logo">
+                        <Logo
+                            width={520}
+                            label="FreeTheAi"
+                            class="home-hero-logo-svg"
+                        />
+                        <span class="sr-only">FreeTheAi — free OpenAI-compatible API</span>
+                    </h1>
+                    <p class="home-hero-lead">
+                        OpenAI-compatible AI API with 60+ active models. One
+                        Discord key, one base URL, zero billing.
+                    </p>
+                    <div class="home-hero-cta">
+                        <a
+                            class="primary-button"
+                            href={siteConfig.socials.discord}
+                            target="_blank"
+                            rel="noreferrer"
+                            data-sound="interaction.confirm"
+                        >
+                            <span>Get a free API key</span>
+                            <span class="hero-cta-arrow">&rarr;</span>
+                        </a>
+                        <a
+                            class="secondary-button"
+                            href="/docs"
+                            data-sound="interaction.tap"
+                        >
+                            Read docs
+                        </a>
+                    </div>
+                    <div class="home-hero-links">
+                        <a href="/models" class="hero-link">Browse Models</a>
+                        <a href="/pricing" class="hero-link">Pricing</a>
+                    </div>
+                    <div class="home-hero-stats">
+                        <LiveStats client:load />
+                    </div>
+                </div>
+                <div class="home-hero-demo">
+                    <div class="code-card home-code-card">
+                        <div class="card-head">
+                            <div class="dot-row">
+                                <span></span><span></span><span></span>
+                            </div>
+                            <div class="card-label">Try it</div>
+                        </div>
+                        <div class="docs-code-group">
+                            <div class="shiki-wrapper" set:html={snippetHtml} />
+                            <button class="copy-btn" type="button" aria-label="Copy code">
+                                <span class="material-symbols-outlined">content_copy</span>
+                            </button>
+                        </div>
+                    </div>
                     <a
-                        class="primary-button"
                         href={siteConfig.socials.discord}
                         target="_blank"
                         rel="noreferrer"
+                        class="home-discord-link"
                     >
-                        <span>Get a free API key</span>
-                        <span class="hero-cta-arrow">&rarr;</span>
+                        Join Discord <span class="home-discord-link-arrow">&rarr;</span>
                     </a>
                 </div>
-                <div class="home-hero-links">
-                    <a href="/models" class="hero-link">Browse Models</a>
-                    <a href="/docs" class="hero-link">Read Docs</a>
-                </div>
-            </div>
-        </section>
-
-        <!-- Code card -->
-        <section class="home-code-section">
-            <div class="code-card home-code-card">
-                <div class="card-head">
-                    <div class="dot-row">
-                        <span></span><span></span><span></span>
-                    </div>
-                    <div class="card-label">Try it</div>
-                </div>
-                <div class="docs-code-group">
-                    <div class="shiki-wrapper" set:html={snippetHtml} />
-                    <button class="copy-btn" type="button" aria-label="Copy code">
-                        <span class="material-symbols-outlined">content_copy</span>
-                    </button>
-                </div>
-            </div>
-
-            <div class="home-stats-wrap">
-                <LiveStats client:load />
-                <a
-                    href={siteConfig.socials.discord}
-                    target="_blank"
-                    rel="noreferrer"
-                    class="home-discord-link"
-                >
-                    Join Discord <span class="home-discord-link-arrow">&rarr;</span>
-                </a>
             </div>
         </section>
 
@@ -251,11 +259,20 @@ const pageDescription =
         text-align: center;
     }
 
-    .home-hero-inner {
+    .home-hero-grid {
         position: relative;
         z-index: 1;
-        max-width: 600px;
+        max-width: 1100px;
         margin: 0 auto;
+        display: grid;
+        grid-template-columns: 1fr;
+        gap: 48px;
+        align-items: start;
+    }
+
+    .home-hero-copy {
+        display: grid;
+        justify-items: center;
     }
 
     .home-hero-logo {
@@ -266,6 +283,7 @@ const pageDescription =
     .home-hero-logo-svg {
         display: block;
         margin: 0 auto;
+        max-width: 100%;
     }
 
     .home-hero-lead {
@@ -285,6 +303,29 @@ const pageDescription =
         justify-content: center;
     }
 
+    .secondary-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        height: var(--control-height);
+        padding: var(--control-padding);
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: transparent;
+        color: var(--text);
+        font-size: 0.95rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: border-color 160ms var(--ease-out-smooth),
+            background 160ms var(--ease-out-smooth),
+            color 160ms var(--ease-out-smooth);
+    }
+
+    .secondary-button:hover {
+        border-color: var(--border-strong);
+        background: var(--control-bg);
+    }
+
     .hero-cta-arrow {
         opacity: 0.6;
         font-size: 0.85rem;
@@ -298,29 +339,28 @@ const pageDescription =
         justify-content: center;
     }
 
-    .home-code-section {
-        max-width: 600px;
-        margin: 0 auto;
-        padding: 48px 16px 0;
-        text-align: center;
+    .home-hero-demo {
+        display: grid;
+        justify-items: center;
+        gap: 16px;
     }
 
     .home-code-card {
         text-align: left;
+        width: 100%;
+        max-width: 540px;
     }
 
-    .home-stats-wrap {
-        margin-top: 48px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    .home-hero-stats {
+        margin-top: 40px;
+        width: 100%;
+        max-width: 540px;
     }
 
     .home-discord-link {
         display: inline-flex;
         align-items: center;
         gap: 6px;
-        margin-top: 16px;
         color: var(--accent-text);
         text-shadow: var(--accent-text-glow);
         font-size: 0.85rem;
@@ -330,6 +370,39 @@ const pageDescription =
 
     .home-discord-link-arrow {
         font-size: 1rem;
+    }
+
+    @media (min-width: 980px) {
+        .home-hero {
+            padding-top: 100px;
+            text-align: left;
+        }
+
+        .home-hero-grid {
+            grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+            gap: 64px;
+            align-items: center;
+        }
+
+        .home-hero-copy,
+        .home-hero-demo {
+            justify-items: start;
+        }
+
+        .home-hero-cta,
+        .home-hero-links,
+        .home-hero-logo-svg {
+            justify-content: flex-start;
+            margin-left: 0;
+        }
+
+        .home-hero-lead {
+            margin-left: 0;
+        }
+
+        .home-hero-stats {
+            max-width: none;
+        }
     }
 
     .home-support {

@@ -2794,13 +2794,30 @@ h3 {
     padding: 0 18px 18px;
 }
 
+.more-menu-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
 .more-menu-title {
     font-size: 0.82rem;
     font-weight: 600;
     color: var(--muted);
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    margin-bottom: 12px;
+}
+
+.more-menu-head .primary-button {
+    min-height: 32px;
+    padding: 0 14px;
+    font-size: 0.8rem;
+}
+
+.more-menu-head .cta-arrow {
+    font-size: 0.8rem;
 }
 
 .more-menu-links {
@@ -2810,26 +2827,44 @@ h3 {
 }
 
 .more-menu-link {
-    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
     border: 1px solid transparent;
     border-radius: var(--radius);
     text-decoration: none;
     color: var(--text);
-    font-size: 1.05rem;
+    font-size: 1rem;
     font-weight: 600;
     transition:
         background 150ms var(--ease-out-smooth),
         border-color 150ms var(--ease-out-smooth),
-        box-shadow 150ms var(--ease-out-smooth);
+        box-shadow 150ms var(--ease-out-smooth),
+        color 150ms var(--ease-out-smooth);
 }
+
+.more-menu-link .material-symbols-outlined {
+    color: var(--accent-text);
+    font-size: 18px;
+    text-shadow: var(--accent-text-glow);
+}
+
 .more-menu-link:hover {
     background: var(--control-bg);
     border-color: var(--border);
 }
+
 .more-menu-link.is-active {
     border-color: var(--sk-border);
     background: var(--sk-inset-bg);
     box-shadow: var(--sk-inset-shadow);
+}
+
+.more-menu-divider {
+    height: 1px;
+    margin: 8px 0;
+    background: var(--sk-border);
 }
 
 /* ── Footer ── */

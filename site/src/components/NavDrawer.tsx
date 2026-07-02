@@ -49,16 +49,16 @@ const TABS: [string, string, string][] = [
   ["/status", "Status", "status"],
 ];
 
-const MORE: [string, string, boolean][] = [
-  ["/docs", "Docs", false],
-  ["/setup", "Setup", false],
-  ["/roleplay-api", "Roleplay API", false],
-  ["/coding-agent-api", "Coding API", false],
-  ["/privacy", "Privacy", false],
-  ["/terms", "Terms", false],
-  [siteConfig.socials.github, "Repo", true],
-  [siteConfig.socials.discord, "Join Discord", true],
-  [siteConfig.socials.donate, "Donate", true],
+const MORE: [string, string, boolean, string][] = [
+  ["/docs", "Docs", false, "description"],
+  ["/setup", "Setup", false, "settings"],
+  ["/roleplay-api", "Roleplay API", false, "theater_comedy"],
+  ["/coding-agent-api", "Coding API", false, "code"],
+  ["/privacy", "Privacy", false, "shield"],
+  ["/terms", "Terms", false, "gavel"],
+  [siteConfig.socials.github, "Repo", true, "code"],
+  [siteConfig.socials.discord, "Join Discord", true, "chat"],
+  [siteConfig.socials.donate, "Donate", true, "favorite"],
 ];
 
 type NavDrawerProps = {
@@ -103,19 +103,35 @@ export default function NavDrawer(props: NavDrawerProps) {
 
       <NavDrawerSheet open={moreOpen} onOpenChange={setMoreOpen} className="more-sheet">
         <div id="mobile-more-menu" className="more-menu">
-          <span className="more-menu-title">More</span>
+          <div className="more-menu-head">
+            <span className="more-menu-title">More</span>
+            <a
+              className="primary-button"
+              href={siteConfig.socials.discord}
+              target="_blank"
+              rel="noreferrer"
+              onClick={closeMore}
+            >
+              <span>Get a free key</span>
+              <span className="cta-arrow" aria-hidden="true">&rarr;</span>
+            </a>
+          </div>
           <nav className="more-menu-links" aria-label="More navigation">
-            {MORE.map(([href, label, external]) => (
-              <a
-                key={href}
-                href={href}
-                className={`more-menu-link${props.currentPath === href ? " is-active" : ""}`}
-                onClick={closeMore}
-                target={external ? "_blank" : undefined}
-                rel={external ? "noreferrer" : undefined}
-              >
-                {label}
-              </a>
+            {MORE.map(([href, label, external, icon], index) => (
+              <>
+                {index === 6 && <div className="more-menu-divider" aria-hidden="true" />}
+                <a
+                  key={href}
+                  href={href}
+                  className={`more-menu-link${props.currentPath === href ? " is-active" : ""}`}
+                  onClick={closeMore}
+                  target={external ? "_blank" : undefined}
+                  rel={external ? "noreferrer" : undefined}
+                >
+                  <span className="material-symbols-outlined" aria-hidden="true">{icon}</span>
+                  <span>{label}</span>
+                </a>
+              </>
             ))}
           </nav>
         </div>

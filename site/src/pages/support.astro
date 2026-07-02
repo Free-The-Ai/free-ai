@@ -63,9 +63,21 @@ const jsonLd = [
                         policy questions, or abuse reports that should not be
                         posted publicly.
                     </p>
-                    <a class="support-link" href={`mailto:${siteConfig.socials.supportEmail}`}>
-                        {siteConfig.socials.supportEmail}
-                    </a>
+                    <div class="support-email-group docs-code-group">
+                        <code class="support-link">
+                            <a href={`mailto:${siteConfig.socials.supportEmail}`}>
+                                {siteConfig.socials.supportEmail}
+                            </a>
+                        </code>
+                        <button
+                            class="copy-btn"
+                            type="button"
+                            title="Copy email"
+                            aria-label="Copy email address"
+                        >
+                            <span class="material-symbols-outlined">content_copy</span>
+                        </button>
+                    </div>
                 </article>
 
                 <article class="panel support-card">
@@ -99,23 +111,43 @@ const jsonLd = [
                     help us trace it.
                 </p>
             </header>
-            <div class="support-notes">
-                <article class="panel support-note">
-                    <h3>For policy or safety issues</h3>
-                    <p>
-                        Send the exact behavior, the channel or surface it
-                        happened on, and why you think it violates the terms or
-                        developer policy.
-                    </p>
-                </article>
-                <article class="panel support-note">
-                    <h3>For app review</h3>
-                    <p>
-                        Use the site links to privacy and terms. Discord app
-                        review can also use this page as the public contact point
-                        for follow-up questions.
-                    </p>
-                </article>
+            <ul class="support-checklist">
+                <li>
+                    <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                    Affected page or API route
+                </li>
+                <li>
+                    <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                    Approximate time and timezone
+                </li>
+                <li>
+                    <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                    Discord user id or key prefix
+                </li>
+                <li>
+                    <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                    Exact error text or request id
+                </li>
+            </ul>
+        </section>
+
+        <section class="section shell support-foot-section">
+            <header class="section-head">
+                <span class="eyebrow">Still stuck?</span>
+                <h2>Get help in Discord.</h2>
+                <p>
+                    The community and the team are active there. Use your public
+                    support email for anything private.
+                </p>
+            </header>
+            <div class="support-links">
+                <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
+                    <span>Open Discord</span>
+                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
+                </a>
+                <a class="support-secondary" href={`mailto:${siteConfig.socials.supportEmail}`}>
+                    Email support
+                </a>
             </div>
         </section>
     </main>
@@ -182,6 +214,68 @@ const jsonLd = [
         display: grid;
         grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         gap: 16px;
+    }
+
+    .support-email-group {
+        position: relative;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 12px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
+        width: fit-content;
+    }
+
+    .support-email-group .support-link {
+        color: var(--accent-text);
+        font-family: var(--font-mono);
+        font-size: 0.85rem;
+        text-decoration: none;
+        text-shadow: var(--accent-text-glow);
+    }
+
+    .support-email-group .copy-btn {
+        position: static;
+        opacity: 0.55;
+        width: 22px;
+        height: 22px;
+    }
+
+    .support-email-group:hover .copy-btn,
+    .support-email-group .copy-btn:focus-visible {
+        opacity: 1;
+    }
+
+    .support-checklist {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 10px 16px;
+        margin: 0;
+        padding: 0;
+        list-style: none;
+    }
+
+    .support-checklist li {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        color: var(--muted);
+        font-size: 0.92rem;
+        line-height: 1.5;
+    }
+
+    .support-checklist .material-symbols-outlined {
+        color: var(--accent-text);
+        font-size: 18px;
+    }
+
+    .support-foot-section {
+        display: grid;
+        gap: 14px;
+        padding: clamp(22px, 3.8vw, 36px);
     }
 
     @media (prefers-reduced-motion: reduce) {

@@ -17,6 +17,12 @@ const jsonLd = buildDefaultPageJsonLd();
             <meta http-equiv="refresh" content="0;url=/home" />
         </noscript>
         <section class="root-redirect-card shell">
+            <span class="root-redirect-logo" aria-hidden="true">
+                <svg viewBox="0 0 120 120" width="72" height="72">
+                    <circle cx="60" cy="60" r="54" fill="none" stroke="var(--sk-border)" stroke-width="4" />
+                    <circle class="root-redirect-spinner" cx="60" cy="60" r="54" fill="none" stroke="var(--accent-text)" stroke-width="4" stroke-linecap="round" stroke-dasharray="160 200" />
+                </svg>
+            </span>
             <h1>FreeTheAi</h1>
             <p>
                 Free OpenAI-compatible API with 60+ active models. Loading the
@@ -74,5 +80,26 @@ const jsonLd = buildDefaultPageJsonLd();
     .root-redirect-card .cta-arrow {
         opacity: 0.65;
         font-size: 0.9rem;
+    }
+
+    .root-redirect-logo {
+        display: grid;
+        place-items: center;
+        margin: 0 auto;
+    }
+
+    .root-redirect-spinner {
+        transform-origin: center;
+        animation: root-redirect-spin 1.2s linear infinite;
+    }
+
+    @keyframes root-redirect-spin {
+        to { transform: rotate(360deg); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .root-redirect-spinner {
+            animation: none;
+        }
     }
 </style>

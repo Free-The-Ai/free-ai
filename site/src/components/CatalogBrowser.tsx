@@ -625,6 +625,12 @@ export default function CatalogBrowser() {
         );
         if (payloadRecord?.policy && typeof payloadRecord.policy === "object") setPolicy(payloadRecord.policy as Policy);
         setSource(src);
+        const livePrefixes = new Set(items.map((m: Record<string, unknown>) => str(m.prefix) ?? modelPrefix(str(m.id) ?? "")).filter(Boolean));
+        document.querySelectorAll(".models-hero-chip strong").forEach((el, i) => {
+          el.textContent = i === 0 ? String(items.length) : String(livePrefixes.size);
+        });
+        const lede = document.querySelector(".models-lede");
+        if (lede) lede.textContent = `${items.length} OpenAI-compatible chat, image, and audio model aliases across ${livePrefixes.size} provider prefixes. Search, filter, and copy any alias into your client.`;
       } catch (err) {
         if (cancelled) return;
         setSource("error");

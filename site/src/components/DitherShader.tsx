@@ -9,12 +9,78 @@ export interface DitherShaderProps {
   pauseWhenOffscreen?: boolean;
 }
 
-function hash(x: number, y: number, seed: number): number {
-  let h = (x * 374761393 + y * 668265263 + seed * 982451653) | 0;
-  h ^= h >>> 13;
-  h *= 1274126177;
-  h ^= h >>> 16;
-  return (h >>> 0) / 4294967296;
+const VERT = `#version 300 es
+in vec2 a_pos;
+out vec2 v_uv;
+void main() {
+  v_uv = a_pos * 0.5 + 0.5;
+  gl_Position = vec4(a_pos, 0.0, 1.0);
+}`;
+
+const FRAG = `#version 300 es
+precision highp float;
+in vec2 v_uv;
+out vec4 frag;
+uniform vec2 u_res;
+uniform float u_time;
+uniform float u_amp;
+uniform float u_seed;
+
+float hash(vec2 p) {
+  p = fract(p * vec2(443.897, 441.423));
+  p += dot(p, p.yx + 19.19);
+  return fract((p.x + p.y) * p.x);
+}
+
+void main() {
+  vec2 uv = v_uv;
+  vec2 px = uv * u_res;
+
+  float t = u_time;
+  float n = sin(uv.x * 3.7 + t) * cos(uv.y * 3.3 - t * 0.7);
+  n += sin(uv.x * 2.1 - uv.y * 2.9 + t * 0.5) * 0.5;
+  n = n * u_amp + 0.5;
+
+  float threshold = hash(floor(px) + u_seed);
+  if (n <= threshold) {
+    frag = vec4(0.0, 0.0, 0.0, 1.0);
+    return;
+  }
+
+  float tint = hash(floor(px).yx + u_seed + 1.0);
+  float intensity = 0.5 + tint * 0.5;
+  float sparkle = tint > 0.94
+    ? 20.0 + hash(floor(px) + u_seed + 3.0) * 35.0
+    : 0.0;
+
+  float r = min(255.0, (65.0 + tint * 30.0) * intensity + sparkle);
+  float g = min(255.0, (26.0 + tint * 14.0) * intensity + sparkle * 0.4);
+  float b = min(255.0, (6.0 + tint * 6.0) * intensity + sparkle * 0.1);
+  frag = vec4(r / 255.0, g / 255.0, b / 255.0, 1.0);
+}`;
+
+function createProgram(gl: WebGL2RenderingContext): WebGLProgram {
+  const vs = gl.createShader(gl.VERTEX_SHADER)!;
+  gl.shaderSource(vs, VERT);
+  gl.compileShader(vs);
+  if (!gl.getShaderParameter(vs, gl.COMPILE_STATUS))
+    throw new Error(`vert: ${gl.getShaderInfoLog(vs)}`);
+
+  const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
+  gl.shaderSource(fs, FRAG);
+  gl.compileShader(fs);
+  if (!gl.getShaderParameter(fs, gl.COMPILE_STATUS))
+    throw new Error(`frag: ${gl.getShaderInfoLog(fs)}`);
+
+  const prog = gl.createProgram()!;
+  gl.attachShader(prog, vs);
+  gl.attachShader(prog, fs);
+  gl.linkProgram(prog);
+  if (!gl.getProgramParameter(prog, gl.LINK_STATUS))
+    throw new Error(`link: ${gl.getProgramInfoLog(prog)}`);
+  gl.deleteShader(vs);
+  gl.deleteShader(fs);
+  return prog;
 }
 
 export default function DitherShader(props: DitherShaderProps) {
@@ -34,56 +100,40 @@ export default function DitherShader(props: DitherShaderProps) {
     const h = H();
     canvas.width = w;
     canvas.height = h;
-    const ctx = canvas.getContext("2d", { alpha: false })!;
-    const img = ctx.createImageData(w, h);
-    const d = img.data;
 
-    let raf: number;
+    const gl: WebGL2RenderingContext | null = canvas.getContext("webgl2", { alpha: false, antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: true });
+    if (!gl) return;
+    const ctx = gl;
+
+    const prog = createProgram(gl);
+    gl.useProgram(prog);
+
+    const buf = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, "a_pos");
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    const u_res = gl.getUniformLocation(prog, "u_res");
+    const u_time = gl.getUniformLocation(prog, "u_time");
+    const u_amp = gl.getUniformLocation(prog, "u_amp");
+    const u_seed = gl.getUniformLocation(prog, "u_seed");
+
+    gl.uniform2f(u_res, w, h);
+    gl.uniform1f(u_amp, amp());
+    gl.viewport(0, 0, w, h);
+
+    let raf = 0;
     let last = 0;
     let visible = true;
 
-    function draw(t: number) {
+    function render(t: number) {
       const time = t * 0.00018 * spd();
-      const seed = Math.floor(t * 0.000001) | 0;
-      const a = amp();
-      for (let y = 0; y < h; y++) {
-        for (let x = 0; x < w; x++) {
-          const nx = x / w;
-          const ny = y / h;
-
-          // Sine waves create dramatic bright peaks and dark troughs
-          let n = Math.sin(nx * 3.7 + time) * Math.cos(ny * 3.3 - time * 0.7);
-          n += Math.sin(nx * 2.1 - ny * 2.9 + time * 0.5) * 0.5;
-          // Map to 0..1 with amplitude controlling spread
-          n = n * a + 0.5;
-
-          // Per-cell random threshold creates dither speckle
-          const threshold = hash(x, y, seed);
-          const on = n > threshold ? 1 : 0;
-
-          if (!on) {
-            const i = (y * w + x) * 4;
-            d[i] = 0; d[i + 1] = 0; d[i + 2] = 0; d[i + 3] = 255;
-            continue;
-          }
-
-          // Warm amber ember with variation
-          const tint = hash(y, x, seed + 1);
-          const intensity = 0.5 + tint * 0.5;
-          const sparkle = tint > 0.94 ? 20 + hash(x + y, x, seed + 3) * 35 : 0;
-
-          const r = Math.min(255, Math.floor((65 + tint * 30) * intensity) + sparkle);
-          const g = Math.min(255, Math.floor((26 + tint * 14) * intensity) + Math.floor(sparkle * 0.4));
-          const b = Math.min(255, Math.floor((6 + tint * 6) * intensity) + Math.floor(sparkle * 0.1));
-
-          const i = (y * w + x) * 4;
-          d[i] = r;
-          d[i + 1] = g;
-          d[i + 2] = b;
-          d[i + 3] = 255;
-        }
-      }
-      ctx.putImageData(img, 0, 0);
+      const seed = Math.floor(t * 0.000001);
+      ctx.uniform1f(u_time, time);
+      ctx.uniform1f(u_seed, seed);
+      ctx.drawArrays(ctx.TRIANGLE_STRIP, 0, 4);
     }
 
     function loop(t: number) {
@@ -91,19 +141,16 @@ export default function DitherShader(props: DitherShaderProps) {
       if (!visible) return;
       if (t - last > ivl()) {
         last = t;
-        draw(t);
+        render(t);
       }
     }
 
-    draw(0);
+    render(0);
 
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
-    if (!reduceMotion.matches) {
-      loop(0);
-    }
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (!reduceMotion.matches) loop(0);
 
     let obs: IntersectionObserver | undefined;
-
     if (props.pauseWhenOffscreen !== false) {
       obs = new IntersectionObserver(
         ([entry]) => { visible = entry.isIntersecting; },
@@ -115,6 +162,8 @@ export default function DitherShader(props: DitherShaderProps) {
     return () => {
       cancelAnimationFrame(raf);
       obs?.disconnect();
+      ctx.deleteProgram(prog);
+      ctx.deleteBuffer(buf);
     };
   }, []);
 

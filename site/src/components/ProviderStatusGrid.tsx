@@ -192,20 +192,18 @@ function StatusCard({ provider, isSelected, onSelect, closePopover }: {
         >
             <div className="status-card-top">
                 <strong>{provider.prefix}/</strong>
-                <span>{provider.status}</span>
+                {showBlast ? (
+                    <span className="status-card-blast">
+                        {provider.status === "down" ? "Affected" : "At risk"}
+                        {" "}<strong>{modelCount.toLocaleString()}</strong>
+                    </span>
+                ) : (
+                    <span>{provider.status}</span>
+                )}
             </div>
             <div className="status-card-main">
                 <span>{modelCount.toLocaleString()}</span>
                 <small>{modelCount === 1 ? "model" : "models"}</small>
-            </div>
-            <div className="status-card-blast-slot">
-                {showBlast && (
-                    <span className="status-card-blast">
-                        {provider.status === "down" ? "Affected" : "At risk"}
-                        {" "}<strong>{modelCount.toLocaleString()}</strong>
-                        {" "}{modelCount === 1 ? "model" : "models"}
-                    </span>
-                )}
             </div>
             <div className="status-card-meta">
                 <span>30m errors</span>
@@ -324,17 +322,25 @@ export default function ProviderStatusGrid() {
         return `${statusFilter.size} statuses`;
     };
 
+    const total = providers.length;
+    const healthy = providers.filter(p => p.status === "up").length;
+    const degraded = providers.filter(p => p.status === "degraded").length;
+    const down = providers.filter(p => p.status === "down").length;
+    const affected = degraded + down;
+
+    const overallState = affected === 0 ? "healthy" : down > 0 ? "down" : "degraded";
+    const stateText = affected === 0
+        ? "All providers operational"
+        : down > 0
+        ? `${down.toLocaleString()} provider${down === 1 ? "" : "s"} down`
+        : `${degraded.toLocaleString()} provider${degraded === 1 ? "" : "s"} degraded`;
+
     const filtersActive = query.trim() !== "" || prefixFilters.size > 0 || statusFilter.size > 0;
 
     const resultLabel = () => {
         const count = filteredProviders.length;
         const plural = count === 1 ? "provider" : "providers";
-        const prefixLabel = prefixFilters.size === 0
-            ? "all prefixes"
-            : prefixFilters.size === 1
-            ? `${[...prefixFilters][0]}/*`
-            : `${prefixFilters.size} prefixes`;
-        return `${count.toLocaleString()} ${plural} across ${prefixLabel}`;
+        return `${count.toLocaleString()} ${plural}`;
     };
 
     const clearFilters = () => {
@@ -353,6 +359,16 @@ export default function ProviderStatusGrid() {
 
             {providers.length > 0 ? (
                 <>
+                    <div className="status-bar">
+                        <span className={`status-bar-state is-${overallState}`}>{stateText}</span>
+                        <div className="status-bar-counts">
+                            <span className="is-healthy-count"><strong>{healthy}</strong> healthy</span>
+                            <span className="is-degraded-count"><strong>{degraded}</strong> degraded</span>
+                            <span className="is-down-count"><strong>{down}</strong> down</span>
+                            <span><strong>{total}</strong> total</span>
+                        </div>
+                    </div>
+
                     <StatusFiltersToolbar
                         query={query}
                         setQuery={setQuery}

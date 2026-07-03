@@ -2274,7 +2274,7 @@ h3 {
 
 .status-board {
     display: grid;
-    gap: 24px;
+    gap: 18px;
 }
 
 .status-board-head {
@@ -2303,10 +2303,71 @@ h3 {
     font-size: 0.9rem;
 }
 
+/* ── Status bar (replaces summary cards) ── */
+.status-bar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 16px;
+    padding: 12px 16px;
+    border: 1px solid var(--sk-border);
+    border-radius: var(--radius);
+    background: var(--sk-inset-bg);
+    box-shadow: var(--sk-inset-shadow);
+}
+
+.status-bar-state {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: 600;
+}
+
+.status-bar-state::before {
+    content: "";
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: oklch(0.72 0.15 145);
+}
+
+.status-bar-state.is-degraded::before {
+    background: oklch(0.72 0.15 50);
+}
+
+.status-bar-state.is-down::before {
+    background: var(--danger);
+}
+
+.status-bar-counts {
+    display: flex;
+    gap: 14px;
+    margin-left: auto;
+    color: var(--muted);
+    font-size: 0.85rem;
+}
+
+.status-bar-counts strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.status-bar-counts .is-healthy-count { color: oklch(0.72 0.15 145); }
+.status-bar-counts .is-degraded-count { color: oklch(0.72 0.15 50); }
+.status-bar-counts .is-down-count { color: var(--danger); }
+
+@media (max-width: 560px) {
+    .status-bar-counts {
+        margin-left: 0;
+        width: 100%;
+        justify-content: space-between;
+    }
+}
+
 /* ── Provider status grid (single source of truth) ── */
 .status-grid {
     display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 12px;
     align-items: start;
 }
@@ -2344,9 +2405,9 @@ h3 {
 .status-card {
     position: relative;
     display: grid;
-    gap: 18px;
-    padding: 18px;
-    min-height: 210px;
+    gap: 12px;
+    padding: 16px;
+    min-height: 0;
     border: 1px solid var(--sk-border);
     border-radius: var(--radius);
     background: var(--sk-shell-bg);
@@ -2423,16 +2484,11 @@ h3 {
     flex-shrink: 0;
 }
 
-.status-card-blast-slot {
-    min-height: 32px;
-    display: flex;
-    align-items: center;
-}
 .status-card-blast {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 6px 10px;
+    padding: 4px 8px;
     border: 1px solid var(--sk-border);
     border-radius: var(--radius-sm);
     background: var(--sk-inset-bg);
@@ -3137,20 +3193,10 @@ h3 {
 }
 
 .status-card {
-    gap: 14px;
-    min-height: 156px;
+    gap: 12px;
+    min-height: 0;
     padding: 16px;
     background: var(--sk-shell-bg);
-}
-
-.status-card::before {
-    content: "";
-    position: absolute;
-    inset: 0 0 auto 0;
-    width: auto;
-    height: 1px;
-    border-radius: 0;
-    background: oklch(1 0 0 / 0.12);
 }
 
 .status-card.is-up,

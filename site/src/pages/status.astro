@@ -39,43 +39,9 @@ const jsonLd = [
             </a>
         </section>
 
-        <section class="status-summary shell" aria-label="Summary statistics">
-            <div class="status-summary-card">
-                <span id="stat-total">--</span>
-                <span>Total providers</span>
-            </div>
-            <div class="status-summary-card is-healthy">
-                <span id="stat-healthy">--</span>
-                <span>Healthy</span>
-            </div>
-            <div class="status-summary-card is-degraded">
-                <span id="stat-degraded">--</span>
-                <span>Degraded</span>
-            </div>
-        </section>
-
         <ProviderStatusGrid client:load />
     </main>
 </Layout>
-
-<script is:inline>
-    function syncStats() {
-        var cards = document.querySelectorAll('.status-card');
-        var total = cards.length;
-        var healthy = document.querySelectorAll('.status-card.is-up').length;
-        var degraded = document.querySelectorAll('.status-card.is-degraded, .status-card.is-down').length;
-        var elTotal = document.getElementById('stat-total');
-        var elHealthy = document.getElementById('stat-healthy');
-        var elDegraded = document.getElementById('stat-degraded');
-        if (elTotal) elTotal.textContent = total;
-        if (elHealthy) elHealthy.textContent = healthy;
-        if (elDegraded) elDegraded.textContent = degraded;
-    }
-    syncStats();
-    var observer = new MutationObserver(syncStats);
-    var grid = document.querySelector('.status-grid');
-    if (grid) observer.observe(grid, { childList: true, subtree: true });
-</script>
 
 <style is:global>
     .status-hero {

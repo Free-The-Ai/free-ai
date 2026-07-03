@@ -127,13 +127,84 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
     currentPath="/quickstart"
 >
     <main class="quickstart-main">
-        <section class="quickstart-hero shell">
-            <span class="eyebrow">Quickstart</span>
-            <h1>Free AI API, ready in minutes.</h1>
-            <p class="quickstart-lede">
-                Sign up in Discord, unlock your key with <code>/checkin</code>,
-                point the OpenAI SDK at FreeTheAi, send a chat completion.
-            </p>
+        <section class="quickstart-card shell">
+            <header class="quickstart-head">
+                <span class="eyebrow">Quickstart</span>
+                <h1>Free AI API, ready in minutes.</h1>
+                <p class="quickstart-lede">
+                    Sign up in Discord, unlock your key with <code>/checkin</code>,
+                    point the OpenAI SDK at FreeTheAi, send a chat completion.
+                </p>
+            </header>
+
+            <div class="quickstart-flow">
+                <div class="quickstart-step" id="step-key">
+                    <span class="quickstart-step-num">1</span>
+                    <div class="quickstart-step-body">
+                        <strong>Get a free key.</strong>
+                        <span>
+                            Join <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">discord.gg/secrets</a>,
+                            run <code>/signup</code>, and complete the modal.
+                            Lost it? Use <code>/resetkey</code>.
+                        </span>
+                    </div>
+                </div>
+                <div class="quickstart-step" id="step-checkin">
+                    <span class="quickstart-step-num">2</span>
+                    <div class="quickstart-step-body">
+                        <strong>Unlock today.</strong>
+                        <span>
+                            Run <code>/checkin</code> once per UTC day and solve the
+                            human challenge. Until then, the API returns{" "}
+                            <code>403 daily_checkin_required</code>.
+                        </span>
+                    </div>
+                </div>
+                <div class="quickstart-step" id="step-request">
+                    <span class="quickstart-step-num">3</span>
+                    <div class="quickstart-step-body">
+                        <strong>Send a request.</strong>
+                        <span>
+                            Install the OpenAI SDK, set <code>base_url</code> to{" "}
+                            <code>https://api.freetheai.xyz/v1</code>, and pick any alias
+                            from the model catalog.
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="quickstart-tabs" data-tabs>
+                <div class="quickstart-tab-list" role="tablist">
+                    <button type="button" class="quickstart-tab is-active" role="tab" data-tab="python" aria-selected="true">Python</button>
+                    <button type="button" class="quickstart-tab" role="tab" data-tab="node">Node.js</button>
+                    <button type="button" class="quickstart-tab" role="tab" data-tab="curl">curl</button>
+                </div>
+                <div class="quickstart-tab-panel is-active" role="tabpanel" data-tab-panel="python" tabindex="0">
+                    <div class="quickstart-snippet">
+                        <button class="copy-btn" type="button" aria-label="Copy Python example">
+                            <span class="material-symbols-outlined">content_copy</span>
+                        </button>
+                        <pre set:html={highlightedPython} />
+                    </div>
+                </div>
+                <div class="quickstart-tab-panel" role="tabpanel" data-tab-panel="node" tabindex="0">
+                    <div class="quickstart-snippet">
+                        <button class="copy-btn" type="button" aria-label="Copy JavaScript example">
+                            <span class="material-symbols-outlined">content_copy</span>
+                        </button>
+                        <pre set:html={highlightedJs} />
+                    </div>
+                </div>
+                <div class="quickstart-tab-panel" role="tabpanel" data-tab-panel="curl" tabindex="0">
+                    <div class="quickstart-snippet">
+                        <button class="copy-btn" type="button" aria-label="Copy curl example">
+                            <span class="material-symbols-outlined">content_copy</span>
+                        </button>
+                        <pre set:html={highlightedCurl} />
+                    </div>
+                </div>
+            </div>
+
             <div class="quickstart-cta-row">
                 <a class="primary-button" href={siteConfig.socials.discord} target="_blank" rel="noreferrer">
                     <span>Get a free key</span>
@@ -145,77 +216,7 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
             </div>
         </section>
 
-        <section class="quickstart-flow shell">
-            <div class="quickstart-step-compact" id="step-key">
-                <span class="quickstart-step-num">1</span>
-                <div>
-                    <strong>Get a free key.</strong>
-                    <span>
-                        Join <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">discord.gg/secrets</a>,
-                        run <code>/signup</code>, and complete the modal.
-                        Lost it? Use <code>/resetkey</code>.
-                    </span>
-                </div>
-            </div>
-            <div class="quickstart-step-compact" id="step-checkin">
-                <span class="quickstart-step-num">2</span>
-                <div>
-                    <strong>Unlock today.</strong>
-                    <span>
-                        Run <code>/checkin</code> once per UTC day and solve the
-                        human challenge. Until then, the API returns{" "}
-                        <code>403 daily_checkin_required</code>.
-                    </span>
-                </div>
-            </div>
-            <div class="quickstart-step-compact" id="step-request">
-                <span class="quickstart-step-num">3</span>
-                <div>
-                    <strong>Send a request.</strong>
-                    <span>
-                        Install the OpenAI SDK, set <code>base_url</code> to{" "}
-                        <code>https://api.freetheai.xyz/v1</code>, and pick any alias
-                        from the model catalog.
-                    </span>
-                </div>
-            </div>
-        </section>
-
-        <section class="quickstart-snippet-shell shell">
-            <div class="quickstart-tabs" data-tabs>
-                <div class="quickstart-tab-list" role="tablist">
-                    <button type="button" class="quickstart-tab is-active" role="tab" data-tab="python" aria-selected="true">Python</button>
-                    <button type="button" class="quickstart-tab" role="tab" data-tab="node">Node.js</button>
-                    <button type="button" class="quickstart-tab" role="tab" data-tab="curl">curl</button>
-                </div>
-                <div class="quickstart-tab-panel is-active" role="tabpanel" data-tab-panel="python">
-                    <div class="quickstart-snippet">
-                        <button class="copy-btn" type="button" aria-label="Copy Python example">
-                            <span class="material-symbols-outlined">content_copy</span>
-                        </button>
-                        <pre set:html={highlightedPython} />
-                    </div>
-                </div>
-                <div class="quickstart-tab-panel" role="tabpanel" data-tab-panel="node">
-                    <div class="quickstart-snippet">
-                        <button class="copy-btn" type="button" aria-label="Copy JavaScript example">
-                            <span class="material-symbols-outlined">content_copy</span>
-                        </button>
-                        <pre set:html={highlightedJs} />
-                    </div>
-                </div>
-                <div class="quickstart-tab-panel" role="tabpanel" data-tab-panel="curl">
-                    <div class="quickstart-snippet">
-                        <button class="copy-btn" type="button" aria-label="Copy curl example">
-                            <span class="material-symbols-outlined">content_copy</span>
-                        </button>
-                        <pre set:html={highlightedCurl} />
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <section class="section shell quickstart-next">
+        <section class="quickstart-next shell">
             <header class="section-head">
                 <span class="eyebrow">Next stops</span>
                 <h2>Where to go next.</h2>
@@ -254,19 +255,41 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
             var tabButtons = [...tabList.querySelectorAll('[data-tab]')];
             if (!tabList || tabButtons.length === 0) return;
 
-            tabList.addEventListener('click', function (e) {
-                var btn = e.target.closest('[data-tab]');
-                if (!btn) return;
-                var key = btn.getAttribute('data-tab');
+            function select(key) {
                 tabButtons.forEach(function (b) {
                     var active = b.getAttribute('data-tab') === key;
                     b.classList.toggle('is-active', active);
                     b.setAttribute('aria-selected', String(active));
+                    b.setAttribute('tabindex', active ? '0' : '-1');
                 });
                 panels.forEach(function (p) {
                     var active = p.getAttribute('data-tab-panel') === key;
                     p.classList.toggle('is-active', active);
                 });
+            }
+
+            tabButtons.forEach(function (b, i) {
+                b.setAttribute('tabindex', i === 0 ? '0' : '-1');
+            });
+
+            tabList.addEventListener('click', function (e) {
+                var btn = e.target.closest('[data-tab]');
+                if (!btn) return;
+                select(btn.getAttribute('data-tab'));
+            });
+
+            tabList.addEventListener('keydown', function (e) {
+                var idx = tabButtons.indexOf(document.activeElement);
+                if (idx < 0) return;
+                var next = idx;
+                if (e.key === 'ArrowRight') next = (idx + 1) % tabButtons.length;
+                else if (e.key === 'ArrowLeft') next = (idx - 1 + tabButtons.length) % tabButtons.length;
+                else if (e.key === 'Home') next = 0;
+                else if (e.key === 'End') next = tabButtons.length - 1;
+                else return;
+                e.preventDefault();
+                select(tabButtons[next].getAttribute('data-tab'));
+                tabButtons[next].focus();
             });
         });
     })();
@@ -277,15 +300,20 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
         padding: 22px 0 64px;
     }
 
-    .quickstart-hero {
+    .quickstart-card {
         display: grid;
-        gap: 16px;
-        padding: clamp(28px, 4.6vw, 52px);
+        gap: 26px;
+        padding: clamp(24px, 4.2vw, 42px);
     }
 
-    .quickstart-hero h1 {
+    .quickstart-head {
+        display: grid;
+        gap: 14px;
+    }
+
+    .quickstart-head h1 {
         margin: 0;
-        font-size: clamp(2.35rem, 4.7vw, 3.6rem);
+        font-size: clamp(2.2rem, 4.6vw, 3.4rem);
         line-height: 1.04;
         letter-spacing: -0.045em;
         text-wrap: balance;
@@ -305,7 +333,6 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
         flex-wrap: wrap;
         align-items: center;
         gap: 16px;
-        margin-top: 6px;
     }
 
     .quickstart-cta-row .cta-arrow {
@@ -329,17 +356,31 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
 
     .quickstart-flow {
         display: grid;
-        gap: 16px;
-        padding: clamp(22px, 3.8vw, 36px);
+        gap: 18px;
+        padding-left: 6px;
     }
 
-    .quickstart-step-compact {
+    .quickstart-step {
+        position: relative;
         display: flex;
         align-items: flex-start;
         gap: 14px;
+        padding-left: 6px;
     }
 
-    .quickstart-step-compact .quickstart-step-num {
+    .quickstart-step:not(:last-child)::before {
+        content: "";
+        position: absolute;
+        top: 36px;
+        left: 21px;
+        width: 1px;
+        height: calc(100% + 4px);
+        background: var(--sk-border);
+    }
+
+    .quickstart-step .quickstart-step-num {
+        position: relative;
+        z-index: 1;
         flex: 0 0 auto;
         display: inline-flex;
         align-items: center;
@@ -349,40 +390,38 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
         border: 1px solid var(--sk-border);
         border-radius: var(--radius-full);
         background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
         color: var(--accent-text);
         font-family: var(--font-mono);
         font-size: 0.85rem;
         text-shadow: var(--accent-text-glow);
     }
 
-    .quickstart-step-compact > div {
+    .quickstart-step-body {
         display: flex;
         flex-wrap: wrap;
         align-items: baseline;
         gap: 6px 10px;
+        padding-top: 5px;
         color: var(--muted);
         line-height: 1.55;
         text-wrap: pretty;
     }
 
-    .quickstart-step-compact strong {
+    .quickstart-step-body strong {
         color: var(--text);
         font-weight: 600;
     }
 
-    .quickstart-step-compact a {
+    .quickstart-step-body a {
         color: var(--accent-text);
         text-underline-offset: 2px;
     }
 
-    .quickstart-step-compact code {
+    .quickstart-step-body code {
         color: var(--accent-text);
         font-family: var(--font-mono);
         font-size: 0.85em;
-    }
-
-    .quickstart-snippet-shell {
-        padding: clamp(18px, 3.2vw, 28px);
     }
 
     .quickstart-tabs {
@@ -429,6 +468,7 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
 
     .quickstart-tab-panel {
         display: none;
+        outline: none;
     }
 
     .quickstart-tab-panel.is-active {
@@ -444,7 +484,8 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
         overflow: hidden;
     }
 
-    .quickstart-snippet:hover .copy-btn {
+    .quickstart-snippet:hover .copy-btn,
+    .quickstart-snippet .copy-btn:focus-visible {
         opacity: 1;
     }
 
@@ -496,7 +537,7 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
 
     .quickstart-link-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
     }
 
@@ -537,10 +578,12 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
 
     @media (max-width: 640px) {
         .quickstart-tab-list {
+            width: 100%;
             border-radius: calc(var(--radius) - 2px);
         }
 
         .quickstart-tab {
+            flex: 1 1 auto;
             border-radius: calc(var(--radius) - 6px);
         }
 
@@ -548,12 +591,8 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
             border-radius: calc(var(--radius) - 2px);
         }
 
-        .quickstart-tab-list {
-            width: 100%;
-        }
-
-        .quickstart-tab {
-            flex: 1 1 auto;
+        .quickstart-link-grid {
+            grid-template-columns: 1fr;
         }
     }
 
@@ -567,6 +606,12 @@ const highlightedCurl = await highlight(curlSnippet, "bash");
         .quickstart-snippet .copy-btn:active {
             transition: none;
             transform: none;
+        }
+    }
+
+    @media (hover: none) and (pointer: coarse) {
+        .quickstart-snippet .copy-btn {
+            opacity: 1;
         }
     }
 </style>

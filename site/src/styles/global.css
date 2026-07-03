@@ -2368,8 +2368,9 @@ h3 {
 .status-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-auto-rows: 1fr;
     gap: 12px;
-    align-items: start;
+    align-items: stretch;
 }
 
 .status-grid-empty {
@@ -2405,9 +2406,10 @@ h3 {
 .status-card {
     position: relative;
     display: grid;
+    grid-template-rows: auto auto 1fr;
     gap: 12px;
     padding: 16px;
-    min-height: 0;
+    min-height: 156px;
     border: 1px solid var(--sk-border);
     border-radius: var(--radius);
     background: var(--sk-shell-bg);
@@ -2449,6 +2451,7 @@ h3 {
     align-items: center;
     gap: 9px;
     min-width: 0;
+    min-height: 1.5rem;
 }
 .status-card-top strong {
     font-size: 1rem;
@@ -2516,6 +2519,7 @@ h3 {
 .status-card-meta {
     display: grid;
     grid-template-columns: minmax(0, 1fr) auto;
+    align-self: end;
     gap: 8px 12px;
     padding: 10px;
     border: 1px solid var(--sk-border);
@@ -2539,9 +2543,9 @@ h3 {
 
 @media (max-width: 640px) {
     .status-card {
-        gap: 14px;
+        gap: 12px;
         padding: 16px;
-        min-height: 190px;
+        min-height: 156px;
     }
 }
 

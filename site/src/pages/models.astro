@@ -184,35 +184,49 @@ const pageDescription = `Search the FreeTheAi model catalog: ${totalSnapshotMode
         flex-wrap: wrap;
         align-items: center;
         justify-content: center;
-        gap: 12px;
+        gap: 10px;
         margin-top: 8px;
     }
 
     .models-hero-chip {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 8px 14px;
+        gap: 6px;
+        padding: 6px 12px;
         border: 1px solid var(--sk-border);
         border-radius: var(--radius);
         background: var(--sk-inset-bg);
         box-shadow: var(--sk-inset-shadow);
         color: var(--muted);
-        font-size: 0.9rem;
+        font-size: 0.85rem;
     }
 
     .models-hero-chip strong {
         color: var(--accent-text);
         font-family: var(--font-serif);
-        font-size: 1.2rem;
+        font-size: 1rem;
         text-shadow: var(--accent-text-glow);
     }
 
     .models-hero-link {
-        color: var(--accent-text);
-        font-size: 0.9rem;
-        text-decoration: underline;
-        text-underline-offset: 3px;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 6px 12px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-shell-bg);
+        box-shadow: var(--sk-raised-shadow);
+        color: var(--text);
+        font-size: 0.85rem;
+        font-weight: 500;
+        text-decoration: none;
+        transition: border-color 150ms var(--ease-out-smooth), box-shadow 150ms var(--ease-out-smooth);
+    }
+
+    .models-hero-link:hover {
+        border-color: var(--border-strong);
+        box-shadow: var(--sk-raised-shadow), var(--sk-accent-glow);
     }
 
     .models-static-catalog {

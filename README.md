@@ -426,8 +426,7 @@ Built by a small crew sharing free AI tools with everyone. Open source on GitHub
 | | Member | Role | GitHub |
 | :---: | :--- | :--- | :--- |
 | <img src="https://avatars.githubusercontent.com/u/102437829?v=4" width="48" height="48" alt="Vibhek Soni" style="border-radius:50%" /> | **Vibhek Soni** | Founder. Wrote the full API and most of the platform. | [@vibheksoni](https://github.com/vibheksoni) |
-| <img src="https://avatars.githubusercontent.com/u/166897058?v=4" width="48" height="48" alt="Dr. Vova" style="border-radius:50%" /> | **Dr. Vova** | Frontend and the upcoming GoonPia roleplay site. | [@drvova](https://github.com/drvova) |
-| <img src="https://avatars.githubusercontent.com/u/33468668?v=4" width="48" height="48" alt="Dysekt" style="border-radius:50%" /> | **Dysekt** | Discord ops and community. | [@DysektAI](https://github.com/DysektAI) |
+| <img src="https://avatars.githubusercontent.com/u/166897058?v=4" width="48" height="48" alt="Dr. Vova" style="border-radius:50%" /> | **Dr. Vova** | Co-Founder. Frontend and the upcoming GoonPia roleplay site. | [@drvova](https://github.com/drvova) |
 | <img src="https://avatars.githubusercontent.com/u/157276603?v=4" width="48" height="48" alt="Sai Revanth" style="border-radius:50%" /> | **Sai Revanth** | Discord manager. Day-to-day moderation and onboarding. | [@svsairevanth](https://github.com/svsairevanth) |
 
 GitHub org: [Free-The-Ai](https://github.com/Free-The-Ai). Full team page: [freetheai.xyz/team](https://freetheai.xyz/team).

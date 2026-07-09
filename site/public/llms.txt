@@ -24,7 +24,7 @@ The live catalog is the source of truth for public aliases. Currently exposed pr
 - [Status](https://freetheai.xyz/status): Public alias-prefix status for the free API.
 - [Privacy Policy](https://freetheai.xyz/privacy): Plain-English disclosure of content non-storage and security metadata logging.
 - [Terms of Use](https://freetheai.xyz/terms): Acceptable use, account rules, API limits, logging disclosure, and availability terms.
-- [Team](https://freetheai.xyz/team): The people behind FreeTheAi - founder Vibhek Soni, Dr. Vova, and Dysekt.
+- [Team](https://freetheai.xyz/team): The people behind FreeTheAi - founder Vibhek Soni and co-founder Dr. Vova.
 - [What Is Free The AI](https://freetheai.xyz/what-is-free-the-ai): Brand disambiguation page for spaced and alternate-capitalization variants.
 
 ## API References

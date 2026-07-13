@@ -4,22 +4,28 @@
     "private": true,
     "type": "module",
     "scripts": {
-        "dev": "astro dev",
-        "build": "astro build",
-        "preview": "astro preview"
+        "generate:highlights": "node scripts/generate-highlights.mjs",
+        "predev": "pnpm generate:highlights",
+        "dev": "vite",
+        "prebuild": "pnpm generate:highlights",
+        "build": "vite-ssg build",
+        "preview": "vite preview",
+        "pretypecheck": "pnpm generate:highlights",
+        "typecheck": "vue-tsc --noEmit"
     },
     "dependencies": {
-        "@astrojs/react": "^4.4.2",
-        "@base-ui/react": "^1.6.0",
-        "react": "^19.2.7",
-        "react-dom": "^19.2.7",
-        "shiki": "^3.21.0"
+        "@unhead/vue": "^2.0.0",
+        "vue": "^3.5.0",
+        "vue-router": "^4.5.0"
     },
     "devDependencies": {
-        "@astrojs/sitemap": "^3.7.0",
-        "@types/react": "^19.2.17",
-        "@types/react-dom": "^19.2.3",
-        "astro": "^5.16.14"
+        "@types/node": "^24.0.0",
+        "@vitejs/plugin-vue": "^6.0.0",
+        "shiki": "^3.21.0",
+        "typescript": "^5.9.0",
+        "vite": "^7.0.0",
+        "vite-ssg": "^28.3.0",
+        "vue-tsc": "^3.1.0"
     },
     "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
 }

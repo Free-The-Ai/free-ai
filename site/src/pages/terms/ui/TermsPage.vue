@@ -1,0 +1,137 @@
+<script setup lang="ts">
+import { useSeo } from "@/shared/lib/seo";
+import {
+    buildBreadcrumbJsonLd,
+    buildMachineReadableResourcesJsonLd,
+    buildOrganizationJsonLd,
+    buildSoftwareJsonLd,
+    buildWebsiteJsonLd,
+    buildWebApiJsonLd,
+} from "@/shared/lib/jsonLd";
+
+const pageTitle = "Terms of Use | FreeTheAi";
+const pageDescription =
+    "FreeTheAi terms of use covering acceptable use, API limits, account rules, metadata logging, and service availability.";
+
+useSeo({
+    title: pageTitle,
+    description: pageDescription,
+    path: "/terms",
+    keywords: "FreeTheAi terms, FreeTheAi acceptable use, free ai api rules, api abuse policy",
+    jsonLd: [
+        buildWebsiteJsonLd(),
+        buildOrganizationJsonLd(),
+        buildSoftwareJsonLd(),
+        buildWebApiJsonLd(),
+        buildMachineReadableResourcesJsonLd(),
+        {
+            "@context": "https://schema.org",
+            "@type": "WebPage",
+            name: "FreeTheAi Terms of Use",
+            url: "https://freetheai.xyz/terms",
+            description: pageDescription,
+            isPartOf: { "@id": "https://freetheai.xyz/#website" },
+        },
+        buildBreadcrumbJsonLd([
+            { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
+            { name: "Terms of Use", url: "https://freetheai.xyz/terms" },
+        ]),
+    ],
+});
+</script>
+
+<template>
+    <main>
+        <section class="policy-hero shell">
+            <span class="eyebrow">Terms of Use</span>
+            <h1>Use the API without abusing the shared pool.</h1>
+            <p class="hero-text">
+                FreeTheAi gives the community free and optional paid API access. By using the site, Discord bot, API keys, or API
+                endpoints, you agree to these terms and to the privacy policy.
+            </p>
+            <span class="policy-badge">
+                <span class="material-symbols-outlined" aria-hidden="true">event</span>
+                Effective date: May 31, 2026
+            </span>
+        </section>
+
+        <section class="section shell policy-section">
+            <div class="two-panel">
+                <article class="panel policy-panel">
+                    <span class="eyebrow">Allowed use</span>
+                    <h2>Build, test, learn, and create.</h2>
+                    <p>
+                        You may use FreeTheAi for normal personal projects, learning, experiments, roleplay clients, coding agents,
+                        bots, and apps that follow Discord rules, applicable law, and these terms.
+                    </p>
+                </article>
+
+                <article class="panel policy-panel">
+                    <span class="eyebrow">Not allowed</span>
+                    <h2>No abuse, bypassing, or harm.</h2>
+                    <p>
+                        Do not use FreeTheAi for spam, malware, credential theft, harassment, illegal content, evading bans or
+                        limits, mass account creation, key resale, denial-of-service behavior, scraping the service, or anything
+                        that harms the platform or community.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section shell policy-section">
+            <header class="section-head">
+                <span class="eyebrow">Account rules</span>
+                <h2>Keys are tied to real access checks.</h2>
+                <p>
+                    API keys may require Discord signup, membership checks, daily check-ins, role eligibility, rate limits, and
+                    concurrency limits. Do not share, sell, automate, or rotate keys to bypass those checks. We may revoke, suspend,
+                    rate-limit, or block access when behavior looks abusive or unsafe.
+                </p>
+            </header>
+
+            <div class="privacy-columns">
+                <article class="panel policy-panel">
+                    <h3>Logging disclosure</h3>
+                    <p>
+                        We do not store prompts, completions, uploaded media, or conversation history as operational logs. We do log
+                        IP addresses and other security, request, account, usage, and client metadata to validate access, secure the
+                        service, debug failures, and protect against abuse.
+                    </p>
+                </article>
+
+                <article class="panel policy-panel">
+                    <h3>Availability</h3>
+                    <p>
+                        Free access is best effort. Models, limits, routes, features, plans, and access rules can change as
+                        capacity, security, or provider behavior changes. Optional paid slots are separate and may have their own
+                        plan limits.
+                    </p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section shell policy-section">
+            <header class="section-head">
+                <span class="eyebrow">User responsibility</span>
+                <h2>Do not send secrets to AI systems.</h2>
+                <p>
+                    You are responsible for what your client sends. Do not submit passwords, private keys, tokens, payment data,
+                    private personal information, or material you do not have the right to process. You are also responsible for
+                    your client configuration, prompts, outputs, and how you use model responses.
+                </p>
+            </header>
+        </section>
+
+        <section class="section shell policy-section">
+            <header class="section-head">
+                <span class="eyebrow">Legal links</span>
+                <h2>Related pages.</h2>
+            </header>
+            <div class="legal-foot">
+                <router-link to="/privacy">Privacy Policy</router-link>
+                <router-link to="/support">Support</router-link>
+                <router-link to="/terms">Terms of Use</router-link>
+            </div>
+        </section>
+    </main>
+</template>

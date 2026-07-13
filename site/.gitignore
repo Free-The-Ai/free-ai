@@ -1,6 +1,7 @@
 node_modules
 dist
-.astro
+.vite-ssg-temp
+src/shared/config/highlighted.generated.ts
 .DS_Store
 npm-debug.log*
 *.log

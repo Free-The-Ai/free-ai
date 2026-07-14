@@ -436,6 +436,7 @@ useSeo({
     gap: 12px;
 }
 .home-path-grid a {
+    position: relative;
     display: grid;
     gap: 8px;
     min-height: 128px;
@@ -448,8 +449,27 @@ useSeo({
     text-decoration: none;
     transition: border-color 160ms var(--ease-out-smooth), transform 160ms var(--ease-out-smooth);
 }
+/* Navigation affordance: a corner arrow that lifts + colours on hover so the
+ * cards read as links (Jakob's Law / affordance). */
+.home-path-grid a::after {
+    content: "\2192";
+    position: absolute;
+    top: 16px;
+    right: 18px;
+    color: var(--dim);
+    font-size: 0.95rem;
+    transition: transform 160ms var(--ease-out-smooth), color 160ms var(--ease-out-smooth);
+}
+.home-path-grid a strong {
+    padding-right: 22px;
+}
 .home-path-grid a:hover {
     border-color: oklch(0.659 0.192 40.1 / 0.42);
+    transform: translateY(-2px);
+}
+.home-path-grid a:hover::after {
+    color: var(--accent-text);
+    transform: translateX(3px);
 }
 .home-path-grid a:active {
     transform: scale(var(--press-scale));

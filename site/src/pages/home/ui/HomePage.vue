@@ -2,7 +2,7 @@
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
 import { highlightedCode } from "@/shared/config/highlighted.generated";
-import { CtaButton, DitherButton, Logo } from "@/shared/ui";
+import { Logo } from "@/shared/ui";
 import { LiveStats } from "@/features/live-stats";
 import {
     buildWebsiteJsonLd,
@@ -47,19 +47,11 @@ useSeo({
                     </h1>
                     <p class="home-hero-lead">OpenAI-compatible AI API with 80+ active models. One Discord key, one base URL, zero billing.</p>
                     <div class="home-hero-cta">
-                        <DitherButton
-                            :href="siteConfig.socials.discord"
-                            target="_blank"
-                            rel="noreferrer"
-                            color="orange"
-                            size="lg"
-                            bloom="low"
-                            data-sound="interaction.confirm"
-                        >
-                            Get a free API key
+                        <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer" data-sound="interaction.confirm">
+                            <span>Get a free API key</span>
                             <span class="hero-cta-arrow">&rarr;</span>
-                        </DitherButton>
-                        <DitherButton to="/docs" color="grey" variant="dotted" size="lg" data-sound="interaction.tap">Read docs</DitherButton>
+                        </a>
+                        <router-link class="secondary-button" to="/docs" data-sound="interaction.tap">Read docs</router-link>
                     </div>
                     <div class="home-hero-links">
                         <router-link to="/models" class="hero-link">Browse Models</router-link>
@@ -152,7 +144,10 @@ useSeo({
                         <li>Browse the <router-link to="/docs">API docs</router-link> for endpoint-specific examples</li>
                     </ol>
                     <div class="cta-wrap">
-                        <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Get your free API key</CtaButton>
+                        <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">
+                            Get your free API key
+                            <span class="cta-arrow">&rarr;</span>
+                        </a>
                     </div>
                 </div>
             </div>
@@ -167,10 +162,10 @@ useSeo({
                     more free capacity online.
                 </p>
                 <div class="home-support-cta">
-                    <CtaButton :href="siteConfig.socials.donate" target="_blank" rel="noreferrer" color="pink" :arrow="false">
+                    <a class="primary-button home-support-button" :href="siteConfig.socials.donate" target="_blank" rel="noreferrer">
                         <span aria-hidden="true">&#9825;</span>
-                        Donate
-                    </CtaButton>
+                        <span>Donate</span>
+                    </a>
                     <a class="home-support-link" :href="siteConfig.socials.github" target="_blank" rel="noreferrer">Star the repo</a>
                 </div>
             </div>

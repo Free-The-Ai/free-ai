@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { nextTick, onBeforeUnmount, onMounted, ref, useId } from "vue";
+import { nextTick, onBeforeUnmount, onMounted, ref, useId, watch } from "vue";
 import { soundPlay } from "@/shared/lib/sound/singleton";
 import CheckmarkIcon from "./icons/CheckmarkIcon.vue";
 import ChevronDownIcon from "./icons/ChevronDownIcon.vue";
@@ -24,15 +24,26 @@ const root = ref<HTMLElement | null>(null);
 const trigger = ref<HTMLButtonElement | null>(null);
 const menu = ref<HTMLElement | null>(null);
 const menuId = useId();
+const panelStyle = ref("");
 
 function menuItems(): HTMLButtonElement[] {
     return menu.value ? [...menu.value.querySelectorAll<HTMLButtonElement>('[role="menuitemcheckbox"]')] : [];
+}
+
+function updatePosition(): void {
+    const triggerEl = trigger.value;
+    if (!triggerEl) return;
+    const rect = triggerEl.getBoundingClientRect();
+    const spaceBelow = window.innerHeight - rect.bottom;
+    const maxH = Math.min(spaceBelow - 8, 320);
+    panelStyle.value = `position:fixed;left:${rect.left}px;top:${rect.bottom}px;width:${rect.width}px;--anchor-width:${rect.width}px;--available-height:${Math.max(maxH, 100)}px;--transform-origin:top center;`;
 }
 
 async function openMenu(focus: "first" | "last" = "first"): Promise<void> {
     if (!open.value) soundPlay("overlay.expand");
     open.value = true;
     await nextTick();
+    updatePosition();
     const items = menuItems();
     (focus === "last" ? items.at(-1) : items[0])?.focus();
 }
@@ -80,7 +91,7 @@ function onMenuKeydown(event: KeyboardEvent): void {
 }
 
 function onDocumentClick(event: MouseEvent): void {
-    if (open.value && root.value && !root.value.contains(event.target as Node)) close();
+    if (open.value && root.value && !root.value.contains(event.target as Node) && menu.value && !menu.value.contains(event.target as Node)) close();
 }
 
 function onToggleOption(value: string): void {
@@ -88,8 +99,22 @@ function onToggleOption(value: string): void {
     emit("toggle", value);
 }
 
+watch(open, (isOpen) => {
+    if (isOpen) {
+        window.addEventListener("scroll", updatePosition, { passive: true });
+        window.addEventListener("resize", updatePosition, { passive: true });
+    } else {
+        window.removeEventListener("scroll", updatePosition);
+        window.removeEventListener("resize", updatePosition);
+    }
+});
+
 onMounted(() => document.addEventListener("click", onDocumentClick));
-onBeforeUnmount(() => document.removeEventListener("click", onDocumentClick));
+onBeforeUnmount(() => {
+    document.removeEventListener("click", onDocumentClick);
+    window.removeEventListener("scroll", updatePosition);
+    window.removeEventListener("resize", updatePosition);
+});
 </script>
 
 <template>
@@ -111,8 +136,8 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocumentClick));
             <span v-if="activeCount > 0" class="catalog-filter-count">{{ activeCount }}</span>
             <ChevronDownIcon class="kb-menu__chevron" />
         </button>
-        <div v-if="open" class="kb-menu__positioner">
-            <div :id="menuId" ref="menu" class="kb-menu__content catalog-filter-content" role="menu" :aria-label="triggerLabel" @keydown="onMenuKeydown">
+        <Teleport to="body">
+            <div v-if="open" ref="menu" class="kb-menu__content catalog-filter-content" :style="panelStyle" role="menu" :aria-label="triggerLabel" @keydown="onMenuKeydown">
                 <button
                     v-for="option in props.options"
                     :key="option.value"
@@ -130,7 +155,7 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocumentClick));
                     <span v-if="option.count !== undefined" class="catalog-filter-option-count">{{ option.count }}</span>
                 </button>
             </div>
-        </div>
+        </Teleport>
     </div>
 </template>
 
@@ -142,5 +167,15 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocumentClick));
 .kb-menu__trigger[aria-expanded="true"] .kb-menu__chevron,
 .catalog-filter-trigger[data-expanded] .kb-menu__chevron {
     transform: rotate(180deg);
+}
+</style>
+
+<style>
+/* Teleported panel needs position:fixed because it's no longer inside
+   the positioner wrapper. The inline style sets width, --anchor-width,
+   --available-height, and --transform-origin dynamically. */
+.kb-menu__content.catalog-filter-content {
+    position: fixed;
+    z-index: 10000;
 }
 </style>

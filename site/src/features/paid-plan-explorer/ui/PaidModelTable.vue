@@ -2,8 +2,8 @@
 import { computed, ref } from "vue";
 import type { PaidModel, PaidModelGroup } from "@/entities/paid-plan";
 import { formatTokens, siteModelContextWindow } from "@/shared/lib/format";
-import { Select, TextField } from "@/shared/ui";
-import type { SelectOption } from "@/shared/ui";
+import { DropdownMenu, TextField } from "@/shared/ui";
+import type { DropdownMenuOption } from "@/shared/ui";
 
 interface Row extends PaidModel {
     prefix: string;
@@ -48,20 +48,26 @@ const filteredRows = computed(() => {
         .sort((a, b) => a.unit_cost - b.unit_cost || collator.compare(a.id, b.id));
 });
 
-const prefixOptions = computed<SelectOption[]>(() => [
-    { value: "all", label: `All prefixes · ${rows.value.length}` },
-    ...prefixCounts.value.map(([id, count]) => ({ value: id, label: `${id}/* · ${count}` })),
+const prefixOptions = computed<DropdownMenuOption[]>(() => [
+    { value: "all", label: `All prefixes`, count: rows.value.length, checked: prefix.value === "all" },
+    ...prefixCounts.value.map(([id, count]) => ({ value: id, label: `${id}/*`, count, checked: prefix.value === id })),
 ]);
 
-const routeOptions = computed<SelectOption[]>(() => [
-    { value: "all", label: `All routes · ${rows.value.length}` },
-    ...routeCounts.value.map(([name, count]) => ({ value: name, label: `${name} · ${count}` })),
+const routeOptions = computed<DropdownMenuOption[]>(() => [
+    { value: "all", label: `All routes`, count: rows.value.length, checked: route.value === "all" },
+    ...routeCounts.value.map(([name, count]) => ({ value: name, label: name, count, checked: route.value === name })),
 ]);
 
-const costOptions = computed<SelectOption[]>(() => [
-    { value: "all", label: `All costs · ${rows.value.length}` },
-    ...costCounts.value.map(([amount, count]) => ({ value: String(amount), label: `${formatCost(amount)} unit${amount === 1 ? "" : "s"} · ${count}` })),
+const costOptions = computed<DropdownMenuOption[]>(() => [
+    { value: "all", label: `All costs`, count: rows.value.length, checked: cost.value === "all" },
+    ...costCounts.value.map(([amount, count]) => ({ value: String(amount), label: `${formatCost(amount)} unit${amount === 1 ? "" : "s"}`, count, checked: cost.value === String(amount) })),
 ]);
+
+function togglePrefix(v: string): void { prefix.value = prefix.value === v ? "all" : v; }
+function toggleRoute(v: string): void { route.value = route.value === v ? "all" : v; }
+function toggleCost(v: string): void { cost.value = cost.value === v ? "all" : v; }
+
+const costLabel = computed(() => costOptions.value.find((o) => o.value === cost.value)?.label ?? "All costs");
 
 function clearFilters(): void {
     query.value = "";
@@ -99,9 +105,9 @@ function copyModel(model: PaidModel, button: HTMLElement): void {
                 <TextField class="catalog-search-input" :model-value="query" placeholder="Search paid aliases..." @update:model-value="(v) => (query = v)" />
             </div>
             <div class="catalog-filter-group" aria-label="Paid model filters">
-                <Select class-name="catalog-filter-trigger" label="Prefix" :options="prefixOptions" :model-value="prefix" @update:model-value="(v) => (prefix = v || 'all')" placeholder="All prefixes" />
-                <Select class-name="catalog-filter-trigger" label="Route" :options="routeOptions" :model-value="route" @update:model-value="(v) => (route = v || 'all')" placeholder="All routes" />
-                <Select class-name="catalog-filter-trigger" label="Cost" :options="costOptions" :model-value="cost" @update:model-value="(v) => (cost = v || 'all')" placeholder="All costs" />
+                <DropdownMenu trigger-label="Prefix" :value-label="prefix === 'all' ? 'All prefixes' : prefix + '/*'" :active-count="prefix !== 'all' ? 1 : 0" :options="prefixOptions" @toggle="togglePrefix" />
+                <DropdownMenu trigger-label="Route" :value-label="route === 'all' ? 'All routes' : route" :active-count="route !== 'all' ? 1 : 0" :options="routeOptions" @toggle="toggleRoute" />
+                <DropdownMenu trigger-label="Cost" :value-label="cost === 'all' ? 'All costs' : costLabel" :active-count="cost !== 'all' ? 1 : 0" :options="costOptions" @toggle="toggleCost" />
             </div>
         </div>
 

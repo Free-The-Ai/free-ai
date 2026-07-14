@@ -97,10 +97,11 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocumentClick));
         <button
             ref="trigger"
             type="button"
-            class="kb-menu__trigger"
+            class="kb-menu__trigger catalog-filter-trigger"
             :class="{ 'is-active': activeCount > 0 }"
             aria-haspopup="menu"
             :aria-expanded="open"
+            :data-expanded="open ? '' : undefined"
             :aria-controls="menuId"
             @click="toggleOpen"
             @keydown="onTriggerKeydown"
@@ -111,7 +112,7 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocumentClick));
             <ChevronDownIcon class="kb-menu__chevron" />
         </button>
         <div v-if="open" class="kb-menu__positioner">
-            <div :id="menuId" ref="menu" class="kb-menu__content" role="menu" :aria-label="triggerLabel" @keydown="onMenuKeydown">
+            <div :id="menuId" ref="menu" class="kb-menu__content catalog-filter-content" role="menu" :aria-label="triggerLabel" @keydown="onMenuKeydown">
                 <button
                     v-for="option in props.options"
                     :key="option.value"
@@ -138,7 +139,8 @@ onBeforeUnmount(() => document.removeEventListener("click", onDocumentClick));
     position: relative;
     display: inline-flex;
 }
-.kb-menu__trigger[aria-expanded="true"] .kb-menu__chevron {
+.kb-menu__trigger[aria-expanded="true"] .kb-menu__chevron,
+.catalog-filter-trigger[data-expanded] .kb-menu__chevron {
     transform: rotate(180deg);
 }
 </style>

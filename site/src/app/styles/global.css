@@ -136,7 +136,11 @@ body {
     background: transparent;
     color: var(--text);
     font-family: var(--font-sans);
-    overflow-x: hidden;
+    /* clip (not hidden) so body does NOT become a scroll container.
+       overflow-x:hidden would force overflow-y to auto, trapping wheel
+       events on body (which can't scroll) and, with overscroll-behavior:none,
+       never chaining to html — locking the whole page. */
+    overflow-x: clip;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricPrecision;

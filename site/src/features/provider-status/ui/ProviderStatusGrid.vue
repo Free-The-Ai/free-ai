@@ -7,6 +7,7 @@ import { DropdownMenu, TextField } from "@/shared/ui";
 import type { DropdownMenuOption } from "@/shared/ui";
 import StatusCard from "./StatusCard.vue";
 import ProviderPopover from "./ProviderPopover.vue";
+import StatusOverview from "./StatusOverview.vue";
 
 const health = ref<HealthPayload | null>(null);
 const loadedAt = ref<Date | null>(null);
@@ -161,6 +162,8 @@ const statusMenuOptions = computed<DropdownMenuOption[]>(() =>
                     <span><strong>{{ total }}</strong> total</span>
                 </div>
             </div>
+
+            <StatusOverview :providers="providers" />
 
             <div class="catalog-toolbar">
                 <div class="catalog-search-field">

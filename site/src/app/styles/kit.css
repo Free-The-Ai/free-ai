@@ -275,7 +275,9 @@
 .kb-menu__trigger[data-expanded] .kb-menu__chevron { transform: rotate(180deg); }
 .kb-menu__chevron--sub { transform: rotate(-90deg); }
 .kb-menu__positioner {
-  position: relative;
+  position: absolute;
+  top: 100%;
+  left: 0;
   z-index: 100;
 }
 

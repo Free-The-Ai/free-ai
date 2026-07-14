@@ -146,10 +146,8 @@ body {
 
 html.scroll-locked,
 html.docs-toc-open {
-    /* Keep overflow-y: scroll so the scrollbar stays visible and the
-       layout doesn't shift when the drawer opens. Scrolling is
-       prevented by body { position: fixed } below. */
-    overflow-y: scroll;
+    overflow: hidden;
+    scrollbar-gutter: stable;
     overscroll-behavior: none;
 }
 

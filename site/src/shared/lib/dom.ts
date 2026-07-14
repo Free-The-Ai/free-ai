@@ -24,10 +24,11 @@ export function lockBodyScroll(className: string = "scroll-locked"): void {
   const scrollY = window.scrollY;
   scrollLocks.set(className, { count: 1, scrollY });
   document.documentElement.classList.add(className);
-  // Set body top to negative scrollY so position:fixed doesn't visually
-  // jump the content to the top — it stays exactly where the user was.
   if (className === "scroll-locked") {
+    // Compensate for the scrollbar disappearing when body goes position:fixed
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
     document.body.style.top = `-${scrollY}px`;
+    document.body.style.paddingRight = `${scrollbarWidth}px`;
   }
 }
 
@@ -43,6 +44,7 @@ export function unlockBodyScroll(className: string = "scroll-locked"): void {
   document.documentElement.classList.remove(className);
   if (className === "scroll-locked") {
     document.body.style.top = "";
+    document.body.style.paddingRight = "";
     window.scrollTo(0, lock.scrollY);
   }
 }

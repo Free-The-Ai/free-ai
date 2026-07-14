@@ -35,8 +35,18 @@ function updatePosition(): void {
     if (!triggerEl) return;
     const rect = triggerEl.getBoundingClientRect();
     const spaceBelow = window.innerHeight - rect.bottom;
-    const maxH = Math.min(spaceBelow - 8, 320);
-    panelStyle.value = `position:fixed;left:${rect.left}px;top:${rect.bottom}px;width:${rect.width}px;--anchor-width:${rect.width}px;--available-height:${Math.max(maxH, 100)}px;--transform-origin:top center;`;
+    const spaceAbove = rect.top;
+    const MIN_H = 200;
+    let top: number;
+    let maxH: number;
+    if (spaceBelow >= MIN_H || spaceBelow >= spaceAbove) {
+        top = rect.bottom;
+        maxH = Math.max(Math.min(spaceBelow - 8, 320), MIN_H);
+    } else {
+        top = Math.max(8, rect.top - Math.min(spaceAbove - 8, 320));
+        maxH = Math.max(Math.min(spaceAbove - 8, 320), MIN_H);
+    }
+    panelStyle.value = `position:fixed;left:${rect.left}px;top:${top}px;width:${rect.width}px;--anchor-width:${rect.width}px;--available-height:${maxH}px;--transform-origin:${top === rect.bottom ? "top" : "bottom"} center;`;
 }
 
 async function openMenu(focus: "first" | "last" = "first"): Promise<void> {

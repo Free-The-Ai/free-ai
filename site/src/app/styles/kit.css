@@ -257,8 +257,6 @@
   background: var(--sk-shell-bg);
   box-shadow: var(--sk-raised-shadow);
   color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
   font-weight: 600;
   cursor: pointer;
   transition: border-color 200ms var(--ease-out-smooth), box-shadow 200ms var(--ease-out-smooth);

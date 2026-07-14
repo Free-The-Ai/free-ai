@@ -164,8 +164,7 @@ const statusMenuOptions = computed<DropdownMenuOption[]>(() =>
 
             <div class="catalog-toolbar">
                 <div class="catalog-search-field">
-                    <span class="material-symbols-outlined catalog-search-icon">search</span>
-                    <TextField class="catalog-search-input" :model-value="query" placeholder="Search providers..." @update:model-value="(v) => (query = v)" />
+                        <TextField class="catalog-search-input" :model-value="query" placeholder="Search providers..." @update:model-value="(v) => (query = v)" />
                 </div>
                 <div class="catalog-filter-group" aria-label="Provider filters">
                     <DropdownMenu

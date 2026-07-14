@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import type { ProviderHealth } from "@/entities/provider";
 import { formatPercent } from "@/shared/lib/format";
+import { DitherAvatar } from "@/shared/ui";
 
 const props = defineProps<{ provider: ProviderHealth; isSelected: boolean }>();
 const emit = defineEmits<{ select: []; close: [] }>();
@@ -33,6 +34,7 @@ function onKeydown(event: KeyboardEvent): void {
         @keydown="onKeydown"
     >
         <div class="status-card-top">
+            <DitherAvatar :name="provider.prefix" :size="20" :animate="false" class="status-card-avatar" />
             <strong>{{ provider.prefix }}/</strong>
             <span v-if="showBlast" class="status-card-blast">
                 {{ provider.status === "down" ? "Affected" : "At risk" }}
@@ -52,3 +54,11 @@ function onKeydown(event: KeyboardEvent): void {
         </div>
     </article>
 </template>
+
+<style scoped>
+.status-card-avatar {
+    flex: none;
+    border-radius: 4px;
+    overflow: hidden;
+}
+</style>

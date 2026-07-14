@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
-import { CtaButton } from "@/shared/ui";
+import { CtaButton, DitherGradient } from "@/shared/ui";
 import { CATEGORY_DESCRIPTIONS, CATEGORY_LABELS, CATEGORY_ORDER, SETUP_GUIDES, setupGuidesByCategory } from "@/entities/setup-guide";
 import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebApiJsonLd, buildWebsiteJsonLd } from "@/shared/lib/jsonLd";
 
@@ -80,6 +80,7 @@ for (const category of CATEGORY_ORDER) {
 <template>
     <main class="setup-main">
         <section class="setup-hero shell">
+            <DitherGradient class="setup-glow" from="orange" direction="up" :opacity="0.28" />
             <span class="eyebrow">Setup guides</span>
             <h1>Plug FreeTheAi into your favorite client.</h1>
             <p class="setup-lede">
@@ -431,5 +432,16 @@ for (const category of CATEGORY_ORDER) {
         transition: none;
         transform: none;
     }
+}
+.setup-hero {
+    position: relative;
+    overflow: hidden;
+}
+.setup-glow {
+    z-index: 0;
+}
+.setup-hero > *:not(.setup-glow) {
+    position: relative;
+    z-index: 1;
 }
 </style>

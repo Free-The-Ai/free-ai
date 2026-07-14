@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
-import { CtaButton } from "@/shared/ui";
+import { CtaButton, DitherGradient } from "@/shared/ui";
 import { highlightedCode } from "@/shared/config/highlighted.generated";
 import { CATEGORY_LABELS, SETUP_GUIDES, type HighlightLang, type SetupGuide } from "@/entities/setup-guide";
 import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebApiJsonLd, buildWebsiteJsonLd } from "@/shared/lib/jsonLd";
@@ -169,6 +169,7 @@ function copyBaseUrl(event: MouseEvent): void {
         </nav>
 
         <section class="setup-detail-hero shell">
+            <DitherGradient class="setup-detail-glow" from="orange" direction="up" :opacity="0.28" />
             <span class="eyebrow">{{ CATEGORY_LABELS[guide.category] }}</span>
             <h1>{{ guide.name }}</h1>
             <p class="setup-detail-tagline">{{ guide.tagline }}</p>
@@ -588,5 +589,16 @@ function copyBaseUrl(event: MouseEvent): void {
     .setup-secondary {
         transition: none;
     }
+}
+.setup-detail-hero {
+    position: relative;
+    overflow: hidden;
+}
+.setup-detail-glow {
+    z-index: 0;
+}
+.setup-detail-hero > *:not(.setup-detail-glow) {
+    position: relative;
+    z-index: 1;
 }
 </style>

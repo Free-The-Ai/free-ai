@@ -1133,6 +1133,15 @@ h3 {
     display: grid;
     gap: 14px;
     padding: clamp(28px, 4.6vw, 52px);
+    position: relative;
+    overflow: hidden;
+}
+.policy-glow {
+    z-index: 0;
+}
+.policy-hero > *:not(.policy-glow) {
+    position: relative;
+    z-index: 1;
 }
 
 .policy-hero h1 {
@@ -3211,6 +3220,13 @@ h3 {
     padding: 10px;
 }
 
+.footer-glow {
+    z-index: 0;
+}
+.site-footer > *:not(.footer-glow) {
+    position: relative;
+    z-index: 1;
+}
 .site-footer {
     margin-top: 56px;
     padding: 24px;
@@ -3218,6 +3234,7 @@ h3 {
     position: relative;
     z-index: 2;
     pointer-events: auto;
+    overflow: hidden;
 }
 
 @media (max-width: 1240px) {

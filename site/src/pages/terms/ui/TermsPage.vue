@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useSeo } from "@/shared/lib/seo";
+import { DitherGradient } from "@/shared/ui";
 import {
     buildBreadcrumbJsonLd,
     buildMachineReadableResourcesJsonLd,
@@ -43,6 +44,7 @@ useSeo({
 <template>
     <main>
         <section class="policy-hero shell">
+            <DitherGradient class="policy-glow" from="orange" direction="up" :opacity="0.26" />
             <span class="eyebrow">Terms of Use</span>
             <h1>Use the API without abusing the shared pool.</h1>
             <p class="hero-text">

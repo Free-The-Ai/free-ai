@@ -132,7 +132,7 @@ onBeforeUnmount(() => {
         <button
             ref="trigger"
             type="button"
-            class="kb-menu__trigger catalog-filter-trigger"
+            class="catalog-filter-trigger"
             :class="{ 'is-active': activeCount > 0 }"
             aria-haspopup="menu"
             :aria-expanded="open"
@@ -147,18 +147,18 @@ onBeforeUnmount(() => {
             <ChevronDownIcon class="kb-menu__chevron" />
         </button>
         <Teleport to="body">
-            <div v-if="open" ref="menu" class="kb-menu__content catalog-filter-content" :style="panelStyle" role="menu" :aria-label="triggerLabel" @keydown="onMenuKeydown">
+            <div v-if="open" ref="menu" class="catalog-filter-content" :style="panelStyle" role="menu" :aria-label="triggerLabel" @keydown="onMenuKeydown">
                 <button
                     v-for="option in props.options"
                     :key="option.value"
                     type="button"
                     role="menuitemcheckbox"
                     :aria-checked="option.checked"
-                    class="kb-menu__item catalog-filter-menu-item"
+                    class="catalog-filter-menu-item"
                     :class="{ 'is-active': option.checked }"
                     @click="onToggleOption(option.value)"
                 >
-                    <span class="kb-menu__checkbox-indicator catalog-filter-checkbox">
+                    <span class="catalog-filter-checkbox">
                         <CheckmarkIcon v-if="option.checked" />
                     </span>
                     <span class="catalog-filter-option-name">{{ option.label }}</span>
@@ -184,8 +184,52 @@ onBeforeUnmount(() => {
 /* Teleported panel needs position:fixed because it's no longer inside
    the positioner wrapper. The inline style sets width, --anchor-width,
    --available-height, and --transform-origin dynamically. */
-.kb-menu__content.catalog-filter-content {
+.catalog-filter-content {
     position: fixed;
     z-index: 10000;
+}
+.catalog-filter-content .catalog-filter-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+    padding: 8px 10px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    cursor: pointer;
+    transition: background 120ms var(--ease-out-smooth), color 120ms var(--ease-out-smooth);
+    user-select: none;
+}
+.catalog-filter-content .catalog-filter-menu-item:hover {
+    background: var(--control-bg);
+}
+.catalog-filter-content .catalog-filter-menu-item.is-active {
+    color: var(--accent-text);
+    text-shadow: var(--accent-text-glow);
+    background: var(--accent-muted);
+}
+.catalog-filter-content .catalog-filter-checkbox {
+    flex: 0 0 20px;
+    width: 20px;
+    color: var(--accent);
+    font-size: 0.82rem;
+    font-weight: 700;
+}
+.catalog-filter-content .catalog-filter-option-name {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+.catalog-filter-content .catalog-filter-option-count {
+    flex: 0 0 auto;
+    min-width: 18px;
+    text-align: right;
+    color: var(--muted);
 }
 </style>

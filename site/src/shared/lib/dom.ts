@@ -10,43 +10,34 @@ export function disconnectPointerDrag(
   }
 }
 
-/** Lock body scroll. Locks are reference-counted per class so overlapping
- * drawers cannot unlock one another. */
-const scrollLocks = new Map<string, { count: number; scrollY: number }>();
+/** Reference-counted scroll locks per class so overlapping drawers cannot
+ * unlock one another. */
+const scrollLocks = new Map<string, number>();
 
 export function lockBodyScroll(className: string = "scroll-locked"): void {
   if (typeof document === "undefined") return;
-  const lock = scrollLocks.get(className);
-  if (lock) {
-    lock.count += 1;
+  const count = scrollLocks.get(className);
+  if (count !== undefined) {
+    scrollLocks.set(className, count + 1);
     return;
   }
-  const scrollY = window.scrollY;
-  scrollLocks.set(className, { count: 1, scrollY });
+  scrollLocks.set(className, 1);
+  // html is the scroll container with scrollbar-gutter:stable, so overflow:hidden
+  // locks scroll without shifting layout or losing scroll position.
   document.documentElement.classList.add(className);
-  if (className === "scroll-locked") {
-    // Compensate for the scrollbar disappearing when body goes position:fixed
-    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-    document.body.style.top = `-${scrollY}px`;
-    document.body.style.paddingRight = `${scrollbarWidth}px`;
-  }
 }
 
-/** Unlock one caller's scroll lock and restore the original position only
- * after the final caller releases it. */
+/** Unlock one caller's lock; the class is removed only after the final release. */
 export function unlockBodyScroll(className: string = "scroll-locked"): void {
   if (typeof document === "undefined") return;
-  const lock = scrollLocks.get(className);
-  if (!lock) return;
-  lock.count -= 1;
-  if (lock.count > 0) return;
+  const count = scrollLocks.get(className);
+  if (count === undefined) return;
+  if (count > 1) {
+    scrollLocks.set(className, count - 1);
+    return;
+  }
   scrollLocks.delete(className);
   document.documentElement.classList.remove(className);
-  if (className === "scroll-locked") {
-    document.body.style.top = "";
-    document.body.style.paddingRight = "";
-    window.scrollTo(0, lock.scrollY);
-  }
 }
 
 let openModalCount = 0;

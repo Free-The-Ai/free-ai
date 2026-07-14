@@ -124,6 +124,7 @@ html, body {
 
 html {
     scrollbar-gutter: stable !important;
+    overflow-y: scroll;
     font-size: calc(clamp(14px, calc(0.9rem + 0.25vw), 18px) * var(--font-scale, 1));
     scroll-padding-top: 96px;
 }
@@ -136,7 +137,6 @@ body {
     color: var(--text);
     font-family: var(--font-sans);
     overflow-x: hidden;
-    overflow-y: scroll;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
     text-rendering: geometricPrecision;
@@ -147,14 +147,7 @@ body {
 html.scroll-locked,
 html.docs-toc-open {
     overflow: hidden;
-    scrollbar-gutter: stable;
     overscroll-behavior: none;
-}
-
-html.scroll-locked body {
-    position: fixed;
-    width: 100%;
-    top: 0;
 }
 
 body::-webkit-scrollbar {

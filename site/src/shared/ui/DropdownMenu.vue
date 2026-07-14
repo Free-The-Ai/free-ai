@@ -20,11 +20,13 @@ const props = defineProps<{
 const emit = defineEmits<{ toggle: [string] }>();
 
 const open = ref(false);
+const closing = ref(false);
 const root = ref<HTMLElement | null>(null);
 const trigger = ref<HTMLButtonElement | null>(null);
 const menu = ref<HTMLElement | null>(null);
 const menuId = useId();
 const panelStyle = ref("");
+let closeTimer: number | undefined;
 
 function menuItems(): HTMLButtonElement[] {
     return menu.value ? [...menu.value.querySelectorAll<HTMLButtonElement>('[role="menuitemcheckbox"]')] : [];
@@ -39,18 +41,23 @@ function updatePosition(): void {
     const MIN_H = 200;
     let top: number;
     let maxH: number;
+    let origin: string;
     if (spaceBelow >= MIN_H || spaceBelow >= spaceAbove) {
         top = rect.bottom;
         maxH = Math.max(Math.min(spaceBelow - 8, 320), MIN_H);
+        origin = "top center";
     } else {
         top = Math.max(8, rect.top - Math.min(spaceAbove - 8, 320));
         maxH = Math.max(Math.min(spaceAbove - 8, 320), MIN_H);
+        origin = "bottom center";
     }
-    panelStyle.value = `position:fixed;left:${rect.left}px;top:${top}px;width:${rect.width}px;--anchor-width:${rect.width}px;--available-height:${maxH}px;--transform-origin:${top === rect.bottom ? "top" : "bottom"} center;`;
+    panelStyle.value = `left:${rect.left}px;top:${top}px;width:${rect.width}px;--max-h:${maxH}px;--origin:${origin};`;
 }
 
 async function openMenu(focus: "first" | "last" = "first"): Promise<void> {
+    if (closeTimer) { window.clearTimeout(closeTimer); closeTimer = undefined; }
     if (!open.value) soundPlay("overlay.expand");
+    closing.value = false;
     open.value = true;
     await nextTick();
     updatePosition();
@@ -64,8 +71,15 @@ function toggleOpen(): void {
 }
 
 function close(restoreFocus = false): void {
-    open.value = false;
-    if (restoreFocus) nextTick(() => trigger.value?.focus());
+    if (!open.value) return;
+    closing.value = true;
+    if (closeTimer) window.clearTimeout(closeTimer);
+    closeTimer = window.setTimeout(() => {
+        open.value = false;
+        closing.value = false;
+        closeTimer = undefined;
+    }, 150);
+    if (restoreFocus) trigger.value?.focus();
 }
 
 function onTriggerKeydown(event: KeyboardEvent): void {
@@ -124,6 +138,7 @@ onBeforeUnmount(() => {
     document.removeEventListener("click", onDocumentClick);
     window.removeEventListener("scroll", updatePosition);
     window.removeEventListener("resize", updatePosition);
+    if (closeTimer) window.clearTimeout(closeTimer);
 });
 </script>
 
@@ -147,7 +162,16 @@ onBeforeUnmount(() => {
             <ChevronDownIcon class="kb-menu__chevron" />
         </button>
         <Teleport to="body">
-            <div v-if="open" ref="menu" class="catalog-filter-content" :style="panelStyle" role="menu" :aria-label="triggerLabel" @keydown="onMenuKeydown">
+            <div
+                v-if="open"
+                ref="menu"
+                class="catalog-filter-content"
+                :class="{ 'is-closing': closing }"
+                :style="panelStyle"
+                role="menu"
+                :aria-label="triggerLabel"
+                @keydown="onMenuKeydown"
+            >
                 <button
                     v-for="option in props.options"
                     :key="option.value"
@@ -174,26 +198,65 @@ onBeforeUnmount(() => {
     position: relative;
     display: inline-flex;
 }
-.kb-menu__trigger[aria-expanded="true"] .kb-menu__chevron,
 .catalog-filter-trigger[data-expanded] .kb-menu__chevron {
     transform: rotate(180deg);
 }
 </style>
 
 <style>
-/* Teleported panel needs position:fixed because it's no longer inside
-   the positioner wrapper. The inline style sets width, --anchor-width,
-   --available-height, and --transform-origin dynamically. */
+/* ── Dropdown panel (teleported to body) ──
+   UI laws applied:
+   - Shadows over borders: elevated element uses shadow-ring, not 1px border
+   - Concentric border radius: panel = radius-sm + padding
+   - Interruptible animations: CSS transitions, not keyframes
+   - Subtle exit: opacity + translateY, softer/shorter than enter
+   - Transition only what changes: opacity, transform only */
+
 .catalog-filter-content {
     position: fixed;
     z-index: 10000;
+    padding: 4px;
+    max-height: var(--max-h, 320px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    border-radius: calc(var(--radius-sm) + 4px);
+    background: var(--sk-shell-bg);
+    box-shadow:
+        0 0 0 1px rgba(255, 255, 255, 0.06),
+        0 4px 6px -1px rgba(0, 0, 0, 0.3),
+        0 10px 15px -3px rgba(0, 0, 0, 0.2),
+        0 0 6px 0px rgba(0, 0, 0, 0.15);
+    transform-origin: var(--origin, top center);
+    opacity: 1;
+    transform: scale(1) translateY(0);
+    transition-property: opacity, transform;
+    transition-duration: 150ms;
+    transition-timing-function: var(--ease-out-smooth);
 }
+
+.catalog-filter-content.is-closing {
+    opacity: 0;
+    transform: scale(0.97) translateY(-4px);
+    transition-duration: 120ms;
+    transition-timing-function: var(--ease-in-smooth);
+}
+
+.catalog-filter-content::-webkit-scrollbar {
+    width: 5px;
+}
+.catalog-filter-content::-webkit-scrollbar-thumb {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 3px;
+}
+
 .catalog-filter-content .catalog-filter-menu-item {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
     width: 100%;
-    padding: 8px 10px;
+    min-height: 36px;
+    padding: 7px 10px;
     border: 0;
     border-radius: var(--radius-sm);
     background: transparent;
@@ -201,11 +264,17 @@ onBeforeUnmount(() => {
     font-family: var(--font-mono);
     font-size: 0.78rem;
     cursor: pointer;
-    transition: background 120ms var(--ease-out-smooth), color 120ms var(--ease-out-smooth);
+    transition-property: background, color;
+    transition-duration: 120ms;
+    transition-timing-function: var(--ease-out-smooth);
     user-select: none;
 }
 .catalog-filter-content .catalog-filter-menu-item:hover {
-    background: var(--control-bg);
+    background: rgba(255, 255, 255, 0.04);
+}
+.catalog-filter-content .catalog-filter-menu-item:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: -2px;
 }
 .catalog-filter-content .catalog-filter-menu-item.is-active {
     color: var(--accent-text);
@@ -213,11 +282,9 @@ onBeforeUnmount(() => {
     background: var(--accent-muted);
 }
 .catalog-filter-content .catalog-filter-checkbox {
-    flex: 0 0 20px;
-    width: 20px;
+    flex: 0 0 16px;
+    width: 16px;
     color: var(--accent);
-    font-size: 0.82rem;
-    font-weight: 700;
 }
 .catalog-filter-content .catalog-filter-option-name {
     flex: 1 1 auto;
@@ -228,8 +295,20 @@ onBeforeUnmount(() => {
 }
 .catalog-filter-content .catalog-filter-option-count {
     flex: 0 0 auto;
-    min-width: 18px;
-    text-align: right;
-    color: var(--muted);
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ── Trigger: scale on press (UI law #12) ── */
+.catalog-filter-trigger {
+    transition-property: border-color, box-shadow, transform;
+    transition-duration: 150ms;
+    transition-timing-function: var(--ease-out-smooth);
+}
+.catalog-filter-trigger:active {
+    scale: 0.97;
+}
+.catalog-filter-trigger .kb-menu__chevron {
+    transition: transform 200ms var(--ease-out-smooth);
 }
 </style>

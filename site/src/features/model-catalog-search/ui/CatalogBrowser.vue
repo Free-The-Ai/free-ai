@@ -214,7 +214,6 @@ function onQueryChange(value: string): void {
     <div class="panel catalog-panel">
         <div class="catalog-toolbar">
             <div class="catalog-search-field">
-                <span class="material-symbols-outlined catalog-search-icon">search</span>
                 <TextField class="catalog-search-input" :model-value="query" placeholder="Search model aliases..." @update:model-value="onQueryChange" />
             </div>
             <div class="catalog-filter-group">

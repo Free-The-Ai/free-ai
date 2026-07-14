@@ -1527,19 +1527,9 @@ h3 {
     min-width: min(280px, 100%);
 }
 
-.catalog-search-icon {
-    position: absolute;
-    left: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 16px;
-    color: var(--dim);
-    pointer-events: none;
-    z-index: 1;
-}
 
 .catalog-search-input .kb-text-field__input {
-    padding-left: 32px;
+    padding-left: 14px;
     height: 44px;
 }
 

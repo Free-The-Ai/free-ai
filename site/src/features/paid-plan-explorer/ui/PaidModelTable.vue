@@ -101,7 +101,6 @@ function copyModel(model: PaidModel, button: HTMLElement): void {
     <div class="paid-table-panel">
         <div class="catalog-toolbar">
             <div class="catalog-search-field">
-                <span class="material-symbols-outlined catalog-search-icon">search</span>
                 <TextField class="catalog-search-input" :model-value="query" placeholder="Search paid aliases..." @update:model-value="(v) => (query = v)" />
             </div>
             <div class="catalog-filter-group" aria-label="Paid model filters">

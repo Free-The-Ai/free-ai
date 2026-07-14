@@ -21,8 +21,14 @@ export function lockBodyScroll(className: string = "scroll-locked"): void {
     lock.count += 1;
     return;
   }
-  scrollLocks.set(className, { count: 1, scrollY: window.scrollY });
+  const scrollY = window.scrollY;
+  scrollLocks.set(className, { count: 1, scrollY });
   document.documentElement.classList.add(className);
+  // Set body top to negative scrollY so position:fixed doesn't visually
+  // jump the content to the top — it stays exactly where the user was.
+  if (className === "scroll-locked") {
+    document.body.style.top = `-${scrollY}px`;
+  }
 }
 
 /** Unlock one caller's scroll lock and restore the original position only
@@ -35,7 +41,10 @@ export function unlockBodyScroll(className: string = "scroll-locked"): void {
   if (lock.count > 0) return;
   scrollLocks.delete(className);
   document.documentElement.classList.remove(className);
-  if (lock.scrollY > 0) window.scrollTo(0, lock.scrollY);
+  if (className === "scroll-locked") {
+    document.body.style.top = "";
+    window.scrollTo(0, lock.scrollY);
+  }
 }
 
 let openModalCount = 0;

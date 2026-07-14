@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
+import { CtaButton, DitherGradient } from "@/shared/ui";
 import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd } from "@/shared/lib/jsonLd";
 
 const pageTitle = "Support | FreeTheAi";
@@ -49,7 +50,7 @@ function copyEmail(event: MouseEvent): void {
 <template>
     <main class="support-main">
         <section class="support-hero shell" aria-labelledby="support-hero-heading">
-            <div class="support-hero-glow" aria-hidden="true"></div>
+            <DitherGradient class="support-hero-glow" from="orange" direction="up" :opacity="0.32" />
             <div class="support-hero-orb" aria-hidden="true">
                 <span class="material-symbols-outlined">support_agent</span>
             </div>
@@ -91,10 +92,7 @@ function copyEmail(event: MouseEvent): void {
                     <h3>Discord and GitHub</h3>
                     <p>For general help, use the Discord server. For public bugs or feature requests, use GitHub issues or pull requests.</p>
                     <div class="support-links">
-                        <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">
-                            <span>Join Discord</span>
-                            <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
+                        <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Join Discord</CtaButton>
                         <a class="support-secondary" :href="siteConfig.socials.github" target="_blank" rel="noreferrer">GitHub repo</a>
                     </div>
                 </article>
@@ -137,10 +135,7 @@ function copyEmail(event: MouseEvent): void {
                     <h2 id="support-cta-heading">Get help in Discord.</h2>
                     <p>The community and the team are active there. Use your public support email for anything private.</p>
                     <div class="support-links">
-                        <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">
-                            <span>Open Discord</span>
-                            <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                        </a>
+                        <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Open Discord</CtaButton>
                         <a class="support-secondary" :href="`mailto:${siteConfig.socials.supportEmail}`">Email support</a>
                     </div>
                 </div>
@@ -161,13 +156,11 @@ function copyEmail(event: MouseEvent): void {
     padding: clamp(32px, 5vw, 56px);
 }
 .support-hero-glow {
-    position: absolute;
-    inset: -80px auto auto 10%;
-    width: 480px;
-    height: 480px;
-    border-radius: 50%;
-    background: radial-gradient(circle, oklch(0.659 0.192 40.1 / 0.18), transparent 62%), radial-gradient(circle at 70% 65%, oklch(0.827 0.113 55.9 / 0.1), transparent 48%);
-    pointer-events: none;
+    z-index: 0;
+}
+.support-hero-content {
+    position: relative;
+    z-index: 1;
 }
 .support-hero-orb {
     position: absolute;

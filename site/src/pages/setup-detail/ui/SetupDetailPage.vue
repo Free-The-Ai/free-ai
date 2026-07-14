@@ -3,6 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref, watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
+import { CtaButton } from "@/shared/ui";
 import { highlightedCode } from "@/shared/config/highlighted.generated";
 import { CATEGORY_LABELS, SETUP_GUIDES, type HighlightLang, type SetupGuide } from "@/entities/setup-guide";
 import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebApiJsonLd, buildWebsiteJsonLd } from "@/shared/lib/jsonLd";
@@ -199,10 +200,7 @@ function copyBaseUrl(event: MouseEvent): void {
             </div>
 
             <div class="setup-detail-cta">
-                <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">
-                    <span>Get a free key</span>
-                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                </a>
+                <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Get a free key</CtaButton>
                 <a v-if="guide.docsUrl" class="setup-secondary" :href="guide.docsUrl" target="_blank" rel="noreferrer">Official docs</a>
                 <a v-if="guide.repository" class="setup-secondary" :href="guide.repository" target="_blank" rel="noreferrer">GitHub repo</a>
                 <a v-if="guide.homepage && !guide.docsUrl" class="setup-secondary" :href="guide.homepage" target="_blank" rel="noreferrer">Visit {{ guide.name }}</a>

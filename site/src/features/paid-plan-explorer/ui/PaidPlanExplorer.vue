@@ -4,6 +4,7 @@ import type { CatalogState, PaidPlanSnapshot } from "@/entities/paid-plan";
 import { PLAN_ORDER, fetchLiveCatalog, formatNumber, formatUnitCost, snapshotState } from "@/entities/paid-plan";
 import PlanCard from "./PlanCard.vue";
 import PaidModelTable from "./PaidModelTable.vue";
+import { CtaButton, DitherGradient } from "@/shared/ui";
 
 const props = defineProps<{ snapshot: PaidPlanSnapshot; discordUrl: string }>();
 
@@ -48,6 +49,7 @@ const selectedMinCost = computed(() => {
 <template>
     <div class="paid-plan-explorer">
         <section class="paid-plan-chooser shell" aria-labelledby="paid-plan-title">
+            <DitherGradient class="paid-plan-glow" from="orange" direction="up" :opacity="0.26" />
             <div class="paid-plan-chooser-copy">
                 <span class="eyebrow">Paid plans</span>
                 <h2 id="paid-plan-title">Pick the lane that matches how you use the API.</h2>
@@ -89,10 +91,7 @@ const selectedMinCost = computed(() => {
                         concurrent
                     </span>
                 </div>
-                <a class="primary-button pricing-plan-cta" :href="discordUrl" target="_blank" rel="noreferrer">
-                    <span>Get a paid key</span>
-                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                </a>
+                <CtaButton :href="discordUrl" target="_blank" rel="noreferrer">Get a paid key</CtaButton>
             </div>
 
             <PaidModelTable :groups="catalog.groups" :active-plan="selectedPlan" />
@@ -144,17 +143,8 @@ const selectedMinCost = computed(() => {
     padding: clamp(22px, 4vw, 38px);
 }
 
-.paid-plan-chooser::before {
-    content: "";
-    position: absolute;
-    inset: -120px auto auto 18%;
-    width: 420px;
-    height: 420px;
-    border-radius: 50%;
-    background:
-        radial-gradient(circle, oklch(0.659 0.192 40.1 / 0.2), transparent 62%),
-        radial-gradient(circle at 70% 65%, oklch(0.827 0.113 55.9 / 0.12), transparent 48%);
-    pointer-events: none;
+.paid-plan-glow {
+    z-index: 0;
 }
 
 .paid-plan-chooser-copy,

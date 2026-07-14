@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
+import { CtaButton } from "@/shared/ui";
 import { highlightedCode } from "@/shared/config/highlighted.generated";
 import { buildWebsiteJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebApiJsonLd, buildSignupHowToJsonLd, buildBreadcrumbJsonLd } from "@/shared/lib/jsonLd";
 
@@ -169,10 +170,7 @@ function onTabKeydown(event: KeyboardEvent): void {
             </div>
 
             <div class="quickstart-cta-row">
-                <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">
-                    <span>Get a free key</span>
-                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                </a>
+                <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Get a free key</CtaButton>
                 <router-link class="quickstart-secondary" to="/models">Browse 80+ active models</router-link>
             </div>
         </section>

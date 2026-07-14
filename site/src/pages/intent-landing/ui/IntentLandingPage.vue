@@ -3,6 +3,7 @@ import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
+import { CtaButton, DitherGradient } from "@/shared/ui";
 import { INTENT_PAGES } from "@/entities/intent-page";
 import { SETUP_GUIDES } from "@/entities/setup-guide";
 import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebApiJsonLd, buildWebsiteJsonLd } from "@/shared/lib/jsonLd";
@@ -92,14 +93,12 @@ useSeo({
 <template>
     <main class="intent-main">
         <section class="intent-hero shell">
+            <DitherGradient class="intent-glow" from="orange" direction="up" :opacity="0.3" />
             <span class="eyebrow">{{ page.eyebrow }}</span>
             <h1>{{ page.h1 }}</h1>
             <p class="intent-lede">{{ page.lede }}</p>
             <div class="intent-cta-row">
-                <router-link class="primary-button" :to="page.primaryHref">
-                    <span>{{ page.primaryLabel }}</span>
-                    <span class="cta-arrow" aria-hidden="true">-&gt;</span>
-                </router-link>
+                <CtaButton :to="page.primaryHref">{{ page.primaryLabel }}</CtaButton>
                 <router-link class="intent-secondary" :to="page.secondaryHref">{{ page.secondaryLabel }}</router-link>
                 <a class="intent-secondary" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Get a free key</a>
             </div>
@@ -194,16 +193,8 @@ useSeo({
     overflow: hidden;
     padding: clamp(30px, 5vw, 58px);
 }
-.intent-hero::before {
-    content: "";
-    position: absolute;
-    inset: auto -20% -55% 38%;
-    height: 260px;
-    border-radius: 999px;
-    background: radial-gradient(circle at 30% 30%, oklch(0.659 0.192 40.1 / 0.24), transparent 54%), radial-gradient(circle at 70% 70%, oklch(0.827 0.113 55.9 / 0.12), transparent 58%);
-    filter: blur(18px);
+.intent-glow {
     opacity: 0.6;
-    pointer-events: none;
 }
 .intent-hero > * {
     position: relative;

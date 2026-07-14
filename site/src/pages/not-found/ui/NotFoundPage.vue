@@ -2,6 +2,7 @@
 import { onMounted } from "vue";
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
+import { CtaButton } from "@/shared/ui";
 import { buildDefaultPageJsonLd } from "@/shared/lib/jsonLd";
 
 useSeo({
@@ -35,10 +36,10 @@ onMounted(() => {
             <p class="not-found-lede">
                 The page you tried to open doesn't exist. The free OpenAI-compatible API and the full site are still right here.
             </p>
-            <router-link class="primary-button not-found-home" to="/home">
+            <CtaButton to="/home" :arrow="false">
                 <span class="material-symbols-outlined" aria-hidden="true">home</span>
-                <span>Back to home</span>
-            </router-link>
+                Back to home
+            </CtaButton>
         </section>
     </main>
 </template>

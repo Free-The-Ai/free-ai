@@ -2,7 +2,7 @@
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
 import { highlightedCode } from "@/shared/config/highlighted.generated";
-import { DitherButton, Logo } from "@/shared/ui";
+import { CtaButton, DitherButton, Logo } from "@/shared/ui";
 import { LiveStats } from "@/features/live-stats";
 import {
     buildWebsiteJsonLd,
@@ -152,10 +152,7 @@ useSeo({
                         <li>Browse the <router-link to="/docs">API docs</router-link> for endpoint-specific examples</li>
                     </ol>
                     <div class="cta-wrap">
-                        <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">
-                            Get your free API key
-                            <span class="cta-arrow">&rarr;</span>
-                        </a>
+                        <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Get your free API key</CtaButton>
                     </div>
                 </div>
             </div>
@@ -170,10 +167,10 @@ useSeo({
                     more free capacity online.
                 </p>
                 <div class="home-support-cta">
-                    <a class="primary-button home-support-button" :href="siteConfig.socials.donate" target="_blank" rel="noreferrer">
+                    <CtaButton :href="siteConfig.socials.donate" target="_blank" rel="noreferrer" color="pink" :arrow="false">
                         <span aria-hidden="true">&#9825;</span>
-                        <span>Donate</span>
-                    </a>
+                        Donate
+                    </CtaButton>
                     <a class="home-support-link" :href="siteConfig.socials.github" target="_blank" rel="noreferrer">Star the repo</a>
                 </div>
             </div>

@@ -11,5 +11,6 @@ export { default as Logo } from "./Logo.vue";
 export { default as DitherGradient } from "./DitherGradient.vue";
 export { default as DitherAvatar } from "./DitherAvatar.vue";
 export { default as DitherButton } from "./DitherButton.vue";
+export { default as CtaButton } from "./CtaButton.vue";
 export { default as CheckmarkIcon } from "./icons/CheckmarkIcon.vue";
 export { default as ChevronDownIcon } from "./icons/ChevronDownIcon.vue";

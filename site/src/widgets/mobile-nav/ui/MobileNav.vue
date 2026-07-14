@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import { useRoute } from "vue-router";
 import { siteConfig } from "@/shared/config/site";
-import { Drawer } from "@/shared/ui";
+import { CtaButton, Drawer } from "@/shared/ui";
 
 const route = useRoute();
 const currentPath = computed(() => route.path);
@@ -77,10 +77,7 @@ function onMoreOpenUpdate(value: boolean): void {
             <div id="mobile-more-menu" class="more-menu">
                 <div class="more-menu-head">
                     <span class="more-menu-title">More</span>
-                    <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer" @click="closeMore">
-                        <span>Get a free key</span>
-                        <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                    </a>
+                    <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer" size="sm" @click="closeMore">Get a free key</CtaButton>
                 </div>
                 <nav class="more-menu-links" aria-label="More navigation">
                     <template v-for="([href, label, external, icon], index) in MORE" :key="href">

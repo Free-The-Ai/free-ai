@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
-import { DitherAvatar, DitherGradient } from "@/shared/ui";
+import { CtaButton, DitherAvatar, DitherGradient } from "@/shared/ui";
 import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd } from "@/shared/lib/jsonLd";
 
 interface Member {
@@ -137,10 +137,7 @@ useSeo({
                     is the fastest way to reach the team.
                 </p>
                 <div class="team-foot-links">
-                    <a class="primary-button" :href="siteConfig.socials.github" target="_blank" rel="noreferrer">
-                        <span>Star the repo</span>
-                        <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                    </a>
+                    <CtaButton :href="siteConfig.socials.github" target="_blank" rel="noreferrer">Star the repo</CtaButton>
                     <a class="team-secondary" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Join the Discord</a>
                     <router-link class="team-secondary" to="/quickstart">Try the quickstart</router-link>
                 </div>

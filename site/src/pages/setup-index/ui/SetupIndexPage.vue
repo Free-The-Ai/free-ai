@@ -2,6 +2,7 @@
 import { computed, ref } from "vue";
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
+import { CtaButton } from "@/shared/ui";
 import { CATEGORY_DESCRIPTIONS, CATEGORY_LABELS, CATEGORY_ORDER, SETUP_GUIDES, setupGuidesByCategory } from "@/entities/setup-guide";
 import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebApiJsonLd, buildWebsiteJsonLd } from "@/shared/lib/jsonLd";
 
@@ -86,10 +87,7 @@ for (const category of CATEGORY_ORDER) {
                 <code>https://api.freetheai.xyz/v1</code>.
             </p>
             <div class="setup-cta-row">
-                <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">
-                    <span>Get a free key</span>
-                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                </a>
+                <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Get a free key</CtaButton>
                 <router-link class="setup-secondary" to="/quickstart">60-second quickstart</router-link>
                 <router-link class="setup-secondary" to="/models">Browse models</router-link>
             </div>
@@ -165,10 +163,7 @@ for (const category of CATEGORY_ORDER) {
                 and pick any alias from the model catalog.
             </p>
             <div class="setup-foot-links">
-                <router-link class="primary-button" to="/quickstart">
-                    <span>Read the quickstart</span>
-                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                </router-link>
+                <CtaButton to="/quickstart">Read the quickstart</CtaButton>
                 <router-link class="setup-secondary" to="/docs#compatibility">Compatibility docs</router-link>
                 <a class="setup-secondary" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Ask in Discord</a>
             </div>

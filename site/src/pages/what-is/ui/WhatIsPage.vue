@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
+import { CtaButton, DitherGradient } from "@/shared/ui";
 import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd } from "@/shared/lib/jsonLd";
 
 const pageDescription =
@@ -43,6 +44,7 @@ useSeo({
     <main class="explainer-main">
         <article class="explainer-shell shell">
             <header class="explainer-head">
+                <DitherGradient class="explainer-glow" from="orange" direction="up" :opacity="0.28" />
                 <span class="eyebrow">About</span>
                 <h1>What Is Free The AI?</h1>
                 <p class="explainer-lede">
@@ -61,10 +63,7 @@ useSeo({
                     <span class="docs-hero-stat"><strong>Discord</strong> key signup</span>
                 </div>
                 <div class="explainer-cta-row">
-                    <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">
-                        <span>Get a free API key</span>
-                        <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                    </a>
+                    <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Get a free API key</CtaButton>
                     <router-link class="explainer-secondary" to="/quickstart">Read the quickstart</router-link>
                 </div>
             </header>
@@ -143,10 +142,7 @@ useSeo({
             </section>
 
             <footer class="explainer-foot">
-                <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">
-                    <span>Get a free API key</span>
-                    <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-                </a>
+                <CtaButton :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Get a free API key</CtaButton>
                 <router-link class="explainer-secondary" to="/quickstart">Read the quickstart</router-link>
             </footer>
         </article>
@@ -166,17 +162,12 @@ useSeo({
 .explainer-head {
     position: relative;
 }
-.explainer-head::before {
-    content: "";
-    position: absolute;
-    top: -40px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 480px;
-    height: 280px;
-    background: radial-gradient(ellipse at center, oklch(0.659 0.192 40.1 / 0.07) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: -1;
+.explainer-glow {
+    z-index: 0;
+}
+.explainer-head > *:not(.explainer-glow) {
+    position: relative;
+    z-index: 1;
 }
 .explainer-head h1 {
     margin: 0 0 12px;

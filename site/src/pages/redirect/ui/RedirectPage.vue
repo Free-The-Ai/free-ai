@@ -2,6 +2,7 @@
 import { onMounted } from "vue";
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
+import { CtaButton } from "@/shared/ui";
 import { buildDefaultPageJsonLd } from "@/shared/lib/jsonLd";
 
 useSeo({
@@ -31,10 +32,7 @@ onMounted(() => {
             </span>
             <h1>FreeTheAi</h1>
             <p>Free OpenAI-compatible API with 80+ active models. Loading the full site at <router-link to="/home">/home</router-link>.</p>
-            <router-link class="primary-button" to="/home">
-                <span>Open FreeTheAi</span>
-                <span class="cta-arrow" aria-hidden="true">&rarr;</span>
-            </router-link>
+            <CtaButton to="/home">Open FreeTheAi</CtaButton>
         </section>
     </main>
 </template>

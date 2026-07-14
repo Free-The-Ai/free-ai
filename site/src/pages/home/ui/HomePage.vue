@@ -180,6 +180,17 @@ useSeo({
     padding: 80px 16px 48px;
     text-align: center;
 }
+/* Readable zone: darken the busy shader behind the hero content so copy and
+ * stats keep strong contrast (Aesthetic-Usability). Fades out to reveal the
+ * texture at the edges. */
+.home-hero::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: radial-gradient(120% 82% at 50% 38%, rgba(6, 5, 4, 0.86), rgba(6, 5, 4, 0.46) 46%, transparent 74%);
+}
 .home-hero-grid {
     position: relative;
     z-index: 1;
@@ -284,7 +295,10 @@ useSeo({
     .home-hero-grid {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
         gap: 64px;
-        align-items: center;
+        align-items: start;
+    }
+    .home-hero::before {
+        background: radial-gradient(92% 108% at 27% 44%, rgba(6, 5, 4, 0.9), rgba(6, 5, 4, 0.44) 50%, transparent 80%);
     }
     .home-hero-copy,
     .home-hero-demo {

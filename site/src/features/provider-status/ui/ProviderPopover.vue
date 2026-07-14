@@ -2,7 +2,7 @@
 import { computed, ref } from "vue";
 import type { ProviderHealth } from "@/entities/provider";
 import { formatPercent } from "@/shared/lib/format";
-import { Drawer } from "@/shared/ui";
+import { Drawer, DitherAvatar } from "@/shared/ui";
 
 const props = defineProps<{ provider: ProviderHealth }>();
 const emit = defineEmits<{ close: [] }>();
@@ -30,12 +30,15 @@ function formatTimestamp(iso: string | null | undefined): string {
         <div class="popover-status-strip" />
 
         <div class="popover-header">
-            <h3 class="popover-heading">{{ provider.prefix }}/</h3>
-            <p class="popover-sub">
-                Status: <strong>{{ provider.status }}</strong> &middot;
-                {{ provider.model_count.toLocaleString() }} {{ provider.model_count === 1 ? "model" : "models" }}
-                <template v-if="isAffected">{{ provider.status === "down" ? " — affected" : " — at risk" }}</template>
-            </p>
+            <DitherAvatar :name="provider.prefix" :size="44" :animate="false" class="popover-avatar" />
+            <div class="popover-header-text">
+                <h3 class="popover-heading">{{ provider.prefix }}/</h3>
+                <p class="popover-sub">
+                    Status: <strong>{{ provider.status }}</strong> &middot;
+                    {{ provider.model_count.toLocaleString() }} {{ provider.model_count === 1 ? "model" : "models" }}
+                    <template v-if="isAffected">{{ provider.status === "down" ? " — affected" : " — at risk" }}</template>
+                </p>
+            </div>
         </div>
 
         <div class="popover-body">

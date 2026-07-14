@@ -2539,10 +2539,21 @@ h3 {
 
 .provider-popover .popover-header {
     flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    gap: 14px;
     padding: 24px 26px 0;
     min-width: 0;
     touch-action: none;
     user-select: none;
+}
+.provider-popover .popover-avatar {
+    flex: none;
+    border-radius: 7px;
+    overflow: hidden;
+}
+.provider-popover .popover-header-text {
+    min-width: 0;
 }
 
 .provider-popover .popover-heading {

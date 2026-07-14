@@ -2,6 +2,7 @@
 import { computed } from "vue";
 import type { PaidPlan } from "@/entities/paid-plan";
 import { PLAN_COPY, formatNumber, formatPlanPrice, limitEntries, planPeriod, LIMIT_LABELS } from "@/entities/paid-plan";
+import { DitherButton } from "@/shared/ui";
 
 const props = defineProps<{ plan: PaidPlan; active: boolean; period?: string }>();
 const emit = defineEmits<{ select: [] }>();
@@ -17,6 +18,17 @@ const copy = computed(
 const period = computed(() => planPeriod(props.plan, props.period));
 const limits = computed(() => limitEntries(props.plan).slice(0, 3));
 </script>
+
+<style scoped>
+.paid-plan-select-dither {
+    width: 100%;
+    min-height: 42px;
+    margin-top: auto;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+}
+</style>
 
 <template>
     <article :class="['paid-plan-option', { 'is-active': active }]">
@@ -47,8 +59,15 @@ const limits = computed(() => limitEntries(props.plan).slice(0, 3));
             </span>
         </div>
         <p class="paid-plan-option-note">{{ copy.accent }}</p>
-        <button type="button" class="paid-plan-select" data-sound="interaction.tap" @click="emit('select')">
+        <DitherButton
+            class="paid-plan-select-dither"
+            :color="active ? 'green' : 'blue'"
+            :variant="active ? 'solid' : 'gradient'"
+            bloom="low"
+            data-sound="interaction.tap"
+            @click="emit('select')"
+        >
             {{ active ? "Selected" : `Compare ${plan.display_name}` }}
-        </button>
+        </DitherButton>
     </article>
 </template>

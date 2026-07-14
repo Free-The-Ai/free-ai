@@ -108,14 +108,16 @@
   padding: 10px 14px;
   border: 1px solid var(--sk-border);
   border-radius: var(--radius);
-  background: var(--sk-inset-bg);
-  box-shadow: var(--sk-inset-shadow);
+  background: var(--surface);
   color: var(--text);
-  font-family: var(--font-sans);
-  font-size: 0.95rem;
+  font-family: var(--font-mono);
+  font-size: 0.82rem;
   line-height: 1.5;
-  transition: border-color 200ms var(--ease-out-smooth), box-shadow 200ms var(--ease-out-smooth);
+  transition-property: border-color, box-shadow;
+  transition-duration: 150ms;
+  transition-timing-function: var(--ease-out-smooth);
   outline: none;
+  -webkit-font-smoothing: antialiased;
 }
 .kb-text-field__textarea {
   min-height: 100px;
@@ -125,8 +127,8 @@
 .kb-text-field__textarea::placeholder { color: var(--dim); }
 .kb-text-field__input:focus,
 .kb-text-field__textarea:focus {
-  border-color: var(--border-strong);
-  box-shadow: var(--sk-inset-shadow), var(--sk-accent-glow);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px oklch(0.659 0.192 40.1 / 0.12);
 }
 
 /* ── Select ── */

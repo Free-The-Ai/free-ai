@@ -8,5 +8,8 @@ export type { DropdownMenuOption } from "./DropdownMenu.vue";
 export { default as Drawer } from "./Drawer.vue";
 export { default as ToastRegion } from "./ToastRegion.vue";
 export { default as Logo } from "./Logo.vue";
+export { default as DitherGradient } from "./DitherGradient.vue";
+export { default as DitherAvatar } from "./DitherAvatar.vue";
+export { default as DitherButton } from "./DitherButton.vue";
 export { default as CheckmarkIcon } from "./icons/CheckmarkIcon.vue";
 export { default as ChevronDownIcon } from "./icons/ChevronDownIcon.vue";

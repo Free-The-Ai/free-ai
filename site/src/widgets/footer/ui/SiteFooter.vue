@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { siteConfig } from "@/shared/config/site";
+import { DitherGradient } from "@/shared/ui";
 
 // `flush` matches the 404 page's original `body .site-footer { margin-top: 0 }`
 // override, scoped here instead of leaking a global selector.
@@ -8,6 +9,7 @@ defineProps<{ flush?: boolean }>();
 
 <template>
     <footer class="site-footer" :style="flush ? { marginTop: 0 } : undefined" aria-label="Site footer">
+        <DitherGradient class="footer-glow" from="orange" direction="up" :opacity="0.14" />
         <div class="footer-links">
             <router-link to="/quickstart">Quickstart</router-link>
             <router-link to="/setup">Setup guides</router-link>

@@ -10,6 +10,7 @@ import {
     buildBreadcrumbJsonLd,
 } from "@/shared/lib/jsonLd";
 import { docsSnippets } from "@/shared/config/codeSnippets";
+import { DitherGradient } from "@/shared/ui";
 import { highlightedCode } from "@/shared/config/highlighted.generated";
 import { DocsMobileNav } from "@/features/docs-navigation";
 import DocsAccordion from "./DocsAccordion.vue";
@@ -99,6 +100,7 @@ function copyStartValue(event: MouseEvent): void {
 
             <div class="docs-content">
                 <section class="docs-hero shell">
+                    <DitherGradient class="docs-glow" from="orange" direction="up" :opacity="0.28" />
                     <span class="eyebrow">API Docs</span>
                     <h1>One key, one base URL.</h1>
                     <p class="docs-lede">
@@ -401,5 +403,16 @@ function copyStartValue(event: MouseEvent): void {
         transition: none;
         transform: none;
     }
+}
+.docs-hero {
+    position: relative;
+    overflow: hidden;
+}
+.docs-glow {
+    z-index: 0;
+}
+.docs-hero > *:not(.docs-glow) {
+    position: relative;
+    z-index: 1;
 }
 </style>

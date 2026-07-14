@@ -2,6 +2,7 @@
 import { useSeo } from "@/shared/lib/seo";
 import { buildBreadcrumbJsonLd, buildMachineReadableResourcesJsonLd, buildOrganizationJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd } from "@/shared/lib/jsonLd";
 import { ProviderStatusGrid } from "@/features/provider-status";
+import { DitherGradient } from "@/shared/ui";
 
 useSeo({
     title: "FreeTheAi Status",
@@ -23,6 +24,7 @@ useSeo({
 <template>
     <main class="status-main">
         <section class="status-hero shell">
+            <DitherGradient class="status-glow" from="orange" direction="up" :opacity="0.28" />
             <span class="eyebrow">Live status</span>
             <h1>Provider health</h1>
             <p class="status-lede">Real-time signals from the FreeTheAi API by provider prefix.</p>
@@ -109,5 +111,16 @@ useSeo({
     .status-summary {
         grid-template-columns: 1fr;
     }
+}
+.status-hero {
+    position: relative;
+    overflow: hidden;
+}
+.status-glow {
+    z-index: 0;
+}
+.status-hero > *:not(.status-glow) {
+    position: relative;
+    z-index: 1;
 }
 </style>

@@ -10,6 +10,7 @@ import {
     buildBreadcrumbJsonLd,
 } from "@/shared/lib/jsonLd";
 import { CatalogBrowser } from "@/features/model-catalog-search";
+import { DitherGradient } from "@/shared/ui";
 import { modelPrefix } from "@/shared/lib/format";
 import modelSnapshot from "../../../../public/models.json";
 
@@ -72,6 +73,7 @@ useSeo({
 <template>
     <main class="models-main">
         <section class="models-hero shell">
+            <DitherGradient class="models-glow" from="orange" direction="up" :opacity="0.28" />
             <span class="eyebrow">Model catalog</span>
             <h1>FreeTheAi public model aliases</h1>
             <p class="models-lede">
@@ -210,5 +212,16 @@ useSeo({
     border-radius: var(--radius-sm);
     color: var(--muted);
     font-size: 0.88rem;
+}
+.models-hero {
+    position: relative;
+    overflow: hidden;
+}
+.models-glow {
+    z-index: 0;
+}
+.models-hero > *:not(.models-glow) {
+    position: relative;
+    z-index: 1;
 }
 </style>

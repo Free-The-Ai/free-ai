@@ -3,7 +3,7 @@ import { computed, onBeforeUnmount, onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import { CATEGORY_LABELS, CATEGORY_ORDER, SETUP_GUIDES, setupGuidesByCategory } from "@/entities/setup-guide";
 import { siteConfig } from "@/shared/config/site";
-import { Logo } from "@/shared/ui";
+import { DitherButton, Logo } from "@/shared/ui";
 
 const route = useRoute();
 const currentPath = computed(() => route.path);
@@ -118,17 +118,26 @@ onBeforeUnmount(() => {
                 <button ref="themeToggleEl" type="button" class="theme-toggle" aria-label="Toggle color scheme" title="Toggle theme" @click="onThemeToggle">
                     <span class="theme-toggle-icon" aria-hidden="true">◎</span>
                 </button>
-                <a class="discord-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer">Join Discord</a>
-                <a
-                    class="discord-button donate-button"
+                <DitherButton
+                    :href="siteConfig.socials.discord"
+                    target="_blank"
+                    rel="noreferrer"
+                    color="blue"
+                    size="sm"
+                    data-sound="interaction.confirm"
+                >Join Discord</DitherButton>
+                <DitherButton
                     :href="siteConfig.socials.donate"
                     target="_blank"
                     rel="noreferrer"
+                    color="pink"
+                    size="sm"
+                    data-sound="interaction.confirm"
                     aria-label="Support FreeTheAi on Buy Me a Coffee"
                 >
                     <span class="donate-button-icon" aria-hidden="true">&#9829;</span>
-                    <span class="donate-button-label">Donate</span>
-                </a>
+                    Donate
+                </DitherButton>
             </div>
         </nav>
     </header>

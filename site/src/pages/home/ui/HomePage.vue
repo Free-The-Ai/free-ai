@@ -2,7 +2,7 @@
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
 import { highlightedCode } from "@/shared/config/highlighted.generated";
-import { Logo } from "@/shared/ui";
+import { DitherButton, Logo } from "@/shared/ui";
 import { LiveStats } from "@/features/live-stats";
 import {
     buildWebsiteJsonLd,
@@ -47,11 +47,19 @@ useSeo({
                     </h1>
                     <p class="home-hero-lead">OpenAI-compatible AI API with 80+ active models. One Discord key, one base URL, zero billing.</p>
                     <div class="home-hero-cta">
-                        <a class="primary-button" :href="siteConfig.socials.discord" target="_blank" rel="noreferrer" data-sound="interaction.confirm">
-                            <span>Get a free API key</span>
+                        <DitherButton
+                            :href="siteConfig.socials.discord"
+                            target="_blank"
+                            rel="noreferrer"
+                            color="orange"
+                            size="lg"
+                            bloom="low"
+                            data-sound="interaction.confirm"
+                        >
+                            Get a free API key
                             <span class="hero-cta-arrow">&rarr;</span>
-                        </a>
-                        <router-link class="secondary-button" to="/docs" data-sound="interaction.tap">Read docs</router-link>
+                        </DitherButton>
+                        <DitherButton to="/docs" color="grey" variant="dotted" size="lg" data-sound="interaction.tap">Read docs</DitherButton>
                     </div>
                     <div class="home-hero-links">
                         <router-link to="/models" class="hero-link">Browse Models</router-link>

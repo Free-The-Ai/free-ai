@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useSeo } from "@/shared/lib/seo";
 import { siteConfig } from "@/shared/config/site";
+import { DitherAvatar, DitherGradient } from "@/shared/ui";
 import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebsiteJsonLd, buildWebApiJsonLd } from "@/shared/lib/jsonLd";
 
 interface Member {
@@ -80,7 +81,7 @@ useSeo({
 <template>
     <main class="team-main">
         <section class="team-hero shell">
-            <div class="team-hero-glow" aria-hidden="true"></div>
+            <DitherGradient class="team-hero-glow" from="orange" direction="up" :opacity="0.4" />
             <span class="eyebrow">Team</span>
             <h1>The people behind FreeTheAi.</h1>
             <p class="team-lede">
@@ -108,9 +109,9 @@ useSeo({
         <section class="section shell team-grid-section">
             <div class="team-grid">
                 <article v-for="member in team" :key="member.githubHandle" class="team-card">
-                    <div class="team-card-glow" aria-hidden="true"></div>
+                    <DitherGradient class="team-card-glow" from="orange" direction="up" :opacity="0.5" />
                     <div class="team-card-top">
-                        <img class="team-avatar" :src="member.avatar" :alt="`${member.name} GitHub avatar`" loading="lazy" width="96" height="96" />
+                        <DitherAvatar class="team-avatar" :name="member.name" :size="80" bloom="low" />
                         <div class="team-card-meta">
                             <h2>{{ member.name }}</h2>
                             <span class="team-role">{{ member.role }}</span>
@@ -163,10 +164,6 @@ useSeo({
 }
 
 .team-hero-glow {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 30% 30%, oklch(0.659 0.192 40.1 / 0.24), transparent 54%);
-    pointer-events: none;
     z-index: 0;
 }
 
@@ -267,11 +264,8 @@ useSeo({
 }
 
 .team-card-glow {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(135deg, oklch(0.659 0.192 40.1 / 0.08), transparent 60%);
+    z-index: 0;
     opacity: 0;
-    pointer-events: none;
     transition: opacity 200ms var(--ease-out-smooth);
 }
 
@@ -299,12 +293,11 @@ useSeo({
 }
 
 .team-avatar {
-    width: 80px;
-    height: 80px;
+    flex: none;
     border-radius: 50%;
     border: 2px solid oklch(0.659 0.192 40.1 / 0.3);
     background: var(--bg);
-    object-fit: cover;
+    overflow: hidden;
     box-shadow: var(--sk-inset-shadow), 0 0 12px oklch(0.659 0.192 40.1 / 0.12);
 }
 

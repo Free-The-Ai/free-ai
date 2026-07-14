@@ -18,6 +18,7 @@ import {
 } from "../lib/filters";
 import ModelCard from "./ModelCard.vue";
 import ModelDetailModal from "./ModelDetailModal.vue";
+import CatalogOverview from "./CatalogOverview.vue";
 
 const PAGE_SIZE = 80;
 const DISABLED = new Set<string>();
@@ -212,6 +213,7 @@ function onQueryChange(value: string): void {
 
 <template>
     <div class="panel catalog-panel">
+        <CatalogOverview :models="allModels" />
         <div class="catalog-toolbar">
             <div class="catalog-search-field">
                 <TextField class="catalog-search-input" :model-value="query" placeholder="Search model aliases..." @update:model-value="onQueryChange" />

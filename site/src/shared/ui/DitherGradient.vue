@@ -38,25 +38,19 @@ const wrapRef = ref<HTMLDivElement | null>(null);
 const canvasRef = ref<HTMLCanvasElement | null>(null);
 const bloomRef = ref<HTMLCanvasElement | null>(null);
 
-/**
- * Paint the ordered-dither ramp onto a low-res backing canvas sized from the
- * wrapper's box. Static - one paint per prop/size change, no animation loop.
- */
+let width = 0;
+let height = 0;
+
+/** Paint the ordered-dither ramp at the last observed size. */
 function paint(): void {
-    const wrap = wrapRef.value;
     const canvas = canvasRef.value;
-    if (!wrap || !canvas) return;
-    const ctx = canvas.getContext("2d");
-    const box = wrap.getBoundingClientRect();
-    const width = box.width;
-    const height = box.height;
-    if (!ctx || width <= 0 || height <= 0) return;
+    const ctx = canvas?.getContext("2d");
+    if (!canvas || !ctx || width <= 0 || height <= 0) return;
 
     const cols = Math.min(MAX_COLS, Math.max(4, Math.round(width / props.cell)));
     const rows = Math.min(MAX_ROWS, Math.max(4, Math.round(height / props.cell)));
     canvas.width = cols;
     canvas.height = rows;
-
     const fromFill = fillOf(props.from);
     const toFill = props.to === "transparent" ? null : fillOf(props.to);
     const o = props.opacity;
@@ -101,9 +95,13 @@ function paint(): void {
 let ro: ResizeObserver | null = null;
 
 onMounted(() => {
-    paint();
     if (typeof ResizeObserver === "undefined") return;
-    ro = new ResizeObserver(() => paint());
+    ro = new ResizeObserver(([entry]) => {
+        const box = entry.borderBoxSize[0];
+        width = box?.inlineSize ?? entry.contentRect.width;
+        height = box?.blockSize ?? entry.contentRect.height;
+        paint();
+    });
     if (wrapRef.value) ro.observe(wrapRef.value);
 });
 

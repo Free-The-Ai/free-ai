@@ -119,10 +119,13 @@ function mount(): (() => void) | undefined {
             raf = requestAnimationFrame(tick);
         }
     };
-    const resize = () => {
-        const box = el.getBoundingClientRect();
-        cols = Math.max(4, Math.round(box.width / CELL));
-        rows = Math.max(4, Math.round(box.height / CELL));
+    const resize = (entry: ResizeObserverEntry) => {
+        const box = entry.borderBoxSize[0];
+        const nextCols = Math.max(4, Math.round((box?.inlineSize ?? entry.contentRect.width) / CELL));
+        const nextRows = Math.max(4, Math.round((box?.blockSize ?? entry.contentRect.height) / CELL));
+        if (nextCols === cols && nextRows === rows) return;
+        cols = nextCols;
+        rows = nextRows;
         canvas.width = cols;
         canvas.height = rows;
         if (bloomCanvas) {
@@ -131,7 +134,6 @@ function mount(): (() => void) | undefined {
         }
         paint();
     };
-    resize();
 
     const enter = () => {
         hovered = true;
@@ -149,8 +151,8 @@ function mount(): (() => void) | undefined {
     el.addEventListener("pointerup", up);
     el.addEventListener("pointercancel", up);
 
-    const ro = typeof ResizeObserver !== "undefined" ? new ResizeObserver(resize) : null;
-    ro?.observe(el);
+    const ro = new ResizeObserver(([entry]) => resize(entry));
+    ro.observe(el);
 
     return () => {
         if (raf) cancelAnimationFrame(raf);

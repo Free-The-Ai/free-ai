@@ -73,7 +73,13 @@ onBeforeUnmount(() => {
         <nav class="nav" aria-label="Main navigation">
             <router-link class="brand" to="/home"><Logo :width="160" /></router-link>
             <div class="nav-links">
-                <router-link v-for="[href, label] in navLinks" :key="href" :to="href" :class="{ 'is-active': currentPath === href }">
+                <router-link
+                    v-for="[href, label] in navLinks"
+                    :key="href"
+                    :to="href"
+                    :class="{ 'is-active': currentPath === href }"
+                    :aria-current="currentPath === href ? 'page' : undefined"
+                >
                     {{ label }}
                 </router-link>
                 <div ref="dropdownRoot" :class="['nav-dropdown', { 'is-active': isSetupActive, 'is-open': dropdownOpen }]">
@@ -82,13 +88,14 @@ onBeforeUnmount(() => {
                         type="button"
                         :class="['nav-dropdown-trigger', { 'is-active': isSetupActive }]"
                         aria-haspopup="true"
+                        aria-controls="setup-guides-menu"
                         :aria-expanded="dropdownOpen"
                         @click="toggleDropdown"
                     >
                         Setup
                         <span class="nav-dropdown-caret" aria-hidden="true"></span>
                     </button>
-                    <div class="nav-dropdown-panel" aria-label="Setup guides" @focusout="onPanelFocusOut">
+                    <div id="setup-guides-menu" class="nav-dropdown-panel" aria-label="Setup guides" @focusout="onPanelFocusOut">
                         <div class="nav-dropdown-head">
                             <router-link to="/setup" class="nav-dropdown-head-link">
                                 <strong>Setup guides</strong>

@@ -141,10 +141,10 @@ function copyStartValue(event: MouseEvent): void {
                     </div>
                 </section>
 
-                <section class="docs-section shell" id="endpoints">
+                <section class="docs-section shell" aria-labelledby="endpoint-overview-title">
                     <header class="section-head">
                         <span class="eyebrow">Endpoints</span>
-                        <h2>Every route.</h2>
+                        <h2 id="endpoint-overview-title">Every route.</h2>
                     </header>
                     <div class="docs-endpoint-table" role="table" aria-label="API endpoints">
                         <div class="docs-endpoint-row docs-endpoint-head" role="row">

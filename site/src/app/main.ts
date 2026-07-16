@@ -1,6 +1,7 @@
 import "@/app/styles/global.css";
 import "@/app/styles/kit.css";
 import { ViteSSG } from "vite-ssg";
+import { START_LOCATION } from "vue-router";
 import App from "./App.vue";
 import { routes } from "./router/routes";
 import { bootstrapClientSystems } from "./providers";
@@ -10,7 +11,7 @@ export const createApp = ViteSSG(
     App,
     {
         routes,
-        scrollBehavior(to, _from, savedPosition) {
+        scrollBehavior(to, from, savedPosition) {
             if (savedPosition) return savedPosition;
             if (to.hash) {
                 const top = Number.parseFloat(getComputedStyle(document.documentElement).scrollPaddingTop) || 0;
@@ -20,6 +21,7 @@ export const createApp = ViteSSG(
                     behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth",
                 };
             }
+            if (from === START_LOCATION) return false;
             return { top: 0 };
         },
     },

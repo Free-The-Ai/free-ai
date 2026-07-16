@@ -7,7 +7,7 @@ import { themeInlineBootstrap } from "@/shared/lib/theme/singleton";
 import { SiteHeader } from "@/widgets/header";
 import { SiteFooter } from "@/widgets/footer";
 import { MobileNav } from "@/widgets/mobile-nav";
-import { DitherShader, PageLoader } from "@/widgets/background";
+import { DitherShader } from "@/widgets/background";
 import { ToastRegion } from "@/shared/ui";
 
 const fontHref =
@@ -77,8 +77,6 @@ const isNotFoundRoute = computed(() => route.name === "not-found" || route.name 
     <div style="position: fixed; inset: 0; z-index: -1">
         <DitherShader :cell-size="16" :amplitude="0.32" :speed="0.6" :interval="220" />
     </div>
-
-    <PageLoader />
 
     <a class="skip-link" href="#main-content">Skip to content</a>
     <div class="page-shell">

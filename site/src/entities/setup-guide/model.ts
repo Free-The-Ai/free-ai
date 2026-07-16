@@ -72,7 +72,7 @@ export const SETUP_GUIDES: SetupGuide[] = [
         homepage: "https://opencode.ai",
         repository: "https://github.com/sst/opencode",
         docsUrl: "https://opencode.ai/docs/",
-        logoUrl: "https://opencode.ai/favicon.svg",
+        logoUrl: "/opencode.svg",
         summary:
             "OpenCode reads its providers from a JSON config file. Add FreeTheAi as a custom provider with the OpenAI-compatible adapter and you can pick any FreeTheAi alias as the active model.",
         recommendedModels: [

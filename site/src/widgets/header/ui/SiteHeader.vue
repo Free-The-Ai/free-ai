@@ -140,7 +140,7 @@ onBeforeUnmount(() => {
                     color="pink"
                     size="sm"
                     data-sound="interaction.confirm"
-                    aria-label="Support FreeTheAi on Buy Me a Coffee"
+                    aria-label="Donate to FreeTheAi on Buy Me a Coffee"
                 >
                     <span class="donate-button-icon" aria-hidden="true">&#9829;</span>
                     Donate

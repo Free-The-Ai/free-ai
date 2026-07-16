@@ -10,7 +10,6 @@
  *   motionFor()        — compute adaptive params for a preset + intent
  *   motionApply()      — write computed params onto an element as CSS vars
  *   initMotionSystem() — start pointer/scroll/reduced-motion sensing
- *   destroyMotionSystem() — cleanup
  */
 import type {
   MotionConfig,
@@ -174,27 +173,4 @@ export function initMotionSystem(): void {
 
   scrollSampleTime = performance.now();
   scrollSampleY = window.scrollY;
-
-  window.addEventListener("beforeunload", destroyMotionSystem);
-}
-
-function destroyMotionSystem(): void {
-  if (!initialized) return;
-  initialized = false;
-
-  reducedMotionMql?.removeEventListener("change", onReducedMotionChange);
-  reducedMotionMql = null;
-  window.removeEventListener("pointermove", onPointerMove);
-  window.removeEventListener("pointerup", onPointerUp);
-  window.removeEventListener("pointercancel", onPointerUp);
-  window.removeEventListener("scroll", onScroll);
-  window.removeEventListener("beforeunload", destroyMotionSystem);
-
-  pointerVelocity = 0;
-  scrollVelocity = 0;
-  lastPointerX = 0;
-  lastPointerY = 0;
-  lastPointerTime = 0;
-  scrollSampleTime = 0;
-  scrollSampleY = 0;
 }

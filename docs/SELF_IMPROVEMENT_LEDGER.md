@@ -2,6 +2,7 @@
 
 Detailed execution incidents are append-only and listed newest-first.
 
+- 2026-07-15 — Vue Router hash navigation landed targets under the sticky header because element scroll positions did not inherit the document's CSS scroll offset; canonical fix: read the existing root `scroll-padding-top` token and pass it as router `top`; proof: browser assertions placed `/docs#compatibility` below the header at the configured offset.
 - 2026-07-13 — `python` source-edit helper invocation failed because this environment exposes only `python3`; canonical fix: invoke the discovered runtime explicitly; proof: the same edit completed under `python3` and the subsequent Vue typecheck passed.
 - 2026-07-13 — package-local `pnpm generate:highlights` failed from the repository root because `package.json` is under `site/`; canonical fix: execute package scripts from `site/`; proof: the generator produced `src/shared/config/highlighted.generated.ts` and the SSG build completed all 39 routes.
 - 2026-07-13 — shell-based repository scans failed on nested quote patterns because Bash parsed unmatched quotes before ripgrep ran; canonical fix: pass patterns as argument arrays through a JavaScript subprocess; proof: the replacement scans completed and reported no runtime Shiki imports, unfinished markers, or FSD direction violations.

@@ -23,7 +23,7 @@ const SCHEMES: Record<ColorScheme, ThemeTokens> = {
     "--border": "oklch(1 0 0 / 0.06)",
     "--border-strong": "oklch(1 0 0 / 0.12)",
     "--text": "oklch(0.931 0 0)",
-    "--muted": "oklch(0.583 0 0)",
+    "--muted": "oklch(0.620 0 0)",
     "--dim": "oklch(0.485 0 0)",
     "--control-bg": "oklch(1 0 0 / 0.035)",
     "--code-bg": "oklch(0.178 0 0)",

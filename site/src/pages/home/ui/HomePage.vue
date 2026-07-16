@@ -116,7 +116,7 @@ useSeo({
                     </p>
                 </div>
 
-                <div class="beat">
+                <div class="beat build-beat">
                     <h2 class="beat-heading">What Can You Build?</h2>
                     <div class="diptych">
                         <div class="diptych-panel">
@@ -533,6 +533,10 @@ useSeo({
     border-left: 1px solid var(--border);
     background: var(--surface);
     border-radius: var(--radius);
+}
+.build-beat .beat-heading {
+    display: inline;
+    background: var(--bg);
 }
 .beat-prose {
     margin: 0;

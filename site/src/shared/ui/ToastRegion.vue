@@ -14,7 +14,7 @@ onMounted(initToastManager);
 
 <template>
     <Teleport to="body">
-        <ol class="kb-toast__list" role="status" aria-live="polite" aria-atomic="false">
+        <ol class="kb-toast__list" aria-live="polite" aria-atomic="false">
             <li v-for="toast in toasts" :key="toast.id" :class="`kb-toast kb-toast--${toast.type}`" data-opened="">
                 <div class="kb-toast__content">
                     <div class="kb-toast__icon">{{ TOAST_ICONS[toast.type] ?? "i" }}</div>

@@ -91,12 +91,9 @@ onMounted(() => {
     const canvas = canvasEl.value;
     if (!canvas || typeof window === "undefined") return;
 
-    const rect = canvas.getBoundingClientRect();
-    const vw = rect.width || window.innerWidth;
-    const vh = rect.height || window.innerHeight;
     const cs = props.cellSize;
-    let w = Math.max(8, Math.round(vw / cs));
-    let h = Math.max(8, Math.round(vh / cs));
+    let w = Math.max(8, Math.round(window.innerWidth / cs));
+    let h = Math.max(8, Math.round(window.innerHeight / cs));
     canvas.width = w;
     canvas.height = h;
 
@@ -123,24 +120,19 @@ onMounted(() => {
     gl.uniform1f(u_amp, props.amplitude);
     gl.viewport(0, 0, w, h);
 
-    function resize(): void {
-        const c = canvasEl.value;
-        if (!c) return;
-        const r = c.getBoundingClientRect();
-        const pw = r.width || window.innerWidth;
-        const ph = r.height || window.innerHeight;
-        const nw = Math.max(8, Math.round(pw / cs));
-        const nh = Math.max(8, Math.round(ph / cs));
+    const resizeObserver = new ResizeObserver(([entry]) => {
+        const nw = Math.max(8, Math.round(entry.contentRect.width / cs));
+        const nh = Math.max(8, Math.round(entry.contentRect.height / cs));
         if (nw === w && nh === h) return;
         w = nw;
         h = nh;
-        c.width = w;
-        c.height = h;
+        canvas.width = w;
+        canvas.height = h;
         ctx.uniform2f(u_res, w, h);
         ctx.viewport(0, 0, w, h);
         render(performance.now());
-    }
-    window.addEventListener("resize", resize);
+    });
+    resizeObserver.observe(canvas);
 
     let raf = 0;
     let last = 0;
@@ -177,7 +169,7 @@ onMounted(() => {
     cleanup = () => {
         cancelAnimationFrame(raf);
         obs?.disconnect();
-        window.removeEventListener("resize", resize);
+        resizeObserver.disconnect();
         ctx.deleteProgram(prog);
         ctx.deleteBuffer(buf);
     };

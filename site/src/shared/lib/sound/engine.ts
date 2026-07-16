@@ -41,13 +41,6 @@ export function ensureResumed(): Promise<void> {
   return resumePromise;
 }
 
-export function closeAudioContext(): void {
-  if (audioCtx && audioCtx.state !== "closed") {
-    audioCtx.close();
-  }
-  audioCtx = null;
-}
-
 // ── Active playback tracking (anti-overlap) ──
 
 let activePlayback: SoundPlayback | null = null;

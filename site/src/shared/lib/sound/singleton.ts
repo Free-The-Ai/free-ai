@@ -8,7 +8,6 @@
  * - soundConfigure() — set volume, theme, enabled state
  * - soundPlay() — play a sound by role (used by UI components)
  * - initSoundSystem() — start AudioContext warmup + data-sound delegation
- * - destroySoundSystem() — cleanup
  */
 
 import type {
@@ -23,7 +22,6 @@ import type {
 import { ALL_SOUND_ROLES } from "./types";
 import {
   playSound as enginePlaySound,
-  closeAudioContext,
   ensureResumed,
   getAudioContext,
 } from "./engine";
@@ -244,33 +242,4 @@ export function initSoundSystem(): void {
     (window as unknown as Record<string, unknown>).__soundPlay = soundPlay;
     (window as unknown as Record<string, unknown>).__soundToggleMute = soundToggleMute;
   }
-
-  // Cleanup on tab close only — the singleton is initialized once per app
-  // load (see app/providers.ts) and its module-level state should survive
-  // every Vue Router navigation for the life of the page.
-  window.addEventListener("beforeunload", destroySoundSystem);
-}
-
-/** Destroy the sound system. Called automatically on beforeunload. */
-function destroySoundSystem(): void {
-  if (!initialized) return;
-  initialized = false;
-
-  if (warmUpHandler) {
-    document.removeEventListener("click", warmUpHandler, true);
-    document.removeEventListener("keydown", warmUpHandler, true);
-    document.removeEventListener("pointerdown", warmUpHandler, true);
-    warmUpHandler = null;
-  }
-  document.removeEventListener("click", handleClick);
-  document.removeEventListener("pointerenter", handlePointerEnter);
-  window.removeEventListener("scroll", handleScroll);
-  window.removeEventListener("beforeunload", destroySoundSystem);
-  soundReducedMql?.removeEventListener("change", onSoundReducedMotionChange);
-  soundReducedMql = null;
-  if (typeof window !== "undefined") {
-    delete (window as unknown as Record<string, unknown>).__soundPlay;
-    delete (window as unknown as Record<string, unknown>).__soundToggleMute;
-  }
-  closeAudioContext();
 }

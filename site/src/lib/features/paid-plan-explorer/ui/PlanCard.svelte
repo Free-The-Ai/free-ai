@@ -3,7 +3,7 @@
     import { PLAN_COPY, formatNumber, formatPlanPrice, limitEntries, planPeriod, LIMIT_LABELS } from "@/entities/paid-plan";
     import { DitherButton } from "@/shared/ui";
 
-    let { plan, active, period, onselect }: { plan: PaidPlan; active: boolean; period?: string; onselect?: () => void } = $props();
+    let { plan, active, period, selectable = true, onselect }: { plan: PaidPlan; active: boolean; period?: string; selectable?: boolean; onselect?: () => void } = $props();
 
     const copy = $derived(
         PLAN_COPY[plan.id] ?? {
@@ -46,16 +46,18 @@
         {/each}
     </div>
     <p class="paid-plan-option-note">{copy.accent}</p>
-    <DitherButton
-        class="paid-plan-select-dither"
-        color={active ? "green" : "blue"}
-        variant={active ? "solid" : "gradient"}
-        bloom="low"
-        data-sound="interaction.tap"
-        onclick={() => onselect?.()}
-    >
-        {active ? "Selected" : `Compare ${plan.display_name}`}
-    </DitherButton>
+    {#if selectable}
+        <DitherButton
+            class="paid-plan-select-dither"
+            color={active ? "green" : "blue"}
+            variant={active ? "solid" : "gradient"}
+            bloom="low"
+            data-sound="interaction.tap"
+            onclick={() => onselect?.()}
+        >
+            {active ? "Selected" : `Compare ${plan.display_name}`}
+        </DitherButton>
+    {/if}
 </article>
 
 <style>

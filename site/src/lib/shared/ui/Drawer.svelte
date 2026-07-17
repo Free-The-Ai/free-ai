@@ -49,11 +49,8 @@
     }
 
     function close(): void {
-        if (onclose) {
-            onclose();
-            return;
-        }
         open = false;
+        onclose?.();
     }
 
     function onKeydown(event: KeyboardEvent): void {

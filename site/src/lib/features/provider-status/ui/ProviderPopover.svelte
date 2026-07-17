@@ -5,13 +5,7 @@
 
     let { provider, onclose }: { provider: ProviderHealth; onclose?: () => void } = $props();
 
-    let open = $state(true);
     const isAffected = $derived(provider.status === "degraded" || provider.status === "down");
-
-    function setOpen(value: boolean): void {
-        open = value;
-        if (!value) onclose?.();
-    }
 
     function formatTimestamp(iso: string | null | undefined): string {
         if (!iso) return "never";
@@ -23,7 +17,7 @@
     }
 </script>
 
-<Drawer bind:open={() => open, setOpen} label={`${provider.prefix} provider status`} popupClass={`provider-popover is-${provider.status}`}>
+<Drawer open={true} onclose={onclose} label={`${provider.prefix} provider status`} popupClass={`provider-popover is-${provider.status}`}>
     <div class="popover-status-strip"></div>
 
     <div class="popover-header">

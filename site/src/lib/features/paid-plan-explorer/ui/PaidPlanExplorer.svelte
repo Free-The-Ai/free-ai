@@ -67,6 +67,7 @@
                     {plan}
                     active={selectedPlan === plan.id}
                     period={snapshot.plan?.period}
+                    selectable={plans.length > 1}
                     onselect={() => (selectedPlan = plan.id)}
                 />
             {/each}

@@ -6,30 +6,30 @@
     "scripts": {
         "generate:highlights": "node scripts/generate-highlights.mjs",
         "predev": "pnpm generate:highlights",
-        "dev": "vite",
+        "dev": "vite dev",
         "prebuild": "pnpm generate:highlights",
-        "build": "vite-ssg build",
+        "build": "vite build && node scripts/postbuild.mjs",
         "preview": "vite preview",
         "pretypecheck": "pnpm generate:highlights",
-        "typecheck": "vue-tsc --noEmit"
+        "typecheck": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
+        "prepare": "svelte-kit sync || echo ''"
     },
     "dependencies": {
-        "@unhead/vue": "^2.0.0",
         "d3-scale": "^4.0.2",
-        "d3-shape": "^3.2.0",
-        "vue": "^3.5.0",
-        "vue-router": "^4.5.0"
+        "d3-shape": "^3.2.0"
     },
     "devDependencies": {
+        "@sveltejs/adapter-static": "^3.0.10",
+        "@sveltejs/kit": "^2.69.0",
+        "@sveltejs/vite-plugin-svelte": "^7.2.0",
         "@types/d3-scale": "^4.0.9",
         "@types/d3-shape": "^3.1.8",
         "@types/node": "^24.0.0",
-        "@vitejs/plugin-vue": "^6.0.0",
         "shiki": "^3.21.0",
+        "svelte": "^5.56.0",
+        "svelte-check": "^4.6.0",
         "typescript": "^5.9.0",
-        "vite": "^7.0.0",
-        "vite-ssg": "^28.3.0",
-        "vue-tsc": "^3.1.0"
+        "vite": "^8.0.0"
     },
     "packageManager": "pnpm@10.33.0+sha512.10568bb4a6afb58c9eb3630da90cc9516417abebd3fabbe6739f0ae795728da1491e9db5a544c76ad8eb7570f5c4bb3d6c637b2cb41bfdcdb47fa823c8649319"
 }

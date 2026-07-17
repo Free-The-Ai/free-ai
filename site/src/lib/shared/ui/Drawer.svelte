@@ -13,14 +13,15 @@
         popupClass,
         variant = "responsive",
         children,
+        onclose,
     }: {
         open: boolean;
         label: string;
         title?: string;
         popupClass?: string;
-        /** Selects the CSS class family already defined in app/styles/global.css. */
         variant?: "responsive" | "nav";
         children?: Snippet;
+        onclose?: () => void;
     } = $props();
 
     const titleId = $props.id();
@@ -48,6 +49,10 @@
     }
 
     function close(): void {
+        if (onclose) {
+            onclose();
+            return;
+        }
         open = false;
     }
 
@@ -144,8 +149,6 @@
             onclick={close}
             transition:backdropTransition
         ></div>
-    {/if}
-    {#if open}
         <div class={`${variant}-drawer-viewport`} onkeydown={onKeydown} use:openLifecycle>
             <div
                 bind:this={popupEl}
@@ -159,12 +162,8 @@
                 transition:popupTransition
             >
                 <div class={`${variant}-drawer-handle`} aria-hidden="true" onpointerdown={onHandlePointerDown}></div>
-                {#if title}
-                    <h2 id={titleId} class="responsive-drawer-title">{title}</h2>
-                {/if}
-                <div class={`${variant}-drawer-content`}>
-                    {@render children?.()}
-                </div>
+                {#if title}<h2 id={titleId} class="responsive-drawer-title">{title}</h2>{/if}
+                <div class={`${variant}-drawer-content`}>{@render children?.()}</div>
             </div>
         </div>
     {/if}

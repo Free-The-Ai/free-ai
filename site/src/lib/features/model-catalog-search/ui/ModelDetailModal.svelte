@@ -31,9 +31,10 @@
 
 <Drawer
     bind:open={() => open, setOpen}
+    onclose={() => setOpen(false)}
     label={`Details for ${model.id}`}
     popupClass={`model-detail-drawer${model.requires_seems_legit ? " is-gated" : ""}`}
->
+ >
     <article class="model-modal">
         <header class="model-modal-head">
             <span class="model-modal-prefix">{model.prefix}/*</span>

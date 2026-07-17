@@ -238,6 +238,7 @@
         </div>
     {/if}
 
+
     {#if selectedProvider}
         <ProviderPopover provider={selectedProvider} onclose={closePopover} />
     {/if}

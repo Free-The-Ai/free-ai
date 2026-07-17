@@ -2,6 +2,7 @@
 
 Detailed execution incidents are append-only and listed newest-first.
 
+- 2026-07-17 — Svelte migration validation initially failed at the package-root seam because the repository has no root package manifest, and the generated-highlight path was stale after the source tree moved; canonical fix: run all package commands from `site/`, align generation and ignore paths under `src/lib`, and independently rerun typecheck/build plus artifact checks; proof: `pnpm --dir site run typecheck` and `pnpm --dir site run build` passed, with 22 setup routes, `404.html`, and both sitemap files present.
 - 2026-07-15 — Vue Router hash navigation landed targets under the sticky header because element scroll positions did not inherit the document's CSS scroll offset; canonical fix: read the existing root `scroll-padding-top` token and pass it as router `top`; proof: browser assertions placed `/docs#compatibility` below the header at the configured offset.
 - 2026-07-13 — `python` source-edit helper invocation failed because this environment exposes only `python3`; canonical fix: invoke the discovered runtime explicitly; proof: the same edit completed under `python3` and the subsequent Vue typecheck passed.
 - 2026-07-13 — package-local `pnpm generate:highlights` failed from the repository root because `package.json` is under `site/`; canonical fix: execute package scripts from `site/`; proof: the generator produced `src/shared/config/highlighted.generated.ts` and the SSG build completed all 39 routes.

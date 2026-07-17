@@ -5,7 +5,7 @@
     import { siteConfig } from "@/shared/config/site";
     import { DitherButton, Logo } from "@/shared/ui";
 
-    const currentPath = $derived(page.url.pathname);
+    const currentPath = $derived(page.url.pathname as string);
 
     const navLinks: [string, string][] = [
         ["/home", "Home"],

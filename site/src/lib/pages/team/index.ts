@@ -1,1 +1,1 @@
-export { default } from "./ui/TeamPage.vue";
+export { default } from "./ui/TeamPage.svelte";

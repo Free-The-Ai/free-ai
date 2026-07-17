@@ -1,1 +1,1 @@
-export { default } from "./ui/StatusPage.vue";
+export { default } from "./ui/StatusPage.svelte";

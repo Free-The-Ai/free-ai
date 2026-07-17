@@ -14,3 +14,4 @@ export { default as DitherButton } from "./DitherButton.svelte";
 export { default as CtaButton } from "./CtaButton.svelte";
 export { default as CheckmarkIcon } from "./icons/CheckmarkIcon.svelte";
 export { default as ChevronDownIcon } from "./icons/ChevronDownIcon.svelte";
+export { default as SeoHead } from "./SeoHead.svelte";

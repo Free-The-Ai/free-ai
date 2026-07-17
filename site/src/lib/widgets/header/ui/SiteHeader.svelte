@@ -62,6 +62,7 @@
         document.addEventListener("keydown", onDocumentKeydown);
     });
     onDestroy(() => {
+        if (typeof document === "undefined") return;
         document.removeEventListener("click", onDocumentClick);
         document.removeEventListener("keydown", onDocumentKeydown);
     });

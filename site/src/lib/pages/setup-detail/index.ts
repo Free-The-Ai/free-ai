@@ -1,1 +1,1 @@
-export { default } from "./ui/SetupDetailPage.vue";
+export { default } from "./ui/SetupDetailPage.svelte";

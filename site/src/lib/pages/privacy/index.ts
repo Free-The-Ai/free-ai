@@ -1,1 +1,1 @@
-export { default } from "./ui/PrivacyPage.vue";
+export { default } from "./ui/PrivacyPage.svelte";

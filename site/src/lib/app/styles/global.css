@@ -1631,7 +1631,7 @@ h3 {
     color: var(--accent-text);
 }
 
-/* catalog-filter-content panel styles are in shared/ui/DropdownMenu.vue
+/* catalog-filter-content panel styles are in shared/ui/DropdownMenu.svelte
    since the panel is teleported to <body>. */
 
 .catalog-filter-content .catalog-filter-menu-item {

@@ -1,1 +1,1 @@
-export { default as ProviderStatusGrid } from "./ui/ProviderStatusGrid.vue";
+export { default as ProviderStatusGrid } from "./ui/ProviderStatusGrid.svelte";

@@ -12,6 +12,7 @@
         "sourceMap": true,
         "forceConsistentCasingInFileNames": true,
         "allowJs": true,
+        "allowImportingTsExtensions": true,
         "checkJs": true
     }
 }

@@ -156,7 +156,7 @@ export function initThemeSystem(): void {
   contrastMql.addEventListener("change", onContrastChange);
 
   // Expose globally for the header widget's theme-toggle button (see
-  // widgets/header/ui/SiteHeader.vue).
+  // widgets/header/ui/SiteHeader.svelte).
   (window as unknown as Record<string, unknown>).__themeToggle = themeToggleScheme;
 }
 

@@ -1,1 +1,1 @@
-export { default as PaidPlanExplorer } from "./ui/PaidPlanExplorer.vue";
+export { default as PaidPlanExplorer } from "./ui/PaidPlanExplorer.svelte";

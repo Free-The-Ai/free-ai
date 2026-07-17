@@ -135,7 +135,7 @@
 
     // Attaches window scroll/resize listeners for exactly as long as the menu
     // panel is in the DOM \u2014 replaces `watch(open, ...)`.
-    function trackPosition(): { destroy(): void } {
+    function trackPosition(_node: Element): { destroy(): void } {
         window.addEventListener("scroll", updatePosition, { passive: true });
         window.addEventListener("resize", updatePosition, { passive: true });
         return {
@@ -148,7 +148,7 @@
 
     onMount(() => document.addEventListener("click", onDocumentClick));
     onDestroy(() => {
-        document.removeEventListener("click", onDocumentClick);
+        if (typeof document !== "undefined") document.removeEventListener("click", onDocumentClick);
         if (closeTimer) window.clearTimeout(closeTimer);
     });
 </script>

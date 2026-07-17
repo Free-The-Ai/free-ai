@@ -1,1 +1,1 @@
-export { default } from "./ui/QuickstartPage.vue";
+export { default } from "./ui/QuickstartPage.svelte";

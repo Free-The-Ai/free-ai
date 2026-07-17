@@ -1,1 +1,1 @@
-export { default as MobileNav } from "./ui/MobileNav.vue";
+export { default as MobileNav } from "./ui/MobileNav.svelte";

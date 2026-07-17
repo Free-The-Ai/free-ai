@@ -4,6 +4,11 @@
     import { Drawer, DitherAvatar } from "@/shared/ui";
 
     let { provider, onclose }: { provider: ProviderHealth; onclose?: () => void } = $props();
+    let open = $state(true);
+    function close(): void {
+        open = false;
+        onclose?.();
+    }
 
     const isAffected = $derived(provider.status === "degraded" || provider.status === "down");
 
@@ -17,7 +22,7 @@
     }
 </script>
 
-<Drawer open={true} onclose={onclose} label={`${provider.prefix} provider status`} popupClass={`provider-popover is-${provider.status}`}>
+<Drawer bind:open={open} onclose={close} label={`${provider.prefix} provider status`} popupClass={`provider-popover is-${provider.status}`}>
     <div class="popover-status-strip"></div>
 
     <div class="popover-header">

@@ -104,15 +104,4 @@
     font-size: 0.98rem;
     line-height: 1.55;
 }
-.not-found-home {
-    position: relative;
-    z-index: 1;
-    justify-self: center;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-.not-found-home .material-symbols-outlined {
-    font-size: 1.1rem;
-}
 </style>

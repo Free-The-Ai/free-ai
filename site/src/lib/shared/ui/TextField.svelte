@@ -31,6 +31,9 @@
         oninput?: (event: Event) => void;
     } = $props();
 
+    const autoId = $props.id();
+    const fieldId = $derived(id ?? autoId);
+
     const TYPING_THROTTLE_MS = 120;
     let lastTypingSound = 0;
 
@@ -49,7 +52,7 @@
 
 <div class={["kb-text-field", className]} data-invalid={error ? "" : undefined}>
     {#if label}
-        <label class="kb-text-field__label">{label}</label>
+        <label class="kb-text-field__label" for={fieldId}>{label}</label>
     {/if}
     {#if multiline}
         <textarea
@@ -58,7 +61,7 @@
             {value}
             {disabled}
             {required}
-            {id}
+            id={fieldId}
             data-invalid={error ? "" : undefined}
             oninput={onInput}
         ></textarea>
@@ -70,7 +73,7 @@
             {value}
             {disabled}
             {required}
-            {id}
+            id={fieldId}
             {name}
             data-invalid={error ? "" : undefined}
             oninput={onInput}

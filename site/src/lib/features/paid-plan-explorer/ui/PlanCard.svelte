@@ -61,7 +61,7 @@
 </article>
 
 <style>
-.paid-plan-select-dither {
+:global(.paid-plan-select-dither) {
     width: 100%;
     min-height: 42px;
     margin-top: auto;

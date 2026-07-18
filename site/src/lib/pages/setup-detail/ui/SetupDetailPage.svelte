@@ -485,11 +485,6 @@
     font-size: 0.95rem;
     line-height: 1.55;
 }
-.setup-detail-step-body code {
-    color: var(--accent-text);
-    font-family: var(--font-mono);
-    font-size: 0.85em;
-}
 .setup-detail-snippet {
     border: 1px solid var(--sk-border);
     border-radius: var(--radius-sm);
@@ -500,13 +495,6 @@
     padding: 6px 12px;
     border-bottom: 1px solid var(--sk-border);
     background: var(--sk-shell-bg);
-}
-.setup-detail-snippet header strong {
-    color: var(--dim);
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
 }
 .setup-detail-snippet :global(pre) {
     margin: 0;

@@ -18,7 +18,7 @@
     let { children }: { children: Snippet } = $props();
 
     const fontHref =
-        "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Material+Symbols+Outlined:wght,FILL@400,0..1&display=swap";
+        "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap";
 
     const isNotFoundRoute = $derived(page.status === 404);
 
@@ -75,6 +75,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="" />
     {@html `<link rel="preload" as="style" href="${fontHref}" />`}
     {@html `<link rel="stylesheet" href="${fontHref}" media="print" onload="this.media='all'" />`}
+    <link rel="preload" as="font" type="font/woff2" href="/fonts/material-symbols-outlined-subset.woff2" crossorigin="anonymous" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <link rel="manifest" href="/site.webmanifest" />
     <link rel="sitemap" href="/sitemap-index.xml" />

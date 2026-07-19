@@ -176,12 +176,10 @@
         return () => cancelAnimationFrame(raf);
     }
 
-    let stop: (() => void) | undefined;
     const restartLoop = watchDeps(() => {
-        stop?.();
         const canvas = canvasEl;
         if (!canvas) return;
-        stop = startLoop(canvas, bloomEl ?? null, cols, rows, ctx.plot.width, ctx.plot.height);
+        return startLoop(canvas, bloomEl ?? null, cols, rows, ctx.plot.width, ctx.plot.height);
     });
 
     const posStyle = $derived({

@@ -263,12 +263,10 @@
         return () => cancelAnimationFrame(raf);
     }
 
-    let stop: (() => void) | undefined;
     const restartLoop = watchDeps((deps) => {
-        stop?.();
         const canvas = deps[0] as HTMLCanvasElement | undefined;
         if (!canvas) return;
-        stop = startLoop(canvas, bloomEl ?? null, cols, rows);
+        return startLoop(canvas, bloomEl ?? null, cols, rows);
     });
 
     const posStyle = $derived({

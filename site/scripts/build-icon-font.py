@@ -21,13 +21,21 @@ OUT = ROOT / "static" / "fonts" / "material-symbols-outlined-subset.woff2"
 FONT_URL = "https://cdn.jsdelivr.net/npm/material-symbols@0.45.8/material-symbols-outlined.woff2"
 CACHE = Path("/tmp/material-symbols-full.woff2")
 
-# Every glyph name rendered via <span class="material-symbols-outlined">NAME</span>.
+# Icons rendered via <span class="material-symbols-outlined">NAME</span> (literal).
 ICON_RE = re.compile(r'material-symbols-outlined[^>]*>\s*([a-z0-9_]+)\s*<')
+# Icons passed dynamically as the last field of a data tuple, e.g. the MobileNav
+# MORE array: ["/docs", "Docs", false, "description"] rendered via >{icon}<.
+# The literal regex can't see these, so extract the tuple icon column too.
+TUPLE_ICON_RE = re.compile(r',\s*(?:false|true)\s*,\s*"([a-z0-9_]{3,})"\s*\]')
+DYNAMIC_USAGE_RE = re.compile(r'material-symbols-outlined[^>]*>\s*\{')
 
 def used_icons() -> list[str]:
     icons: set[str] = set()
     for path in SRC.rglob("*.svelte"):
-        icons.update(ICON_RE.findall(path.read_text(encoding="utf-8")))
+        text = path.read_text(encoding="utf-8")
+        icons.update(ICON_RE.findall(text))
+        if DYNAMIC_USAGE_RE.search(text):
+            icons.update(TUPLE_ICON_RE.findall(text))
     return sorted(icons)
 
 def source_font() -> Path:

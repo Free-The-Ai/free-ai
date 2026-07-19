@@ -15,3 +15,5 @@ http.err.log
 lighthouse-reports/*.report.html
 lighthouse-reports/*.report.json
 lighthouse-reports/*.err
+lighthouse-reports/median/*.[0-9]
+lighthouse-reports/median/lh.err

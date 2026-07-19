@@ -23,7 +23,6 @@ import { ALL_SOUND_ROLES } from "./types";
 import {
   playSound as enginePlaySound,
   ensureResumed,
-  getAudioContext,
 } from "./engine";
 import { soundPacks } from "./packs";
 
@@ -201,8 +200,9 @@ export function initSoundSystem(): void {
   if (initialized) return;
   initialized = true;
 
-  // Eagerly create AudioContext so resume() is the only async step on first gesture
-  getAudioContext();
+  // The AudioContext is created lazily on the first *trusted* user gesture
+  // (in warmUpHandler below), never at load — creating it here would make the
+  // browser log "An AudioContext was prevented from starting automatically".
 
   // Reduced motion detection
   if (config.reducedMotion === "inherit" && typeof window !== "undefined") {

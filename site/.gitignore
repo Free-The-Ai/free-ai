@@ -10,3 +10,8 @@ preview.out.log
 preview.err.log
 http.out.log
 http.err.log
+
+# Lighthouse: keep REPORT.md + summary.csv, ignore bulky regenerable per-page reports
+lighthouse-reports/*.report.html
+lighthouse-reports/*.report.json
+lighthouse-reports/*.err

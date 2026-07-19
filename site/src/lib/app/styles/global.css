@@ -3407,7 +3407,13 @@ h3 {
     }
 
     .page-shell {
-        padding-bottom: calc(80px + env(safe-area-inset-bottom, 0px));
+        padding-bottom: calc(70px + env(safe-area-inset-bottom, 0px));
+    }
+
+    /* Tighten the loose bottom region on mobile: the footer sat 56px below the
+     * last section and 16px above the fixed tab bar, leaving dead space. */
+    .site-footer {
+        margin-top: 28px;
     }
 
     .nav-hamburger {

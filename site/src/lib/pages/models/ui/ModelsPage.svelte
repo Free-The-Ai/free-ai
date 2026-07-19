@@ -12,7 +12,7 @@
     import { CatalogBrowser } from "@/features/model-catalog-search";
     import { DitherGradient, SeoHead } from "@/shared/ui";
     import { modelPrefix } from "@/shared/lib/format";
-    import modelSnapshot from "../../../../../static/models.json";
+    import modelSnapshot from "@/entities/model/models.json";
 
     const DISABLED_PREFIXES = new Set(["vhr"]);
 

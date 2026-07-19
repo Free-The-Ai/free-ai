@@ -14,6 +14,7 @@
     ];
 
     let open = $state(false);
+    let openedAt = 0;
     let activeId = $state("");
     let dragY = $state(0);
     let sheetEl: HTMLElement | undefined = $state();
@@ -33,8 +34,15 @@
         if (open) close();
         else {
             open = true;
+            openedAt = performance.now();
             lockBodyScroll("docs-toc-open");
         }
+    }
+
+    // Ignore the touch ghost click that lands on the overlay right after opening.
+    function onOverlayClick(): void {
+        if (performance.now() - openedAt < 400) return;
+        close();
     }
 
     // Replaces the Vue callback-ref pattern: fires once when the sheet mounts.
@@ -118,7 +126,7 @@
 
     {#if open}
         <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-        <div class="docs-mobile-toc__overlay" data-sound="overlay.close" onclick={close}></div>
+        <div class="docs-mobile-toc__overlay" data-sound="overlay.close" onclick={onOverlayClick}></div>
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div
             bind:this={sheetEl}

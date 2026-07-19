@@ -22,7 +22,7 @@
     import ModelDetailModal from "./ModelDetailModal.svelte";
     import CatalogOverview from "./CatalogOverview.svelte";
 
-    const PAGE_SIZE = 80;
+    const PAGE_SIZE = 30;
     const DISABLED = new Set<string>();
 
     function parsePayload(payload: unknown): { models: Model[]; policy: CatalogPolicy | null } {

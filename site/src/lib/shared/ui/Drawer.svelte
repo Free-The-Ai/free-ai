@@ -153,7 +153,7 @@
     {#if open}
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <!-- svelte-ignore a11y_click_events_have_key_events -->
-        <div class={`${variant}-drawer-backdrop`} data-sound="overlay.close" onclick={onBackdropClick} transition:backdropTransition></div>
+        <div class={`${variant}-drawer-backdrop`} data-sound="overlay.close" onclick={onBackdropClick} in:backdropTransition out:backdropTransition></div>
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div class={`${variant}-drawer-viewport`} onkeydown={onKeydown} use:openLifecycle>
             <div
@@ -165,7 +165,7 @@
                 aria-labelledby={title ? titleId : undefined}
                 tabindex="-1"
                 style={dragY > 0 ? `transform: translateY(${dragY}px); transition: none;` : undefined}
-                transition:popupTransition
+                in:popupTransition out:popupTransition
             >
                 <div class={`${variant}-drawer-handle`} aria-hidden="true" onpointerdown={onHandlePointerDown}></div>
                 {#if title}<h2 id={titleId} class="responsive-drawer-title">{title}</h2>{/if}

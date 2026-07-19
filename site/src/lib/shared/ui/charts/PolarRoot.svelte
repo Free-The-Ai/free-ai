@@ -64,6 +64,7 @@
         revision += 1;
     });
 
+    // svelte-ignore state_referenced_locally
     let selectedDataKey = $state<string | null>(defaultSelectedDataKey);
     let focusDataKey = $state<string | null>(null);
     let hoverIndex = $state<number | null>(null);
@@ -288,6 +289,7 @@
     }
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
     bind:this={elRef}
     use:resize

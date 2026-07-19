@@ -110,13 +110,16 @@
     });
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div class="docs-mobile-toc" onkeydown={onKeydown}>
     <button type="button" class="docs-mobile-toc__trigger" aria-expanded={open} aria-label="Table of contents" onclick={toggle}>
         <span class="material-symbols-outlined">toc</span>
     </button>
 
     {#if open}
+        <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
         <div class="docs-mobile-toc__overlay" data-sound="overlay.close" onclick={close}></div>
+        <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div
             bind:this={sheetEl}
             use:onSheetMount

@@ -31,6 +31,7 @@
     }
 </script>
 
+<!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
 <article
     class={["status-card", `is-${provider.status}`, { "is-selected": isSelected }]}
     tabindex="0"

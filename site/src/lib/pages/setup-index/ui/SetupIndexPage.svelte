@@ -66,14 +66,13 @@
         return (guidesByCategory[category] ?? []).some(matchesGuide);
     }
 
-    let firstGuideSlug: string | null = null;
-    for (const category of CATEGORY_ORDER) {
-        const catGuides = guidesByCategory[category];
-        if (catGuides && catGuides.length > 0) {
-            firstGuideSlug = catGuides[0].slug;
-            break;
+    const firstGuideSlug: string | null = (() => {
+        for (const category of CATEGORY_ORDER) {
+            const catGuides = guidesByCategory[category];
+            if (catGuides && catGuides.length > 0) return catGuides[0].slug;
         }
-    }
+        return null;
+    })();
 </script>
 
 <SeoHead {seo} />

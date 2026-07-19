@@ -174,6 +174,7 @@
     </button>
     <div use:portal={"body"}>
         {#if open}
+            <!-- svelte-ignore a11y_interactive_supports_focus -->
             <div
                 bind:this={menu}
                 id={menuId}

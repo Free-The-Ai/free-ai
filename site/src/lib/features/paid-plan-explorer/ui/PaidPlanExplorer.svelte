@@ -8,6 +8,7 @@
 
     let { snapshot, discordUrl }: { snapshot: PaidPlanSnapshot; discordUrl: string } = $props();
 
+    // svelte-ignore state_referenced_locally
     const initialCatalog = snapshotState(snapshot);
     let catalog = $state<CatalogState>(initialCatalog);
     let selectedPlan = $state(initialCatalog.plans[0]?.id ?? PLAN_ORDER[0]);

@@ -8,6 +8,7 @@
 
     const ctx = usePolarPart("Radar", "radar");
 
+    // svelte-ignore state_referenced_locally
     if (import.meta.env.DEV && !ctx.config[dataKey]) {
         console.warn(
             `<Radar dataKey="${dataKey}">: "${dataKey}" is not in the chart \`config\`. Add it so the series has a colour and label.`,

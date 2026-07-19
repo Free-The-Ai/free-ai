@@ -79,6 +79,7 @@
         revision += 1;
     });
 
+    // svelte-ignore state_referenced_locally
     let selectedDataKey = $state<string | null>(defaultSelectedDataKey);
     let focusDataKey = $state<string | null>(null);
     let hoverIndex = $state<number | null>(null);
@@ -86,6 +87,7 @@
     let isMouseInChart = $state(false);
     let seriesSpecs = $state<Record<string, SeriesSpec>>({});
 
+    // svelte-ignore state_referenced_locally
     let entranceDone = $state(!animate);
     const resetEntrance = watchDeps(() => {
         entranceDone = !animate;
@@ -320,6 +322,7 @@
     }
 </script>
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
 <div
     bind:this={elRef}
     use:resize

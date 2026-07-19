@@ -11,6 +11,10 @@ export default defineConfig({
     },
     plugins: [
         sveltekit({
+            // Enforce runes mode for EVERY component (incl. the ~31 that use no
+            // rune and would otherwise compile in Svelte 4 legacy mode). Legacy
+            // APIs (export let, $:, on:, <slot>) become compile errors.
+            compilerOptions: { runes: true },
             adapter: adapter({
                 pages: "dist",
                 assets: "dist",

@@ -3416,6 +3416,18 @@ h3 {
         margin-top: 28px;
     }
 
+    /* The desktop anti-layout-shift trick (overflow-y:scroll + stable gutter)
+     * reserves a permanent ~15px scrollbar gutter. On mobile/narrow widths that
+     * leaves a dead strip on the right and stops the fixed tab bar reaching the
+     * edge. Mobile browsers use overlay scrollbars, so no gutter is needed. */
+    html {
+        overflow-y: auto;
+    }
+    html,
+    body {
+        scrollbar-gutter: auto !important;
+    }
+
     .nav-hamburger {
         display: flex;
         align-items: center;

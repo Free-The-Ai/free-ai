@@ -145,7 +145,7 @@ function handlePointerEnter(e: Event) {
   if (isValidRole(role)) soundPlay(role);
 }
 
-let warmUpHandler: (() => void) | null = null;
+let warmUpHandler: ((event: Event) => void) | null = null;
 
 // ── Scroll sound throttling ──
 
@@ -213,10 +213,14 @@ export function initSoundSystem(): void {
     reducedMotion = true;
   }
 
-  // Warm up AudioContext on first user gesture.
+  // Warm up AudioContext on the first *genuine* user gesture. Programmatic/
+  // synthetic events (browser extensions, dispatched clicks) are not trusted
+  // gestures: resuming from them makes Chrome log "AudioContext was not allowed
+  // to start" and would consume the one-shot warmup before a real interaction.
   // Uses capture phase to fire BEFORE click/pointer delegation handlers,
   // ensuring AudioContext.resume() starts before soundPlay checks ctx.state.
-  warmUpHandler = () => {
+  warmUpHandler = (event: Event) => {
+    if (!event.isTrusted) return;
     ensureResumed();
     document.removeEventListener("click", warmUpHandler!, true);
     document.removeEventListener("keydown", warmUpHandler!, true);

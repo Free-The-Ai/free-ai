@@ -37,6 +37,15 @@
     function closeMore(): void {
         moreOpen = false;
     }
+
+    // Open only — never toggle. A touch tap synthesizes a second "ghost" click on
+    // this same button ~300ms later (compat mouse events target the touchstart
+    // element), and a toggle would flip the sheet shut the instant it opened.
+    // The button sits under the backdrop once open, so it can't close it anyway;
+    // dismissal is via the backdrop, drag handle, or a menu link.
+    function openMore(): void {
+        moreOpen = true;
+    }
 </script>
 
 <div class="mobile-nav">
@@ -59,7 +68,7 @@
             aria-expanded={moreOpen}
             aria-controls="mobile-more-menu"
             data-sound={moreOpen ? "overlay.close" : "overlay.open"}
-            onclick={() => (moreOpen = !moreOpen)}
+            onclick={openMore}
         >
             <span class="bottom-tab-icon">{@html ICONS.more}</span>
             <span class="bottom-tab-label">More</span>

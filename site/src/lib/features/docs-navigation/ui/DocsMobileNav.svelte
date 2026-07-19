@@ -31,8 +31,12 @@
     }
 
     function toggle(): void {
-        if (open) close();
-        else {
+        if (open) {
+            // Ignore the touch ghost click that re-fires this trigger ~300ms
+            // after opening (it would slam the sheet shut instantly).
+            if (performance.now() - openedAt < 400) return;
+            close();
+        } else {
             open = true;
             openedAt = performance.now();
             lockBodyScroll("docs-toc-open");

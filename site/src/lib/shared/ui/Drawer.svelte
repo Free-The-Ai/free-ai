@@ -34,6 +34,7 @@
     let previousFocus: HTMLElement | null = null;
     let ownsScrollLock = false;
     let ownsModal = false;
+    let openedAt = 0;
 
     const focusableSelector = [
         "a[href]",
@@ -51,6 +52,15 @@
     function close(): void {
         open = false;
         onclose?.();
+    }
+
+    // Ignore the compatibility "ghost" click that a touch tap synthesizes ~300ms
+    // later: it lands on the freshly-rendered backdrop (which now covers the
+    // opener, e.g. the bottom-nav More button) and would otherwise close the
+    // drawer the instant it opened. A real dismiss tap always arrives later.
+    function onBackdropClick(): void {
+        if (performance.now() - openedAt < 400) return;
+        close();
     }
 
     function onKeydown(event: KeyboardEvent): void {
@@ -114,6 +124,7 @@
     // (via this action) corresponds exactly to the drawer opening/closing —
     // no separate prop-change watcher needed.
     function openLifecycle(_el: HTMLElement): { destroy(): void } {
+        openedAt = performance.now();
         previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
         lockBodyScroll("scroll-locked");
         ownsScrollLock = true;
@@ -142,7 +153,7 @@
     {#if open}
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <!-- svelte-ignore a11y_click_events_have_key_events -->
-        <div class={`${variant}-drawer-backdrop`} data-sound="overlay.close" onclick={close} transition:backdropTransition></div>
+        <div class={`${variant}-drawer-backdrop`} data-sound="overlay.close" onclick={onBackdropClick} transition:backdropTransition></div>
         <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div class={`${variant}-drawer-viewport`} onkeydown={onKeydown} use:openLifecycle>
             <div

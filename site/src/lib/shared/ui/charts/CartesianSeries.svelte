@@ -23,8 +23,10 @@
         children?: Snippet;
     } = $props();
 
+    // svelte-ignore state_referenced_locally
     const ctx = useChartPart(part, kind === "line" ? "line" : "area");
 
+    // svelte-ignore state_referenced_locally
     if (import.meta.env.DEV && !ctx.config[dataKey]) {
         console.warn(
             `<${part} dataKey="${dataKey}">: "${dataKey}" is not in the chart \`config\`. Add it so the series has a colour and label.`,

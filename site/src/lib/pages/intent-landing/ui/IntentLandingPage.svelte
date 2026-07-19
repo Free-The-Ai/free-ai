@@ -26,6 +26,7 @@
 
     const visibleGuides = $derived(guides.filter(matchesGuide));
 
+    // svelte-ignore state_referenced_locally
     const current = page;
     const faqJsonLd = {
         "@context": "https://schema.org",
@@ -54,6 +55,7 @@
             url: `https://freetheai.xyz/${current.slug}`,
         },
     };
+    // svelte-ignore state_referenced_locally
     const itemListJsonLd = {
         "@context": "https://schema.org",
         "@type": "ItemList",
@@ -67,6 +69,7 @@
         })),
     };
 
+    // svelte-ignore state_referenced_locally
     const seo = buildSeo({
         title: page.title,
         description: page.description,

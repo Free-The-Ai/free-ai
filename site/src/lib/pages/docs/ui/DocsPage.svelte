@@ -156,6 +156,7 @@
                     {#each endpoints as [method, path, desc, anchor], i (i)}
                         <a class="docs-endpoint-row" href={`#${anchor}`} role="row">
                             <span class={`docs-method docs-method-${method.toLowerCase()}`} role="cell">{method}</span>
+                            <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
                             <code class="docs-path" role="cell">{path}</code>
                             <span class="docs-endpoint-desc" role="cell">{desc}</span>
                         </a>

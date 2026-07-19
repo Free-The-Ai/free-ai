@@ -54,6 +54,7 @@
         ].join(", "),
     );
 
+    // svelte-ignore state_referenced_locally
     const howToJsonLd = {
         "@context": "https://schema.org",
         "@type": "HowTo",
@@ -74,6 +75,7 @@
         })),
     };
 
+    // svelte-ignore state_referenced_locally
     const seo = buildSeo({
         title: pageTitle,
         description: pageDescription,

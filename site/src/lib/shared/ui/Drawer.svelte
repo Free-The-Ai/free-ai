@@ -140,12 +140,10 @@
 
 <div use:portal={"body"}>
     {#if open}
-        <div
-            class={`${variant}-drawer-backdrop`}
-            data-sound="overlay.close"
-            onclick={close}
-            transition:backdropTransition
-        ></div>
+        <!-- svelte-ignore a11y_no_static_element_interactions -->
+        <!-- svelte-ignore a11y_click_events_have_key_events -->
+        <div class={`${variant}-drawer-backdrop`} data-sound="overlay.close" onclick={close} transition:backdropTransition></div>
+        <!-- svelte-ignore a11y_no_static_element_interactions -->
         <div class={`${variant}-drawer-viewport`} onkeydown={onKeydown} use:openLifecycle>
             <div
                 bind:this={popupEl}

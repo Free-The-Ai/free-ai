@@ -7,6 +7,7 @@
     import { Button, DropdownMenu, Skeleton, TextField } from "@/shared/ui";
     import type { DropdownMenuOption } from "@/shared/ui";
     import { fetchModels } from "../lib/fetchModels";
+    import modelSnapshot from "@/entities/model/models.json";
     import {
         FILTER_LABELS,
         filterModels,
@@ -24,13 +25,31 @@
     const PAGE_SIZE = 80;
     const DISABLED = new Set<string>();
 
-    let allModels = $state<Model[]>([]);
-    let policy = $state<CatalogPolicy | null>(null);
+    function parsePayload(payload: unknown): { models: Model[]; policy: CatalogPolicy | null } {
+        const rec = payload && typeof payload === "object" ? (payload as Record<string, unknown>) : null;
+        const items = Array.isArray(rec?.data) ? (rec.data as unknown[]) : [];
+        const models = items
+            .map(parseModel)
+            .filter((m): m is Model => m !== null)
+            .filter((m) => !DISABLED.has(m.prefix))
+            .sort((a, b) => collatorCompare(a.id, b.id));
+        const policyValue = rec?.policy && typeof rec.policy === "object" ? (rec.policy as CatalogPolicy) : null;
+        return { models, policy: policyValue };
+    }
+
+    // Seed synchronously from the bundled snapshot so the prerendered HTML already
+    // contains the full catalog at the correct height. onMount then swaps in live
+    // data. Without this the catalog rendered empty at first paint and filled on
+    // hydration, producing a ~0.48 cumulative layout shift.
+    const snapshotSeed = parsePayload(modelSnapshot);
+
+    let allModels = $state<Model[]>(snapshotSeed.models);
+    let policy = $state<CatalogPolicy | null>(snapshotSeed.policy);
     let query = $state("");
     let page = $state(1);
     let prefixes = $state<Set<string>>(new Set());
     let typeFilters = $state<Set<FilterKey>>(new Set());
-    let source = $state<"live" | "snapshot" | "error">("live");
+    let source = $state<"live" | "snapshot" | "error">("snapshot");
     let loadError = $state("");
     let selected = $state<Model | null>(null);
     let mounted = false;
@@ -124,35 +143,22 @@
 
         try {
             const { payload, src } = await fetchModels();
-            const payloadRecord = payload && typeof payload === "object" ? (payload as Record<string, unknown>) : null;
-            const items = Array.isArray(payloadRecord?.data) ? (payloadRecord.data as unknown[]) : [];
-            allModels = items
-                .map(parseModel)
-                .filter((m): m is Model => m !== null)
-                .filter((m) => !DISABLED.has(m.prefix))
-                .sort((a, b) => collatorCompare(a.id, b.id));
-            if (payloadRecord?.policy && typeof payloadRecord.policy === "object") policy = payloadRecord.policy as CatalogPolicy;
+            const parsed = parsePayload(payload);
+            allModels = parsed.models;
+            if (parsed.policy) policy = parsed.policy;
             source = src;
 
-            const livePrefixes = new Set(
-                items
-                    .map((m) => {
-                        const record = m as Record<string, unknown>;
-                        const id = typeof record.id === "string" ? record.id : "";
-                        return typeof record.prefix === "string" && record.prefix ? record.prefix : modelPrefix(id);
-                    })
-                    .filter(Boolean),
-            );
+            const livePrefixes = new Set(parsed.models.map((m) => m.prefix));
             const heroChips = document.querySelectorAll(".models-hero-chip");
             heroChips.forEach((chip, i) => {
-                const value = i === 0 ? items.length : livePrefixes.size;
+                const value = i === 0 ? parsed.models.length : livePrefixes.size;
                 const label = i === 0 ? "model" : "provider";
                 const labelPlural = value === 1 ? label : `${label}s`;
                 chip.innerHTML = `<strong>${value}</strong> ${labelPlural}`;
             });
             const lede = document.querySelector(".models-lede");
             if (lede) {
-                lede.textContent = `${items.length} OpenAI-compatible chat, image, and audio model aliases across ${livePrefixes.size} provider prefixes. Search, filter, and copy any alias into your client.`;
+                lede.textContent = `${parsed.models.length} OpenAI-compatible chat, image, and audio model aliases across ${livePrefixes.size} provider prefixes. Search, filter, and copy any alias into your client.`;
             }
         } catch (err) {
             source = "error";

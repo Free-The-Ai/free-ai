@@ -2972,12 +2972,14 @@ h3 {
 }
 
 .footer-bottom {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 12px;
+    margin: 0;
     color: var(--dim);
     font-size: 0.75rem;
+    line-height: 1.6;
+}
+.footer-sep {
+    margin: 0 8px;
+    opacity: 0.5;
 }
 
 .footer-logo {

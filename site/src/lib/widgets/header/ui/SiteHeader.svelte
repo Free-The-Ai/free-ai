@@ -4,6 +4,7 @@
     import { CATEGORY_LABELS, CATEGORY_ORDER, SETUP_GUIDES, setupGuidesByCategory } from "@/entities/setup-guide";
     import { siteConfig } from "@/shared/config/site";
     import { DitherButton, Logo } from "@/shared/ui";
+    import { OnlineNow } from "@/features/online-now";
 
     const currentPath = $derived(page.url.pathname as string);
 
@@ -115,7 +116,9 @@
                     {/each}
                 </div>
             </div>
-            <a href={siteConfig.socials.github} target="_blank" rel="noreferrer">GitHub</a>
+        </div>
+        <div class="nav-live">
+            <OnlineNow />
         </div>
         <div class="nav-actions">
             <button bind:this={themeToggleEl} type="button" class="theme-toggle" aria-label="Toggle color scheme" title="Toggle theme" onclick={onThemeToggle}>

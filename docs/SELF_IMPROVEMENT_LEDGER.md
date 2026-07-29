@@ -2,6 +2,9 @@
 
 Detailed execution incidents are append-only and listed newest-first.
 
+- 2026-07-19 — Scroll-progress runtime verification failed at the selector-ownership seam because a shared `.setup-progress-fill` rule was changed even though the dynamic scroll indicator is identified by its `.setup-scroll-progress` parent and the same class also serves a static steps meter. Canonical fix: keep the static class width-based and scope the compositor transform to `.setup-scroll-progress span`. Proof: after scrolling the setup detail page, the target span receives a nonzero inline `scaleX()` while the steps meter remains full width.
+
+- 2026-07-19 — LSP verification failed at the adapter seam because the configured Svelte and TypeScript language-server binaries were absent; the diagnostic adapter then materialized an unintended root package install. Canonical fix: remove only the generated root package artifacts, restore tracked cache files touched by cleanup, and use the package-native `svelte-check` as the authoritative diagnostic seam. Proof: root install artifacts were removed, pre-existing work remained untouched, and `pnpm typecheck` reported 0 errors and 0 warnings.
 - 2026-07-19 — Final UI-review delivery failed at the response-composition seam because the draft cycled through repeated paragraphs instead of terminating. Canonical fix: stop regenerating the repeated narrative and emit one bounded findings table, verification list, and verdict. Proof: the replacement response contains each finding once and ends after the required verdict.
 
 - 2026-07-19 — UI-polish source search failed at the regex seam because an unescaped `{` was treated as an invalid repetition quantifier. Canonical fix: use literal matching for exact CSS selectors containing braces. Proof: the Quickstart tab-list and tab rules were recovered with their exact line ranges.

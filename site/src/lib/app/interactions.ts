@@ -5,6 +5,8 @@
  * navigation sound lives in app/main.ts (router.beforeEach), since it needs
  * the router instance created by ViteSSG.
  */
+import { swapMaterialIcon } from "@/shared/lib/dom";
+
 const SOUND_MAP: Record<string, string> = {
     ".primary-button": "interaction.confirm",
     ".donate-button": "interaction.confirm",
@@ -48,13 +50,7 @@ async function onCopyClick(event: Event): Promise<void> {
     }
     const soundPlay = (window as unknown as { __soundPlay?: (role: string) => void }).__soundPlay;
     soundPlay?.("interaction.confirm");
-    const icon = btn.querySelector(".material-symbols-outlined");
-    if (icon) {
-        icon.textContent = "check";
-        setTimeout(() => {
-            icon.textContent = "content_copy";
-        }, 2000);
-    }
+    swapMaterialIcon(btn.querySelector(".material-symbols-outlined"), "check");
 }
 
 function onMuteKeydown(event: KeyboardEvent): void {

@@ -88,7 +88,7 @@
             <h2 id="home-paths-title">Pick the client you are actually using.</h2>
             <p>FreeTheAi works as a custom OpenAI-compatible API across roleplay frontends, coding agents, and regular SDK apps.</p>
         </div>
-        <div class="home-path-grid stagger-children">
+        <div class="home-path-grid">
             <a href="/roleplay-api">
                 <strong>Roleplay API</strong>
                 <span>SillyTavern, Janitor AI, Chub AI, RisuAI.</span>
@@ -105,7 +105,7 @@
     </section>
 
     <section class="home-content">
-        <div class="rhythm stagger-children">
+        <div class="rhythm">
             <div class="beat whisper">
                 <h2 class="beat-heading">What Is FreeTheAi?</h2>
                 <p class="beat-prose">

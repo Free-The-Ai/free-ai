@@ -59,14 +59,10 @@
         const bloomCtx = bloomCanvas?.getContext("2d") ?? null;
         let fill = fillOf(params.color);
         let variantValue = params.variant;
-        const reduce = pixelPrefersReducedMotion();
-
         let cols = 0;
         let rows = 0;
         let intensity = 0;
-        let target = 0;
         let hovered = false;
-        let raf = 0;
 
         const paint = () => {
             ctx.clearRect(0, 0, cols, rows);
@@ -98,26 +94,9 @@
             }
         };
 
-        const tick = () => {
-            const d = target - intensity;
-            if (Math.abs(d) < 0.01) {
-                intensity = target;
-                paint();
-                raf = 0;
-                return;
-            }
-            intensity += d * 0.16;
+        const setTarget = (target: number) => {
+            intensity = target;
             paint();
-            raf = requestAnimationFrame(tick);
-        };
-        const setTarget = (t: number) => {
-            target = t;
-            if (reduce) {
-                intensity = t;
-                paint();
-            } else if (!raf) {
-                raf = requestAnimationFrame(tick);
-            }
         };
         const resize = (entry: ResizeObserverEntry) => {
             const box = entry.borderBoxSize[0];
@@ -161,7 +140,6 @@
                 paint();
             },
             destroy() {
-                if (raf) cancelAnimationFrame(raf);
                 el.removeEventListener("pointerenter", enter);
                 el.removeEventListener("pointerleave", leave);
                 el.removeEventListener("pointerdown", down);

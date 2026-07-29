@@ -2,6 +2,7 @@
     import type { Model } from "@/entities/model";
     import { modelContext, modelSupportsAudio, modelSupportsImage } from "@/entities/model";
     import { formatTokens } from "@/shared/lib/format";
+    import { swapMaterialIcon } from "@/shared/lib/dom";
 
     let { model, onselect }: { model: Model; onselect?: (model: Model) => void } = $props();
 
@@ -29,13 +30,7 @@
             console.error("Failed to copy model alias", error);
         });
         const btn = event.currentTarget as HTMLElement;
-        const icon = btn.querySelector(".material-symbols-outlined");
-        if (icon) {
-            icon.textContent = "check";
-            setTimeout(() => {
-                icon.textContent = "content_copy";
-            }, 1500);
-        }
+        swapMaterialIcon(btn.querySelector(".material-symbols-outlined"), "check");
     }
 </script>
 

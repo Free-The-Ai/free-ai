@@ -29,18 +29,14 @@
     --code-text: oklch(0.738 0 0);
     --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
     --font-serif: "STIX Two Text", "Georgia", serif;
-    --font-mono: "JetBrains Mono", "IBM Plex Mono", "Consolas", monospace;
+    --font-mono: "IBM Plex Mono", "JetBrains Mono", "Consolas", monospace;
     --sk-shell-bg: linear-gradient(180deg, oklch(0.244 0 0) 0%, oklch(0.213 0 0) 100%);
     --sk-inset-bg: linear-gradient(180deg, oklch(0.178 0 0) 0%, oklch(0.209 0 0) 100%);
     --sk-border: oklch(1 0 0 / 0.08);
     --sk-raised-shadow:
-        0 1px 0.5px oklch(1 0 0 / 0.1) inset,
-        0 1px 1px oklch(1 0 0 / 0.21) inset,
         0 10px 10px -9px oklch(0 0 0 / 0.44),
         0 20px 20px -14px oklch(0 0 0 / 0.38), 0 0 6px oklch(0 0 0 / 0.38);
     --sk-raised-crisp-shadow:
-        0 0.5px 0 oklch(1 0 0 / 0.1) inset,
-        0 1px 0.5px oklch(1 0 0 / 0.15) inset,
         0 10px 10px -9px oklch(0 0 0 / 0.44),
         0 20px 20px -14px oklch(0 0 0 / 0.38), 0 0 6px oklch(0 0 0 / 0.38);
     --sk-inset-shadow:
@@ -143,7 +139,7 @@ body {
     overflow-x: clip;
     overscroll-behavior: none;
     -webkit-font-smoothing: antialiased;
-    text-rendering: geometricPrecision;
+    -moz-osx-font-smoothing: grayscale;
     scrollbar-width: thin;
     scrollbar-color: var(--accent) transparent;
 }
@@ -224,10 +220,6 @@ body > .page-shell {
     box-shadow: var(--sk-inset-shadow);
 }
 
-img {
-    outline: 1px solid oklch(1 0 0 / 0.1);
-    outline-offset: -1px;
-}
 
 a {
     color: inherit;
@@ -356,8 +348,8 @@ pre {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: var(--control-height-sm);
-    height: var(--control-height-sm);
+    width: var(--control-height);
+    height: var(--control-height);
     border: 1px solid var(--sk-border);
     border-radius: var(--radius);
     background: var(--sk-inset-bg);
@@ -704,7 +696,7 @@ pre {
 .home-hero .primary-button:active {
     background: linear-gradient(180deg, oklch(0.641 0.175 44.8) 0%, oklch(0.533 0.169 38.5) 100%);
     filter: brightness(0.98) saturate(0.98);
-    transform: translateY(1px) scale(0.99);
+    transform: translateY(1px) scale(var(--press-scale));
 }
 
 .home-hero .primary-button > span {
@@ -828,6 +820,7 @@ h3 {
     font-family: var(--font-serif);
     line-height: 1;
     color: var(--text);
+    font-variant-numeric: tabular-nums;
 }
 
 .stat-label {
@@ -1034,8 +1027,8 @@ h3 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 28px;
-    height: 28px;
+    width: 40px;
+    height: 40px;
     color: var(--muted);
     cursor: pointer;
     opacity: 0;
@@ -2208,8 +2201,8 @@ h3 {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 26px;
-    height: 26px;
+    width: 40px;
+    height: 40px;
     padding: 0;
     color: var(--muted);
     cursor: pointer;
@@ -2766,7 +2759,7 @@ h3 {
 }
 
 .bottom-tab:active {
-    transform: scale(0.95);
+    transform: scale(var(--press-scale));
 }
 
 .bottom-tab.is-active .bottom-tab-icon {
@@ -4136,10 +4129,10 @@ body[data-sound-muted="false"]::after {
 }
 
 .setup-progress-fill {
+    width: 100%;
     height: 100%;
     border-radius: var(--radius-full);
     background: var(--accent);
-    transition: width 200ms var(--ease-out-smooth);
 }
 
 .setup-progress-text {
@@ -4165,10 +4158,13 @@ body[data-sound-muted="false"]::after {
 
 .setup-scroll-progress span {
     display: block;
+    width: 100%;
     height: 100%;
-    width: 0;
     background: var(--accent);
     box-shadow: 0 0 12px var(--accent);
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 120ms linear;
 }
 
 /* ── Setup detail meta copy button ── */
@@ -4181,8 +4177,8 @@ body[data-sound-muted="false"]::after {
     top: 4px;
     right: 4px;
     opacity: 0.55;
-    width: 22px;
-    height: 22px;
+    width: 40px;
+    height: 40px;
 }
 
 .setup-meta-copyable:hover .copy-btn,

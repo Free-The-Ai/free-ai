@@ -117,10 +117,8 @@
                 </div>
             </div>
         </div>
-        <div class="nav-live">
-            <OnlineNow />
-        </div>
         <div class="nav-actions">
+            <OnlineNow />
             <button bind:this={themeToggleEl} type="button" class="theme-toggle" aria-label="Toggle color scheme" title="Toggle theme" onclick={onThemeToggle}>
                 <span class="theme-toggle-icon" aria-hidden="true">◎</span>
             </button>

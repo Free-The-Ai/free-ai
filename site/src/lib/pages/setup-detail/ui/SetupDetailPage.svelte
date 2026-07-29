@@ -6,6 +6,7 @@
     import { highlightedCode } from "@/shared/config/highlighted.generated";
     import { CATEGORY_LABELS, type HighlightLang, type SetupGuide } from "@/entities/setup-guide";
     import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebApiJsonLd, buildWebsiteJsonLd } from "@/shared/lib/jsonLd";
+    import { swapMaterialIcon } from "@/shared/lib/dom";
 
     let { guide }: { guide: SetupGuide } = $props();
 
@@ -96,15 +97,19 @@
     });
 
     let progressFill: HTMLElement | undefined = $state();
+    let progressFrame = 0;
 
     function updateScrollProgress(): void {
-        const fill = progressFill;
-        if (!fill) return;
-        const doc = document.documentElement;
-        const scrollTop = window.scrollY || doc.scrollTop;
-        const height = doc.scrollHeight - doc.clientHeight;
-        const pct = height > 0 ? Math.round((scrollTop / height) * 100) : 0;
-        fill.style.width = `${pct}%`;
+        if (progressFrame) return;
+        progressFrame = requestAnimationFrame(() => {
+            progressFrame = 0;
+            const fill = progressFill;
+            if (!fill) return;
+            const doc = document.documentElement;
+            const height = doc.scrollHeight - doc.clientHeight;
+            const progress = height > 0 ? (window.scrollY || doc.scrollTop) / height : 0;
+            fill.style.transform = `scaleX(${progress})`;
+        });
     }
 
     onMount(() => {
@@ -116,6 +121,7 @@
         if (typeof window === "undefined") return;
         window.removeEventListener("scroll", updateScrollProgress);
         window.removeEventListener("resize", updateScrollProgress);
+        cancelAnimationFrame(progressFrame);
     });
 
     function copyBaseUrl(event: MouseEvent): void {
@@ -123,12 +129,7 @@
             console.error("Failed to copy base URL", error);
         });
         const icon = (event.currentTarget as HTMLElement).querySelector(".material-symbols-outlined");
-        if (icon) {
-            icon.textContent = "check";
-            setTimeout(() => {
-                icon.textContent = "content_copy";
-            }, 2000);
-        }
+        swapMaterialIcon((event.currentTarget as HTMLElement).querySelector(".material-symbols-outlined"), "check");
     }
 </script>
 
@@ -311,11 +312,13 @@
     text-underline-offset: 2px;
 }
 .setup-secondary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
     color: var(--muted);
     font-size: 0.92rem;
     text-decoration: none;
     border-bottom: 1px solid var(--sk-border);
-    padding-bottom: 2px;
     transition: color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
 }
 .setup-secondary:hover {

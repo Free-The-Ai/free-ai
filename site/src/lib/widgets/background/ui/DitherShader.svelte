@@ -100,7 +100,7 @@ void main() {
         canvas.width = w;
         canvas.height = h;
 
-        const gl = canvas.getContext("webgl2", { alpha: false, antialias: false, premultipliedAlpha: false, preserveDrawingBuffer: true });
+        const gl = canvas.getContext("webgl2", { alpha: false, antialias: false, premultipliedAlpha: false });
         if (!gl) return;
         const ctx = gl;
 
@@ -137,8 +137,7 @@ void main() {
         });
         resizeObserver.observe(canvas);
 
-        let raf = 0;
-        let last = 0;
+        let timer: number | undefined;
         let visible = true;
 
         function render(t: number): void {
@@ -149,28 +148,41 @@ void main() {
             ctx.drawArrays(ctx.TRIANGLE_STRIP, 0, 4);
         }
 
-        function loop(t: number): void {
-            raf = requestAnimationFrame(loop);
-            if (!visible) return;
-            if (t - last > interval) {
-                last = t;
-                render(t);
-            }
+        function stop(): void {
+            if (timer !== undefined) window.clearInterval(timer);
+            timer = undefined;
+        }
+
+        function start(): void {
+            stop();
+            if (!visible || document.hidden) return;
+            render(performance.now());
+            timer = window.setInterval(() => render(performance.now()), interval);
         }
 
         render(0);
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        if (!reduceMotion.matches) loop(0);
+        if (!reduceMotion.matches) start();
+
+        const onVisibilityChange = (): void => {
+            if (document.hidden) stop();
+            else if (!reduceMotion.matches) start();
+        };
+        document.addEventListener("visibilitychange", onVisibilityChange);
 
         let obs: IntersectionObserver | undefined;
         if (pauseWhenOffscreen !== false) {
-            obs = new IntersectionObserver(([entry]) => (visible = entry.isIntersecting), { threshold: 0 });
+            obs = new IntersectionObserver(([entry]) => {
+                visible = entry.isIntersecting;
+                if (!reduceMotion.matches) visible ? start() : stop();
+            }, { threshold: 0 });
             obs.observe(canvas);
         }
 
         cleanup = () => {
-            cancelAnimationFrame(raf);
+            stop();
+            document.removeEventListener("visibilitychange", onVisibilityChange);
             obs?.disconnect();
             resizeObserver.disconnect();
             ctx.deleteProgram(prog);

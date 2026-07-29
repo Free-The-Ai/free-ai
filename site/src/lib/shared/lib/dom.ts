@@ -63,3 +63,25 @@ export function styleToCss(style: Record<string, string | number | undefined> | 
     .map(([key, value]) => `${key.replace(/[A-Z]/g, (m) => `-${m.toLowerCase()}`)}: ${value}`)
     .join('; ');
 }
+
+export function swapMaterialIcon(icon: Element | null, next: string, fallback = "content_copy"): void {
+  if (!(icon instanceof HTMLElement)) return;
+  icon.getAnimations().forEach((animation) => animation.cancel());
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const swap = () => { icon.textContent = next; };
+  if (reduced) swap();
+  else {
+    const exit = icon.animate(
+      [{ opacity: 1, scale: 1, filter: "blur(0)" }, { opacity: 0, scale: 0.25, filter: "blur(4px)" }],
+      { duration: 90, easing: "cubic-bezier(0.2, 0, 0, 1)" },
+    );
+    exit.onfinish = () => {
+      swap();
+      icon.animate(
+        [{ opacity: 0, scale: 0.25, filter: "blur(4px)" }, { opacity: 1, scale: 1, filter: "blur(0)" }],
+        { duration: 140, easing: "cubic-bezier(0.2, 0, 0, 1)" },
+      );
+    };
+  }
+  if (next !== fallback) window.setTimeout(() => swapMaterialIcon(icon, fallback, fallback), 1500);
+}

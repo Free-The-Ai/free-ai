@@ -241,11 +241,13 @@
     font-size: 0.9rem;
 }
 .intent-secondary {
+    display: inline-flex;
+    align-items: center;
+    min-height: 40px;
     color: var(--muted);
     font-size: 0.92rem;
     text-decoration: none;
     border-bottom: 1px solid var(--sk-border);
-    padding-bottom: 2px;
     transition: color 150ms var(--ease-out-smooth), border-color 150ms var(--ease-out-smooth);
 }
 .intent-secondary:hover {

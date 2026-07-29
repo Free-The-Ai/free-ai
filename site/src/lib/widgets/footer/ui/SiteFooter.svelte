@@ -1,6 +1,8 @@
 <script lang="ts">
     import { siteConfig } from "@/shared/config/site";
     import { DitherGradient } from "@/shared/ui";
+    import OnlineCounter from "@/features/presence/ui/OnlineCounter.svelte";
+
 
     // `flush` matches the 404 page's original `body .site-footer { margin-top: 0 }`
     // override, scoped here instead of leaking a global selector.
@@ -32,5 +34,8 @@
             Donate
         </a>
     </div>
-    <div class="footer-bottom">free tier stays free. paid slots are optional. support and issue reports are available on the support page.</div>
+    <div class="footer-bottom">
+        <OnlineCounter />
+        <span>free tier stays free. paid slots are optional. support and issue reports are available on the support page.</span>
+    </div>
 </footer>

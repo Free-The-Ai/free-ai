@@ -2972,6 +2972,10 @@ h3 {
 }
 
 .footer-bottom {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
     color: var(--dim);
     font-size: 0.75rem;
 }

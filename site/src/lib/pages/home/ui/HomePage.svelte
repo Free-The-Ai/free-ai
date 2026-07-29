@@ -4,6 +4,7 @@
     import { highlightedCode } from "@/shared/config/highlighted.generated";
     import { Logo, SeoHead } from "@/shared/ui";
     import { LiveStats } from "@/features/live-stats";
+    import { OnlineNow } from "@/features/online-now";
     import {
         buildWebsiteJsonLd,
         buildOrganizationJsonLd,
@@ -59,6 +60,7 @@
                     <a href="/pricing" class="hero-link">Pricing</a>
                 </div>
                 <div class="home-hero-stats">
+                    <OnlineNow />
                     <LiveStats />
                 </div>
             </div>
@@ -273,6 +275,10 @@
     margin-top: 40px;
     width: 100%;
     max-width: 540px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
 }
 .home-discord-link {
     display: inline-flex;

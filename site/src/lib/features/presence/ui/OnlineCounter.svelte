@@ -3,6 +3,7 @@
     import { siteConfig } from "@/shared/config/site";
 
     let online = $state<number | null>(null);
+    let loaded = $state(false);
     let timer: ReturnType<typeof setInterval> | undefined;
     let heartbeatAbort: AbortController | undefined;
 
@@ -38,6 +39,7 @@
             if (r.ok) {
                 const data = await r.json();
                 online = data.online;
+                loaded = true;
             }
         } catch {
             // Stay silent; the badge hides on failure.
@@ -76,10 +78,9 @@
 </script>
 
 {#if online !== null}
-    <span class="online-counter" aria-label="{online} people online" title="People viewing FreeTheAi right now">
+    <span class="online-counter" class:loaded aria-label="{online} viewing now">
         <span class="online-dot" aria-hidden="true"></span>
         <span class="online-count" aria-hidden="true">{online}</span>
-        <span class="online-label">online</span>
     </span>
 {/if}
 
@@ -88,22 +89,24 @@
         display: inline-flex;
         align-items: center;
         gap: 5px;
-        color: var(--dim);
-        font-size: 0.75rem;
-        font-variant-numeric: tabular-nums;
+        opacity: 0;
+        transition: opacity 400ms var(--ease-out-smooth, ease);
+    }
+    .online-counter.loaded {
+        opacity: 1;
     }
     .online-dot {
-        width: 6px;
-        height: 6px;
+        width: 5px;
+        height: 5px;
         border-radius: 50%;
-        background: oklch(0.72 0.15 145);
-        box-shadow: 0 0 6px oklch(0.72 0.15 145 / 0.5);
+        background: oklch(0.72 0.12 145);
+        opacity: 0.8;
     }
     .online-count {
-        color: var(--muted);
-        font-weight: 500;
-    }
-    .online-label {
         color: var(--dim);
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        font-variant-numeric: tabular-nums;
+        letter-spacing: 0.02em;
     }
 </style>

@@ -2,6 +2,8 @@
 
 Detailed execution incidents are append-only and listed newest-first.
 
+- 2026-07-19 — Final UI-review delivery failed at the response-composition seam because the draft cycled through repeated paragraphs instead of terminating. Canonical fix: stop regenerating the repeated narrative and emit one bounded findings table, verification list, and verdict. Proof: the replacement response contains each finding once and ends after the required verdict.
+
 - 2026-07-19 — UI-polish source search failed at the regex seam because an unescaped `{` was treated as an invalid repetition quantifier. Canonical fix: use literal matching for exact CSS selectors containing braces. Proof: the Quickstart tab-list and tab rules were recovered with their exact line ranges.
 - 2026-07-19 — Copy-state source search failed at the path seam because several directories were passed as one whitespace-delimited path. Canonical fix: search the common source root once or query each path separately. Proof: every direct `icon.textContent` swap was enumerated under `site/src/lib`.
 - 2026-07-19 — A runtime radius-inspection script failed at the JavaScript seam because a compressed expression had an unmatched closing token. Canonical fix: expand element selection and style extraction into balanced statements. Proof: the corrected inspection measured the tab-list radius as 2px and each tab radius as 0px.

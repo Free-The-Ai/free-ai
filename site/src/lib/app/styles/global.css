@@ -3411,7 +3411,8 @@ h3 {
     }
 
     .nav-links,
-    .nav-actions {
+    .nav-actions,
+    .nav-live {
         display: none;
     }
 

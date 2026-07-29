@@ -36,14 +36,16 @@
 <a
     class="online-now"
     href="/status"
-    aria-live="polite"
-    title={count !== null ? `${count.toLocaleString()} builders active` : "Loading active builders..."}
+    data-sound="interaction.tap"
+    title={count !== null ? `${count.toLocaleString()} builders online now` : "Loading..."}
 >
-    <span class="online-dot"></span>
+    <span class="online-dot" aria-hidden="true"></span>
     {#if count !== null}
         <strong>{count.toLocaleString()}</strong>
+        <span class="sr-only"> builders online now</span>
     {:else}
-        <span class="online-loading">...</span>
+        <span class="online-loading" aria-hidden="true">...</span>
+        <span class="sr-only">Loading builder count</span>
     {/if}
 </a>
 
@@ -104,6 +106,7 @@
     .online-loading {
         color: var(--dim);
         line-height: 1;
+        letter-spacing: 1px;
     }
 
     @media (prefers-reduced-motion: reduce) {

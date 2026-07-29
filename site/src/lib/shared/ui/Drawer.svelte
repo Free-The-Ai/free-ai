@@ -35,6 +35,7 @@
     let ownsScrollLock = false;
     let ownsModal = false;
     let openedAt = 0;
+    let closeTimer: number | undefined;
 
     const focusableSelector = [
         "a[href]",
@@ -50,8 +51,9 @@
     }
 
     function close(): void {
+        if (!open) return;
         open = false;
-        onclose?.();
+        if (onclose) closeTimer = window.setTimeout(onclose, 220);
     }
 
     // Ignore the compatibility "ghost" click that a touch tap synthesizes ~300ms
@@ -66,6 +68,7 @@
     function onKeydown(event: KeyboardEvent): void {
         if (event.key === "Escape") {
             event.preventDefault();
+            event.stopPropagation();
             close();
             return;
         }
@@ -111,11 +114,14 @@
         dragY = 0;
     }
 
-    function applyPanelEnterMotion(el: HTMLElement): void {
-        if (el.offsetHeight) motionApply(el, motionFor("panel", "enter", { size: el.offsetHeight }));
+    function applyPanelMotion(el: HTMLElement, intent: "enter" | "exit"): void {
+        if (el.offsetHeight) motionApply(el, motionFor("panel", intent, { size: el.offsetHeight }));
     }
 
-    const popupTransition = attrTransition(applyPanelEnterMotion);
+    const popupTransition = attrTransition(
+        (el) => applyPanelMotion(el, "enter"),
+        (el) => applyPanelMotion(el, "exit"),
+    );
     const backdropTransition = attrTransition();
 
     // Focus management + body scroll lock/modal-inert, mirroring the previous
@@ -146,6 +152,7 @@
 
     onDestroy(() => {
         disconnectPointerDrag(boundMove, boundUp);
+        if (closeTimer) window.clearTimeout(closeTimer);
     });
 </script>
 

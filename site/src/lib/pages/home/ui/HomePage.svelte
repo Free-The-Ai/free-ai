@@ -463,14 +463,6 @@
 .home-path-grid a strong {
     padding-right: 22px;
 }
-.home-path-grid a:hover {
-    border-color: oklch(0.659 0.192 40.1 / 0.42);
-    transform: translateY(-2px);
-}
-.home-path-grid a:hover::after {
-    color: var(--accent-text);
-    transform: translateX(3px);
-}
 .home-path-grid a:active {
     transform: scale(var(--press-scale));
 }
@@ -488,7 +480,12 @@
 }
 @media (hover: hover) and (pointer: fine) {
     .home-path-grid a:hover {
-        transform: translateY(-2px);
+        border-color: oklch(0.659 0.192 40.1 / 0.42);
+        transform: translateY(var(--hover-lift));
+    }
+    .home-path-grid a:hover::after {
+        color: var(--accent-text);
+        transform: translateX(3px);
     }
 }
 @media (prefers-reduced-motion: reduce) {

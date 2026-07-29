@@ -251,10 +251,6 @@
     text-decoration: none;
     transition: border-color 160ms var(--ease-out-smooth), transform 160ms var(--ease-out-smooth);
 }
-.setup-path-card:hover {
-    border-color: oklch(0.659 0.192 40.1 / 0.42);
-    transform: translateY(-2px);
-}
 .setup-path-card strong {
     font-family: var(--font-serif);
     font-size: 1.15rem;
@@ -318,11 +314,6 @@
     transition: border-color 200ms var(--ease-out-smooth), transform 200ms var(--ease-out-smooth), box-shadow 200ms var(--ease-out-smooth);
     min-height: 214px;
 }
-.setup-card:hover {
-    border-color: oklch(0.659 0.192 40.1 / 0.42);
-    transform: translateY(-2px);
-    box-shadow: var(--sk-inset-shadow), 0 0 0 1px oklch(0.659 0.192 40.1 / 0.18);
-}
 .setup-card-head {
     display: flex;
     align-items: center;
@@ -341,16 +332,28 @@
     opacity: 0.65;
     transition: opacity 150ms var(--ease-out-smooth), transform 200ms var(--ease-out-smooth);
 }
-.setup-card:hover .setup-card-arrow {
-    opacity: 1;
-    transform: translateX(2px);
-}
 .setup-card-tagline {
     margin: 0;
     color: var(--accent-text);
     font-family: var(--font-mono);
     font-size: 0.78rem;
     line-height: 1.5;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .setup-path-card:hover {
+        border-color: oklch(0.659 0.192 40.1 / 0.42);
+        transform: translateY(var(--hover-lift));
+    }
+    .setup-card:hover {
+        border-color: oklch(0.659 0.192 40.1 / 0.42);
+        transform: translateY(var(--hover-lift));
+        box-shadow: var(--sk-inset-shadow), 0 0 0 1px oklch(0.659 0.192 40.1 / 0.18);
+    }
+    .setup-card:hover .setup-card-arrow {
+        opacity: 1;
+        transform: translateX(2px);
+    }
 }
 .setup-card-summary {
     margin: 0;

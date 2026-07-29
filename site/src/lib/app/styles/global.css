@@ -471,9 +471,7 @@ pre {
     transition: opacity var(--dropdown-open-dur) var(--ease-out-smooth), transform var(--dropdown-open-dur) var(--ease-out-expo), visibility 0s linear var(--dropdown-close-dur);
 }
 
-.nav-dropdown:hover .nav-dropdown-panel,
 .nav-dropdown:focus-within .nav-dropdown-panel,
-.nav-dropdown-panel:hover,
 .nav-dropdown-panel:focus-within,
 .nav-dropdown.is-open .nav-dropdown-panel {
     opacity: 1;
@@ -481,6 +479,17 @@ pre {
     visibility: visible;
     transform: translateY(0) scale(1);
     transition: opacity var(--dropdown-open-dur) var(--ease-out-smooth), transform var(--dropdown-open-dur) var(--ease-out-expo), visibility 0s linear 0s;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .nav-dropdown:hover .nav-dropdown-panel,
+    .nav-dropdown-panel:hover {
+        opacity: 1;
+        pointer-events: auto;
+        visibility: visible;
+        transform: translateY(0) scale(1);
+        transition: opacity var(--dropdown-open-dur) var(--ease-out-smooth), transform var(--dropdown-open-dur) var(--ease-out-expo), visibility 0s linear 0s;
+    }
 }
 
 .nav-dropdown-head {
@@ -1876,7 +1885,7 @@ h3 {
     background: oklch(0 0 0 / 0.55);
     backdrop-filter: blur(4px);
     opacity: calc(0.55 * (1 - var(--drawer-swipe-progress, 0)));
-    transition: opacity 300ms var(--ease-out-smooth);
+    transition: opacity var(--motion-duration, 300ms) var(--motion-easing, var(--ease-out-smooth));
 }
 
 .responsive-drawer-backdrop[data-starting-style],
@@ -1910,7 +1919,7 @@ h3 {
     overflow: hidden;
     padding-bottom: env(safe-area-inset-bottom, 0px);
     transform: translateY(var(--drawer-swipe-movement-y, 0px));
-    transition: transform 350ms var(--ease-out-expo);
+    transition: transform var(--motion-duration, 350ms) var(--motion-easing, var(--ease-out-expo));
 }
 
 .responsive-drawer-popup[data-starting-style],
@@ -2750,7 +2759,6 @@ h3 {
     white-space: nowrap;
 }
 
-.bottom-tab:hover,
 .bottom-tab.is-active {
     color: var(--accent-text);
     background: var(--accent-muted);
@@ -2758,13 +2766,19 @@ h3 {
     text-shadow: var(--accent-text-glow);
 }
 
+@media (hover: hover) and (pointer: fine) {
+    .bottom-tab:hover {
+        color: var(--accent-text);
+        background: var(--accent-muted);
+        border-color: var(--accent);
+        text-shadow: var(--accent-text-glow);
+    }
+}
+
 .bottom-tab:active {
     transform: scale(var(--press-scale));
 }
 
-.bottom-tab.is-active .bottom-tab-icon {
-    transform: translateY(-1px);
-}
 
 /* ── More overflow sheet ── */
 .nav-drawer-backdrop {
@@ -2774,7 +2788,7 @@ h3 {
     background: oklch(0 0 0 / 0.55);
     backdrop-filter: blur(4px);
     opacity: calc(0.55 * (1 - var(--drawer-swipe-progress, 0)));
-    transition: opacity 300ms var(--ease-out-smooth);
+    transition: opacity var(--motion-duration, 300ms) var(--motion-easing, var(--ease-out-smooth));
 }
 .nav-drawer-backdrop[data-starting-style],
 .nav-drawer-backdrop[data-ending-style] {
@@ -2808,7 +2822,7 @@ h3 {
     outline: 0;
     overflow: hidden;
     transform: translateY(var(--drawer-swipe-movement-y, 0px));
-    transition: transform 350ms var(--ease-out-expo);
+    transition: transform var(--motion-duration, 350ms) var(--motion-easing, var(--ease-out-expo));
 }
 .nav-drawer-popup[data-starting-style],
 .nav-drawer-popup[data-ending-style] {
@@ -4164,7 +4178,6 @@ body[data-sound-muted="false"]::after {
     box-shadow: 0 0 12px var(--accent);
     transform: scaleX(0);
     transform-origin: left center;
-    transition: transform 120ms linear;
 }
 
 /* ── Setup detail meta copy button ── */

@@ -40,78 +40,80 @@
     title={count !== null ? `${count.toLocaleString()} builders online now` : "Loading..."}
 >
     <span class="online-dot" aria-hidden="true"></span>
-    {#if count !== null}
-        <strong>{count.toLocaleString()}</strong>
-        <span class="sr-only"> builders online now</span>
-    {:else}
-        <span class="online-loading" aria-hidden="true">...</span>
-        <span class="sr-only">Loading builder count</span>
-    {/if}
+    <span class="online-count">
+        {#if count !== null}
+            {count.toLocaleString()}
+        {:else}
+            <span class="online-loading" aria-hidden="true">&middot;&middot;&middot;</span>
+        {/if}
+    </span>
+    <span class="sr-only">builders online now</span>
 </a>
 
 <style>
     .online-now {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 0 10px;
+        gap: 7px;
         height: var(--control-height);
-        border-radius: var(--radius-full);
-        background: oklch(0.65 0.15 145 / 0.08);
-        border: 1px solid oklch(0.65 0.15 145 / 0.18);
+        padding: 0 12px;
+        border: 1px solid var(--sk-border);
+        border-radius: var(--radius);
+        background: var(--sk-inset-bg);
+        box-shadow: var(--sk-inset-shadow);
         text-decoration: none;
-        font-size: 0.8rem;
+        font-size: 0.82rem;
+        font-weight: 500;
         color: var(--muted);
         transition:
             border-color var(--hover-dur) var(--ease-out-smooth),
+            color var(--hover-dur) var(--ease-out-smooth),
             background var(--hover-dur) var(--ease-out-smooth);
     }
 
     .online-now:hover {
-        border-color: oklch(0.7 0.15 145 / 0.3);
-        background: oklch(0.65 0.15 145 / 0.12);
+        border-color: var(--border-strong);
+        color: var(--text);
     }
 
     .online-dot {
         position: relative;
-        width: 7px;
-        height: 7px;
+        width: 6px;
+        height: 6px;
         border-radius: 50%;
-        background: oklch(0.72 0.17 145);
+        background: oklch(0.72 0.15 145);
         flex-shrink: 0;
     }
 
     .online-dot::after {
         content: "";
         position: absolute;
-        inset: -3px;
+        inset: -2px;
         border-radius: 50%;
-        background: oklch(0.72 0.17 145 / 0.4);
-        animation: online-pulse 2s var(--ease-out-smooth) infinite;
+        background: oklch(0.72 0.15 145 / 0.35);
+        animation: online-pulse 2.4s var(--ease-out-smooth) infinite;
     }
 
     @keyframes online-pulse {
-        0% { transform: scale(0.8); opacity: 0.7; }
-        70% { transform: scale(2.2); opacity: 0; }
-        100% { transform: scale(2.2); opacity: 0; }
+        0% { transform: scale(0.9); opacity: 0.5; }
+        60% { transform: scale(1.6); opacity: 0; }
+        100% { transform: scale(1.6); opacity: 0; }
     }
 
-    .online-now strong {
-        color: oklch(0.82 0.13 145);
-        font-weight: 600;
+    .online-count {
         font-variant-numeric: tabular-nums;
         line-height: 1;
     }
 
     .online-loading {
         color: var(--dim);
-        line-height: 1;
         letter-spacing: 1px;
     }
 
     @media (prefers-reduced-motion: reduce) {
         .online-dot::after {
             animation: none;
+            opacity: 0.3;
         }
     }
 </style>

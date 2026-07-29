@@ -33,30 +33,36 @@
     });
 </script>
 
-<div class="online-now" role="status" aria-live="polite">
+<a
+    class="online-now"
+    href="/status"
+    aria-live="polite"
+    title={count !== null ? `${count.toLocaleString()} builders active` : "Loading active builders..."}
+>
     <span class="online-dot"></span>
-    <span class="online-text">
-        {#if count !== null}
-            <strong>{count.toLocaleString()}</strong>
-        {:else}
-            <strong class="online-loading">...</strong>
-        {/if}
-        builders active
-    </span>
-</div>
+    {#if count !== null}
+        <strong>{count.toLocaleString()}</strong>
+    {:else}
+        <span class="online-loading">...</span>
+    {/if}
+</a>
 
 <style>
     .online-now {
         display: inline-flex;
         align-items: center;
-        gap: 8px;
-        padding: 6px 16px;
+        gap: 6px;
+        padding: 0 10px;
+        height: var(--control-height);
         border-radius: var(--radius-full);
         background: oklch(0.65 0.15 145 / 0.08);
         border: 1px solid oklch(0.65 0.15 145 / 0.18);
-        font-size: 0.82rem;
+        text-decoration: none;
+        font-size: 0.8rem;
         color: var(--muted);
-        transition: border-color 200ms var(--ease-out-smooth), background 200ms var(--ease-out-smooth);
+        transition:
+            border-color var(--hover-dur) var(--ease-out-smooth),
+            background var(--hover-dur) var(--ease-out-smooth);
     }
 
     .online-now:hover {
@@ -66,8 +72,8 @@
 
     .online-dot {
         position: relative;
-        width: 8px;
-        height: 8px;
+        width: 7px;
+        height: 7px;
         border-radius: 50%;
         background: oklch(0.72 0.17 145);
         flex-shrink: 0;
@@ -88,18 +94,16 @@
         100% { transform: scale(2.2); opacity: 0; }
     }
 
-    .online-text {
-        white-space: nowrap;
-        line-height: 1;
-    }
-
-    .online-text strong {
+    .online-now strong {
         color: oklch(0.82 0.13 145);
         font-weight: 600;
+        font-variant-numeric: tabular-nums;
+        line-height: 1;
     }
 
     .online-loading {
         color: var(--dim);
+        line-height: 1;
     }
 
     @media (prefers-reduced-motion: reduce) {

@@ -7,7 +7,6 @@
     let open = $state(true);
     function close(): void {
         open = false;
-        onclose?.();
     }
 
     const isAffected = $derived(provider.status === "degraded" || provider.status === "down");

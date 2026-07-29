@@ -16,7 +16,7 @@
 <div use:portal={"body"}>
     <ol class="kb-toast__list" aria-live="polite" aria-atomic="false">
         {#each $toasts as toast (toast.id)}
-            <li class={`kb-toast kb-toast--${toast.type}`} data-opened="">
+            <li class={`kb-toast kb-toast--${toast.type}`} data-opened={toast.closing ? undefined : ""} data-closed={toast.closing ? "" : undefined}>
                 <div class="kb-toast__content">
                     <div class="kb-toast__icon">{TOAST_ICONS[toast.type] ?? "i"}</div>
                     <div class="kb-toast__body">

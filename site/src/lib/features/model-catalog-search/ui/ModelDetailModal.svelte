@@ -13,7 +13,6 @@
 
     function setOpen(value: boolean): void {
         open = value;
-        if (!value) onclose?.();
     }
 
     function copyAlias(): void {

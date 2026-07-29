@@ -458,7 +458,7 @@
   animation: toastIn var(--motion-duration, 200ms) var(--motion-easing, var(--ease-out-expo)) forwards;
 }
 .kb-toast[data-closed] {
-  animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, var(--ease-out-expo)) forwards;
+  animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, var(--ease-in-smooth)) forwards;
 }
 .kb-toast[data-swipe="move"] {
   transform: translateX(var(--toast-swipe-movement-x, var(--kb-toast-swipe-move-x, 0px)));
@@ -468,7 +468,7 @@
   transition: transform 200ms var(--ease-out-smooth);
 }
 .kb-toast[data-swipe="end"] {
-  animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, var(--ease-out-expo)) forwards;
+  animation: toastOut var(--motion-duration, 120ms) var(--motion-easing, var(--ease-in-smooth)) forwards;
 }
 
 .kb-toast__content {

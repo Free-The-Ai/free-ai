@@ -15,6 +15,7 @@ export interface ToastEntry {
     title?: string;
     description?: string;
     type: ToastType;
+    closing?: boolean;
 }
 
 export interface AddToastInput {
@@ -41,7 +42,15 @@ export function addToast(input: AddToastInput): string {
 }
 
 export function closeToast(id: string): void {
-    toasts.update((list) => list.filter((toast) => toast.id !== id));
+    let found = false;
+    toasts.update((list) => list.map((toast) => {
+        if (toast.id !== id || toast.closing) return toast;
+        found = true;
+        return { ...toast, closing: true };
+    }));
+    if (found) setTimeout(() => {
+        toasts.update((list) => list.filter((toast) => toast.id !== id));
+    }, 120);
 }
 
 export function initToastManager(): void {

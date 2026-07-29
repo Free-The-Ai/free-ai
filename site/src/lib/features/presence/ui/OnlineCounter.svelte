@@ -37,12 +37,10 @@
                 body: JSON.stringify({ client_id: clientId }),
             });
             if (r.ok) {
-                const data = await r.json();
-                online = data.online;
+                online = (await r.json()).online;
                 loaded = true;
             }
         } catch {
-            // Stay silent; the badge hides on failure.
         }
     }
 
@@ -53,10 +51,7 @@
     }
 
     function stop(): void {
-        if (timer !== undefined) {
-            clearInterval(timer);
-            timer = undefined;
-        }
+        if (timer !== undefined) { clearInterval(timer); timer = undefined; }
     }
 
     function onVisibility(): void {
@@ -78,35 +73,29 @@
 </script>
 
 {#if online !== null}
-    <span class="online-counter" class:loaded aria-label="{online} viewing now">
-        <span class="online-dot" aria-hidden="true"></span>
-        <span class="online-count" aria-hidden="true">{online}</span>
+    <span class="presence" class:loaded aria-label="{online} viewers here now">
+        <span class="dot" aria-hidden="true"></span>{online} here
     </span>
 {/if}
 
 <style>
-    .online-counter {
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
+    .presence {
         opacity: 0;
-        transition: opacity 400ms var(--ease-out-smooth, ease);
+        transition: opacity 500ms var(--ease-out-smooth, ease) 200ms;
+        font-variant-numeric: tabular-nums;
+        white-space: nowrap;
     }
-    .online-counter.loaded {
+    .presence.loaded {
         opacity: 1;
     }
-    .online-dot {
+    .dot {
+        display: inline-block;
         width: 5px;
         height: 5px;
         border-radius: 50%;
-        background: oklch(0.72 0.12 145);
-        opacity: 0.8;
-    }
-    .online-count {
-        color: var(--dim);
-        font-family: var(--font-mono);
-        font-size: 0.7rem;
-        font-variant-numeric: tabular-nums;
-        letter-spacing: 0.02em;
+        background: oklch(0.72 0.1 145);
+        margin-right: 5px;
+        vertical-align: 1px;
+        opacity: 0.7;
     }
 </style>

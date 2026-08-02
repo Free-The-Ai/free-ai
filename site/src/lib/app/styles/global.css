@@ -4,11 +4,24 @@
     --border: oklch(1 0 0 / 0.06);
     --border-strong: oklch(1 0 0 / 0.12);
     --text: oklch(0.931 0 0);
-    --muted: oklch(0.620 0 0);
-    --dim: oklch(0.485 0 0);
+    /* Secondary + tertiary text. Both were set against --bg (oklch 0.168), but
+     * the surfaces they actually sit on are lighter: .shell is a gradient
+     * topping out at oklch(0.244), and small labels sit at the top of cards.
+     * Measured against that binding worst case the old values were
+     * --muted 4.48:1 and --dim 2.55:1 — both below the WCAG 1.4.3 AA floor of
+     * 4.5:1 for the 9.9-15.4px text they are used on. Raised so the minimum
+     * across every surface clears AA, with the tiers still strictly ordered:
+     * dim 4.54 < muted 6.08 < text 13.30. */
+    --muted: oklch(0.700 0 0);
+    --dim: oklch(0.625 0 0);
     --accent: oklch(0.659 0.192 40.1);
     --accent-text: oklch(0.827 0.113 55.9);
     --accent-text-strong: oklch(0.969 0 0);
+    /* Text that sits ON an accent fill. --accent is light (L .659), so near-white
+     * on it measures 3.10:1 and every accent-filled chip and the primary CTA
+     * failed WCAG 1.4.3 AA. Dark-on-accent gives 5.68:1 and keeps the brand
+     * orange exactly, rather than darkening the accent to rescue white text. */
+    --on-accent: oklch(0.168 0 0);
     --accent-text-glow: 0 0 10px oklch(0.692 0.189 44.5 / 0.34);
     --accent-muted: oklch(0.659 0.192 40.1 / 0.1);
     --donate: oklch(0.750 0.173 353.8);
@@ -63,15 +76,46 @@
     --focus-dur: 120ms;
 }
 
-/* ── View Transitions: COMPLETELY INVISIBLE — loader element handles masking ── */
-::view-transition-group(root) {
-    animation: none;
+/* ── prefers-contrast: more ──
+ * The theme bootstrap sets data-contrast="high" from `prefers-contrast: more`
+ * (or a stored preference), but nothing consumed it, so users who had asked
+ * their OS for more contrast received none. These overrides lift the two
+ * lowest text tiers and the surface borders; the accent hue is unchanged so
+ * brand identity survives. */
+/* ── Scheme: midnight ──
+ * The alternate scheme the header toggle cycles to. Previously written onto
+ * <html> as inline styles by the JS theme system, which outranked :root and
+ * made the stylesheet non-authoritative. Declared here so colour has one home
+ * and the cascade is legible: :root < [data-theme] < [data-contrast]. */
+:root[data-theme="midnight"] {
+    --bg: oklch(0.115 0 0);
+    --surface: oklch(0.159 0 0);
+    --border: oklch(1 0 0 / 0.04);
+    --border-strong: oklch(1 0 0 / 0.10);
+    --text: oklch(0.955 0 0);
+    /* Same AA correction as the dark scheme: measured against this scheme's
+     * lightest surface (sk-shell top oklch 0.191), not against --bg. */
+    --muted: oklch(0.690 0 0);
+    --dim: oklch(0.610 0 0);
+    --control-bg: oklch(1 0 0 / 0.025);
+    --code-bg: oklch(0.134 0 0);
+    --code-text: oklch(0.683 0 0);
+    --sk-bg-gradient:
+        radial-gradient(circle at 50% -12%, oklch(0.659 0.192 40.1 / 0.06), transparent 34rem),
+        linear-gradient(180deg, oklch(0.134 0 0) 0%, oklch(0.115 0 0) 32%, oklch(0 0 0) 100%);
+    --sk-shell-bg: linear-gradient(180deg, oklch(0.191 0 0) 0%, oklch(0.159 0 0) 100%);
+    --sk-inset-bg: linear-gradient(180deg, oklch(0.134 0 0) 0%, oklch(0.173 0 0) 100%);
 }
-::view-transition-old(root) {
-    display: none;
-}
-::view-transition-new(root) {
-    animation: none;
+
+:root[data-contrast="high"] {
+    --muted: oklch(0.840 0 0);
+    --dim: oklch(0.760 0 0);
+    /* Borders here must clear WCAG 1.4.11 (3:1) against --surface, since in
+     * high-contrast mode the boundary is what the user is asking to see.
+     * 33% white is the 3.0:1 threshold; 45% gives 4.51:1 with margin. */
+    --border: oklch(1 0 0 / 0.45);
+    --border-strong: oklch(1 0 0 / 0.60);
+    --sk-border: oklch(1 0 0 / 0.45);
 }
 
 
@@ -119,6 +163,18 @@ html, body {
 }
 
 html {
+    /* The page canvas. Previously nothing painted html/body — the only
+     * full-viewport background was the WebGL2 DitherShader canvas, which bails
+     * silently on `if (!gl) return`. With no WebGL2 (GPU blocklist, hardened
+     * profiles, blocking extensions, context loss, or a JS bundle that never
+     * runs) the canvas fell back to the UA default white, putting --text
+     * (near-white) at 1.23:1. The shader still paints over this; this is the
+     * floor it paints onto. `color-scheme: dark` additionally gives native form
+     * controls, scrollbars and dialog backdrops correct dark rendering — it
+     * replaces the `d.colorScheme = "dark"` line in the theme bootstrap, which
+     * assigned to a non-existent HTMLElement property and did nothing. */
+    color-scheme: dark;
+    background: var(--bg);
     scrollbar-gutter: stable !important;
     overflow-y: scroll;
     font-size: calc(clamp(14px, calc(0.9rem + 0.25vw), 18px) * var(--font-scale, 1));
@@ -298,9 +354,16 @@ pre {
 
 .nav {
     display: flex;
+    /* Wrap rather than overflow. body has `overflow-x: clip`, so anything that
+     * runs past the viewport is not merely off-screen — there is no scrollport
+     * to reach it. At 200% text scale the nav actions ran 235px past the edge,
+     * putting the Donate control fully outside the viewport while it stayed
+     * focusable (WCAG 1.4.4 and 2.4.11). */
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 18px;
+    row-gap: 8px;
     min-height: 52px;
     padding: 0 20px;
     border-bottom: 1px solid var(--border);
@@ -636,7 +699,13 @@ pre {
     font-weight: inherit;
 }
 
-@media (max-width: 1100px) {
+/* em, not px: this mitigation exists to shed header width when the actions row
+ * gets tight, but a px media query only tracks the viewport. Text-only zoom
+ * (browser text scaling, or --font-scale) grows the content without changing
+ * the viewport, so the px form could never fire in exactly the case it was
+ * written for. em resolves against the root font-size, so it does. 68.75em is
+ * the same 1100px at the default 16px root. */
+@media (max-width: 68.75em) {
     .donate-button .donate-button-label {
         display: none;
     }
@@ -693,7 +762,7 @@ pre {
 }
 
 .home-hero .primary-button:hover {
-    background: linear-gradient(180deg, oklch(0.777 0.155 57.3) 0%, oklch(0.692 0.189 44.5) 48%, oklch(0.576 0.173 40.5) 100%);
+    background: linear-gradient(180deg, oklch(0.777 0.155 57.3) 0%, oklch(0.692 0.189 44.5) 48%, oklch(0.620 0.173 40.5) 100%);
     filter: brightness(1.04) saturate(1.08);
 }
 
@@ -703,7 +772,7 @@ pre {
 }
 
 .home-hero .primary-button:active {
-    background: linear-gradient(180deg, oklch(0.641 0.175 44.8) 0%, oklch(0.533 0.169 38.5) 100%);
+    background: linear-gradient(180deg, oklch(0.641 0.175 44.8) 0%, oklch(0.615 0.169 38.5) 100%);
     filter: brightness(0.98) saturate(0.98);
     transform: translateY(1px) scale(var(--press-scale));
 }
@@ -1631,7 +1700,7 @@ h3 {
     padding: 0 6px;
     border-radius: var(--radius-full);
     background: var(--accent);
-    color: var(--accent-text-strong);
+    color: var(--on-accent);
     font-family: var(--font-mono);
     font-size: 0.66rem;
     font-weight: 700;
@@ -3056,12 +3125,11 @@ h3 {
 
 .primary-button {
     border-color: oklch(0.659 0.192 40.1 / 0.58);
-    background: linear-gradient(180deg, oklch(0.704 0.168 49.2) 0%, oklch(0.659 0.192 40.1) 44%, oklch(0.533 0.169 38.5) 100%);
-    color: var(--accent-text-strong);
+    background: linear-gradient(180deg, oklch(0.704 0.168 49.2) 0%, oklch(0.659 0.192 40.1) 44%, oklch(0.615 0.169 38.5) 100%);
+    color: var(--on-accent);
     box-shadow:
         var(--sk-raised-shadow),
         inset 0 1px 0 oklch(1 0 0 / 0.22);
-    text-shadow: var(--accent-text-glow);
 }
 
 .discord-button:hover,
@@ -3074,13 +3142,12 @@ h3 {
 }
 
 .primary-button:hover {
-    background: linear-gradient(180deg, oklch(0.777 0.155 57.3) 0%, oklch(0.692 0.189 44.5) 48%, oklch(0.576 0.173 40.5) 100%);
-    color: var(--accent-text-strong);
-    text-shadow: var(--accent-text-glow);
+    background: linear-gradient(180deg, oklch(0.777 0.155 57.3) 0%, oklch(0.692 0.189 44.5) 48%, oklch(0.620 0.173 40.5) 100%);
+    color: var(--on-accent);
 }
 
 .discord-button:hover {
-    color: var(--accent-text-strong);
+    color: var(--on-accent);
     text-shadow: var(--accent-text-glow);
 }
 

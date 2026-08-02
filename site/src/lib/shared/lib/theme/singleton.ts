@@ -40,12 +40,7 @@ let contrastMql: MediaQueryList | null = null;
 function applyTokens(): void {
   if (typeof document === "undefined") return;
   const root = document.documentElement;
-  const resolved = resolveTokens(
-    config.scheme,
-    config.density,
-    config.typography,
-    config.highContrast,
-  );
+  const resolved = resolveTokens(config.density, config.typography);
   // Apply the global UI scale as a multiplier baked into sizing tokens.
   const s = config.scale;
   for (const [key, value] of Object.entries(resolved)) {
@@ -53,9 +48,12 @@ function applyTokens(): void {
   }
   // Expose the raw scale for components that need the multiplier directly.
   root.style.setProperty("--ui-scale", String(s));
-  root.style.colorScheme = "dark";
+  // Colour is selected by attribute, not by inline token writes, so the CSS in
+  // global.css stays authoritative and the palette is already correct before
+  // this ever runs. `color-scheme` is likewise declared on html in CSS.
   root.setAttribute("data-theme", config.scheme);
   root.setAttribute("data-density", config.density);
+  root.setAttribute("data-contrast", config.highContrast ? "high" : "normal");
   tokens = resolved;
 }
 
@@ -163,8 +161,18 @@ export function initThemeSystem(): void {
 /**
  * Inline-friendly token bootstrap. Called from a <script is:inline> in <head>
  * (before hydration) to apply persisted/system theme on first paint, avoiding
- * a flash of the wrong theme (FOUC). Mirrors the loader fade pattern.
+ * a flash of the wrong theme (FOUC).
+ *
+ * Reads localStorage, so it must tolerate storage being blocked (Safari private
+ * mode, cookie-blocking extensions). The catch re-applies the defaults rather
+ * than swallowing silently, so `data-theme` / `data-contrast` are always set
+ * even when persistence is unavailable.
+ *
+ * Does NOT set colour-scheme here: `d.colorScheme = "dark"` assigns to a
+ * property HTMLElement does not have (it lives on CSSStyleDeclaration), so it
+ * was an inert expando. `color-scheme: dark` is declared on html in global.css
+ * instead, which also applies before first paint and cannot silently fail.
  */
 export function themeInlineBootstrap(): string {
-  return `(function(){try{var k="${STORAGE_KEY}";var s=localStorage.getItem(k);var c=s?JSON.parse(s):null;var scheme=c&&c.scheme?c.scheme:"dark";var hc=c&&c.highContrast?c.highContrast:matchMedia("(prefers-contrast: more)").matches;var d=document.documentElement;d.setAttribute("data-theme",scheme);d.colorScheme="dark";d.setAttribute("data-contrast",hc?"high":"normal");}catch(e){}})();`;
+  return `(function(){var d=document.documentElement;var scheme="dark";var hc=false;try{hc=matchMedia("(prefers-contrast: more)").matches;var s=localStorage.getItem("${STORAGE_KEY}");var c=s?JSON.parse(s):null;if(c){if(c.scheme)scheme=c.scheme;if(typeof c.highContrast==="boolean")hc=c.highContrast;}}catch(e){}d.setAttribute("data-theme",scheme);d.setAttribute("data-contrast",hc?"high":"normal");})();`;
 }

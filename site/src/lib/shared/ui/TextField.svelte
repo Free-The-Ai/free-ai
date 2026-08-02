@@ -4,6 +4,7 @@
     let {
         value = $bindable(""),
         label,
+        labelHidden,
         description,
         error,
         multiline,
@@ -18,6 +19,10 @@
     }: {
         value?: string;
         label?: string;
+        /** Keep the label in the a11y tree but off-screen. For compact controls
+         *  (search fields) where a visible label would not fit. Never rely on
+         *  `placeholder` alone: it is not a label and it disappears on input. */
+        labelHidden?: boolean;
         description?: string;
         error?: string;
         multiline?: boolean;
@@ -33,6 +38,15 @@
 
     const autoId = $props.id();
     const fieldId = $derived(id ?? autoId);
+
+    // Wire description/error to the control so assistive tech announces them.
+    // Rendering them as adjacent <p> is not enough — without aria-describedby
+    // they are visually associated and programmatically invisible.
+    const describedBy = $derived(
+        [description ? `${fieldId}-desc` : null, error ? `${fieldId}-err` : null]
+            .filter(Boolean)
+            .join(" ") || undefined,
+    );
 
     const TYPING_THROTTLE_MS = 120;
     let lastTypingSound = 0;
@@ -52,7 +66,7 @@
 
 <div class={["kb-text-field", className]} data-invalid={error ? "" : undefined}>
     {#if label}
-        <label class="kb-text-field__label" for={fieldId}>{label}</label>
+        <label class={["kb-text-field__label", labelHidden && "sr-only"]} for={fieldId}>{label}</label>
     {/if}
     {#if multiline}
         <textarea
@@ -63,6 +77,8 @@
             {required}
             id={fieldId}
             data-invalid={error ? "" : undefined}
+            aria-invalid={error ? "true" : undefined}
+            aria-describedby={describedBy}
             oninput={onInput}
         ></textarea>
     {:else}
@@ -76,13 +92,15 @@
             id={fieldId}
             {name}
             data-invalid={error ? "" : undefined}
+            aria-invalid={error ? "true" : undefined}
+            aria-describedby={describedBy}
             oninput={onInput}
         />
     {/if}
     {#if description}
-        <p class="kb-text-field__description">{description}</p>
+        <p id="{fieldId}-desc" class="kb-text-field__description">{description}</p>
     {/if}
     {#if error}
-        <p class="kb-text-field__error">{error}</p>
+        <p id="{fieldId}-err" class="kb-text-field__error">{error}</p>
     {/if}
 </div>

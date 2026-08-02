@@ -223,7 +223,7 @@
     border: 1px solid var(--accent);
     border-radius: var(--radius-sm);
     background: var(--accent);
-    color: var(--accent-text-strong);
+    color: var(--on-accent);
     font-family: var(--font-mono);
     font-size: 0.65rem;
     font-weight: 700;
@@ -345,7 +345,7 @@
 :global(.paid-plan-option.is-active .paid-plan-select) {
     border-color: var(--accent);
     background: var(--accent);
-    color: var(--accent-text-strong);
+    color: var(--on-accent);
     text-shadow: var(--accent-text-glow);
 }
 

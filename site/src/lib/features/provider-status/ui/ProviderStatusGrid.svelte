@@ -172,7 +172,7 @@
 
         <div class="catalog-toolbar">
             <div class="catalog-search-field">
-                <TextField class="catalog-search-input" value={query} placeholder="Search providers..." oninput={(e) => onQueryChange((e.target as HTMLInputElement).value)} />
+                <TextField class="catalog-search-input" label="Search providers" labelHidden value={query} placeholder="Search providers..." oninput={(e) => onQueryChange((e.target as HTMLInputElement).value)} />
             </div>
             <div class="catalog-filter-group" aria-label="Provider filters">
                 <DropdownMenu

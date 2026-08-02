@@ -103,7 +103,7 @@
 <div class="paid-table-panel">
     <div class="catalog-toolbar">
         <div class="catalog-search-field">
-            <TextField class="catalog-search-input" value={query} placeholder="Search paid aliases..." oninput={(e) => onQueryChange((e.target as HTMLInputElement).value)} />
+            <TextField class="catalog-search-input" label="Search paid aliases" labelHidden value={query} placeholder="Search paid aliases..." oninput={(e) => onQueryChange((e.target as HTMLInputElement).value)} />
         </div>
         <div class="catalog-filter-group" aria-label="Paid model filters">
             <DropdownMenu triggerLabel="Prefix" valueLabel={prefix === "all" ? "All prefixes" : prefix + "/*"} activeCount={prefix !== "all" ? 1 : 0} options={prefixOptions} ontoggle={togglePrefix} />

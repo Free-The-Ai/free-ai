@@ -222,7 +222,7 @@
     <CatalogOverview models={allModels} />
     <div class="catalog-toolbar">
         <div class="catalog-search-field">
-            <TextField class="catalog-search-input" value={query} placeholder="Search model aliases..." oninput={(e) => onQueryChange((e.target as HTMLInputElement).value)} />
+            <TextField class="catalog-search-input" label="Search model aliases" labelHidden value={query} placeholder="Search model aliases..." oninput={(e) => onQueryChange((e.target as HTMLInputElement).value)} />
         </div>
         <div class="catalog-filter-group">
             <DropdownMenu

@@ -59,13 +59,12 @@
 }
 .kb-button[data-variant="primary"] {
   border-color: var(--accent);
-  background: linear-gradient(180deg, oklch(0.659 0.192 40.1) 0%, oklch(0.574 0.182 38.6) 100%);
+  background: linear-gradient(180deg, oklch(0.680 0.185 42.0) 0%, oklch(0.620 0.178 39.0) 100%);
   box-shadow: var(--sk-raised-shadow);
-  color: var(--accent-text-strong);
-  text-shadow: var(--accent-text-glow);
+  color: var(--on-accent);
 }
 .kb-button[data-variant="primary"]:hover {
-  background: linear-gradient(180deg, oklch(0.777 0.155 57.3) 0%, oklch(0.692 0.189 44.5) 48%, oklch(0.576 0.173 40.5) 100%);
+  background: linear-gradient(180deg, oklch(0.777 0.155 57.3) 0%, oklch(0.692 0.189 44.5) 48%, oklch(0.620 0.173 40.5) 100%);
   box-shadow: var(--sk-raised-shadow), var(--sk-accent-glow);
 }
 .kb-button[data-variant="ghost"] {

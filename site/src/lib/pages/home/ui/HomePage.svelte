@@ -62,18 +62,18 @@
     ];
 
     const howItWorks: [string, string, string][] = [
-        ["Deposit crypto", "Fund your FreeTheAI wallet with crypto. One balance pays for every model on the marketplace.", "account_balance_wallet"],
-        ["Call any model", "OpenAI, Anthropic, Google, and more through one API. Access comes from independent sellers, not the original companies.", "code"],
-        ["Choose the right route", "Select cheapest or fastest routing. Each request uses one reviewed route with server-owned pricing and access checks.", "auto_awesome"],
+        ["Join the Discord", "Run /signup in the FreeTheAi Discord and get your API key in a minute. No card, no billing.", "forum"],
+        ["Call any model", "OpenAI, Anthropic, Google, and more through one API. Three formats share one key and one base URL.", "code"],
+        ["Check in daily", "Run /checkin once per UTC day to keep your key hot. Fair-use limits keep capacity fast for everyone.", "check_circle"],
     ];
 
     const whyCards: [string, string, string][] = [
-        ["One wallet, fair billing", "Sellers list per-call or per-token pricing. Every transaction is crypto, settled from your balance.", "account_balance_wallet"],
-        ["Priced by the market", "Approved independent providers offer reviewed capacity at different prices and service levels. FreeTheAI owns the catalog, routing, billing, and support.", "monitoring"],
-        ["Free routes when available", "Reviewed donated and seller capacity can appear as FreeTheAI free routes. Daily check-in and limits remain server-owned.", "lock"],
-        ["Server-owned route selection", "Choose the cheapest or fastest reviewed route for each request. Authorization, pricing, and billing are checked before dispatch.", "speed"],
-        ["Three formats, one API", "OpenAI Chat Completions, OpenAI Responses, and Anthropic Messages use one account and one server-controlled marketplace.", "code"],
-        ["Sellers earn in crypto", "Offer approved independent capacity, set per-call or per-token pricing, and receive manual crypto payouts after completed usage.", "smart_toy"],
+        ["One key, zero billing", "Every model on the catalog answers to the same Discord key. No subscriptions, no meters, no invoices.", "key"],
+        ["Free by design", "Donated and sponsored capacity keeps the free tier online. Daily check-in keeps it shared fairly.", "favorite"],
+        ["Paid slots when you need more", "Optional paid slots unlock separate higher-power models. The free tier stays free either way.", "speed"],
+        ["Your clients already work", "SillyTavern, OpenCode, Cline, Zed, and any OpenAI SDK point at one base URL. Setup guides cover 20+ apps.", "devices"],
+        ["Three formats, one API", "OpenAI Chat Completions, OpenAI Responses, and Anthropic Messages use one account and one base URL.", "toc"],
+        ["Community funded", "A small donation covers servers and keeps more free capacity online. Issues and requests land on the support page.", "support_agent"],
     ];
 
 </script>
@@ -90,14 +90,13 @@
             <img src="/hero-dune.webp" alt="" width="1080" height="878" />
         </div>
         <div class="hp-hero-content">
-            <h1>The models you want. The price <span class="hp-underline">you&nbsp;choose.</span></h1>
+            <h1>The models you want. The bill <span class="hp-underline">you&nbsp;never&nbsp;see.</span></h1>
             <p class="hp-hero-sub">
-                Deposit once with crypto and call models from approved independent capacity. Server-owned routing selects the
-                cheapest or fastest reviewed route for each request.
+                Free OpenAI-compatible API. One Discord key, one base URL, daily check-in, zero billing.
             </p>
             <div class="hp-cta-row">
                 <a class="primary-button hp-btn" href={siteConfig.socials.discord} target="_blank" rel="noreferrer" data-sound="interaction.confirm">
-                    <span>Start routing</span>
+                    <span>Get a free key</span>
                 </a>
                 <a class="hp-btn-ghost" href="/models" data-sound="interaction.tap">Browse models</a>
             </div>
@@ -110,7 +109,7 @@
         <div class="hp-split">
             <div class="hp-split-head">
                 <h2 id="hp-how-title">How it works</h2>
-                <p>One wallet, one API, a marketplace full of sellers.</p>
+                <p>One key, one base URL, a catalog full of models.</p>
             </div>
             <div class="hp-card-grid hp-card-grid-3">
                 {#each howItWorks as [title, text, icon] (title)}
@@ -139,7 +138,7 @@
         <div class="hp-split">
             <div class="hp-split-head">
                 <h2 id="hp-why-title">Why FreeTheAI</h2>
-                <p>Many sellers, one marketplace. More choice on price, speed, and quality.</p>
+                <p>One free key, every major model family, no billing anywhere.</p>
             </div>
             <div class="hp-card-grid hp-card-grid-3">
                 {#each whyCards as [title, text, icon] (title)}
@@ -156,11 +155,11 @@
     <section class="hp-cta hp-crop" aria-labelledby="hp-cta-title">
         <div class="hp-cta-copy">
             <h2 id="hp-cta-title">Stop paying list price for&nbsp;AI</h2>
-            <p>Create an account, deposit with crypto, and call top models at marketplace prices in minutes.</p>
+            <p>Join the Discord, run /signup, and call top models free in minutes. The v2 marketplace is on the way.</p>
         </div>
         <div class="hp-cta-row">
             <a class="primary-button hp-btn" href={siteConfig.socials.discord} target="_blank" rel="noreferrer" data-sound="interaction.confirm">
-                <span>Create account</span>
+                <span>Get a free key</span>
             </a>
             <a class="hp-btn-ghost" href="/models" data-sound="interaction.tap">Browse models</a>
         </div>

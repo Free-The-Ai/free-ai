@@ -39,15 +39,15 @@
     const endpoints: [string, string, string, string][] = [
         ["POST", "/v1/chat/completions", "OpenAI-compatible chat, streaming, tool calling, and multi-turn conversations.", "chat"],
         ["POST", "/v1/messages", "Anthropic-compatible Messages route for Claude-style clients.", "messages"],
-        ["POST", "/v1/responses", "Responses-style route. Same key, same model alias.", "compatibility"],
-        ["POST", "/v1/images/generations", "OpenAI-compatible image generation for supported image aliases.", "compatibility"],
-        ["POST", "/v1/images/edits", "OpenAI-compatible multipart image edits for supported image aliases.", "compatibility"],
-        ["GET", "/v1/images/generations/{request_id}", "Poll async EVE image generation jobs.", "compatibility"],
+        ["POST", "/v1/responses", "Responses-style route. Same key, same model alias.", "responses"],
+        ["POST", "/v1/images/generations", "OpenAI-compatible image generation for supported image aliases.", "images"],
+        ["POST", "/v1/images/edits", "OpenAI-compatible multipart image edits for supported image aliases.", "images"],
+        ["GET", "/v1/images/generations/{request_id}", "Poll async EVE image generation jobs.", "images"],
         ["GET", "/v1/models", "Authenticated model list for normal clients.", "models"],
         ["GET", "/v1/models/full", "Expanded catalog with context, output, and access metadata.", "models"],
         ["GET", "/v1/models/leaderboard", "Site-key model leaderboard for public widgets.", "models"],
-        ["POST", "/v1/audio/speech", "Text-to-speech for supported voice aliases.", "compatibility"],
-        ["POST", "/v1/audio/transcriptions", "Speech-to-text multipart uploads for supported voice aliases.", "compatibility"],
+        ["POST", "/v1/audio/speech", "Text-to-speech for supported voice aliases.", "audio"],
+        ["POST", "/v1/audio/transcriptions", "Speech-to-text multipart uploads for supported voice aliases.", "audio"],
         ["GET", "/v1/health", "Public API health and catalog status.", "endpoints"],
     ];
 
@@ -88,12 +88,22 @@
         }
     }
 
+    // Route filter for the endpoints table.
+    let routeFilter = $state("");
+    const filteredEndpoints = $derived(
+        routeFilter.trim() === ""
+            ? endpoints
+            : endpoints.filter(([method, path, desc]) =>
+                  (method + " " + path + " " + desc).toLowerCase().includes(routeFilter.trim().toLowerCase()),
+              ),
+    );
+
     // Scrollspy: the reference rail tracks which section is in view.
     let activeSection = $state("");
     onMount(() => {
         refreshHealth(false);
         const ids = new Set(
-            endpoints.map(([, , , anchor]) => anchor).concat(["auth", "endpoints", "compatibility", "chat", "messages", "models", "errors"]),
+            endpoints.map(([, , , anchor]) => anchor).concat(["auth", "endpoints", "compatibility", "chat", "messages", "models", "other-routes", "responses", "images", "audio", "errors"]),
         );
         const obs = new IntersectionObserver(
             (entries) => {
@@ -138,6 +148,7 @@
             <a href="#chat" class={activeSection === "chat" ? "is-active" : ""}>Chat</a>
             <a href="#messages" class={activeSection === "messages" ? "is-active" : ""}>Messages</a>
             <a href="#models" class={activeSection === "models" ? "is-active" : ""}>Models</a>
+            <a href="#other-routes" class={activeSection === "other-routes" ? "is-active" : ""}>Images, audio, responses</a>
             <a href="#errors" class={activeSection === "errors" ? "is-active" : ""}>Errors</a>
             <span class="docs-sidebar-label docs-nav-label">Endpoints</span>
             {#each endpoints as [method, path, , anchor] (path)}
@@ -210,13 +221,27 @@
                     <span class="eyebrow">Endpoints</span>
                     <h2 id="endpoint-overview-title">Every route.</h2>
                 </header>
+                <label class="docs-filter">
+                    <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                    <input
+                        type="search"
+                        bind:value={routeFilter}
+                        placeholder="Filter routes"
+                        aria-label="Filter endpoints by method, path, or description" />
+                </label>
+                {#if filteredEndpoints.length === 0}
+                    <p class="docs-filter-empty">
+                        No routes match "{routeFilter}".
+                        <button type="button" onclick={() => (routeFilter = "")}>Clear filter</button>
+                    </p>
+                {/if}
                 <div class="docs-endpoint-table" role="table" aria-label="API endpoints">
                     <div class="docs-endpoint-row docs-endpoint-head" role="row">
                         <span role="columnheader">Method</span>
                         <span role="columnheader">Path</span>
                         <span role="columnheader">Description</span>
                     </div>
-                    {#each endpoints as [method, path, desc, anchor], i (i)}
+                    {#each filteredEndpoints as [method, path, desc, anchor] (path)}
                         <a class="docs-endpoint-row" href={`#${anchor}`} role="row">
                             <span class={`docs-method ${method.toLowerCase()}`} role="cell">{method}</span>
                             <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
@@ -486,4 +511,50 @@
     }
 }
 
+.docs-filter {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: min(420px, 100%);
+    margin-bottom: 12px;
+    padding: 9px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--dim);
+    transition: border-color 150ms var(--ease-out-smooth);
+}
+.docs-filter:focus-within {
+    border-color: var(--border-strong);
+}
+.docs-filter .material-symbols-outlined {
+    font-size: 1.05rem;
+}
+.docs-filter input {
+    flex: 1;
+    min-width: 0;
+    border: none;
+    background: transparent;
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.82rem;
+    outline: none;
+}
+.docs-filter input::placeholder {
+    color: var(--dim);
+}
+.docs-filter-empty {
+    margin: 0 0 12px;
+    color: var(--muted);
+    font-size: 0.9rem;
+}
+.docs-filter-empty button {
+    border: none;
+    background: none;
+    padding: 0;
+    color: var(--text);
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    cursor: pointer;
+}
 </style>

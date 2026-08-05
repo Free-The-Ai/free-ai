@@ -103,8 +103,7 @@
         </div>
     </section>
 
-    <div class="hp-stats hp-reveal">
-        <DitherGradient from="grey" direction="up" opacity={0.12} />
+    <div class="hp-reveal">
         <LiveStats />
     </div>
 
@@ -127,7 +126,6 @@
     </section>
 
     <section class="hp-section hp-providers hp-reveal" aria-labelledby="hp-providers-title">
-        <DitherGradient from="grey" direction="up" opacity={0.12} />
         <h2 id="hp-providers-title">The providers you already&nbsp;know</h2>
         <div class="hp-provider-row">
             {#each providerIcons as icon (icon.slug)}
@@ -462,16 +460,12 @@
     }
 
     /* ── Flavor pass: dither glows, halftone, sheen, reveals ── */
-    .hp-stats,
-    .hp-providers,
     .hp-cta,
     .hp-start {
         position: relative;
         isolation: isolate;
     }
     /* DitherGradient canvas behind section content, above the page canvas. */
-    .hp-stats > :global(.kb-dither-gradient),
-    .hp-providers > :global(.kb-dither-gradient),
     .hp-cta > :global(.kb-dither-gradient),
     .hp-start > :global(.kb-dither-gradient) {
         z-index: -1;

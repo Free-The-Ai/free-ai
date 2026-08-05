@@ -1589,8 +1589,12 @@ h3 {
     grid-template-columns: minmax(220px, 0.78fr) minmax(0, 1fr);
 }
 .docs-table-params .docs-row {
-    grid-template-columns: minmax(0, 0.5fr) 70px 78px minmax(0, 1.4fr);
+    grid-template-columns: minmax(0, max-content) 70px 78px;
+    gap: 4px 14px;
     align-items: baseline;
+}
+.docs-table-params .docs-row > span:last-child {
+    grid-column: 1 / -1;
 }
 .docs-table-params .docs-row > * {
     min-width: 0;
@@ -1600,24 +1604,6 @@ h3 {
 }
 .docs-table-params .docs-row code {
     overflow-wrap: anywhere;
-}
-@media (max-width: 560px) {
-    .docs-table-params .docs-row {
-        grid-template-columns: minmax(0, 1fr) 70px 78px;
-    }
-    .docs-table-params .docs-row > span:last-child {
-        grid-column: 1 / -1;
-    }
-}
-.docs-table-params .docs-row-head {
-    background: transparent;
-    color: var(--dim);
-    font-family: var(--font-mono);
-    font-size: 0.65rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    pointer-events: none;
 }
 .docs-req {
     color: oklch(0.74 0.16 45);

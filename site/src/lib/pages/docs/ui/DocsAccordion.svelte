@@ -230,12 +230,6 @@
                 </p>
                 <h3>Request body</h3>
                 <div class="docs-table docs-table-params">
-                    <div class="docs-row docs-row-head">
-                        <span>Name</span>
-                        <span>Type</span>
-                        <span>Required</span>
-                        <span>Description</span>
-                    </div>
                     <div class="docs-row">
                         <code>model</code>
                         <span>string</span>
@@ -310,12 +304,6 @@
                 <p>Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.</p>
                 <h3>Request body</h3>
                 <div class="docs-table docs-table-params">
-                    <div class="docs-row docs-row-head">
-                        <span>Name</span>
-                        <span>Type</span>
-                        <span>Required</span>
-                        <span>Description</span>
-                    </div>
                     <div class="docs-row">
                         <code>model</code>
                         <span>string</span>

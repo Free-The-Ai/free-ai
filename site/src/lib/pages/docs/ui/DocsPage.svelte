@@ -164,7 +164,7 @@
         </div>
 
         <div class="docs-content">
-            <section class="docs-hero shell">
+            <section class="docs-hero">
                 <span class="eyebrow">API Reference</span>
                 <h1>One key, one <span class="holo">base URL.</span></h1>
                 <p class="docs-lede">
@@ -287,7 +287,7 @@
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     gap: 14px;
-    padding: clamp(24px, 3.6vw, 40px);
+    padding: 24px 16px 8px;
     justify-items: start;
     text-align: left;
 }
@@ -434,7 +434,7 @@
 }
 .docs-endpoint-row {
     display: grid;
-    grid-template-columns: 72px minmax(180px, 1fr) minmax(200px, 1.4fr);
+    grid-template-columns: 72px minmax(0, 1.1fr) minmax(0, 1.3fr);
     gap: 16px;
     align-items: center;
     padding: 12px 16px;
@@ -478,9 +478,7 @@
     font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--text);
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
 }
 .docs-endpoint-desc {
     color: var(--muted);

@@ -180,6 +180,7 @@
         <header class="docs-section-head">
             <span class="docs-section-eyebrow">Chat Completions</span>
             <h2>OpenAI-compatible chat</h2>
+            <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/chat/completions</code></div>
         </header>
         <section class="docs-card">
             <p>
@@ -217,6 +218,7 @@
         <header class="docs-section-head">
             <span class="docs-section-eyebrow">Messages API</span>
             <h2>Anthropic-style clients</h2>
+            <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/messages</code></div>
         </header>
         <section class="docs-card">
             <p>Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.</p>
@@ -235,6 +237,7 @@
         <header class="docs-section-head">
             <span class="docs-section-eyebrow">Model Catalog</span>
             <h2>List models</h2>
+            <div class="docs-op-path"><span class="docs-method get">GET</span><code>/v1/models</code></div>
         </header>
         <section class="docs-card">
             <p>

@@ -1349,6 +1349,51 @@ h3 {
 .docs-sidebar a:hover {
     color: var(--text);
 }
+.docs-nav-label {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border);
+}
+.docs-nav-op {
+    display: grid;
+    grid-template-columns: 36px minmax(0, 1fr);
+    gap: 6px;
+    align-items: baseline;
+    padding: 5px 10px;
+    color: var(--muted);
+    text-decoration: none;
+}
+.docs-nav-op code {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    line-height: 1.4;
+    overflow-wrap: anywhere;
+    color: inherit;
+    background: none;
+}
+.docs-nav-op:hover {
+    color: var(--text);
+}
+.docs-nav-method {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1px 0;
+    border-radius: var(--radius-sm);
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+}
+.docs-nav-method.get {
+    color: oklch(0.78 0.14 142);
+    background: oklch(0.78 0.14 142 / 0.12);
+}
+.docs-nav-method.post {
+    color: oklch(0.74 0.16 45);
+    background: oklch(0.74 0.16 45 / 0.12);
+}
 
 .docs-content {
     display: grid;
@@ -1530,6 +1575,9 @@ h3 {
 
 .docs-row:last-child {
     border-bottom: none;
+}
+.docs-table .docs-row:hover {
+    background: var(--sk-shell-bg);
 }
 
 .docs-row > code:first-of-type {
@@ -4174,10 +4222,23 @@ body[data-sound-muted="false"]::after {
 
 .docs-method.get {
     color: oklch(0.78 0.14 142);
+    background: oklch(0.78 0.14 142 / 0.12);
 }
 
 .docs-method.post {
-    color: var(--accent-text);
+    color: oklch(0.74 0.16 45);
+    background: oklch(0.74 0.16 45 / 0.12);
+}
+.docs-op-path {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 2px 0 0;
+}
+.docs-op-path code {
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    color: var(--text);
 }
 
 .docs-row .docs-method + code {

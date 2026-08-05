@@ -222,76 +222,80 @@
             <h2>OpenAI-compatible chat<a class="docs-anchor" href="#chat" aria-label="Link to this section">#</a></h2>
             <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/chat/completions</code></div>
         </header>
-        <section class="docs-card">
-            <p>
-                Point OpenAI-compatible clients at <code>https://api.freetheai.xyz/v1</code>. Use exact model aliases from
-                <a href="/models">/models</a>.
-            </p>
-            <h3>Request body</h3>
-            <div class="docs-table docs-table-params">
-                <div class="docs-row docs-row-head">
-                    <span>Name</span>
-                    <span>Type</span>
-                    <span>Required</span>
-                    <span>Description</span>
-                </div>
-                <div class="docs-row">
-                    <code>model</code>
-                    <span>string</span>
-                    <span class="docs-req">required</span>
-                    <span>Exact model alias from <a href="/models">/models</a>, e.g. <code>opc/deepseek-v4-flash-free</code>.</span>
-                </div>
-                <div class="docs-row">
-                    <code>messages</code>
-                    <span>array</span>
-                    <span class="docs-req">required</span>
-                    <span>Chat turns as <code>{"{ role, content }"}</code> objects. Multi-turn conversations append to this list.</span>
-                </div>
-                <div class="docs-row">
-                    <code>stream</code>
-                    <span>boolean</span>
-                    <span class="docs-req optional">optional</span>
-                    <span>When true, the response streams as server-sent events.</span>
-                </div>
-            </div>
-            <div class="docs-code-grid">
-                <div>
-                    <h3>curl</h3>
-                    <div class="docs-code-group">
-                        <div class="docs-code-bar"><span class="docs-code-lang">bash</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
-                        {#if chatCurlSnippetHtml}
-                            <div class="shiki-wrapper">{@html chatCurlSnippetHtml}</div>
-                        {:else}
-                            <pre><code>{chatCurlSnippet}</code></pre>
-                        {/if}
+        <section class="docs-card docs-split">
+            <div class="docs-split-prose">
+                <p>
+                    Point OpenAI-compatible clients at <code>https://api.freetheai.xyz/v1</code>. Use exact model aliases
+                    from <a href="/models">/models</a>.
+                </p>
+                <h3>Request body</h3>
+                <div class="docs-table docs-table-params">
+                    <div class="docs-row docs-row-head">
+                        <span>Name</span>
+                        <span>Type</span>
+                        <span>Required</span>
+                        <span>Description</span>
                     </div>
-                </div>
-                <div>
-                    <h3>JavaScript SDK</h3>
-                    <div class="docs-code-group">
-                        <div class="docs-code-bar"><span class="docs-code-lang">javascript</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
-                        {#if openaiSdkSnippetHtml}
-                            <div class="shiki-wrapper">{@html openaiSdkSnippetHtml}</div>
-                        {:else}
-                            <pre><code>{openaiSdkSnippet}</code></pre>
-                        {/if}
+                    <div class="docs-row">
+                        <code>model</code>
+                        <span>string</span>
+                        <span class="docs-req">required</span>
+                        <span>Exact model alias from <a href="/models">/models</a>, e.g. <code>opc/deepseek-v4-flash-free</code>.</span>
+                    </div>
+                    <div class="docs-row">
+                        <code>messages</code>
+                        <span>array</span>
+                        <span class="docs-req">required</span>
+                        <span>Chat turns as <code>{"{ role, content }"}</code> objects. Multi-turn conversations append to this list.</span>
+                    </div>
+                    <div class="docs-row">
+                        <code>stream</code>
+                        <span>boolean</span>
+                        <span class="docs-req optional">optional</span>
+                        <span>When true, the response streams as server-sent events.</span>
                     </div>
                 </div>
             </div>
-            <h3>Response</h3>
-            <p>Example response. The route mirrors the OpenAI chat completion shape.</p>
-            <div class="docs-code-group">
-                <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
-                <pre><code>{chatResponseExample}</code></pre>
+            <div class="docs-split-code">
+                <div class="docs-code-group">
+                    <div class="docs-code-bar"><span class="docs-code-lang">bash</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
+                    {#if chatCurlSnippetHtml}
+                        <div class="shiki-wrapper">{@html chatCurlSnippetHtml}</div>
+                    {:else}
+                        <pre><code>{chatCurlSnippet}</code></pre>
+                    {/if}
+                </div>
+                <div class="docs-code-group">
+                    <div class="docs-code-bar"><span class="docs-code-lang">javascript</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
+                    {#if openaiSdkSnippetHtml}
+                        <div class="shiki-wrapper">{@html openaiSdkSnippetHtml}</div>
+                    {:else}
+                        <pre><code>{openaiSdkSnippet}</code></pre>
+                    {/if}
+                </div>
             </div>
-            <h3>Streaming</h3>
-            <p>
-                Send <code>stream: true</code> to receive Server-Sent Events instead of a single JSON body. Each event
-                carries a chat completion chunk; the stream closes with <code>data: [DONE]</code>. Example stream:
-            </p>
-            <div class="docs-code-group">
-                <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
-                <pre><code>{streamingExample}</code></pre>
+            <div class="docs-split-prose">
+                <h3>Response</h3>
+                <p>Example response. The route mirrors the OpenAI chat completion shape.</p>
+            </div>
+            <div class="docs-split-code">
+                <div class="docs-code-group">
+                    <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
+                    <pre><code>{chatResponseExample}</code></pre>
+                </div>
+            </div>
+            <div class="docs-split-prose">
+                <h3>Streaming</h3>
+                <p>
+                    Send <code>stream: true</code> to receive Server-Sent Events instead of a single JSON body. Each
+                    event carries a chat completion chunk; the stream closes with <code>data: [DONE]</code>.
+                </p>
+            </div>
+            <div class="docs-split-code">
+                <div class="docs-code-group">
+                    <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
+                    <pre><code>{streamingExample}</code></pre>
+                </div>
             </div>
         </section>
     </article>
@@ -301,48 +305,56 @@
             <h2>Anthropic-style clients<a class="docs-anchor" href="#messages" aria-label="Link to this section">#</a></h2>
             <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/messages</code></div>
         </header>
-        <section class="docs-card">
-            <p>Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.</p>
-            <h3>Request body</h3>
-            <div class="docs-table docs-table-params">
-                <div class="docs-row docs-row-head">
-                    <span>Name</span>
-                    <span>Type</span>
-                    <span>Required</span>
-                    <span>Description</span>
-                </div>
-                <div class="docs-row">
-                    <code>model</code>
-                    <span>string</span>
-                    <span class="docs-req">required</span>
-                    <span>Exact model alias from <a href="/models">/models</a>, e.g. <code>opc/deepseek-v4-flash-free</code>.</span>
-                </div>
-                <div class="docs-row">
-                    <code>messages</code>
-                    <span>array</span>
-                    <span class="docs-req">required</span>
-                    <span>Anthropic-style content blocks. At least one user turn is required.</span>
-                </div>
-                <div class="docs-row">
-                    <code>max_tokens</code>
-                    <span>integer</span>
-                    <span class="docs-req optional">optional</span>
-                    <span>Maximum tokens in the response. The example uses <code>256</code>.</span>
+        <section class="docs-card docs-split">
+            <div class="docs-split-prose">
+                <p>Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.</p>
+                <h3>Request body</h3>
+                <div class="docs-table docs-table-params">
+                    <div class="docs-row docs-row-head">
+                        <span>Name</span>
+                        <span>Type</span>
+                        <span>Required</span>
+                        <span>Description</span>
+                    </div>
+                    <div class="docs-row">
+                        <code>model</code>
+                        <span>string</span>
+                        <span class="docs-req">required</span>
+                        <span>Exact model alias from <a href="/models">/models</a>, e.g. <code>opc/deepseek-v4-flash-free</code>.</span>
+                    </div>
+                    <div class="docs-row">
+                        <code>messages</code>
+                        <span>array</span>
+                        <span class="docs-req">required</span>
+                        <span>Anthropic-style content blocks. At least one user turn is required.</span>
+                    </div>
+                    <div class="docs-row">
+                        <code>max_tokens</code>
+                        <span>integer</span>
+                        <span class="docs-req optional">optional</span>
+                        <span>Maximum tokens in the response. The example uses <code>256</code>.</span>
+                    </div>
                 </div>
             </div>
-            <div class="docs-code-group">
-                <div class="docs-code-bar"><span class="docs-code-lang">bash</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
-                {#if messagesSnippetHtml}
-                    <div class="shiki-wrapper">{@html messagesSnippetHtml}</div>
-                {:else}
-                    <pre><code>{messagesSnippet}</code></pre>
-                {/if}
+            <div class="docs-split-code">
+                <div class="docs-code-group">
+                    <div class="docs-code-bar"><span class="docs-code-lang">bash</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
+                    {#if messagesSnippetHtml}
+                        <div class="shiki-wrapper">{@html messagesSnippetHtml}</div>
+                    {:else}
+                        <pre><code>{messagesSnippet}</code></pre>
+                    {/if}
+                </div>
             </div>
-            <h3>Response</h3>
-            <p>Example response. The route mirrors the Anthropic message shape.</p>
-            <div class="docs-code-group">
-                <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
-                <pre><code>{messagesResponseExample}</code></pre>
+            <div class="docs-split-prose">
+                <h3>Response</h3>
+                <p>Example response. The route mirrors the Anthropic message shape.</p>
+            </div>
+            <div class="docs-split-code">
+                <div class="docs-code-group">
+                    <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
+                    <pre><code>{messagesResponseExample}</code></pre>
+                </div>
             </div>
         </section>
     </article>

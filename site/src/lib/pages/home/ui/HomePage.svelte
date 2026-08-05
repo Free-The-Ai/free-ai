@@ -15,7 +15,7 @@
     } from "simple-icons";
     import { buildSeo } from "@/shared/lib/seo";
     import { siteConfig } from "@/shared/config/site";
-    import { SeoHead } from "@/shared/ui";
+    import { CtaButton, DitherButton, SeoHead } from "@/shared/ui";
     import { LiveStats } from "@/features/live-stats";
     import {
         buildWebsiteJsonLd,
@@ -95,9 +95,13 @@
                 Free OpenAI-compatible API. One Discord key, one base URL, daily check-in, zero billing.
             </p>
             <div class="hp-cta-row">
-                <a class="primary-button hp-btn" href={siteConfig.socials.discord} target="_blank" rel="noreferrer" data-sound="interaction.confirm">
-                    <span>Get a free key</span>
-                </a>
+                <DitherButton
+                    href={siteConfig.socials.discord}
+                    target="_blank"
+                    rel="noreferrer"
+                    color="grey"
+                    size="lg"
+                    data-sound="interaction.confirm">Get a free key</DitherButton>
                 <a class="hp-btn-ghost" href="/models" data-sound="interaction.tap">Browse models</a>
             </div>
         </div>
@@ -160,18 +164,20 @@
             <p>Join the Discord, run /signup, and call top models free in minutes. The v2 marketplace is on the way.</p>
         </div>
         <div class="hp-cta-row">
-            <a class="primary-button hp-btn" href={siteConfig.socials.discord} target="_blank" rel="noreferrer" data-sound="interaction.confirm">
-                <span>Get a free key</span>
-            </a>
+            <DitherButton
+                href={siteConfig.socials.discord}
+                target="_blank"
+                rel="noreferrer"
+                color="grey"
+                size="lg"
+                data-sound="interaction.confirm">Get a free key</DitherButton>
             <a class="hp-btn-ghost" href="/models" data-sound="interaction.tap">Browse models</a>
         </div>
     </section>
 
     <section class="hp-start hp-crop hp-reveal" aria-labelledby="hp-start-title">
         <h2 id="hp-start-title">Get started<br />with FreeTheAI</h2>
-        <a class="primary-button hp-btn" href="/quickstart" data-sound="interaction.confirm">
-            <span>&rarr; Quickstart</span>
-        </a>
+        <CtaButton to="/quickstart" color="grey" size="lg" bloom="off">Quickstart</CtaButton>
     </section>
 </main>
 
@@ -253,7 +259,6 @@
         gap: 12px;
         margin-top: 28px;
     }
-    .hp-btn,
     .hp-btn-ghost {
         font-family: var(--font-mono);
         font-size: 0.78rem;
@@ -465,33 +470,6 @@
         background-size: 4px 4px;
     }
 
-    /* Dark sheen sweep across the white primary pills. */
-    .hp-btn {
-        position: relative;
-        overflow: hidden;
-        isolation: isolate;
-    }
-    .hp-btn::before {
-        content: "";
-        position: absolute;
-        inset: -55% auto -55% -42%;
-        z-index: -1;
-        width: 34%;
-        background: linear-gradient(
-            100deg,
-            transparent 0%,
-            oklch(0 0 0 / 0.05) 34%,
-            oklch(0 0 0 / 0.12) 50%,
-            oklch(0 0 0 / 0.05) 66%,
-            transparent 100%
-        );
-        transform: skewX(-18deg) translateX(0);
-        transition: transform 520ms var(--ease-out-smooth);
-    }
-    .hp-btn:hover::before {
-        transform: skewX(-18deg) translateX(640%);
-    }
-
     /* Card and provider hover physics. */
     .hp-card {
         transition:
@@ -535,11 +513,6 @@
                 animation-timeline: view();
                 animation-range: entry 0% entry 55%;
             }
-        }
-    }
-    @media (prefers-reduced-motion: reduce) {
-        .hp-btn::before {
-            display: none;
         }
     }
 </style>

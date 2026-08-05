@@ -12,6 +12,7 @@
     import { SeoHead } from "@/shared/ui";
     import { highlightedCode } from "@/shared/config/highlighted.generated";
     import { docsSnippets } from "@/shared/config/codeSnippets";
+    import { onMount } from "svelte";
     import { DocsMobileNav } from "@/features/docs-navigation";
     import DocsAccordion from "./DocsAccordion.svelte";
 
@@ -68,6 +69,47 @@
         ],
     });
 
+    // The only public, unauthenticated route - safe to call from the browser.
+    // Powers both the server-card status dot and the Try it out playground.
+    let healthState = $state<"idle" | "loading" | "done" | "error">("idle");
+    let healthBody = $state("");
+    let healthError = $state("");
+
+    async function refreshHealth(interactive: boolean): Promise<void> {
+        if (interactive) healthState = "loading";
+        try {
+            const r = await fetch("https://api.freetheai.xyz/v1/health");
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            healthBody = JSON.stringify(await r.json(), null, 2);
+            healthState = "done";
+        } catch (err) {
+            healthError = err instanceof Error ? err.message : String(err);
+            healthState = "error";
+        }
+    }
+
+    // Scrollspy: the reference rail tracks which section is in view.
+    let activeSection = $state("");
+    onMount(() => {
+        refreshHealth(false);
+        const ids = new Set(
+            endpoints.map(([, , , anchor]) => anchor).concat(["auth", "endpoints", "compatibility", "chat", "messages", "models", "errors"]),
+        );
+        const obs = new IntersectionObserver(
+            (entries) => {
+                for (const entry of entries) {
+                    if (entry.isIntersecting) activeSection = entry.target.id;
+                }
+            },
+            { rootMargin: "-15% 0px -75% 0px" },
+        );
+        for (const id of ids) {
+            const el = document.getElementById(id);
+            if (el) obs.observe(el);
+        }
+        return () => obs.disconnect();
+    });
+
     function copyStartValue(event: MouseEvent): void {
         const btn = event.currentTarget as HTMLElement;
         const text = btn.getAttribute("data-copy") ?? "";
@@ -90,16 +132,16 @@
     <section class="docs-layout">
         <aside class="docs-sidebar" id="docs-section-nav" aria-label="API reference">
             <span class="docs-sidebar-label">Reference</span>
-            <a href="#auth">Auth</a>
-            <a href="#endpoints">Endpoints</a>
-            <a href="#compatibility">Compatibility</a>
-            <a href="#chat">Chat</a>
-            <a href="#messages">Messages</a>
-            <a href="#models">Models</a>
-            <a href="#errors">Errors</a>
+            <a href="#auth" class={activeSection === "auth" ? "is-active" : ""}>Auth</a>
+            <a href="#endpoints" class={activeSection === "endpoints" ? "is-active" : ""}>Endpoints</a>
+            <a href="#compatibility" class={activeSection === "compatibility" ? "is-active" : ""}>Compatibility</a>
+            <a href="#chat" class={activeSection === "chat" ? "is-active" : ""}>Chat</a>
+            <a href="#messages" class={activeSection === "messages" ? "is-active" : ""}>Messages</a>
+            <a href="#models" class={activeSection === "models" ? "is-active" : ""}>Models</a>
+            <a href="#errors" class={activeSection === "errors" ? "is-active" : ""}>Errors</a>
             <span class="docs-sidebar-label docs-nav-label">Endpoints</span>
             {#each endpoints as [method, path, , anchor] (path)}
-                <a class="docs-nav-op" href={`#${anchor}`}>
+                <a class={activeSection === anchor ? "docs-nav-op is-active" : "docs-nav-op"} href={`#${anchor}`}>
                     <span class={`docs-nav-method ${method.toLowerCase()}`}>{method}</span>
                     <code>{path}</code>
                 </a>
@@ -109,12 +151,19 @@
         <div class="docs-content">
             <section class="docs-hero shell">
                 <span class="eyebrow">API Reference</span>
-                <h1>One key, one base URL.</h1>
+                <h1>One key, one <span class="holo">base URL.</span></h1>
                 <p class="docs-lede">
                     OpenAI-compatible chat, Anthropic-style messages, image generation, audio, and the full model catalog.
                     Same key, same base URL.
                 </p>
                 <div class="docs-server-card">
+                    <div class="docs-server-head">
+                        <span class="docs-server-title">Server</span>
+                        <span class="docs-server-status" class:up={healthState === "done"} class:down={healthState === "error"}>
+                            <span class="docs-server-dot" aria-hidden="true"></span>
+                            {healthState === "done" ? "operational" : healthState === "error" ? "unavailable" : "checking…"}
+                        </span>
+                    </div>
                     <div class="docs-server-row">
                         <div class="docs-server-info">
                             <span class="docs-server-label">Base URL</span>
@@ -133,6 +182,23 @@
                             <span class="material-symbols-outlined">content_copy</span>
                         </button>
                     </div>
+                </div>
+                <div class="docs-try">
+                    <div class="docs-try-head">
+                        <div class="docs-try-copy">
+                            <div class="docs-try-title">
+                                <span class="docs-method get">GET</span>
+                                <code>/v1/health</code>
+                            </div>
+                            <p>The only public route. No key needed. Live data, straight from the API.</p>
+                        </div>
+                        <button class="docs-try-btn" type="button" onclick={() => refreshHealth(true)} disabled={healthState === "loading"}>
+                            {#if healthState === "loading"}Waiting…{:else}Try it out{/if}
+                        </button>
+                    </div>
+                    {#if healthState === "done" || healthState === "error"}
+                        <div class="docs-try-response" aria-live="polite"><pre>{healthState === "error" ? `Error: ${healthError}` : healthBody}</pre></div>
+                    {/if}
                 </div>
                 <p class="docs-hero-caption">
                     {endpoints.length} endpoints, 3 formats, and 0¢ on the free tier
@@ -184,10 +250,14 @@
 <style>
 .docs-hero {
     display: grid;
+    grid-template-columns: minmax(0, 1fr);
     gap: 14px;
     padding: clamp(24px, 3.6vw, 40px);
     justify-items: start;
     text-align: left;
+}
+.docs-hero > * {
+    min-width: 0;
 }
 .docs-hero .eyebrow {
     color: var(--dim);
@@ -198,6 +268,12 @@
     line-height: 1.04;
     letter-spacing: -0.045em;
     text-wrap: balance;
+}
+.docs-hero h1 .holo {
+    background-image: linear-gradient(90deg, oklch(0.74 0.13 265), oklch(0.8 0.14 195), oklch(0.86 0.12 145), oklch(0.82 0.13 100));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
 }
 .docs-lede {
     margin: 0;
@@ -213,6 +289,43 @@
     font-family: var(--font-mono);
     font-size: 0.78rem;
     letter-spacing: 0.01em;
+}
+.docs-server-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+}
+.docs-server-title {
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.docs-server-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+}
+.docs-server-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--dim);
+    transition: background 200ms var(--ease-out-smooth);
+}
+.docs-server-status.up .docs-server-dot {
+    background: oklch(0.72 0.16 150);
+}
+.docs-server-status.down .docs-server-dot {
+    background: oklch(0.6 0.19 25);
 }
 .docs-server-card {
     display: grid;
@@ -242,7 +355,7 @@
 .docs-server-label {
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
@@ -302,7 +415,7 @@
     background: transparent;
     color: var(--dim);
     font-family: var(--font-mono);
-    font-size: 0.65rem;
+    font-size: 0.7rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
     pointer-events: none;

@@ -48,24 +48,6 @@
         '}',
     ].join("\n");
 
-    // The only public, unauthenticated route - safe to call from the browser.
-    let healthState = $state<"idle" | "loading" | "done" | "error">("idle");
-    let healthBody = $state("");
-    let healthError = $state("");
-
-    async function tryHealth(): Promise<void> {
-        healthState = "loading";
-        try {
-            const r = await fetch("https://api.freetheai.xyz/v1/health");
-            if (!r.ok) throw new Error(`HTTP ${r.status}`);
-            healthBody = JSON.stringify(await r.json(), null, 2);
-            healthState = "done";
-        } catch (err) {
-            healthError = err instanceof Error ? err.message : String(err);
-            healthState = "error";
-        }
-    }
-
     const authRows: DocsRow[] = [
         { code: "/signup", span: "Creates a key after the modal is completed. Existing keys are rejected; use /resetkey instead." },
         { code: "/checkin", span: "Required once per UTC day. Enter your existing API key and solve the randomized challenge before using the free API." },
@@ -232,7 +214,7 @@
                 <div>
                     <h3>curl</h3>
                     <div class="docs-code-group">
-                        <div class="docs-code-bar"><span class="docs-code-lang">bash</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
+                        <div class="docs-code-bar"><span class="docs-code-lang" data-lang="bash">bash</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
                         {#if chatCurlSnippetHtml}
                             <div class="shiki-wrapper">{@html chatCurlSnippetHtml}</div>
                         {:else}
@@ -243,7 +225,7 @@
                 <div>
                     <h3>JavaScript SDK</h3>
                     <div class="docs-code-group">
-                        <div class="docs-code-bar"><span class="docs-code-lang">javascript</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
+                        <div class="docs-code-bar"><span class="docs-code-lang" data-lang="javascript">javascript</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
                         {#if openaiSdkSnippetHtml}
                             <div class="shiki-wrapper">{@html openaiSdkSnippetHtml}</div>
                         {:else}

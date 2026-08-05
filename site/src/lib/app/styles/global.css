@@ -4322,6 +4322,40 @@ body[data-sound-muted="false"]::after {
     max-width: 65ch;
 }
 
+.docs-split {
+    display: grid;
+    grid-template-columns: minmax(0, 1.08fr) minmax(0, 1fr);
+    column-gap: clamp(20px, 3vw, 36px);
+    row-gap: 26px;
+    align-items: start;
+}
+.docs-split-prose {
+    min-width: 0;
+}
+.docs-split-prose > h3 {
+    margin-top: 20px;
+}
+.docs-split-prose > h3:first-child {
+    margin-top: 0;
+}
+.docs-split-code {
+    display: grid;
+    gap: 12px;
+    min-width: 0;
+    padding-left: clamp(16px, 2.4vw, 28px);
+    border-left: 1px solid var(--border);
+}
+@media (max-width: 900px) {
+    .docs-split {
+        grid-template-columns: 1fr;
+        row-gap: 18px;
+    }
+    .docs-split-code {
+        padding-left: 0;
+        border-left: none;
+    }
+}
+
 .docs-op-path {
     display: flex;
     align-items: center;

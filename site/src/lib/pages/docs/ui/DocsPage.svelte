@@ -220,7 +220,7 @@
                 </p>
             </section>
 
-            <section class="docs-section shell" id="endpoints" aria-labelledby="endpoint-overview-title">
+            <section class="docs-section" id="endpoints" aria-labelledby="endpoint-overview-title">
                 <header class="section-head">
                     <span class="eyebrow">Endpoints</span>
                     <h2 id="endpoint-overview-title">Every route.<a class="docs-anchor" href="#endpoints" aria-label="Link to this section">#</a></h2>
@@ -262,7 +262,7 @@
                 </div>
             </section>
 
-            <section class="docs-section shell" id="details">
+            <section class="docs-section" id="details">
                 <DocsAccordion
                     {baseSnippet}
                     {baseSnippetHtml}
@@ -556,6 +556,9 @@
     margin: 0 0 12px;
     color: var(--muted);
     font-size: 0.9rem;
+}
+#details {
+    padding: 0;
 }
 .docs-filter-empty button {
     border: none;

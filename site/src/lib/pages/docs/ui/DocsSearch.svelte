@@ -113,8 +113,16 @@
                 openDialog();
             }
         }
+        // Mobile entry point: the DocsMobileNav search button dispatches this.
+        function onOpenEvent(): void {
+            openDialog();
+        }
         window.addEventListener("keydown", onGlobalKeydown);
-        return () => window.removeEventListener("keydown", onGlobalKeydown);
+        window.addEventListener("docs-search-open", onOpenEvent);
+        return () => {
+            window.removeEventListener("keydown", onGlobalKeydown);
+            window.removeEventListener("docs-search-open", onOpenEvent);
+        };
     });
 </script>
 
@@ -169,7 +177,6 @@
         align-items: center;
         gap: 8px;
         width: 100%;
-        margin-bottom: 12px;
         padding: 8px 10px;
         border: 1px solid var(--border);
         border-radius: var(--radius);
@@ -183,6 +190,11 @@
     .docs-search-trigger:hover {
         border-color: var(--border-strong);
         color: var(--text);
+    }
+    @media (max-width: 820px) {
+        .docs-search-trigger {
+            display: none;
+        }
     }
     .docs-search-trigger .material-symbols-outlined {
         font-size: 1rem;

@@ -141,8 +141,9 @@
 <main class="docs-main" data-docs-nav>
     <DocsMobileNav />
     <section class="docs-layout">
-        <aside class="docs-sidebar" id="docs-section-nav" aria-label="API reference">
+        <div class="docs-rail-stack">
             <DocsSearch {endpoints} />
+            <aside class="docs-sidebar" id="docs-section-nav" aria-label="API reference">
             <span class="docs-sidebar-label">Reference</span>
             <a href="#auth" class={activeSection === "auth" ? "is-active" : ""}>Auth</a>
             <a href="#endpoints" class={activeSection === "endpoints" ? "is-active" : ""}>Endpoints</a>
@@ -160,6 +161,7 @@
                 </a>
             {/each}
         </aside>
+        </div>
 
         <div class="docs-content">
             <section class="docs-hero shell">

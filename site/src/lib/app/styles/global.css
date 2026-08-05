@@ -1316,15 +1316,20 @@ h3 {
     display: none;
 }
 
-.docs-sidebar {
+.docs-rail-stack {
     position: sticky;
     top: 96px;
     display: grid;
-    gap: 2px;
+    gap: 10px;
     align-self: start;
     max-height: calc(100vh - 120px);
     overflow: auto;
     overscroll-behavior: contain;
+}
+
+.docs-sidebar {
+    display: grid;
+    gap: 2px;
 }
 
 .docs-sidebar-label {
@@ -3428,6 +3433,12 @@ h3 {
         grid-template-columns: 1fr;
     }
 
+    .docs-rail-stack {
+        position: static;
+        max-height: none;
+        overflow: visible;
+    }
+
     .docs-sidebar {
         position: static;
         display: flex;
@@ -3482,6 +3493,10 @@ h3 {
 }
 
 @media (max-width: 820px) {
+    .docs-rail-stack {
+        display: contents;
+    }
+
     html {
         scroll-padding-top: 16px;
     }
@@ -3656,7 +3671,9 @@ h3 {
     }
 
     .docs-mobile-toc {
-        display: block;
+        display: grid;
+        gap: 10px;
+        justify-items: end;
         position: fixed;
         bottom: 20px;
         right: 16px;

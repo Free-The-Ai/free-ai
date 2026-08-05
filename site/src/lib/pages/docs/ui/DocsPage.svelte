@@ -15,6 +15,7 @@
     import { onMount } from "svelte";
     import { DocsMobileNav } from "@/features/docs-navigation";
     import DocsAccordion from "./DocsAccordion.svelte";
+    import DocsSearch from "./DocsSearch.svelte";
 
     const pageDescription =
         "FreeTheAi API docs for OpenAI-compatible chat completions, Anthropic-style messages, image generation, image edits, audio, model listing, signup, check-in, and key reset.";
@@ -98,17 +99,6 @@
               ),
     );
 
-    // Docs-site convention: "/" focuses the route filter from anywhere on the page.
-    function onKeydown(event: KeyboardEvent): void {
-        if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
-        const target = event.target as HTMLElement | null;
-        if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
-        const input = document.querySelector<HTMLInputElement>(".docs-filter input");
-        if (!input) return;
-        event.preventDefault();
-        input.focus();
-    }
-
     // Scrollspy: the reference rail tracks which section is in view.
     let activeSection = $state("");
     onMount(() => {
@@ -128,11 +118,7 @@
             const el = document.getElementById(id);
             if (el) obs.observe(el);
         }
-        window.addEventListener("keydown", onKeydown);
-        return () => {
-            obs.disconnect();
-            window.removeEventListener("keydown", onKeydown);
-        };
+        return () => obs.disconnect();
     });
 
     function copyStartValue(event: MouseEvent): void {
@@ -156,6 +142,7 @@
     <DocsMobileNav />
     <section class="docs-layout">
         <aside class="docs-sidebar" id="docs-section-nav" aria-label="API reference">
+            <DocsSearch {endpoints} />
             <span class="docs-sidebar-label">Reference</span>
             <a href="#auth" class={activeSection === "auth" ? "is-active" : ""}>Auth</a>
             <a href="#endpoints" class={activeSection === "endpoints" ? "is-active" : ""}>Endpoints</a>
@@ -249,7 +236,6 @@
                                 e.currentTarget.blur();
                             }
                         }} />
-                    <kbd class="docs-filter-key" aria-hidden="true">/</kbd>
                 </label>
                 {#if filteredEndpoints.length === 0}
                     <p class="docs-filter-empty">
@@ -578,13 +564,5 @@
     text-decoration: underline;
     text-underline-offset: 3px;
     cursor: pointer;
-}
-.docs-filter-key {
-    padding: 1px 7px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-sm);
-    color: var(--dim);
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
 }
 </style>

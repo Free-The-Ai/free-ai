@@ -15,7 +15,7 @@
     } from "simple-icons";
     import { buildSeo } from "@/shared/lib/seo";
     import { siteConfig } from "@/shared/config/site";
-    import { SeoHead } from "@/shared/ui";
+    import { DitherGradient, SeoHead } from "@/shared/ui";
     import { LiveStats } from "@/features/live-stats";
     import {
         buildWebsiteJsonLd,
@@ -103,9 +103,12 @@
         </div>
     </section>
 
-    <LiveStats />
+    <div class="hp-stats hp-reveal">
+        <DitherGradient from="grey" direction="up" opacity={0.12} />
+        <LiveStats />
+    </div>
 
-    <section class="hp-section" aria-labelledby="hp-how-title">
+    <section class="hp-section hp-reveal" aria-labelledby="hp-how-title">
         <div class="hp-split">
             <div class="hp-split-head">
                 <h2 id="hp-how-title">How it works</h2>
@@ -123,7 +126,8 @@
         </div>
     </section>
 
-    <section class="hp-section hp-providers" aria-labelledby="hp-providers-title">
+    <section class="hp-section hp-providers hp-reveal" aria-labelledby="hp-providers-title">
+        <DitherGradient from="grey" direction="up" opacity={0.12} />
         <h2 id="hp-providers-title">The providers you already&nbsp;know</h2>
         <div class="hp-provider-row">
             {#each providerIcons as icon (icon.slug)}
@@ -134,7 +138,7 @@
         </div>
     </section>
 
-    <section class="hp-section" aria-labelledby="hp-why-title">
+    <section class="hp-section hp-reveal" aria-labelledby="hp-why-title">
         <div class="hp-split">
             <div class="hp-split-head">
                 <h2 id="hp-why-title">Why FreeTheAI</h2>
@@ -152,7 +156,8 @@
         </div>
     </section>
 
-    <section class="hp-cta hp-crop" aria-labelledby="hp-cta-title">
+    <section class="hp-cta hp-crop hp-reveal" aria-labelledby="hp-cta-title">
+        <DitherGradient from="grey" direction="up" opacity={0.2} />
         <div class="hp-cta-copy">
             <h2 id="hp-cta-title">Stop paying list price for&nbsp;AI</h2>
             <p>Join the Discord, run /signup, and call top models free in minutes. The v2 marketplace is on the way.</p>
@@ -165,7 +170,8 @@
         </div>
     </section>
 
-    <section class="hp-start hp-crop" aria-labelledby="hp-start-title">
+    <section class="hp-start hp-crop hp-reveal" aria-labelledby="hp-start-title">
+        <DitherGradient from="grey" direction="up" opacity={0.16} />
         <h2 id="hp-start-title">Get started<br />with FreeTheAI</h2>
         <a class="primary-button hp-btn" href="/quickstart" data-sound="interaction.confirm">
             <span>&rarr; Quickstart</span>
@@ -225,9 +231,17 @@
         letter-spacing: -0.04em;
     }
     .hp-underline {
-        text-decoration: underline;
-        text-decoration-thickness: 0.055em;
-        text-underline-offset: 0.16em;
+        text-decoration: none;
+        background-image: linear-gradient(
+            90deg,
+            oklch(0.72 0.11 265 / 0.85),
+            oklch(0.78 0.1 195 / 0.85),
+            oklch(0.82 0.12 145 / 0.85),
+            oklch(0.85 0.13 100 / 0.85)
+        );
+        background-repeat: no-repeat;
+        background-size: 100% 0.07em;
+        background-position: 0 96%;
     }
     .hp-hero-sub {
         margin: 20px 0 0;
@@ -361,7 +375,6 @@
     .hp-provider-icon {
         display: inline-flex;
         color: var(--dim);
-        transition: color 150ms var(--ease-out-smooth);
     }
     .hp-provider-icon:hover {
         color: var(--text);
@@ -445,6 +458,106 @@
     @media (max-width: 34em) {
         .hp-card-grid-3 {
             grid-template-columns: 1fr;
+        }
+    }
+
+    /* ── Flavor pass: dither glows, halftone, sheen, reveals ── */
+    .hp-stats,
+    .hp-providers,
+    .hp-cta,
+    .hp-start {
+        position: relative;
+        isolation: isolate;
+    }
+    /* DitherGradient canvas behind section content, above the page canvas. */
+    .hp-stats > :global(.kb-dither-gradient),
+    .hp-providers > :global(.kb-dither-gradient),
+    .hp-cta > :global(.kb-dither-gradient),
+    .hp-start > :global(.kb-dither-gradient) {
+        z-index: -1;
+    }
+
+    /* Halftone dot texture inside the icon boxes - printed, tactile feel. */
+    .hp-card-icon {
+        background-image: radial-gradient(circle, oklch(1 0 0 / 0.12) 1px, transparent 1.3px);
+        background-size: 4px 4px;
+    }
+
+    /* Dark sheen sweep across the white primary pills. */
+    .hp-btn {
+        position: relative;
+        overflow: hidden;
+        isolation: isolate;
+    }
+    .hp-btn::before {
+        content: "";
+        position: absolute;
+        inset: -55% auto -55% -42%;
+        z-index: -1;
+        width: 34%;
+        background: linear-gradient(
+            100deg,
+            transparent 0%,
+            oklch(0 0 0 / 0.05) 34%,
+            oklch(0 0 0 / 0.12) 50%,
+            oklch(0 0 0 / 0.05) 66%,
+            transparent 100%
+        );
+        transform: skewX(-18deg) translateX(0);
+        transition: transform 520ms var(--ease-out-smooth);
+    }
+    .hp-btn:hover::before {
+        transform: skewX(-18deg) translateX(640%);
+    }
+
+    /* Card and provider hover physics. */
+    .hp-card {
+        transition:
+            transform 180ms var(--ease-out-smooth),
+            border-color 180ms var(--ease-out-smooth),
+            background-color 180ms var(--ease-out-smooth);
+    }
+    .hp-card:hover {
+        transform: translateY(-2px);
+        border-color: var(--border-strong);
+        background: oklch(1 0 0 / 0.04);
+    }
+    .hp-provider-icon {
+        transition:
+            color 150ms var(--ease-out-smooth),
+            transform 150ms var(--ease-out-smooth);
+    }
+    .hp-provider-icon:hover {
+        transform: translateY(-2px) scale(1.08);
+    }
+
+    /* Hero entry + section scroll reveals. CSS scroll-driven animations with
+     * an @supports gate so non-supporting engines just see static content. */
+    @keyframes hp-rise {
+        from {
+            opacity: 0;
+            transform: translateY(26px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+        .hp-hero {
+            animation: hp-rise 0.7s var(--ease-out-smooth) both;
+        }
+        @supports (animation-timeline: view()) {
+            .hp-reveal {
+                animation: hp-rise linear both;
+                animation-timeline: view();
+                animation-range: entry 0% entry 55%;
+            }
+        }
+    }
+    @media (prefers-reduced-motion: reduce) {
+        .hp-btn::before {
+            display: none;
         }
     }
 </style>

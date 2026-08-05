@@ -1092,25 +1092,12 @@ h3 {
     opacity: 1;
 }
 .docs-code-lang {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
     font-family: var(--font-mono);
     font-size: 0.7rem;
     font-weight: 600;
     letter-spacing: 0.06em;
     text-transform: uppercase;
     color: var(--dim);
-}
-.docs-code-lang::before {
-    content: "";
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: oklch(0.72 0.16 150);
-}
-.docs-code-lang[data-lang="javascript"]::before {
-    background: oklch(0.78 0.15 75);
 }
 
 .copy-btn {
@@ -1461,15 +1448,6 @@ h3 {
     letter-spacing: -0.02em;
 }
 
-.docs-section-eyebrow {
-    color: var(--accent-text);
-    text-shadow: var(--accent-text-glow);
-    font-family: var(--font-mono);
-    font-size: 0.68rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-}
 
 .docs-section > .docs-card {
     padding: 0;

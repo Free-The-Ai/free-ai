@@ -156,21 +156,23 @@
 
         <div class="setup-detail-meta">
             <div class="setup-meta-copyable">
-                <span>Base URL</span>
-                <code>{guide.baseUrl}</code>
-                <button class="copy-btn" type="button" title="Copy base URL" aria-label="Copy base URL" onclick={copyBaseUrl}>
-                    <span class="material-symbols-outlined">content_copy</span>
-                </button>
+                <span class="setup-meta-label">Base URL</span>
+                <div class="setup-meta-line">
+                    <code>{guide.baseUrl}</code>
+                    <button class="copy-btn" type="button" title="Copy base URL" aria-label="Copy base URL" onclick={copyBaseUrl}>
+                        <span class="material-symbols-outlined">content_copy</span>
+                    </button>
+                </div>
             </div>
             {#if guide.apiPath}
                 <div>
-                    <span>API path</span>
+                    <span class="setup-meta-label">API path</span>
                     <code>{guide.apiPath}</code>
                 </div>
             {/if}
             {#if guide.recommendedModels.length > 0}
                 <div>
-                    <span>Recommended models</span>
+                    <span class="setup-meta-label">Recommended models</span>
                     <code>{guide.recommendedModels[0]}</code>
                 </div>
             {/if}
@@ -370,12 +372,28 @@
     gap: 4px;
     min-width: 0;
 }
-.setup-detail-meta span {
+.setup-meta-label {
     color: var(--dim);
     font-family: var(--font-mono);
     font-size: 0.66rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
+}
+.setup-meta-copyable .setup-meta-line {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+.setup-meta-copyable .setup-meta-line .copy-btn {
+    position: static;
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    opacity: 1;
 }
 .setup-detail-meta code {
     color: var(--text);

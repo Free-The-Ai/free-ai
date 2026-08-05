@@ -4263,6 +4263,30 @@ body[data-sound-muted="false"]::after {
     color: oklch(0.74 0.16 45);
     background: oklch(0.74 0.16 45 / 0.12);
 }
+.docs-anchor {
+    margin-left: 8px;
+    color: var(--dim);
+    font-weight: 400;
+    text-decoration: none;
+    opacity: 0;
+    transition:
+        opacity 140ms var(--ease-out-smooth),
+        color 140ms var(--ease-out-smooth);
+}
+.docs-section-head:hover .docs-anchor,
+.section-head:hover .docs-anchor,
+.docs-anchor:focus-visible {
+    opacity: 1;
+}
+.docs-anchor:hover {
+    color: var(--text);
+}
+@media (hover: none) {
+    .docs-anchor {
+        opacity: 0.45;
+    }
+}
+
 .docs-routes-family {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

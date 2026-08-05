@@ -1,4 +1,13 @@
 <script lang="ts">
+    import { SETUP_GUIDES } from "@/entities/setup-guide";
+
+    // Real compatibility data, computed so the docs never go stale.
+    const totalGuides = SETUP_GUIDES.length;
+    const chatGuides = SETUP_GUIDES.filter((g) => g.compatibility.chatCompletions).length;
+    const messagesGuides = SETUP_GUIDES.filter((g) => g.compatibility.messages).length;
+    const streamingGuides = SETUP_GUIDES.filter((g) => g.compatibility.streaming).length;
+    const toolGuides = SETUP_GUIDES.filter((g) => g.compatibility.toolCalling).length;
+
     interface DocsRow {
         code: string;
         span: string;
@@ -79,6 +88,15 @@
         '}',
     ].join("\n");
 
+    // Example stream, labeled as an example. Chunks mirror the OpenAI SSE shape.
+    const streamingExample = [
+        'data: {"id":"chatcmpl-example","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"role":"assistant","content":""},"finish_reason":null}]}',
+        '',
+        'data: {"id":"chatcmpl-example","object":"chat.completion.chunk","choices":[{"index":0,"delta":{"content":"OK."},"finish_reason":null}]}',
+        '',
+        'data: [DONE]',
+    ].join("\n");
+
     const authRows: DocsRow[] = [
         { code: "/signup", span: "Creates a key after the modal is completed. Existing keys are rejected; use /resetkey instead." },
         { code: "/checkin", span: "Required once per UTC day. Enter your existing API key and solve the randomized challenge before using the free API." },
@@ -148,7 +166,7 @@
 <div class="docs-sections">
     <article class="docs-section" id="auth">
         <header class="docs-section-head">
-            <h2>Get a key</h2>
+            <h2>Get a key<a class="docs-anchor" href="#auth" aria-label="Link to this section">#</a></h2>
         </header>
         <section class="docs-card">
             <p>
@@ -178,33 +196,30 @@
 
     <article class="docs-section" id="compatibility">
         <header class="docs-section-head">
-            <h2>Cross-compatible client formats</h2>
+            <h2>Cross-compatible client formats<a class="docs-anchor" href="#compatibility" aria-label="Link to this section">#</a></h2>
         </header>
         <section class="docs-card">
             <p>
-                FreeTheAi supports multiple API formats for easier client compatibility. You can use OpenAI-compatible Chat
-                Completions, Anthropic-compatible Messages, and Responses-style routes with the same API key and the same
-                model aliases.
+                FreeTheAi speaks three wire formats behind one base URL and one key. Pick the format your client
+                expects; the model aliases never change between them.
             </p>
             <div class="docs-table compact">
-                <div class="docs-row"><code>POST /v1/chat/completions</code><span>OpenAI-compatible chat completions. Streaming, tool calling, and structured outputs.</span></div>
-                <div class="docs-row"><code>POST /v1/messages</code><span>Anthropic-compatible Messages route. System prompts, tool use, and the same content blocks Claude clients expect.</span></div>
-                <div class="docs-row"><code>POST /v1/responses</code><span>Responses-style route. Same key, same model alias.</span></div>
-                <div class="docs-row"><code>POST /v1/images/generations</code><span>OpenAI-compatible image generation for supported image aliases.</span></div>
-                <div class="docs-row"><code>POST /v1/images/edits</code><span>OpenAI-compatible multipart image edits for supported image aliases.</span></div>
-                <div class="docs-row"><code>GET /v1/images/generations/{"{request_id}"}</code><span>Poll async EVE image jobs submitted with background or async enabled.</span></div>
-                <div class="docs-row"><code>GET /v1/models</code><span>Authenticated client catalog.</span></div>
-                <div class="docs-row"><code>GET /v1/models/full</code><span>Catalog with context, output, capability, and access metadata.</span></div>
-                <div class="docs-row"><code>POST /v1/audio/speech</code><span>Text-to-speech route for supported voice aliases.</span></div>
-                <div class="docs-row"><code>POST /v1/audio/transcriptions</code><span>Speech-to-text route for OpenAI-style multipart audio uploads.</span></div>
+                <div class="docs-row"><code>OpenAI-compatible</code><span>Chat completions, images, audio, and the model catalog. {chatGuides} of {totalGuides} documented clients use this format.</span></div>
+                <div class="docs-row"><code>Anthropic-compatible</code><span>Messages route with system prompts, tool use, and the content blocks Claude-style clients expect.</span></div>
+                <div class="docs-row"><code>Responses-style</code><span>Responses route for clients that speak that format.</span></div>
             </div>
-            <p>Pick the route that matches your client. The model alias and the key never change between formats.</p>
+            <h3>Documented clients</h3>
+            <p>
+                The {totalGuides} setup guides cover chat completions ({chatGuides}), Anthropic-style messages
+                ({messagesGuides}), streaming ({streamingGuides}), and tool calling ({toolGuides}). Same base URL and
+                key for every one of them. <a href="/setup">Browse the setup guides</a>.
+            </p>
         </section>
     </article>
 
     <article class="docs-section" id="chat">
         <header class="docs-section-head">
-            <h2>OpenAI-compatible chat</h2>
+            <h2>OpenAI-compatible chat<a class="docs-anchor" href="#chat" aria-label="Link to this section">#</a></h2>
             <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/chat/completions</code></div>
         </header>
         <section class="docs-card">
@@ -269,12 +284,21 @@
                 <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
                 <pre><code>{chatResponseExample}</code></pre>
             </div>
+            <h3>Streaming</h3>
+            <p>
+                Send <code>stream: true</code> to receive Server-Sent Events instead of a single JSON body. Each event
+                carries a chat completion chunk; the stream closes with <code>data: [DONE]</code>. Example stream:
+            </p>
+            <div class="docs-code-group">
+                <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
+                <pre><code>{streamingExample}</code></pre>
+            </div>
         </section>
     </article>
 
     <article class="docs-section" id="messages">
         <header class="docs-section-head">
-            <h2>Anthropic-style clients</h2>
+            <h2>Anthropic-style clients<a class="docs-anchor" href="#messages" aria-label="Link to this section">#</a></h2>
             <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/messages</code></div>
         </header>
         <section class="docs-card">
@@ -325,7 +349,7 @@
 
     <article class="docs-section" id="models">
         <header class="docs-section-head">
-            <h2>List models</h2>
+            <h2>List models<a class="docs-anchor" href="#models" aria-label="Link to this section">#</a></h2>
             <div class="docs-op-path"><span class="docs-method get">GET</span><code>/v1/models</code></div>
         </header>
         <section class="docs-card">
@@ -368,7 +392,7 @@
 
     <article class="docs-section" id="other-routes">
         <header class="docs-section-head">
-            <h2>Images, audio, and responses</h2>
+            <h2>Images, audio, and responses<a class="docs-anchor" href="#other-routes" aria-label="Link to this section">#</a></h2>
         </header>
         <section class="docs-card">
             <p>
@@ -401,7 +425,7 @@
 
     <article class="docs-section" id="errors">
         <header class="docs-section-head">
-            <h2>Errors and rate limits</h2>
+            <h2>Errors and rate limits<a class="docs-anchor" href="#errors" aria-label="Link to this section">#</a></h2>
         </header>
         <section class="docs-card docs-errors">
             <div class="docs-errors-shape">

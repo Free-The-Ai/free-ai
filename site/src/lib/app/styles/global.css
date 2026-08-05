@@ -4357,6 +4357,8 @@ body[data-sound-muted="false"]::after {
 .docs-try {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+    max-width: 720px;
     gap: 12px;
     margin-top: 4px;
     padding: 16px;
@@ -4366,7 +4368,7 @@ body[data-sound-muted="false"]::after {
 }
 .docs-try-head {
     display: flex;
-    align-items: flex-start;
+    align-items: center;
     justify-content: space-between;
     gap: 16px;
     flex-wrap: wrap;

@@ -117,7 +117,6 @@
 <div class="docs-sections">
     <article class="docs-section" id="auth">
         <header class="docs-section-head">
-            <span class="docs-section-eyebrow">Auth</span>
             <h2>Get a key</h2>
         </header>
         <section class="docs-card">
@@ -148,7 +147,6 @@
 
     <article class="docs-section" id="compatibility">
         <header class="docs-section-head">
-            <span class="docs-section-eyebrow">Compatibility</span>
             <h2>Cross-compatible client formats</h2>
         </header>
         <section class="docs-card">
@@ -214,7 +212,7 @@
                 <div>
                     <h3>curl</h3>
                     <div class="docs-code-group">
-                        <div class="docs-code-bar"><span class="docs-code-lang" data-lang="bash">bash</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
+                        <div class="docs-code-bar"><span class="docs-code-lang">bash</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
                         {#if chatCurlSnippetHtml}
                             <div class="shiki-wrapper">{@html chatCurlSnippetHtml}</div>
                         {:else}
@@ -225,7 +223,7 @@
                 <div>
                     <h3>JavaScript SDK</h3>
                     <div class="docs-code-group">
-                        <div class="docs-code-bar"><span class="docs-code-lang" data-lang="javascript">javascript</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
+                        <div class="docs-code-bar"><span class="docs-code-lang">javascript</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
                         {#if openaiSdkSnippetHtml}
                             <div class="shiki-wrapper">{@html openaiSdkSnippetHtml}</div>
                         {:else}
@@ -327,7 +325,6 @@
 
     <article class="docs-section" id="errors">
         <header class="docs-section-head">
-            <span class="docs-section-eyebrow">Errors</span>
             <h2>Errors and rate limits</h2>
         </header>
         <section class="docs-card docs-errors">

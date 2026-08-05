@@ -114,7 +114,7 @@
         const btn = event.currentTarget as HTMLElement;
         const text = btn.getAttribute("data-copy") ?? "";
         navigator.clipboard.writeText(text).catch(() => {
-            /* clipboard permission denied — silently ignored, matches original */
+            /* clipboard permission denied; silently ignored, matches original */
         });
         const icon = btn.querySelector(".material-symbols-outlined");
         if (!icon) return;
@@ -201,7 +201,7 @@
                     {/if}
                 </div>
                 <p class="docs-hero-caption">
-                    {endpoints.length} endpoints, 3 formats, and 0¢ on the free tier
+                    {endpoints.length} endpoints across 3 formats
                 </p>
             </section>
 

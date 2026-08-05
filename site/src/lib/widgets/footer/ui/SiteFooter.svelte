@@ -80,6 +80,8 @@
         color: var(--dim);
     }
     .footer-column a {
+        display: inline-block;
+        padding-block: 5px;
         color: var(--muted);
         font-size: 0.82rem;
         text-decoration: none;

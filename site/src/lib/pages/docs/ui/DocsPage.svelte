@@ -398,9 +398,7 @@
     color: var(--accent-text);
     font-family: var(--font-mono);
     font-size: 0.92rem;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    overflow-wrap: anywhere;
 }
 .docs-server-copy {
     flex: 0 0 auto;

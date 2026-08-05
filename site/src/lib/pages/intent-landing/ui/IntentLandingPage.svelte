@@ -95,7 +95,7 @@
 
 <main class="intent-main">
     <section class="intent-hero shell">
-        <DitherGradient class="intent-glow" from="orange" direction="up" opacity={0.3} />
+        <DitherGradient class="intent-glow" from="grey" direction="up" opacity={0.3} />
         <span class="eyebrow">{page.eyebrow}</span>
         <h1>{page.h1}</h1>
         <p class="intent-lede">{page.lede}</p>

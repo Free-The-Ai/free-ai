@@ -1,35 +1,33 @@
 :root {
-    --bg: oklch(0.168 0 0);
-    --surface: oklch(0.213 0 0);
-    --border: oklch(1 0 0 / 0.06);
-    --border-strong: oklch(1 0 0 / 0.12);
+    --bg: oklch(0.150 0 0);
+    --surface: oklch(0.196 0 0);
+    --border: oklch(1 0 0 / 0.07);
+    --border-strong: oklch(1 0 0 / 0.14);
     --text: oklch(0.931 0 0);
-    /* Secondary + tertiary text. Both were set against --bg (oklch 0.168), but
-     * the surfaces they actually sit on are lighter: .shell is a gradient
-     * topping out at oklch(0.244), and small labels sit at the top of cards.
-     * Measured against that binding worst case the old values were
-     * --muted 4.48:1 and --dim 2.55:1 — both below the WCAG 1.4.3 AA floor of
-     * 4.5:1 for the 9.9-15.4px text they are used on. Raised so the minimum
-     * across every surface clears AA, with the tiers still strictly ordered:
-     * dim 4.54 < muted 6.08 < text 13.30. */
+    /* Secondary + tertiary text, measured against the lightest surface they
+     * sit on so both tiers clear WCAG 1.4.3 AA, strictly ordered: dim < muted
+     * < text. */
     --muted: oklch(0.700 0 0);
     --dim: oklch(0.625 0 0);
-    --accent: oklch(0.659 0.192 40.1);
-    --accent-text: oklch(0.827 0.113 55.9);
+    /* Monochrome accent: the redesign is white-on-near-black, so accent-filled
+     * controls render as white pills with dark text. */
+    --accent: oklch(0.940 0 0);
+    --accent-text: oklch(0.969 0 0);
     --accent-text-strong: oklch(0.969 0 0);
-    /* Text that sits ON an accent fill. --accent is light (L .659), so near-white
-     * on it measures 3.10:1 and every accent-filled chip and the primary CTA
-     * failed WCAG 1.4.3 AA. Dark-on-accent gives 5.68:1 and keeps the brand
-     * orange exactly, rather than darkening the accent to rescue white text. */
-    --on-accent: oklch(0.168 0 0);
-    --accent-text-glow: 0 0 10px oklch(0.692 0.189 44.5 / 0.34);
-    --accent-muted: oklch(0.659 0.192 40.1 / 0.1);
+    /* Text ON an accent fill: dark-on-light keeps the same AA margin the old
+     * dark-on-orange pairing had. */
+    --on-accent: oklch(0.150 0 0);
+    --accent-text-glow: 0 0 10px oklch(1 0 0 / 0.22);
+    --accent-muted: oklch(1 0 0 / 0.08);
+    /* Single source of truth for accent-filled control backgrounds. */
+    --accent-fill: linear-gradient(180deg, oklch(0.985 0 0) 0%, oklch(0.905 0 0) 100%);
+    --accent-fill-hover: linear-gradient(180deg, oklch(1 0 0) 0%, oklch(0.955 0 0) 100%);
     --donate: oklch(0.750 0.173 353.8);
     --donate-text: oklch(0.916 0 0);
     --danger: oklch(0.673 0.215 25.0);
     --amber: oklch(0.666 0.157 58.3);
-    --radius: 6px;
-    --radius-sm: 4px;
+    --radius: 8px;
+    --radius-sm: 5px;
     --radius-full: 99px;
     --control-height: 40px;
     --control-height-sm: 32px;
@@ -40,12 +38,13 @@
     --control-bg: oklch(1 0 0 / 0.035);
     --code-bg: oklch(0.178 0 0);
     --code-text: oklch(0.738 0 0);
+    --font-display: "Space Grotesk", "Inter", "Segoe UI", system-ui, sans-serif;
     --font-sans: "Inter", "Segoe UI", system-ui, sans-serif;
     --font-serif: "STIX Two Text", "Georgia", serif;
     --font-mono: "IBM Plex Mono", "JetBrains Mono", "Consolas", monospace;
-    --sk-shell-bg: linear-gradient(180deg, oklch(0.244 0 0) 0%, oklch(0.213 0 0) 100%);
-    --sk-inset-bg: linear-gradient(180deg, oklch(0.178 0 0) 0%, oklch(0.209 0 0) 100%);
-    --sk-border: oklch(1 0 0 / 0.08);
+    --sk-shell-bg: linear-gradient(180deg, oklch(0.228 0 0) 0%, oklch(0.196 0 0) 100%);
+    --sk-inset-bg: linear-gradient(180deg, oklch(0.165 0 0) 0%, oklch(0.192 0 0) 100%);
+    --sk-border: oklch(1 0 0 / 0.09);
     --sk-raised-shadow:
         0 10px 10px -9px oklch(0 0 0 / 0.44),
         0 20px 20px -14px oklch(0 0 0 / 0.38), 0 0 6px oklch(0 0 0 / 0.38);
@@ -55,7 +54,7 @@
     --sk-inset-shadow:
         0 0.5px 0 oklch(1 0 0 / 0.31), 0 2px 6px oklch(0 0 0 / 0.56) inset;
     --sk-accent-glow:
-        0 0 0 1px oklch(0.659 0.192 40.1 / 0.18), 0 0 16px oklch(0.659 0.192 40.1 / 0.16);
+        0 0 0 1px oklch(1 0 0 / 0.10), 0 0 18px oklch(1 0 0 / 0.09);
 
     /* ── Motion system — fast, crisp, responsive ── */
     --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
@@ -101,7 +100,7 @@
     --code-bg: oklch(0.134 0 0);
     --code-text: oklch(0.683 0 0);
     --sk-bg-gradient:
-        radial-gradient(circle at 50% -12%, oklch(0.659 0.192 40.1 / 0.06), transparent 34rem),
+        radial-gradient(circle at 50% -12%, var(--border-strong), transparent 34rem),
         linear-gradient(180deg, oklch(0.134 0 0) 0%, oklch(0.115 0 0) 32%, oklch(0 0 0) 100%);
     --sk-shell-bg: linear-gradient(180deg, oklch(0.191 0 0) 0%, oklch(0.159 0 0) 100%);
     --sk-inset-bg: linear-gradient(180deg, oklch(0.134 0 0) 0%, oklch(0.173 0 0) 100%);
@@ -227,7 +226,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 body::-webkit-scrollbar-thumb:hover {
-    background: oklch(0.576 0.172 39.5);
+    background: var(--dim);
 }
 
 body::-webkit-scrollbar-corner {
@@ -374,10 +373,12 @@ pre {
 .brand {
     display: inline-flex;
     align-items: center;
+    padding: 0 8px;
     text-decoration: none;
-    font-size: 1rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    font-family: var(--font-serif);
+    font-size: 1.45rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
     color: var(--text);
 }
 
@@ -392,7 +393,8 @@ pre {
     border-radius: var(--radius);
     text-decoration: none;
     color: var(--muted);
-    font-size: 0.9rem;
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
     font-weight: 500;
     transition:
         color 150ms var(--ease-out-smooth),
@@ -572,7 +574,7 @@ pre {
 }
 
 .nav-dropdown-head-link:hover {
-    border-color: oklch(0.659 0.192 40.1 / 0.42);
+    border-color: var(--border-strong);
 }
 
 .nav-dropdown-head-link strong {
@@ -616,7 +618,7 @@ pre {
 }
 
 .nav-dropdown-item:hover {
-    border-color: oklch(0.659 0.192 40.1 / 0.4);
+    border-color: var(--border-strong);
     background: var(--control-bg);
     transform: translateY(-1px);
 }
@@ -762,7 +764,7 @@ pre {
 }
 
 .home-hero .primary-button:hover {
-    background: linear-gradient(180deg, oklch(0.777 0.155 57.3) 0%, oklch(0.692 0.189 44.5) 48%, oklch(0.620 0.173 40.5) 100%);
+    background: var(--accent-fill-hover);
     filter: brightness(1.04) saturate(1.08);
 }
 
@@ -772,7 +774,7 @@ pre {
 }
 
 .home-hero .primary-button:active {
-    background: linear-gradient(180deg, oklch(0.641 0.175 44.8) 0%, oklch(0.615 0.169 38.5) 100%);
+    background: var(--accent-fill);
     filter: brightness(0.98) saturate(0.98);
     transform: translateY(1px) scale(var(--press-scale));
 }
@@ -831,7 +833,7 @@ h1,
 h2,
 h3 {
     margin: 0;
-    font-family: "STIX Two Text", "Georgia", serif;
+    font-family: var(--font-display);
     text-wrap: balance;
 }
 
@@ -1294,7 +1296,7 @@ h3 {
 }
 
 .legal-foot a:hover {
-    border-color: oklch(0.659 0.192 40.1 / 0.42);
+    border-color: var(--border-strong);
     color: var(--accent-text);
 }
 
@@ -1870,7 +1872,7 @@ h3 {
 }
 
 .model-chip.is-images {
-    border-color: oklch(0.659 0.192 40.1 / 0.32);
+    border-color: var(--border-strong);
     color: var(--accent-text);
     text-shadow: var(--accent-text-glow);
 }
@@ -1925,12 +1927,12 @@ h3 {
 }
 
 .model-card.is-gated {
-    border-color: oklch(0.659 0.192 40.1 / 0.55);
-    box-shadow: var(--sk-raised-crisp-shadow), 0 0 0 1px oklch(0.659 0.192 40.1 / 0.12);
+    border-color: var(--border-strong);
+    box-shadow: var(--sk-raised-crisp-shadow), 0 0 0 1px var(--border-strong);
 }
 
 .model-card.is-gated:hover {
-    border-color: oklch(0.659 0.192 40.1 / 0.82);
+    border-color: var(--border-strong);
 }
 
 .model-card[role="button"] {
@@ -2197,7 +2199,7 @@ h3 {
 }
 
 .model-modal-copy:hover {
-    border-color: oklch(0.659 0.192 40.1 / 0.55);
+    border-color: var(--border-strong);
 }
 
 .model-modal-docs {
@@ -2211,7 +2213,7 @@ h3 {
 
 .model-modal-docs:hover {
     color: var(--accent-text);
-    border-color: oklch(0.659 0.192 40.1 / 0.42);
+    border-color: var(--border-strong);
 }
 
 .model-card {
@@ -2499,7 +2501,7 @@ h3 {
 }
 .status-card.is-selected {
     z-index: 2;
-    box-shadow: var(--sk-raised-shadow), 0 0 0 1px var(--accent), 0 0 18px oklch(0.659 0.192 40.1 / 0.15);
+    box-shadow: var(--sk-raised-shadow), 0 0 0 1px var(--accent), 0 0 18px var(--border-strong);
 }
 .status-card.is-up.is-selected { border-color: oklch(0.622 0.166 146.2 / 0.5); }
 .status-card.is-degraded.is-selected { border-color: oklch(0.666 0.157 58.3 / 0.55); }
@@ -3011,6 +3013,7 @@ h3 {
     gap: 24px;
 }
 
+
 .footer-links {
     display: flex;
     gap: 16px;
@@ -3062,7 +3065,6 @@ h3 {
 }
 
 .nav,
-.site-footer,
 .nav-drawer-popup,
 .docs-layout,
 .code-card,
@@ -3118,14 +3120,14 @@ h3 {
 }
 
 .discord-button {
-    border-color: oklch(0.659 0.192 40.1 / 0.48);
+    border-color: var(--border-strong);
     color: var(--accent-text);
     text-shadow: var(--accent-text-glow);
 }
 
 .primary-button {
-    border-color: oklch(0.659 0.192 40.1 / 0.58);
-    background: linear-gradient(180deg, oklch(0.704 0.168 49.2) 0%, oklch(0.659 0.192 40.1) 44%, oklch(0.615 0.169 38.5) 100%);
+    border-color: var(--border-strong);
+    background: var(--accent-fill);
     color: var(--on-accent);
     box-shadow:
         var(--sk-raised-shadow),
@@ -3142,7 +3144,7 @@ h3 {
 }
 
 .primary-button:hover {
-    background: linear-gradient(180deg, oklch(0.777 0.155 57.3) 0%, oklch(0.692 0.189 44.5) 48%, oklch(0.620 0.173 40.5) 100%);
+    background: var(--accent-fill-hover);
     color: var(--on-accent);
 }
 
@@ -4188,9 +4190,9 @@ body[data-sound-muted="false"]::after {
     top: -1px;
     right: -1px;
     padding: 3px 8px;
-    border: 1px solid oklch(0.659 0.192 40.1 / 0.45);
+    border: 1px solid var(--border-strong);
     border-radius: 0 var(--radius) 0 var(--radius-sm);
-    background: oklch(0.659 0.192 40.1 / 0.12);
+    background: var(--border-strong);
     color: var(--accent-text);
     font-family: var(--font-mono);
     font-size: 0.62rem;

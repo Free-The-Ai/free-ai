@@ -12,13 +12,12 @@
     import { SiteHeader } from "@/widgets/header";
     import { SiteFooter } from "@/widgets/footer";
     import { MobileNav } from "@/widgets/mobile-nav";
-    import { DitherShader } from "@/widgets/background";
     import { ToastRegion } from "@/shared/ui";
 
     let { children }: { children: Snippet } = $props();
 
     const fontHref =
-        "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400&display=optional";
+        "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400&display=optional";
 
     const isNotFoundRoute = $derived(page.status === 404);
 
@@ -88,10 +87,6 @@
     {@html `<noscript><link rel="stylesheet" href="${fontHref}" /></noscript>`}
     {@html `<script>${themeInlineBootstrap()}</` + `script>`}
 </svelte:head>
-
-<div style="position: fixed; inset: 0; z-index: -1">
-    <DitherShader cellSize={16} amplitude={0.32} speed={0.6} interval={220} />
-</div>
 
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div class="page-shell">

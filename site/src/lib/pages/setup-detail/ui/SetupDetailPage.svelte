@@ -148,7 +148,7 @@
     </nav>
 
     <section class="setup-detail-hero shell">
-        <DitherGradient class="setup-detail-glow" from="orange" direction="up" opacity={0.28} />
+        <DitherGradient class="setup-detail-glow" from="grey" direction="up" opacity={0.28} />
         <span class="eyebrow">{CATEGORY_LABELS[guide.category]}</span>
         <h1>{guide.name}</h1>
         <p class="setup-detail-tagline">{guide.tagline}</p>

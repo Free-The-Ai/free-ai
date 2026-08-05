@@ -26,6 +26,7 @@
         "@types/d3-shape": "^3.1.8",
         "@types/node": "^24.0.0",
         "shiki": "^3.21.0",
+        "simple-icons": "^16.28.0",
         "svelte": "^5.56.0",
         "svelte-check": "^4.6.0",
         "typescript": "^5.9.0",

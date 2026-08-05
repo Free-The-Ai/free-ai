@@ -101,7 +101,7 @@
 
         <div class="docs-content">
             <section class="docs-hero shell">
-                <DitherGradient class="docs-glow" from="orange" direction="up" opacity={0.28} />
+                <DitherGradient class="docs-glow" from="grey" direction="up" opacity={0.28} />
                 <span class="eyebrow">API Docs</span>
                 <h1>One key, one base URL.</h1>
                 <p class="docs-lede">

@@ -49,7 +49,7 @@
 
 <div class="paid-plan-explorer">
     <section class="paid-plan-chooser shell" aria-labelledby="paid-plan-title">
-        <DitherGradient class="paid-plan-glow" from="orange" direction="up" opacity={0.26} />
+        <DitherGradient class="paid-plan-glow" from="grey" direction="up" opacity={0.26} />
         <div class="paid-plan-chooser-copy">
             <span class="eyebrow">Paid plans</span>
             <h2 id="paid-plan-title">Pick the lane that matches how you use the API.</h2>

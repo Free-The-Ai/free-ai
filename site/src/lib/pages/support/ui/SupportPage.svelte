@@ -51,7 +51,7 @@
 
 <main class="support-main">
     <section class="support-hero shell" aria-labelledby="support-hero-heading">
-        <DitherGradient class="support-hero-glow" from="orange" direction="up" opacity={0.32} />
+        <DitherGradient class="support-hero-glow" from="grey" direction="up" opacity={0.32} />
         <div class="support-hero-orb" aria-hidden="true">
             <span class="material-symbols-outlined">support_agent</span>
         </div>

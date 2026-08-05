@@ -45,7 +45,7 @@
 <main class="explainer-main">
     <article class="explainer-shell shell">
         <header class="explainer-head">
-            <DitherGradient class="explainer-glow" from="orange" direction="up" opacity={0.28} />
+            <DitherGradient class="explainer-glow" from="grey" direction="up" opacity={0.28} />
             <span class="eyebrow">About</span>
             <h1>What Is Free The AI?</h1>
             <p class="explainer-lede">

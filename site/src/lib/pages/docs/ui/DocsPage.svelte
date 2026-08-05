@@ -222,29 +222,25 @@
     align-items: center;
     gap: 6px;
     padding: 8px 14px;
-    border: 1px solid var(--sk-border);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--sk-inset-bg);
-    box-shadow: var(--sk-inset-shadow);
+    background: transparent;
     color: var(--muted);
     font-size: 0.9rem;
 }
 .docs-hero-stat strong {
     color: var(--accent-text);
-    font-family: var(--font-serif);
-    font-size: 1.2rem;
-    text-shadow: var(--accent-text-glow);
+    font-family: var(--font-display);
+    font-size: 1.1rem;
 }
 .docs-server-card {
     display: grid;
-    gap: 10px;
     width: 100%;
     max-width: 720px;
-    padding: 14px;
-    border: 1px solid var(--sk-border);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--sk-shell-bg);
-    box-shadow: var(--sk-raised-shadow);
+    background: transparent;
+    overflow: hidden;
 }
 .docs-server-row {
     display: flex;
@@ -252,10 +248,10 @@
     justify-content: space-between;
     gap: 16px;
     padding: 12px 14px;
-    border: 1px solid var(--sk-border);
-    border-radius: calc(var(--radius) - 4px);
-    background: var(--sk-inset-bg);
-    box-shadow: var(--sk-inset-shadow);
+    background: transparent;
+}
+.docs-server-row + .docs-server-row {
+    border-top: 1px solid var(--border);
 }
 .docs-server-info {
     display: grid;
@@ -285,9 +281,9 @@
     width: 34px;
     height: 34px;
     padding: 0;
-    border: 1px solid var(--sk-border);
+    border: 1px solid var(--border);
     border-radius: calc(var(--radius-sm) - 2px);
-    background: var(--sk-shell-bg);
+    background: transparent;
     color: var(--muted);
     cursor: pointer;
     transition: transform 140ms var(--ease-out-smooth), border-color 140ms var(--ease-out-smooth), color 140ms var(--ease-out-smooth);
@@ -302,10 +298,9 @@
 .docs-endpoint-table {
     display: grid;
     gap: 6px;
-    border: 1px solid var(--sk-border);
+    border: 1px solid var(--border);
     border-radius: var(--radius);
-    background: var(--sk-inset-bg);
-    box-shadow: var(--sk-inset-shadow);
+    background: transparent;
     overflow: hidden;
 }
 .docs-endpoint-row {
@@ -319,11 +314,11 @@
     transition: background 140ms var(--ease-out-smooth);
 }
 .docs-endpoint-row + .docs-endpoint-row {
-    border-top: 1px solid var(--sk-border);
+    border-top: 1px solid var(--border);
 }
 .docs-endpoint-head {
     padding: 10px 16px;
-    background: var(--sk-shell-bg);
+    background: transparent;
     color: var(--dim);
     font-family: var(--font-mono);
     font-size: 0.65rem;
@@ -335,7 +330,7 @@
     font-weight: 700;
 }
 .docs-endpoint-row:hover {
-    background: var(--sk-shell-bg);
+    background: oklch(1 0 0 / 0.03);
 }
 .docs-endpoint-row:active {
     transform: scale(0.995);

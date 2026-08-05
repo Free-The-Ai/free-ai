@@ -98,6 +98,17 @@
               ),
     );
 
+    // Docs-site convention: "/" focuses the route filter from anywhere on the page.
+    function onKeydown(event: KeyboardEvent): void {
+        if (event.key !== "/" || event.ctrlKey || event.metaKey || event.altKey) return;
+        const target = event.target as HTMLElement | null;
+        if (target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable)) return;
+        const input = document.querySelector<HTMLInputElement>(".docs-filter input");
+        if (!input) return;
+        event.preventDefault();
+        input.focus();
+    }
+
     // Scrollspy: the reference rail tracks which section is in view.
     let activeSection = $state("");
     onMount(() => {
@@ -117,7 +128,11 @@
             const el = document.getElementById(id);
             if (el) obs.observe(el);
         }
-        return () => obs.disconnect();
+        window.addEventListener("keydown", onKeydown);
+        return () => {
+            obs.disconnect();
+            window.removeEventListener("keydown", onKeydown);
+        };
     });
 
     function copyStartValue(event: MouseEvent): void {
@@ -219,7 +234,7 @@
             <section class="docs-section shell" id="endpoints" aria-labelledby="endpoint-overview-title">
                 <header class="section-head">
                     <span class="eyebrow">Endpoints</span>
-                    <h2 id="endpoint-overview-title">Every route.</h2>
+                    <h2 id="endpoint-overview-title">Every route.<a class="docs-anchor" href="#endpoints" aria-label="Link to this section">#</a></h2>
                 </header>
                 <label class="docs-filter">
                     <span class="material-symbols-outlined" aria-hidden="true">search</span>
@@ -227,7 +242,14 @@
                         type="search"
                         bind:value={routeFilter}
                         placeholder="Filter routes"
-                        aria-label="Filter endpoints by method, path, or description" />
+                        aria-label="Filter endpoints by method, path, or description"
+                        onkeydown={(e) => {
+                            if (e.key === "Escape") {
+                                routeFilter = "";
+                                e.currentTarget.blur();
+                            }
+                        }} />
+                    <kbd class="docs-filter-key" aria-hidden="true">/</kbd>
                 </label>
                 {#if filteredEndpoints.length === 0}
                     <p class="docs-filter-empty">
@@ -556,5 +578,13 @@
     text-decoration: underline;
     text-underline-offset: 3px;
     cursor: pointer;
+}
+.docs-filter-key {
+    padding: 1px 7px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
 }
 </style>

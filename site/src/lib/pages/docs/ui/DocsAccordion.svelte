@@ -48,6 +48,37 @@
         '}',
     ].join("\n");
 
+    // Example responses, labeled as examples. Shapes mirror the OpenAI and
+    // Anthropic schemas these routes are compatible with.
+    const chatResponseExample = [
+        '{',
+        '  "id": "chatcmpl-example",',
+        '  "object": "chat.completion",',
+        '  "created": 1700000000,',
+        '  "model": "opc/deepseek-v4-flash-free",',
+        '  "choices": [',
+        '    {',
+        '      "index": 0,',
+        '      "message": { "role": "assistant", "content": "OK." },',
+        '      "finish_reason": "stop"',
+        '    }',
+        '  ],',
+        '  "usage": { "prompt_tokens": 12, "completion_tokens": 3, "total_tokens": 15 }',
+        '}',
+    ].join("\n");
+
+    const messagesResponseExample = [
+        '{',
+        '  "id": "msg_example",',
+        '  "type": "message",',
+        '  "role": "assistant",',
+        '  "model": "opc/deepseek-v4-flash-free",',
+        '  "content": [{ "type": "text", "text": "OK." }],',
+        '  "stop_reason": "end_turn",',
+        '  "usage": { "input_tokens": 12, "output_tokens": 3 }',
+        '}',
+    ].join("\n");
+
     const authRows: DocsRow[] = [
         { code: "/signup", span: "Creates a key after the modal is completed. Existing keys are rejected; use /resetkey instead." },
         { code: "/checkin", span: "Required once per UTC day. Enter your existing API key and solve the randomized challenge before using the free API." },
@@ -232,6 +263,12 @@
                     </div>
                 </div>
             </div>
+            <h3>Response</h3>
+            <p>Example response. The route mirrors the OpenAI chat completion shape.</p>
+            <div class="docs-code-group">
+                <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
+                <pre><code>{chatResponseExample}</code></pre>
+            </div>
         </section>
     </article>
 
@@ -277,6 +314,12 @@
                     <pre><code>{messagesSnippet}</code></pre>
                 {/if}
             </div>
+            <h3>Response</h3>
+            <p>Example response. The route mirrors the Anthropic message shape.</p>
+            <div class="docs-code-group">
+                <button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button>
+                <pre><code>{messagesResponseExample}</code></pre>
+            </div>
         </section>
     </article>
 
@@ -319,6 +362,39 @@
                         {/if}
                     </div>
                 </div>
+            </div>
+        </section>
+    </article>
+
+    <article class="docs-section" id="other-routes">
+        <header class="docs-section-head">
+            <h2>Images, audio, and responses</h2>
+        </header>
+        <section class="docs-card">
+            <p>
+                These routes share the same base URL and bearer key as chat. Availability follows the catalog: use an
+                alias that supports the route you are calling.
+            </p>
+            <div class="docs-routes-family" id="images">
+                <h3>Images</h3>
+                <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/images/generations</code></div>
+                <div class="docs-op-path"><span class="docs-method get">GET</span><code>{"/v1/images/generations/{request_id}"}</code></div>
+                <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/images/edits</code></div>
+                <p>
+                    OpenAI-compatible image generation and multipart edits for supported image aliases. Generation is
+                    async: the POST returns a request id, and the GET route polls the job until it completes.
+                </p>
+            </div>
+            <div class="docs-routes-family" id="audio">
+                <h3>Audio</h3>
+                <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/audio/speech</code></div>
+                <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/audio/transcriptions</code></div>
+                <p>Text-to-speech for supported voice aliases, plus multipart speech-to-text uploads.</p>
+            </div>
+            <div class="docs-routes-family" id="responses">
+                <h3>Responses</h3>
+                <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/responses</code></div>
+                <p>Responses-style route for clients that speak that format. Same key, same model aliases.</p>
             </div>
         </section>
     </article>

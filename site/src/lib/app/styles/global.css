@@ -4263,6 +4263,24 @@ body[data-sound-muted="false"]::after {
     color: oklch(0.74 0.16 45);
     background: oklch(0.74 0.16 45 / 0.12);
 }
+.docs-routes-family {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: start;
+    gap: 8px;
+    margin-top: 26px;
+}
+.docs-routes-family > * {
+    min-width: 0;
+}
+.docs-routes-family p {
+    margin: 4px 0 0;
+    color: var(--muted);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    max-width: 65ch;
+}
+
 .docs-op-path {
     display: flex;
     align-items: center;
@@ -4273,6 +4291,7 @@ body[data-sound-muted="false"]::after {
     font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--text);
+    overflow-wrap: anywhere;
 }
 .docs-try {
     display: grid;

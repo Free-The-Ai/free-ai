@@ -9,6 +9,7 @@
         { id: "chat", label: "Chat" },
         { id: "messages", label: "Messages" },
         { id: "models", label: "Models" },
+        { id: "other-routes", label: "More routes" },
         { id: "errors", label: "Errors" },
     ];
 

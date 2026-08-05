@@ -18,7 +18,6 @@
         modelListSnippetHtml,
         fullModelListSnippet,
         fullModelListSnippetHtml,
-        endpoints,
     }: {
         baseSnippet: string;
         baseSnippetHtml?: string;
@@ -32,7 +31,6 @@
         modelListSnippetHtml?: string;
         fullModelListSnippet: string;
         fullModelListSnippetHtml?: string;
-        endpoints: [string, string, string][];
     } = $props();
 
     // Real entry from the live catalog (models.json) - one model, abbreviated.
@@ -164,39 +162,7 @@
         </section>
     </article>
 
-    <article class="docs-section" id="endpoints">
-        <header class="docs-section-head">
-            <span class="docs-section-eyebrow">Endpoints</span>
-            <h2>Supported routes</h2>
-        </header>
-        <section class="docs-card">
-            <div class="docs-table">
-                {#each endpoints as [method, routePath, desc], i (i)}
-                    <div class="docs-row">
-                        <span class={`docs-method ${method.toLowerCase()}`}>{method}</span>
-                        <code>{routePath}</code>
-                        <span>{desc}</span>
-                    </div>
-                {/each}
-            </div>
-            <section class="docs-try">
-                <div class="docs-try-head">
-                    <div class="docs-try-copy">
-                        <span class="docs-try-title"><span class="docs-method get">GET</span> /v1/health</span>
-                        <p>Public health and catalog status. No key required, so this one is safe to try from the browser.</p>
-                    </div>
-                    <button class="docs-try-btn" type="button" onclick={tryHealth} disabled={healthState === "loading"}>
-                        {healthState === "loading" ? "Waiting…" : "Try it out"}
-                    </button>
-                </div>
-                {#if healthState === "done" || healthState === "error"}
-                    <div class="docs-code-group docs-try-response" aria-live="polite">
-                        <pre><code>{healthState === "error" ? `Request failed: ${healthError}` : healthBody}</code></pre>
-                    </div>
-                {/if}
-            </section>
-        </section>
-    </article>
+    
 
     <article class="docs-section" id="compatibility">
         <header class="docs-section-head">
@@ -227,7 +193,6 @@
 
     <article class="docs-section" id="chat">
         <header class="docs-section-head">
-            <span class="docs-section-eyebrow">Chat Completions</span>
             <h2>OpenAI-compatible chat</h2>
             <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/chat/completions</code></div>
         </header>
@@ -292,7 +257,6 @@
 
     <article class="docs-section" id="messages">
         <header class="docs-section-head">
-            <span class="docs-section-eyebrow">Messages API</span>
             <h2>Anthropic-style clients</h2>
             <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/messages</code></div>
         </header>
@@ -338,7 +302,6 @@
 
     <article class="docs-section" id="models">
         <header class="docs-section-head">
-            <span class="docs-section-eyebrow">Model Catalog</span>
             <h2>List models</h2>
             <div class="docs-op-path"><span class="docs-method get">GET</span><code>/v1/models</code></div>
         </header>

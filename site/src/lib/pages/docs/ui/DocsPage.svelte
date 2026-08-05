@@ -134,14 +134,12 @@
                         </button>
                     </div>
                 </div>
-                <div class="docs-hero-meta">
-                    <span class="docs-hero-stat"><strong>{endpoints.length}</strong> endpoints</span>
-                    <span class="docs-hero-stat"><strong>3</strong> formats</span>
-                    <span class="docs-hero-stat"><strong>0¢</strong> free tier</span>
-                </div>
+                <p class="docs-hero-caption">
+                    {endpoints.length} endpoints, 3 formats, and 0¢ on the free tier
+                </p>
             </section>
 
-            <section class="docs-section shell" aria-labelledby="endpoint-overview-title">
+            <section class="docs-section shell" id="endpoints" aria-labelledby="endpoint-overview-title">
                 <header class="section-head">
                     <span class="eyebrow">Endpoints</span>
                     <h2 id="endpoint-overview-title">Every route.</h2>
@@ -177,7 +175,6 @@
                     {modelListSnippetHtml}
                     {fullModelListSnippet}
                     {fullModelListSnippetHtml}
-                    endpoints={endpoints.map(([m, p, d]) => [m, p, d])}
                 />
             </section>
         </div>
@@ -210,28 +207,12 @@
     line-height: 1.6;
     text-wrap: pretty;
 }
-.docs-hero-meta {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-    gap: 10px;
-    margin-top: 2px;
-}
-.docs-hero-stat {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 8px 14px;
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    background: transparent;
-    color: var(--muted);
-    font-size: 0.9rem;
-}
-.docs-hero-stat strong {
-    color: var(--accent-text);
-    font-family: var(--font-display);
-    font-size: 1.1rem;
+.docs-hero-caption {
+    margin: 0;
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.01em;
 }
 .docs-server-card {
     display: grid;
@@ -360,9 +341,6 @@
     text-wrap: pretty;
 }
 @media (max-width: 760px) {
-    .docs-server-row {
-        border-radius: calc(var(--radius) - 2px);
-    }
     .docs-server-copy {
         border-radius: calc(var(--radius) - 6px);
     }

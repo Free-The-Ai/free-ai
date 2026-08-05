@@ -6,7 +6,6 @@
 
     const SECTIONS = [
         { id: "auth", label: "Auth" },
-        { id: "endpoints", label: "Endpoints" },
         { id: "chat", label: "Chat" },
         { id: "messages", label: "Messages" },
         { id: "models", label: "Models" },

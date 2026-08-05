@@ -98,7 +98,17 @@
         letter-spacing: -0.05em;
         text-align: center;
         white-space: nowrap;
-        color: oklch(1 0 0 / 0.07);
+        color: transparent;
+        background-image: linear-gradient(
+            92deg,
+            oklch(1 0 0 / 0.07) 0%,
+            oklch(0.72 0.09 265 / 0.10) 28%,
+            oklch(0.78 0.09 195 / 0.10) 50%,
+            oklch(0.85 0.11 100 / 0.10) 72%,
+            oklch(1 0 0 / 0.07) 100%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
         user-select: none;
     }
     .footer-bottom {

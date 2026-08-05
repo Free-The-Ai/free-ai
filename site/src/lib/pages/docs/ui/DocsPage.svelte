@@ -9,7 +9,7 @@
         buildSignupHowToJsonLd,
         buildBreadcrumbJsonLd,
     } from "@/shared/lib/jsonLd";
-    import { DitherGradient, SeoHead } from "@/shared/ui";
+    import { SeoHead } from "@/shared/ui";
     import { highlightedCode } from "@/shared/config/highlighted.generated";
     import { docsSnippets } from "@/shared/config/codeSnippets";
     import { DocsMobileNav } from "@/features/docs-navigation";
@@ -88,8 +88,8 @@
 <main class="docs-main" data-docs-nav>
     <DocsMobileNav />
     <section class="docs-layout">
-        <aside class="docs-sidebar" id="docs-section-nav" aria-label="Docs sections">
-            <span class="docs-sidebar-label">On this page</span>
+        <aside class="docs-sidebar" id="docs-section-nav" aria-label="API reference">
+            <span class="docs-sidebar-label">Reference</span>
             <a href="#auth">Auth</a>
             <a href="#endpoints">Endpoints</a>
             <a href="#compatibility">Compatibility</a>
@@ -97,48 +97,47 @@
             <a href="#messages">Messages</a>
             <a href="#models">Models</a>
             <a href="#errors">Errors</a>
+            <span class="docs-sidebar-label docs-nav-label">Endpoints</span>
+            {#each endpoints as [method, path, , anchor] (anchor)}
+                <a class="docs-nav-op" href={`#${anchor}`}>
+                    <span class={`docs-nav-method ${method.toLowerCase()}`}>{method}</span>
+                    <code>{path}</code>
+                </a>
+            {/each}
         </aside>
 
         <div class="docs-content">
             <section class="docs-hero shell">
-                <DitherGradient class="docs-glow" from="grey" direction="up" opacity={0.28} />
-                <span class="eyebrow">API Docs</span>
+                <span class="eyebrow">API Reference</span>
                 <h1>One key, one base URL.</h1>
                 <p class="docs-lede">
                     OpenAI-compatible chat, Anthropic-style messages, image generation, audio, and the full model catalog.
                     Same key, same base URL.
                 </p>
+                <div class="docs-server-card">
+                    <div class="docs-server-row">
+                        <div class="docs-server-info">
+                            <span class="docs-server-label">Base URL</span>
+                            <code>https://api.freetheai.xyz/v1</code>
+                        </div>
+                        <button class="docs-server-copy" type="button" data-copy="https://api.freetheai.xyz/v1" aria-label="Copy base URL" onclick={copyStartValue}>
+                            <span class="material-symbols-outlined">content_copy</span>
+                        </button>
+                    </div>
+                    <div class="docs-server-row">
+                        <div class="docs-server-info">
+                            <span class="docs-server-label">Auth header</span>
+                            <code>Authorization: Bearer YOUR_API_KEY</code>
+                        </div>
+                        <button class="docs-server-copy" type="button" data-copy="Authorization: Bearer YOUR_API_KEY" aria-label="Copy auth header" onclick={copyStartValue}>
+                            <span class="material-symbols-outlined">content_copy</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="docs-hero-meta">
                     <span class="docs-hero-stat"><strong>{endpoints.length}</strong> endpoints</span>
                     <span class="docs-hero-stat"><strong>3</strong> formats</span>
                     <span class="docs-hero-stat"><strong>0¢</strong> free tier</span>
-                </div>
-            </section>
-
-            <section class="docs-section shell" id="getting-started">
-                <header class="section-head">
-                    <span class="eyebrow">Getting started</span>
-                    <h2>Connect in seconds.</h2>
-                </header>
-                <div class="docs-start-card">
-                    <div class="docs-start-row">
-                        <div class="docs-start-info">
-                            <span class="docs-start-label">Base URL</span>
-                            <code>https://api.freetheai.xyz/v1</code>
-                        </div>
-                        <button class="docs-start-copy" type="button" data-copy="https://api.freetheai.xyz/v1" aria-label="Copy base URL" onclick={copyStartValue}>
-                            <span class="material-symbols-outlined">content_copy</span>
-                        </button>
-                    </div>
-                    <div class="docs-start-row">
-                        <div class="docs-start-info">
-                            <span class="docs-start-label">Auth header</span>
-                            <code>Authorization: Bearer YOUR_API_KEY</code>
-                        </div>
-                        <button class="docs-start-copy" type="button" data-copy="Authorization: Bearer YOUR_API_KEY" aria-label="Copy auth header" onclick={copyStartValue}>
-                            <span class="material-symbols-outlined">content_copy</span>
-                        </button>
-                    </div>
                 </div>
             </section>
 
@@ -155,7 +154,7 @@
                     </div>
                     {#each endpoints as [method, path, desc, anchor], i (i)}
                         <a class="docs-endpoint-row" href={`#${anchor}`} role="row">
-                            <span class={`docs-method docs-method-${method.toLowerCase()}`} role="cell">{method}</span>
+                            <span class={`docs-method ${method.toLowerCase()}`} role="cell">{method}</span>
                             <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
                             <code class="docs-path" role="cell">{path}</code>
                             <span class="docs-endpoint-desc" role="cell">{desc}</span>
@@ -188,10 +187,10 @@
 <style>
 .docs-hero {
     display: grid;
-    gap: 12px;
-    padding: clamp(28px, 4.6vw, 52px);
-    text-align: center;
-    justify-items: center;
+    gap: 14px;
+    padding: clamp(24px, 3.6vw, 40px);
+    justify-items: start;
+    text-align: left;
 }
 .docs-hero .eyebrow {
     color: var(--dim);
@@ -214,9 +213,9 @@
 .docs-hero-meta {
     display: flex;
     flex-wrap: wrap;
-    justify-content: center;
-    gap: 14px;
-    margin-top: 4px;
+    justify-content: flex-start;
+    gap: 10px;
+    margin-top: 2px;
 }
 .docs-hero-stat {
     display: inline-flex;
@@ -236,48 +235,49 @@
     font-size: 1.2rem;
     text-shadow: var(--accent-text-glow);
 }
-.docs-start-card {
+.docs-server-card {
     display: grid;
-    gap: 12px;
-    padding: 18px;
+    gap: 10px;
+    width: 100%;
+    max-width: 720px;
+    padding: 14px;
     border: 1px solid var(--sk-border);
     border-radius: var(--radius);
     background: var(--sk-shell-bg);
     box-shadow: var(--sk-raised-shadow);
 }
-.docs-start-row {
+.docs-server-row {
     display: flex;
     align-items: center;
     justify-content: space-between;
     gap: 16px;
-    padding: 14px 16px;
+    padding: 12px 14px;
     border: 1px solid var(--sk-border);
     border-radius: calc(var(--radius) - 4px);
     background: var(--sk-inset-bg);
     box-shadow: var(--sk-inset-shadow);
 }
-.docs-start-info {
+.docs-server-info {
     display: grid;
     gap: 6px;
     min-width: 0;
 }
-.docs-start-label {
+.docs-server-label {
     color: var(--dim);
     font-family: var(--font-mono);
     font-size: 0.68rem;
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
-.docs-start-info code {
+.docs-server-info code {
     color: var(--accent-text);
     font-family: var(--font-mono);
     font-size: 0.92rem;
-    text-shadow: var(--accent-text-glow);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
-.docs-start-copy {
+.docs-server-copy {
     flex: 0 0 auto;
     display: inline-flex;
     align-items: center;
@@ -292,11 +292,11 @@
     cursor: pointer;
     transition: transform 140ms var(--ease-out-smooth), border-color 140ms var(--ease-out-smooth), color 140ms var(--ease-out-smooth);
 }
-.docs-start-copy:hover {
+.docs-server-copy:hover {
     color: var(--text);
-    border-color: oklch(0.659 0.192 40.1 / 0.42);
+    border-color: var(--border-strong);
 }
-.docs-start-copy:active {
+.docs-server-copy:active {
     transform: scale(0.96);
 }
 .docs-endpoint-table {
@@ -350,14 +350,6 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
 }
-.docs-method-get {
-    background: oklch(0.72 0.15 145 / 0.15);
-    color: oklch(0.72 0.15 145);
-}
-.docs-method-post {
-    background: oklch(0.659 0.192 40.1 / 0.15);
-    color: var(--accent-text);
-}
 .docs-path {
     font-family: var(--font-mono);
     font-size: 0.85rem;
@@ -373,10 +365,10 @@
     text-wrap: pretty;
 }
 @media (max-width: 760px) {
-    .docs-start-row {
+    .docs-server-row {
         border-radius: calc(var(--radius) - 2px);
     }
-    .docs-start-copy {
+    .docs-server-copy {
         border-radius: calc(var(--radius) - 6px);
     }
     .docs-endpoint-row {
@@ -401,21 +393,11 @@
     .docs-endpoint-card,
     .docs-endpoint-card:hover,
     .docs-endpoint-card:active,
-    .docs-start-copy,
-    .docs-start-copy:active {
+    .docs-server-copy,
+    .docs-server-copy:active {
         transition: none;
         transform: none;
     }
 }
-.docs-hero {
-    position: relative;
-    overflow: hidden;
-}
-:global(.docs-glow) {
-    z-index: 0;
-}
-.docs-hero > :global(*:not(.docs-glow)) {
-    position: relative;
-    z-index: 1;
-}
+
 </style>

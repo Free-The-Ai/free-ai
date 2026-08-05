@@ -62,30 +62,25 @@
     ];
 
     const howItWorks: [string, string, string][] = [
-        ["wallet", "Deposit crypto", "Fund your FreeTheAI wallet with crypto. One balance pays for every model on the marketplace."],
-        ["code", "Call any model", "OpenAI, Anthropic, Google, and more through one API. Access comes from independent sellers, not the original companies."],
-        ["route", "Choose the right route", "Select cheapest or fastest routing. Each request uses one reviewed route with server-owned pricing and access checks."],
+        ["Deposit crypto", "Fund your FreeTheAI wallet with crypto. One balance pays for every model on the marketplace.", "account_balance_wallet"],
+        ["Call any model", "OpenAI, Anthropic, Google, and more through one API. Access comes from independent sellers, not the original companies.", "code"],
+        ["Choose the right route", "Select cheapest or fastest routing. Each request uses one reviewed route with server-owned pricing and access checks.", "auto_awesome"],
     ];
 
     const whyCards: [string, string, string][] = [
-        ["wallet", "One wallet, fair billing", "Sellers list per-call or per-token pricing. Every transaction is crypto, settled from your balance."],
-        ["chart", "Priced by the market", "Approved independent providers offer reviewed capacity at different prices and service levels. FreeTheAI owns the catalog, routing, billing, and support."],
-        ["lock", "Free routes when available", "Reviewed donated and seller capacity can appear as FreeTheAI free routes. Daily check-in and limits remain server-owned."],
-        ["gauge", "Server-owned route selection", "Choose the cheapest or fastest reviewed route for each request. Authorization, pricing, and billing are checked before dispatch."],
-        ["code", "Three formats, one API", "OpenAI Chat Completions, OpenAI Responses, and Anthropic Messages use one account and one server-controlled marketplace."],
-        ["robot", "Sellers earn in crypto", "Offer approved independent capacity, set per-call or per-token pricing, and receive manual crypto payouts after completed usage."],
+        ["One wallet, fair billing", "Sellers list per-call or per-token pricing. Every transaction is crypto, settled from your balance.", "account_balance_wallet"],
+        ["Priced by the market", "Approved independent providers offer reviewed capacity at different prices and service levels. FreeTheAI owns the catalog, routing, billing, and support.", "monitoring"],
+        ["Free routes when available", "Reviewed donated and seller capacity can appear as FreeTheAI free routes. Daily check-in and limits remain server-owned.", "lock"],
+        ["Server-owned route selection", "Choose the cheapest or fastest reviewed route for each request. Authorization, pricing, and billing are checked before dispatch.", "speed"],
+        ["Three formats, one API", "OpenAI Chat Completions, OpenAI Responses, and Anthropic Messages use one account and one server-controlled marketplace.", "code"],
+        ["Sellers earn in crypto", "Offer approved independent capacity, set per-call or per-token pricing, and receive manual crypto payouts after completed usage.", "smart_toy"],
     ];
 
-    const iconPaths: Record<string, string> = {
-        wallet: "M3 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v1h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V7Zm16 5h3v3h-3a1.5 1.5 0 0 1 0-3Z",
-        code: "M8.7 6.3 3 12l5.7 5.7 1.4-1.4L5.8 12l4.3-4.3-1.4-1.4Zm6.6 0-1.4 1.4 4.3 4.3-4.3 4.3 1.4 1.4L21 12l-5.7-5.7Z",
-        route: "M12 2.5 13.8 8l5.7 1.8-5.7 1.8L12 17.5 10.2 11.6 4.5 9.8 10.2 8 12 2.5ZM19 15l.9 2.6 2.6.9-2.6.9L19 22l-.9-2.6-2.6-.9 2.6-.9L19 15Z",
-        chart: "M4 19V5h2v12h14v2H4Zm4-3-1.4-1.4L11 9.2l3 3L19.4 6.8 20.8 8.2 14 15l-3-3-4 4Z",
-        lock: "M12 3a4 4 0 0 1 4 4v3h1a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2v-7a2 2 0 0 1 2-2h1V7a4 4 0 0 1 4-4Zm-2 7h4V7a2 2 0 1 0-4 0v3Z",
-        gauge: "M12 4a9 9 0 0 1 9 9c0 2.4-.9 4.5-2.4 6.1l-1.4-1.4A7 7 0 1 0 5 13c0 1.9.8 3.6 2 4.9l-1.4 1.4A9 9 0 1 1 12 4Zm5.6 5-4.3 4.6a2 2 0 1 1-1.5-1.3L17.6 9Z",
-        robot: "M12 2a1 1 0 0 1 1 1v2h4a3 3 0 0 1 3 3v8a3 3 0 0 1-3 3H7a3 3 0 0 1-3-3V8a3 3 0 0 1 3-3h4V3a1 1 0 0 1 1-1ZM9 11a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Zm6 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3Z",
-    };
 </script>
+
+<svelte:head>
+    <link rel="preload" as="image" href="/hero-dune.webp" />
+</svelte:head>
 
 <SeoHead {seo} />
 
@@ -118,11 +113,9 @@
                 <p>One wallet, one API, a marketplace full of sellers.</p>
             </div>
             <div class="hp-card-grid hp-card-grid-3">
-                {#each howItWorks as [icon, title, text] (title)}
+                {#each howItWorks as [title, text, icon] (title)}
                     <article class="hp-card">
-                        <span class="hp-card-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d={iconPaths[icon]} /></svg>
-                        </span>
+                        <span class="hp-card-icon material-symbols-outlined" aria-hidden="true">{icon}</span>
                         <h3>{title}</h3>
                         <p>{text}</p>
                     </article>
@@ -149,11 +142,9 @@
                 <p>Many sellers, one marketplace. More choice on price, speed, and quality.</p>
             </div>
             <div class="hp-card-grid hp-card-grid-3">
-                {#each whyCards as [icon, title, text] (title)}
+                {#each whyCards as [title, text, icon] (title)}
                     <article class="hp-card">
-                        <span class="hp-card-icon" aria-hidden="true">
-                            <svg viewBox="0 0 24 24" fill="currentColor"><path d={iconPaths[icon]} /></svg>
-                        </span>
+                        <span class="hp-card-icon material-symbols-outlined" aria-hidden="true">{icon}</span>
                         <h3>{title}</h3>
                         <p>{text}</p>
                     </article>
@@ -332,6 +323,7 @@
         align-content: start;
     }
     .hp-card-icon {
+        font-size: 17px;
         display: inline-flex;
         align-items: center;
         justify-content: center;
@@ -341,10 +333,6 @@
         border-radius: var(--radius-sm);
         background: var(--sk-inset-bg);
         color: var(--muted);
-    }
-    .hp-card-icon svg {
-        width: 17px;
-        height: 17px;
     }
     .hp-card h3 {
         font-size: 0.92rem;

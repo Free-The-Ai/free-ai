@@ -55,7 +55,7 @@
 
     <p class="footer-bottom">
         © Copyright FreeTheAI 2026<span class="footer-sep" aria-hidden="true">&middot;</span>free tier stays free. paid slots are
-        optional.<span class="footer-sep" aria-hidden="true">&middot;</span><OnlineCounter />
+        optional. <OnlineCounter />
     </p>
 </footer>
 

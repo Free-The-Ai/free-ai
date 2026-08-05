@@ -25,7 +25,7 @@
 
 <main class="status-main">
     <section class="status-hero shell">
-        <DitherGradient class="status-glow" from="orange" direction="up" opacity={0.28} />
+        <DitherGradient class="status-glow" from="grey" direction="up" opacity={0.28} />
         <span class="eyebrow">Live status</span>
         <h1>Provider health</h1>
         <p class="status-lede">Real-time signals from the FreeTheAi API by provider prefix.</p>

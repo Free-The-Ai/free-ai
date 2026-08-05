@@ -3,17 +3,14 @@
     import { page } from "$app/state";
     import { CATEGORY_LABELS, CATEGORY_ORDER, SETUP_GUIDES, setupGuidesByCategory } from "@/entities/setup-guide";
     import { siteConfig } from "@/shared/config/site";
-    import { DitherButton, Logo } from "@/shared/ui";
-    import { OnlineNow } from "@/features/online-now";
 
     const currentPath = $derived(page.url.pathname as string);
 
     const navLinks: [string, string][] = [
         ["/home", "Home"],
-        ["/docs", "Docs"],
         ["/models", "Models"],
         ["/pricing", "Pricing"],
-        ["/status", "Status"],
+        ["/docs", "Docs"],
     ];
 
     const setupCategories = setupGuidesByCategory();
@@ -71,7 +68,7 @@
 
 <header class="site-header">
     <nav class="nav" aria-label="Main navigation">
-        <a class="brand" href="/home"><Logo width={160} /></a>
+        <a class="brand" href="/home">FTA</a>
         <div class="nav-links">
             {#each navLinks as [href, label] (href)}
                 <a {href} class={{ "is-active": currentPath === href }} aria-current={currentPath === href ? "page" : undefined}>
@@ -118,30 +115,44 @@
             </div>
         </div>
         <div class="nav-actions">
-            <OnlineNow />
             <button bind:this={themeToggleEl} type="button" class="theme-toggle" aria-label="Toggle color scheme" title="Toggle theme" onclick={onThemeToggle}>
                 <span class="theme-toggle-icon" aria-hidden="true">◎</span>
             </button>
-            <DitherButton
+            <a
+                class="theme-toggle"
                 href={siteConfig.socials.discord}
                 target="_blank"
                 rel="noreferrer"
-                color="blue"
-                size="sm"
-                data-sound="interaction.confirm"
-            >Join Discord</DitherButton>
-            <DitherButton
-                href={siteConfig.socials.donate}
+                aria-label="Join the FreeTheAi Discord"
+                title="Join Discord"
+                data-sound="interaction.tap"
+            >
+                <span class="material-symbols-outlined nav-action-icon" aria-hidden="true">chat</span>
+            </a>
+            <a
+                class="theme-toggle"
+                href={siteConfig.socials.discord}
                 target="_blank"
                 rel="noreferrer"
-                color="pink"
-                size="sm"
+                aria-label="Get your free API key"
+                title="Get your free API key"
                 data-sound="interaction.confirm"
-                aria-label="Donate to FreeTheAi on Buy Me a Coffee"
             >
-                <span class="donate-button-icon" aria-hidden="true">&#9829;</span>
-                Donate
-            </DitherButton>
+                <span class="material-symbols-outlined nav-action-icon" aria-hidden="true">key</span>
+            </a>
         </div>
     </nav>
 </header>
+
+<style>
+    .nav-action-icon {
+        font-size: 17px;
+    }
+    a.theme-toggle {
+        text-decoration: none;
+        border-radius: var(--radius-full);
+    }
+    .site-header :global(.theme-toggle) {
+        border-radius: var(--radius-full);
+    }
+</style>

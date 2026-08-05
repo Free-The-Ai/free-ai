@@ -74,7 +74,7 @@
 
 <main class="models-main">
     <section class="models-hero shell">
-        <DitherGradient class="models-glow" from="orange" direction="up" opacity={0.28} />
+        <DitherGradient class="models-glow" from="grey" direction="up" opacity={0.28} />
         <span class="eyebrow">Model catalog</span>
         <h1>FreeTheAi public model aliases</h1>
         <p class="models-lede">

@@ -82,7 +82,7 @@
 
 <main class="team-main">
     <section class="team-hero shell">
-        <DitherGradient class="team-hero-glow" from="orange" direction="up" opacity={0.4} />
+        <DitherGradient class="team-hero-glow" from="grey" direction="up" opacity={0.4} />
         <span class="eyebrow">Team</span>
         <h1>The people behind FreeTheAi.</h1>
         <p class="team-lede">
@@ -111,7 +111,7 @@
         <div class="team-grid">
             {#each team as member (member.githubHandle)}
                 <article class="team-card">
-                    <DitherGradient class="team-card-glow" from="orange" direction="up" opacity={0.5} />
+                    <DitherGradient class="team-card-glow" from="grey" direction="up" opacity={0.5} />
                     <div class="team-card-top">
                         <DitherAvatar class="team-avatar" name={member.name} size={80} bloom="low" />
                         <div class="team-card-meta">

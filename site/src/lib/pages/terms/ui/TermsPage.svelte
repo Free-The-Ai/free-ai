@@ -45,7 +45,7 @@
 
 <main>
     <section class="policy-hero shell">
-        <DitherGradient class="policy-glow" from="orange" direction="up" opacity={0.26} />
+        <DitherGradient class="policy-glow" from="grey" direction="up" opacity={0.26} />
         <span class="eyebrow">Terms of Use</span>
         <h1>Use the API without abusing the shared pool.</h1>
         <p class="hero-text">

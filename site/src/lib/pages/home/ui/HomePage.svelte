@@ -15,7 +15,7 @@
     } from "simple-icons";
     import { buildSeo } from "@/shared/lib/seo";
     import { siteConfig } from "@/shared/config/site";
-    import { DitherGradient, SeoHead } from "@/shared/ui";
+    import { SeoHead } from "@/shared/ui";
     import { LiveStats } from "@/features/live-stats";
     import {
         buildWebsiteJsonLd,
@@ -155,7 +155,6 @@
     </section>
 
     <section class="hp-cta hp-crop hp-reveal" aria-labelledby="hp-cta-title">
-        <DitherGradient from="grey" direction="up" opacity={0.2} />
         <div class="hp-cta-copy">
             <h2 id="hp-cta-title">Stop paying list price for&nbsp;AI</h2>
             <p>Join the Discord, run /signup, and call top models free in minutes. The v2 marketplace is on the way.</p>
@@ -169,7 +168,6 @@
     </section>
 
     <section class="hp-start hp-crop hp-reveal" aria-labelledby="hp-start-title">
-        <DitherGradient from="grey" direction="up" opacity={0.16} />
         <h2 id="hp-start-title">Get started<br />with FreeTheAI</h2>
         <a class="primary-button hp-btn" href="/quickstart" data-sound="interaction.confirm">
             <span>&rarr; Quickstart</span>
@@ -460,16 +458,6 @@
     }
 
     /* ── Flavor pass: dither glows, halftone, sheen, reveals ── */
-    .hp-cta,
-    .hp-start {
-        position: relative;
-        isolation: isolate;
-    }
-    /* DitherGradient canvas behind section content, above the page canvas. */
-    .hp-cta > :global(.kb-dither-gradient),
-    .hp-start > :global(.kb-dither-gradient) {
-        z-index: -1;
-    }
 
     /* Halftone dot texture inside the icon boxes - printed, tactile feel. */
     .hp-card-icon {

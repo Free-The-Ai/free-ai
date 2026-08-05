@@ -9,7 +9,7 @@
     const navLinks: [string, string][] = [
         ["/home", "Home"],
         ["/models", "Models"],
-        ["/pricing", "Pricing"],
+        ["/status", "Status"],
         ["/docs", "Docs"],
     ];
 

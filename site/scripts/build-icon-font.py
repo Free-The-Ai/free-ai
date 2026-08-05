@@ -26,7 +26,10 @@ ICON_RE = re.compile(r'material-symbols-outlined[^>]*>\s*([a-z0-9_]+)\s*<')
 # Icons passed dynamically as the last field of a data tuple, e.g. the MobileNav
 # MORE array: ["/docs", "Docs", false, "description"] rendered via >{icon}<.
 # The literal regex can't see these, so extract the tuple icon column too.
-TUPLE_ICON_RE = re.compile(r',\s*(?:false|true)\s*,\s*"([a-z0-9_]{3,})"\s*\]')
+# Icon-last tuples with or without the external-flag bool. In gated files that
+# also carry non-icon snake-case-last tuples (e.g. DocsPage route labels) this
+# may over-include a few glyphs; the subset cost is bytes, never wrong output.
+TUPLE_ICON_RE = re.compile(r',\s*(?:(?:false|true)\s*,\s*)?"([a-z0-9_]{3,})"\s*\]')
 DYNAMIC_USAGE_RE = re.compile(r'material-symbols-outlined[^>]*>\s*\{')
 
 def used_icons() -> list[str]:

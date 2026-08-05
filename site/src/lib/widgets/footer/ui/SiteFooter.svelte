@@ -11,7 +11,6 @@
             label: "Product",
             links: [
                 ["/models", "Models"],
-                ["/pricing", "Pricing"],
                 ["/status", "Status"],
             ],
         },

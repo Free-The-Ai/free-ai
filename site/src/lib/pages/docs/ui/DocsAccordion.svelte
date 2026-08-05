@@ -35,6 +35,39 @@
         endpoints: [string, string, string][];
     } = $props();
 
+    // Real entry from the live catalog (models.json) - one model, abbreviated.
+    const modelsResponseExample = [
+        '{',
+        '  "object": "list",',
+        '  "data": [',
+        '    {',
+        '      "id": "bbl/gemini-2.5-flash-lite",',
+        '      "object": "model",',
+        '      "owned_by": "gateway",',
+        '      "created": 0',
+        '    }',
+        '  ]',
+        '}',
+    ].join("\n");
+
+    // The only public, unauthenticated route - safe to call from the browser.
+    let healthState = $state<"idle" | "loading" | "done" | "error">("idle");
+    let healthBody = $state("");
+    let healthError = $state("");
+
+    async function tryHealth(): Promise<void> {
+        healthState = "loading";
+        try {
+            const r = await fetch("https://api.freetheai.xyz/v1/health");
+            if (!r.ok) throw new Error(`HTTP ${r.status}`);
+            healthBody = JSON.stringify(await r.json(), null, 2);
+            healthState = "done";
+        } catch (err) {
+            healthError = err instanceof Error ? err.message : String(err);
+            healthState = "error";
+        }
+    }
+
     const authRows: DocsRow[] = [
         { code: "/signup", span: "Creates a key after the modal is completed. Existing keys are rejected; use /resetkey instead." },
         { code: "/checkin", span: "Required once per UTC day. Enter your existing API key and solve the randomized challenge before using the free API." },
@@ -146,6 +179,22 @@
                     </div>
                 {/each}
             </div>
+            <section class="docs-try">
+                <div class="docs-try-head">
+                    <div class="docs-try-copy">
+                        <span class="docs-try-title"><span class="docs-method get">GET</span> /v1/health</span>
+                        <p>Public health and catalog status. No key required, so this one is safe to try from the browser.</p>
+                    </div>
+                    <button class="docs-try-btn" type="button" onclick={tryHealth} disabled={healthState === "loading"}>
+                        {healthState === "loading" ? "Waiting…" : "Try it out"}
+                    </button>
+                </div>
+                {#if healthState === "done" || healthState === "error"}
+                    <div class="docs-code-group docs-try-response" aria-live="polite">
+                        <pre><code>{healthState === "error" ? `Request failed: ${healthError}` : healthBody}</code></pre>
+                    </div>
+                {/if}
+            </section>
         </section>
     </article>
 
@@ -187,6 +236,33 @@
                 Point OpenAI-compatible clients at <code>https://api.freetheai.xyz/v1</code>. Use exact model aliases from
                 <a href="/models">/models</a>.
             </p>
+            <h3>Request body</h3>
+            <div class="docs-table docs-table-params">
+                <div class="docs-row docs-row-head">
+                    <span>Name</span>
+                    <span>Type</span>
+                    <span>Required</span>
+                    <span>Description</span>
+                </div>
+                <div class="docs-row">
+                    <code>model</code>
+                    <span>string</span>
+                    <span class="docs-req">required</span>
+                    <span>Exact model alias from <a href="/models">/models</a>, e.g. <code>opc/deepseek-v4-flash-free</code>.</span>
+                </div>
+                <div class="docs-row">
+                    <code>messages</code>
+                    <span>array</span>
+                    <span class="docs-req">required</span>
+                    <span>Chat turns as <code>{"{ role, content }"}</code> objects. Multi-turn conversations append to this list.</span>
+                </div>
+                <div class="docs-row">
+                    <code>stream</code>
+                    <span>boolean</span>
+                    <span class="docs-req optional">optional</span>
+                    <span>When true, the response streams as server-sent events.</span>
+                </div>
+            </div>
             <div class="docs-code-grid">
                 <div>
                     <h3>curl</h3>
@@ -222,6 +298,33 @@
         </header>
         <section class="docs-card">
             <p>Use <code>/v1/messages</code> for clients that expect Anthropic-style request bodies.</p>
+            <h3>Request body</h3>
+            <div class="docs-table docs-table-params">
+                <div class="docs-row docs-row-head">
+                    <span>Name</span>
+                    <span>Type</span>
+                    <span>Required</span>
+                    <span>Description</span>
+                </div>
+                <div class="docs-row">
+                    <code>model</code>
+                    <span>string</span>
+                    <span class="docs-req">required</span>
+                    <span>Exact model alias from <a href="/models">/models</a>, e.g. <code>opc/deepseek-v4-flash-free</code>.</span>
+                </div>
+                <div class="docs-row">
+                    <code>messages</code>
+                    <span>array</span>
+                    <span class="docs-req">required</span>
+                    <span>Anthropic-style content blocks. At least one user turn is required.</span>
+                </div>
+                <div class="docs-row">
+                    <code>max_tokens</code>
+                    <span>integer</span>
+                    <span class="docs-req optional">optional</span>
+                    <span>Maximum tokens in the response. The example uses <code>256</code>.</span>
+                </div>
+            </div>
             <div class="docs-code-group">
                 <div class="docs-code-bar"><span class="docs-code-lang">bash</span><button class="copy-btn" type="button" title="Copy" aria-label="Copy to clipboard"><span class="material-symbols-outlined">content_copy</span></button></div>
                 {#if messagesSnippetHtml}
@@ -245,6 +348,11 @@
                 catalog metadata for a UI. The full catalog is a site-key endpoint, so public catalog clients use
                 <code>Bearer freetheai.xyz</code>.
             </p>
+            <h3>Response</h3>
+            <p>One entry from the live catalog, abbreviated:</p>
+            <div class="docs-code-group">
+                <pre><code>{modelsResponseExample}</code></pre>
+            </div>
             <div class="docs-code-grid">
                 <div>
                     <h3>Client catalog</h3>

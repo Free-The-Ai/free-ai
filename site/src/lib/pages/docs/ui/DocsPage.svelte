@@ -98,7 +98,7 @@
             <a href="#models">Models</a>
             <a href="#errors">Errors</a>
             <span class="docs-sidebar-label docs-nav-label">Endpoints</span>
-            {#each endpoints as [method, path, , anchor] (anchor)}
+            {#each endpoints as [method, path, , anchor] (path)}
                 <a class="docs-nav-op" href={`#${anchor}`}>
                     <span class={`docs-nav-method ${method.toLowerCase()}`}>{method}</span>
                     <code>{path}</code>

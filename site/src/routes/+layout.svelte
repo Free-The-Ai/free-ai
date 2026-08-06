@@ -12,7 +12,7 @@
     import { SiteHeader } from "@/widgets/header";
     import { SiteFooter } from "@/widgets/footer";
     import { MobileNav } from "@/widgets/mobile-nav";
-    import { ToastRegion } from "@/shared/ui";
+    import { ToastRegion, ProgressiveBlur } from "@/shared/ui";
 
     let { children }: { children: Snippet } = $props();
 
@@ -90,6 +90,7 @@
 
 <a class="skip-link" href="#main-content">Skip to content</a>
 <div class="page-shell">
+    <ProgressiveBlur />
     <SiteHeader />
 
     <div class="site-main" id="main-content">

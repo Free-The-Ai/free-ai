@@ -9,7 +9,6 @@
         home: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8" /><path d="M3 10a2 2 0 0 1 .6-1.4l7-6a2 2 0 0 1 2.8 0l7 6A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-9z" /></svg>',
         models: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z" /><path d="M2 17l10 5 10-5" /><path d="M2 12l10 5 10-5" /></svg>',
             status: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-3l-2.5 5-4.5-10-3.5 7H2" /></svg>',
-        more: '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><circle cx="5" cy="5" r="2" /><circle cx="12" cy="5" r="2" /><circle cx="19" cy="5" r="2" /><circle cx="5" cy="12" r="2" /><circle cx="12" cy="12" r="2" /><circle cx="19" cy="12" r="2" /><circle cx="5" cy="19" r="2" /><circle cx="12" cy="19" r="2" /><circle cx="19" cy="19" r="2" /></svg>',
     };
 
     const TABS: [string, string, string][] = [
@@ -68,7 +67,11 @@
             data-sound={moreOpen ? "overlay.close" : "overlay.open"}
             onclick={openMore}
         >
-            <span class="bottom-tab-icon">{@html ICONS.more}</span>
+            <span class="bottom-tab-icon menu-morph" class:open={moreOpen} aria-hidden="true">
+                <span class="menu-morph-line"></span>
+                <span class="menu-morph-line"></span>
+                <span class="menu-morph-line"></span>
+            </span>
             <span class="bottom-tab-label">More</span>
         </button>
     </nav>

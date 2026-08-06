@@ -1347,6 +1347,7 @@ h3 {
 .docs-rail-stack {
     position: sticky;
     top: 96px;
+    z-index: 30;
     display: grid;
     gap: 10px;
     align-self: start;
@@ -2921,6 +2922,44 @@ h3 {
     transition: transform 150ms var(--ease-out-smooth);
 }
 
+.menu-morph {
+    position: relative;
+    display: inline-grid;
+    place-items: center;
+    width: 1em;
+    height: 1em;
+}
+.menu-morph-line {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
+    transition:
+        transform 220ms var(--ease-out-smooth),
+        opacity 160ms var(--ease-out-smooth);
+}
+.menu-morph-line:nth-child(1) {
+    transform: translateY(-5px);
+}
+.menu-morph-line:nth-child(3) {
+    transform: translateY(5px);
+}
+.menu-morph.open .menu-morph-line:nth-child(1) {
+    transform: translateY(0) rotate(45deg);
+}
+.menu-morph.open .menu-morph-line:nth-child(2) {
+    opacity: 0;
+}
+.menu-morph.open .menu-morph-line:nth-child(3) {
+    transform: translateY(0) rotate(-45deg);
+}
+@media (prefers-reduced-motion: reduce) {
+    .menu-morph-line {
+        transition: none;
+    }
+}
+
 .bottom-tab-icon svg {
     width: 100%;
     height: 100%;
@@ -4404,6 +4443,22 @@ body[data-sound-muted="false"]::after {
     letter-spacing: 0.08em;
     text-transform: uppercase;
 }
+.docs-prevnext-dir {
+        display: inline-block;
+        transition: transform 180ms var(--ease-out-smooth);
+}
+.docs-prevnext-link:hover .docs-prevnext-dir {
+    transform: translateX(3px);
+}
+.docs-prevnext-link:not(.next):hover .docs-prevnext-dir {
+    transform: translateX(-3px);
+}
+@media (prefers-reduced-motion: reduce) {
+    .docs-prevnext-dir {
+        transition: none;
+    }
+}
+
 .docs-prevnext-label {
     color: var(--muted);
     font-size: 0.92rem;

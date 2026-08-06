@@ -13,7 +13,7 @@
             .slice(0, 10)
             .map((p) => ({ prefix: p.prefix, models: p.model_count })),
     );
-    const barConfig: ChartConfig = { models: { label: "Models", color: "blue" } };
+    const barConfig: ChartConfig = { models: { label: "Models", color: "grey" } };
 
     // Status split — real up/degraded/down counts; zero buckets are dropped.
     const statusData = $derived.by(() => {

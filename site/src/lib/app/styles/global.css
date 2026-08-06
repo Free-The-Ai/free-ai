@@ -4379,6 +4379,39 @@ body[data-sound-muted="false"]::after {
     }
 }
 
+.docs-prevnext {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+}
+.docs-prevnext-link {
+    display: grid;
+    gap: 3px;
+    text-decoration: none;
+}
+.docs-prevnext-link.next {
+    margin-left: auto;
+    justify-items: end;
+    text-align: right;
+}
+.docs-prevnext-dir {
+    color: var(--dim);
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+}
+.docs-prevnext-label {
+    color: var(--muted);
+    font-size: 0.92rem;
+    transition: color 150ms var(--ease-out-smooth);
+}
+.docs-prevnext-link:hover .docs-prevnext-label {
+    color: var(--text);
+}
+
 .docs-op-path {
     display: flex;
     align-items: center;

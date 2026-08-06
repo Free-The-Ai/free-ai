@@ -176,7 +176,7 @@ html {
     background: var(--bg);
     scrollbar-gutter: stable !important;
     overflow-y: scroll;
-    font-size: calc(clamp(14px, calc(0.9rem + 0.25vw), 18px) * var(--font-scale, 1));
+    font-size: calc(clamp(14px, calc(0.9rem + 0.25vw), 21px) * var(--font-scale, 1));
     scroll-padding-top: 96px;
 }
 
@@ -333,7 +333,7 @@ pre {
     z-index: 1;
     display: flex;
     flex-direction: column;
-    width: min(1120px, calc(100vw - 32px));
+    width: min(1500px, calc(100vw - 32px));
     min-height: 100vh;
     min-height: 100svh;
     margin: 0 auto;
@@ -795,7 +795,7 @@ pre {
 .home-hero-logo-svg {
     display: block;
     width: 100%;
-    max-width: 520px;
+    max-width: 32.5rem;
     height: auto;
     margin: 0 auto;
 }
@@ -922,7 +922,7 @@ h3 {
     flex-wrap: wrap;
     justify-content: center;
     gap: 8px;
-    max-width: 520px;
+    max-width: 32.5rem;
 }
 
 .home-client-chip {

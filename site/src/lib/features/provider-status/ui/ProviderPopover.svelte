@@ -5,9 +5,6 @@
 
     let { provider, onclose }: { provider: ProviderHealth; onclose?: () => void } = $props();
     let open = $state(true);
-    function close(): void {
-        open = false;
-    }
 
     const isAffected = $derived(provider.status === "degraded" || provider.status === "down");
 
@@ -21,7 +18,7 @@
     }
 </script>
 
-<Drawer bind:open={open} onclose={close} label={`${provider.prefix} provider status`} popupClass={`provider-popover is-${provider.status}`}>
+<Drawer bind:open={open} {onclose} label={`${provider.prefix} provider status`} popupClass={`provider-popover is-${provider.status}`}>
     <div class="popover-status-strip"></div>
 
     <div class="popover-header">

@@ -163,6 +163,33 @@
     ];
 </script>
 
+{#snippet prevNext(currentId: string)}
+    {@const order = [
+        ["auth", "Get a key"],
+        ["compatibility", "Client formats"],
+        ["chat", "OpenAI-compatible chat"],
+        ["messages", "Anthropic-style clients"],
+        ["models", "List models"],
+        ["other-routes", "Images, audio, and responses"],
+        ["errors", "Errors and rate limits"],
+    ]}
+    {@const i = order.findIndex(([id]) => id === currentId)}
+    <nav class="docs-prevnext" aria-label="Section navigation">
+        {#if i > 0}
+            <a class="docs-prevnext-link" href={"#" + order[i - 1][0]}>
+                <span class="docs-prevnext-dir" aria-hidden="true">&larr; Previous</span>
+                <span class="docs-prevnext-label">{order[i - 1][1]}</span>
+            </a>
+        {/if}
+        {#if i < order.length - 1}
+            <a class="docs-prevnext-link next" href={"#" + order[i + 1][0]}>
+                <span class="docs-prevnext-dir" aria-hidden="true">Next &rarr;</span>
+                <span class="docs-prevnext-label">{order[i + 1][1]}</span>
+            </a>
+        {/if}
+    </nav>
+{/snippet}
+
 <div class="docs-sections">
     <article class="docs-section" id="auth">
         <header class="docs-section-head">
@@ -190,6 +217,7 @@
                 {/if}
             </div>
         </section>
+            {@render prevNext("auth")}
     </article>
 
     
@@ -215,6 +243,7 @@
                 key for every one of them. <a href="/setup">Browse the setup guides</a>.
             </p>
         </section>
+            {@render prevNext("compatibility")}
     </article>
 
     <article class="docs-section" id="chat">
@@ -292,6 +321,7 @@
                 </div>
             </div>
         </section>
+            {@render prevNext("chat")}
     </article>
 
     <article class="docs-section" id="messages">
@@ -345,6 +375,7 @@
                 </div>
             </div>
         </section>
+            {@render prevNext("messages")}
     </article>
 
     <article class="docs-section" id="models">
@@ -388,6 +419,7 @@
                 </div>
             </div>
         </section>
+            {@render prevNext("models")}
     </article>
 
     <article class="docs-section" id="other-routes">
@@ -421,6 +453,7 @@
                 <p>Responses-style route for clients that speak that format. Same key, same model aliases.</p>
             </div>
         </section>
+            {@render prevNext("other-routes")}
     </article>
 
     <article class="docs-section" id="errors">
@@ -537,5 +570,6 @@ data: [DONE]</code></pre>
                 </div>
             </div>
         </section>
+            {@render prevNext("errors")}
     </article>
 </div>

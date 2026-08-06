@@ -16,6 +16,7 @@
     import { DocsMobileNav } from "@/features/docs-navigation";
     import DocsAccordion from "./DocsAccordion.svelte";
     import DocsSearch from "./DocsSearch.svelte";
+    import { ScrollProgress } from "@/shared/ui";
 
     const pageDescription =
         "FreeTheAi API docs for OpenAI-compatible chat completions, Anthropic-style messages, image generation, image edits, audio, model listing, signup, check-in, and key reset.";
@@ -137,6 +138,7 @@
 </script>
 
 <SeoHead {seo} />
+<ScrollProgress />
 
 <main class="docs-main" data-docs-nav>
     <DocsMobileNav />
@@ -184,7 +186,7 @@
                             <span class="docs-server-label">Base URL</span>
                             <code>https://api.freetheai.xyz/v1</code>
                         </div>
-                        <button class="docs-server-copy" type="button" data-copy="https://api.freetheai.xyz/v1" aria-label="Copy base URL" onclick={copyStartValue}>
+                        <button class="docs-server-copy" type="button" data-tip="Copy base URL" data-copy="https://api.freetheai.xyz/v1" aria-label="Copy base URL" onclick={copyStartValue}>
                             <span class="material-symbols-outlined">content_copy</span>
                         </button>
                     </div>
@@ -193,7 +195,7 @@
                             <span class="docs-server-label">Auth header</span>
                             <code>Authorization: Bearer YOUR_API_KEY</code>
                         </div>
-                        <button class="docs-server-copy" type="button" data-copy="Authorization: Bearer YOUR_API_KEY" aria-label="Copy auth header" onclick={copyStartValue}>
+                        <button class="docs-server-copy" type="button" data-tip="Copy auth header" data-copy="Authorization: Bearer YOUR_API_KEY" aria-label="Copy auth header" onclick={copyStartValue}>
                             <span class="material-symbols-outlined">content_copy</span>
                         </button>
                     </div>

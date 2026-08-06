@@ -4413,6 +4413,77 @@ body[data-sound-muted="false"]::after {
     color: var(--text);
 }
 
+
+/* Skiper UI CssLink port (skiper40): underline grows in from the left on
+   hover/focus. Used on footer links and prose links. */
+.skiper-link {
+    position: relative;
+}
+.skiper-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+    width: 100%;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 300ms var(--ease-out-smooth);
+}
+.skiper-link:hover::after,
+.skiper-link:focus-visible::after {
+    transform: scaleX(1);
+    transform-origin: left;
+}
+
+/* Skiper UI tooltip port (skiper101): CSS-only tooltip from a data-tip
+   attribute, shown on hover and keyboard focus. */
+[data-tip] {
+    position: relative;
+}
+[data-tip]::after {
+    content: attr(data-tip);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    z-index: 60;
+    padding: 4px 8px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(-50%) translateY(2px);
+    transition:
+        opacity 140ms var(--ease-out-smooth),
+        transform 140ms var(--ease-out-smooth);
+}
+[data-tip]:hover::after,
+[data-tip]:focus-visible::after {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+[data-tip].tip-below::after {
+    bottom: auto;
+    top: calc(100% + 8px);
+    transform: translateX(-50%) translateY(-2px);
+}
+[data-tip].tip-below:hover::after,
+[data-tip].tip-below:focus-visible::after {
+    transform: translateX(-50%) translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+    .skiper-link::after,
+    [data-tip]::after {
+        transition: none;
+    }
+}
+
 .docs-op-path {
     display: flex;
     align-items: center;

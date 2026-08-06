@@ -1,4 +1,5 @@
 <script lang="ts">
+    import { spotlight } from "@/shared/lib/spotlight";
     import {
         siAnthropic,
         siGooglegemini,
@@ -119,7 +120,7 @@
             </div>
             <div class="hp-card-grid hp-card-grid-3">
                 {#each howItWorks as [title, text, icon] (title)}
-                    <article class="hp-card">
+                    <article class="hp-card" use:spotlight>
                         <span class="hp-card-icon material-symbols-outlined" aria-hidden="true">{icon}</span>
                         <h3>{title}</h3>
                         <p>{text}</p>
@@ -148,7 +149,7 @@
             </div>
             <div class="hp-card-grid hp-card-grid-3">
                 {#each whyCards as [title, text, icon] (title)}
-                    <article class="hp-card">
+                    <article class="hp-card" use:spotlight>
                         <span class="hp-card-icon material-symbols-outlined" aria-hidden="true">{icon}</span>
                         <h3>{title}</h3>
                         <p>{text}</p>
@@ -328,6 +329,8 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
     }
     .hp-card {
+        position: relative;
+        overflow: hidden;
         border: 1px solid var(--border);
         border-radius: var(--radius);
         background: oklch(1 0 0 / 0.02);
@@ -335,6 +338,24 @@
         display: grid;
         gap: 12px;
         align-content: start;
+    }
+    .hp-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: inherit;
+        background: radial-gradient(180px circle at var(--spotlight-x, 50%) var(--spotlight-y, 50%), oklch(1 0 0 / 0.07), transparent 70%);
+        opacity: 0;
+        transition: opacity 250ms var(--ease-out-smooth);
+        pointer-events: none;
+    }
+    .hp-card:hover::before {
+        opacity: 1;
+    }
+    @media (prefers-reduced-motion: reduce), (hover: none) {
+        .hp-card::before {
+            display: none;
+        }
     }
     .hp-card-icon {
         font-size: 17px;

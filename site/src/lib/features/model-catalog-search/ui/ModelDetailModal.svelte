@@ -30,7 +30,7 @@
 
 <Drawer
     bind:open={() => open, setOpen}
-    onclose={() => setOpen(false)}
+    onclose={onclose}
     label={`Details for ${model.id}`}
     popupClass={`model-detail-drawer${model.requires_seems_legit ? " is-gated" : ""}`}
  >

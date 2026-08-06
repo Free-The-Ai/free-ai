@@ -127,11 +127,11 @@
     <button
         type="button"
         class="docs-mobile-toc__trigger"
-        aria-label="Search docs"
+        data-tip="Search docs" aria-label="Search docs"
         onclick={() => window.dispatchEvent(new CustomEvent("docs-search-open"))}>
         <span class="material-symbols-outlined">search</span>
     </button>
-    <button type="button" class="docs-mobile-toc__trigger" aria-expanded={open} aria-label="Table of contents" onclick={toggle}>
+    <button type="button" class="docs-mobile-toc__trigger" aria-expanded={open} data-tip="On this page" aria-label="Table of contents" onclick={toggle}>
         <span class="material-symbols-outlined">toc</span>
     </button>
 

@@ -41,9 +41,9 @@
                 <span class="footer-column-label">{column.label}</span>
                 {#each column.links as [href, label, external] (href)}
                     {#if external}
-                        <a {href} target="_blank" rel="noreferrer">{label}</a>
+                        <a class="skiper-link" {href} target="_blank" rel="noreferrer">{label}</a>
                     {:else}
-                        <a {href}>{label}</a>
+                        <a class="skiper-link" {href}>{label}</a>
                     {/if}
                 {/each}
             </nav>

@@ -116,26 +116,26 @@
             </div>
         </div>
         <div class="nav-actions">
-            <button bind:this={themeToggleEl} type="button" class="theme-toggle" aria-label="Toggle color scheme" title="Toggle theme" onclick={onThemeToggle}>
+            <button bind:this={themeToggleEl} type="button" class="theme-toggle tip-below" data-tip="Toggle theme" aria-label="Toggle color scheme" title="Toggle theme" onclick={onThemeToggle}>
                 <span class="theme-toggle-icon" aria-hidden="true">◎</span>
             </button>
             <a
-                class="theme-toggle"
+                class="theme-toggle tip-below"
                 href={siteConfig.socials.discord}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Join the FreeTheAi Discord"
+                data-tip="Join Discord" aria-label="Join the FreeTheAi Discord"
                 title="Join Discord"
                 data-sound="interaction.tap"
             >
                 <span class="material-symbols-outlined nav-action-icon" aria-hidden="true">chat</span>
             </a>
             <a
-                class="theme-toggle"
+                class="theme-toggle tip-below"
                 href={siteConfig.socials.discord}
                 target="_blank"
                 rel="noreferrer"
-                aria-label="Get your free API key"
+                data-tip="Get a free key" aria-label="Get your free API key"
                 title="Get your free API key"
                 data-sound="interaction.confirm"
             >

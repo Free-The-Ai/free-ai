@@ -3,6 +3,7 @@
     import { page } from "$app/state";
     import { CATEGORY_LABELS, CATEGORY_ORDER, SETUP_GUIDES, setupGuidesByCategory } from "@/entities/setup-guide";
     import { siteConfig } from "@/shared/config/site";
+    import { TextRoll } from "@/shared/ui";
 
     const currentPath = $derived(page.url.pathname as string);
 
@@ -72,7 +73,7 @@
         <div class="nav-links">
             {#each navLinks as [href, label] (href)}
                 <a {href} class={{ "is-active": currentPath === href }} aria-current={currentPath === href ? "page" : undefined}>
-                    {label}
+                    <TextRoll text={label} />
                 </a>
             {/each}
             <div bind:this={dropdownRoot} class={["nav-dropdown", { "is-active": isSetupActive, "is-open": dropdownOpen }]}>

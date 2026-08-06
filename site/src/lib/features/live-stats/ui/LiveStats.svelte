@@ -1,6 +1,7 @@
 <script lang="ts">
     import { onDestroy, onMount } from "svelte";
     import modelsJson from "@/entities/model/models.json";
+    import { NumberFlow } from "@/shared/ui";
 
     interface HealthData {
         catalog?: { model_count?: number };
@@ -36,11 +37,11 @@
 
 <div class="stats-bar">
     <div class="stat">
-        <div class="stat-value">{models !== null ? models.toLocaleString() : "…"}</div>
+        <div class="stat-value"><NumberFlow value={models !== null ? models.toLocaleString() : "…"} /></div>
         <div class="stat-label">Models</div>
     </div>
     <div class="stat">
-        <div class="stat-value">{providerCount}</div>
+        <div class="stat-value"><NumberFlow value={String(providerCount)} /></div>
         <div class="stat-label">Providers</div>
     </div>
     <div class="stat">
@@ -48,7 +49,7 @@
         <div class="stat-label">Formats</div>
     </div>
     <div class="stat">
-        <div class="stat-value">{visitors !== null ? visitors.toLocaleString() : "…"}</div>
+        <div class="stat-value"><NumberFlow value={visitors !== null ? visitors.toLocaleString() : "…"} /></div>
         <div class="stat-label">Visitors in the last 10 minutes</div>
     </div>
 </div>

@@ -224,7 +224,7 @@
     .hp-hero-content {
         position: relative;
         z-index: 1;
-        max-width: 660px;
+        max-width: 41.25rem;
         padding: clamp(24px, 4.5vw, 56px);
     }
     .hp-hero-content h1 {

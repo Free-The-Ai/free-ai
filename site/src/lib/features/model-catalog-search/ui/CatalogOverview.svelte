@@ -15,7 +15,7 @@
             .slice(0, 10)
             .map(([prefix, count]) => ({ prefix, models: count }));
     });
-    const providerConfig: ChartConfig = { models: { label: "Models", color: "blue" } };
+    const providerConfig: ChartConfig = { models: { label: "Models", color: "grey" } };
 
     // Capability split — every model lands in exactly one bucket (audio > image > chat).
     const capabilityData = $derived.by(() => {

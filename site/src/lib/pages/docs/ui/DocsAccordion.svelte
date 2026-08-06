@@ -402,7 +402,7 @@
             <div class="docs-routes-family" id="images">
                 <h3>Images</h3>
                 <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/images/generations</code></div>
-                <div class="docs-op-path"><span class="docs-method get">GET</span><code>{"/v1/images/generations/{request_id}"}</code></div>
+                <div class="docs-op-path"><span class="docs-method get">GET</span><code>{"/v1/images/generations/\u200B{request_id}"}</code></div>
                 <div class="docs-op-path"><span class="docs-method post">POST</span><code>/v1/images/edits</code></div>
                 <p>
                     OpenAI-compatible image generation and multipart edits for supported image aliases. Generation is

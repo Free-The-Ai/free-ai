@@ -157,7 +157,7 @@
             {#each endpoints as [method, path, , anchor] (path)}
                 <a class={activeSection === anchor ? "docs-nav-op is-active" : "docs-nav-op"} href={`#${anchor}`}>
                     <span class={`docs-nav-method ${method.toLowerCase()}`}>{method}</span>
-                    <code>{path}</code>
+                    <code>{path.replaceAll("/", "/\u200B")}</code>
                 </a>
             {/each}
         </aside>
@@ -255,7 +255,7 @@
                         <a class="docs-endpoint-row" href={`#${anchor}`} role="row">
                             <span class={`docs-method ${method.toLowerCase()}`} role="cell">{method}</span>
                             <!-- svelte-ignore a11y_no_noninteractive_element_to_interactive_role -->
-                            <code class="docs-path" role="cell">{path}</code>
+                            <code class="docs-path" role="cell">{path.replaceAll("/", "/\u200B")}</code>
                             <span class="docs-endpoint-desc" role="cell">{desc}</span>
                         </a>
                     {/each}

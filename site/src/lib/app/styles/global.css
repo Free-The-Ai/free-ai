@@ -196,7 +196,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     scrollbar-width: thin;
-    scrollbar-color: var(--accent) transparent;
+    scrollbar-color: oklch(1 0 0 / 0.2) transparent;
 }
 
 html.scroll-locked,
@@ -220,7 +220,7 @@ input[type="checkbox"], input[type="radio"], label, summary {
 }
 
 body::-webkit-scrollbar-thumb {
-    background: var(--accent);
+    background: oklch(1 0 0 / 0.16);
     border-radius: 0;
     transition: background 150ms var(--ease-out-smooth);
 }
@@ -291,6 +291,14 @@ code {
 
 pre {
     white-space: pre;
+}
+/* Docs code blocks wrap long lines instead of clipping behind a
+   horizontal scrollbar. */
+.docs-content pre,
+.docs-content .shiki-wrapper .shiki {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    overflow-x: hidden;
 }
 
 @font-face {
@@ -1059,6 +1067,26 @@ h3 {
     tab-size: 2;
 }
 
+.docs-content pre,
+.docs-content .shiki-wrapper .shiki,
+.docs-rail-stack {
+    scrollbar-width: thin;
+    scrollbar-color: oklch(1 0 0 / 0.2) transparent;
+}
+.docs-content pre::-webkit-scrollbar,
+.docs-content .shiki-wrapper .shiki::-webkit-scrollbar,
+.docs-rail-stack::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+    background: transparent;
+}
+.docs-content pre::-webkit-scrollbar-thumb,
+.docs-content .shiki-wrapper .shiki::-webkit-scrollbar-thumb,
+.docs-rail-stack::-webkit-scrollbar-thumb {
+    background: oklch(1 0 0 / 0.16);
+    border-radius: 8px;
+}
+
 .docs-code-group pre code {
     display: block;
     max-width: 100%;
@@ -1376,7 +1404,7 @@ h3 {
     font-family: var(--font-mono);
     font-size: 0.75rem;
     line-height: 1.4;
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
     color: inherit;
     background: none;
 }
@@ -3248,6 +3276,15 @@ h3 {
     border-radius: 4px;
     background: oklch(1 0 0 / 0.05);
 }
+/* Inside tables and op strips the pills read as noise; plain mono carries
+   the structure better (Stripe-style reference tables). */
+.docs-table code,
+.docs-endpoint-row code,
+.docs-op-path code {
+    display: inline;
+    padding: 0;
+    background: none;
+}
 
 .docs-code-group {
     overflow: hidden;
@@ -4352,7 +4389,7 @@ body[data-sound-muted="false"]::after {
     font-family: var(--font-mono);
     font-size: 0.85rem;
     color: var(--text);
-    overflow-wrap: anywhere;
+    overflow-wrap: break-word;
 }
 .docs-try {
     display: grid;

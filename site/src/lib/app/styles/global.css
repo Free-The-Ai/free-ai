@@ -1743,7 +1743,8 @@ h3 {
     font-family: var(--font-mono);
     font-size: 0.78rem;
     cursor: pointer;
-    width: 220px;
+    width: auto;
+    min-width: 220px;
     transition:
         border-color 150ms var(--ease-out-smooth),
         background 150ms var(--ease-out-smooth),
@@ -1792,7 +1793,7 @@ h3 {
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    max-width: 16ch;
+    max-width: 18ch;
 }
 
 .catalog-filter-count {

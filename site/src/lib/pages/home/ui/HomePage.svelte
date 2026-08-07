@@ -421,12 +421,12 @@
         pointer-events: none;
     }
     .hp-crop::before {
-        left: 0;
-        border-left: 1.5px solid var(--border-strong);
+        inset-inline-start: 0;
+        border-inline-start: 1.5px solid var(--border-strong);
     }
     .hp-crop::after {
-        right: 0;
-        border-right: 1.5px solid var(--border-strong);
+        inset-inline-end: 0;
+        border-inline-end: 1.5px solid var(--border-strong);
     }
     .hp-cta,
     .hp-start {

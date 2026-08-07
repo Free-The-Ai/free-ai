@@ -165,7 +165,7 @@
 .support-hero-orb {
     position: absolute;
     top: clamp(20px, 3vw, 36px);
-    right: clamp(20px, 4vw, 48px);
+    inset-inline-end: clamp(20px, 4vw, 48px);
     display: flex;
     align-items: center;
     justify-content: center;

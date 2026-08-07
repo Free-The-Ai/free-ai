@@ -218,7 +218,7 @@
 :global(.paid-plan-badge) {
     position: absolute;
     top: -10px;
-    right: 14px;
+    inset-inline-end: 14px;
     padding: 4px 10px;
     border: 1px solid var(--accent);
     border-radius: var(--radius-sm);

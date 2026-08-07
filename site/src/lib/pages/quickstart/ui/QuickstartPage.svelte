@@ -255,20 +255,20 @@
 .quickstart-flow {
     display: grid;
     gap: 18px;
-    padding-left: 6px;
+    padding-inline-start: 6px;
 }
 .quickstart-step {
     position: relative;
     display: flex;
     align-items: flex-start;
     gap: 14px;
-    padding-left: 6px;
+    padding-inline-start: 6px;
 }
 .quickstart-step:not(:last-child)::before {
     content: "";
     position: absolute;
     top: 36px;
-    left: 21px;
+    inset-inline-start: 21px;
     width: 1px;
     height: calc(100% + 4px);
     background: var(--sk-border);
@@ -371,7 +371,7 @@
 }
 .quickstart-snippet :global(.copy-btn) {
     top: 8px;
-    right: 8px;
+    inset-inline-end: 8px;
     border-radius: calc(var(--radius-sm) - 2px);
     transition: transform 140ms var(--ease-out-smooth), opacity 140ms var(--ease-out-smooth);
 }
@@ -381,6 +381,7 @@
 .quickstart-snippet :global(pre) {
     margin: 0;
     padding: 14px 16px;
+    padding-inline-end: 56px;
     overflow-x: auto;
     font-size: 0.85rem;
     line-height: 1.55;

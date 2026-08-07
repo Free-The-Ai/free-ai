@@ -138,8 +138,8 @@
     color: var(--muted);
 }
 .dk-tooltip-value {
-    margin-left: auto;
-    padding-left: 0.5rem;
+    margin-inline-start: auto;
+    padding-inline-start: 0.5rem;
     color: var(--text);
 }
 .dk-fade-enter-active,

@@ -65,7 +65,7 @@
         padding: clamp(18px, 3vw, 30px) clamp(14px, 2.4vw, 28px);
     }
     .stat + .stat {
-        border-left: 1px solid var(--border);
+        border-inline-start: 1px solid var(--border);
     }
     .stat-value {
         font-family: var(--font-display);
@@ -88,7 +88,7 @@
             grid-template-columns: repeat(2, 1fr);
         }
         .stat:nth-child(3) {
-            border-left: 0;
+            border-inline-start: 0;
         }
         .stat:nth-child(n + 3) {
             border-top: 1px solid var(--border);

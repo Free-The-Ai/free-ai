@@ -201,7 +201,7 @@
     }
     .docs-search-trigger span {
         flex: 1;
-        text-align: left;
+        text-align: start;
     }
     .docs-search-trigger kbd {
         padding: 1px 7px;
@@ -277,7 +277,7 @@
         border: none;
         border-radius: var(--radius-sm);
         background: transparent;
-        text-align: left;
+        text-align: start;
         cursor: pointer;
     }
     .docs-search-result.active {

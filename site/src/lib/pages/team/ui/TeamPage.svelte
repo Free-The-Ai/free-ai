@@ -200,16 +200,27 @@
     gap: 2px;
     padding: 14px 16px;
     border: 1px solid var(--sk-border);
-    border-right: none;
+    border-inline-end: none;
     background: var(--sk-inset-bg);
     box-shadow: var(--sk-inset-shadow);
 }
 .team-stat:last-child {
-    border-right: 1px solid var(--sk-border);
-    border-radius: 0 var(--radius) var(--radius) 0;
+    border-inline-end: 1px solid var(--sk-border);
+    border-start-end-radius: var(--radius);
+    border-end-end-radius: var(--radius);
 }
 .team-stat:first-child {
-    border-radius: var(--radius) 0 0 var(--radius);
+    border-start-start-radius: var(--radius);
+    border-end-start-radius: var(--radius);
+}
+/* Square the joined inner corners; wrapped rows keep base radius on their outer edge. */
+.team-stat:not(:first-child) {
+    border-start-start-radius: 0;
+    border-end-start-radius: 0;
+}
+.team-stat:not(:last-child) {
+    border-start-end-radius: 0;
+    border-end-end-radius: 0;
 }
 .team-stat-num {
     font-family: var(--font-mono);

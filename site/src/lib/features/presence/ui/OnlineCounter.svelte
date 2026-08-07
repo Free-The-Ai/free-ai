@@ -94,7 +94,7 @@
         height: 5px;
         border-radius: 50%;
         background: oklch(0.72 0.1 145);
-        margin-right: 5px;
+        margin-inline-end: 5px;
         vertical-align: 1px;
         opacity: 0.7;
     }

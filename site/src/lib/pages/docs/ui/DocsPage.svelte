@@ -291,7 +291,7 @@
     gap: 14px;
     padding: 24px 16px 8px;
     justify-items: start;
-    text-align: left;
+    text-align: start;
 }
 .docs-hero > * {
     min-width: 0;

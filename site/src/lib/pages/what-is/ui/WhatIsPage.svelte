@@ -192,14 +192,14 @@
 .explainer-card {
     padding: 22px 24px;
     border: 1px solid var(--sk-border);
-    border-left: 2px solid transparent;
+    border-inline-start: 2px solid transparent;
     border-radius: var(--radius);
     background: var(--sk-inset-bg);
     box-shadow: var(--sk-inset-shadow);
-    transition: border-left-color 200ms var(--ease-out-smooth);
+    transition: border-inline-start-color 200ms var(--ease-out-smooth);
 }
 .explainer-card:hover {
-    border-left-color: var(--accent);
+    border-inline-start-color: var(--accent);
 }
 .explainer-card h2 {
     margin: 0 0 12px;
@@ -229,11 +229,11 @@
     margin-bottom: 6px;
 }
 .explainer-note {
-    border-left: 2px solid var(--accent);
+    border-inline-start: 2px solid var(--accent);
     background: linear-gradient(90deg, oklch(0.659 0.192 40.1 / 0.06) 0%, var(--sk-inset-bg) 40%);
 }
 .explainer-note:hover {
-    border-left-color: var(--accent);
+    border-inline-start-color: var(--accent);
 }
 .explainer-links {
     display: grid;

@@ -139,7 +139,7 @@ textarea:focus-visible {
 .skip-link {
     position: fixed;
     top: 8px;
-    left: 16px;
+    inset-inline-start: 16px;
     transform: translateY(-300%);
     z-index: 10000;
     padding: 8px 16px;
@@ -518,8 +518,7 @@ pre {
 .nav-dropdown-panel {
     position: absolute;
     top: 100%;
-    left: 20px;
-    right: 20px;
+    inset-inline: 20px;
     z-index: 30;
     contain: layout style;
     display: grid;
@@ -1059,6 +1058,7 @@ h3 {
 .docs-code-group pre {
     margin: 0;
     padding: 14px 16px;
+    padding-inline-end: 56px;
     max-width: 100%;
     min-width: 0;
     overflow-x: auto;
@@ -1131,7 +1131,7 @@ h3 {
 .copy-btn {
     position: absolute;
     top: 8px;
-    right: 8px;
+    inset-inline-end: 8px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -1388,9 +1388,7 @@ h3 {
     background: oklch(1 0 0 / 0.05);
 }
 .docs-nav-label {
-    margin-top: 12px;
-    padding-top: 12px;
-    border-top: 1px solid var(--border);
+    margin-top: 24px;
 }
 .docs-nav-op {
     display: grid;
@@ -1719,7 +1717,7 @@ h3 {
 
 
 .catalog-search-input .kb-text-field__input {
-    padding-left: 14px;
+    padding-inline-start: 14px;
     height: 44px;
 }
 
@@ -1865,7 +1863,7 @@ h3 {
 .catalog-filter-content .catalog-filter-option-count {
     flex: 0 0 auto;
     min-width: 18px;
-    text-align: right;
+    text-align: end;
     color: var(--muted);
 }
 
@@ -2002,9 +2000,10 @@ h3 {
 
 .catalog-note {
     margin: 0;
-    padding: 4px 0 4px 12px;
+    padding-block: 4px;
+    padding-inline-start: 12px;
     border: 0;
-    border-left: 3px solid var(--sk-border);
+    border-inline-start: 3px solid var(--sk-border);
     background: transparent;
     color: var(--muted);
     font-size: 0.82rem;
@@ -2380,7 +2379,7 @@ h3 {
 
 .model-copy {
     position: absolute;
-    right: 10px;
+    inset-inline-end: 10px;
     bottom: 10px;
     display: inline-flex;
     align-items: center;
@@ -2507,7 +2506,7 @@ h3 {
 .status-bar-counts {
     display: flex;
     gap: 14px;
-    margin-left: auto;
+    margin-inline-start: auto;
     color: var(--muted);
     font-size: 0.85rem;
 }
@@ -2523,7 +2522,7 @@ h3 {
 
 @media (max-width: 560px) {
     .status-bar-counts {
-        margin-left: 0;
+        margin-inline-start: 0;
         width: 100%;
         justify-content: space-between;
     }
@@ -2626,7 +2625,7 @@ h3 {
     white-space: nowrap;
 }
 .status-card-top span:last-child {
-    margin-left: auto;
+    margin-inline-start: auto;
     color: var(--muted);
     font-size: 0.78rem;
     text-transform: uppercase;
@@ -2822,7 +2821,7 @@ h3 {
     font-size: 0.85rem;
     font-weight: 600;
     margin: 0;
-    text-align: right;
+    text-align: end;
     font-variant-numeric: tabular-nums;
     min-width: 0;
     overflow: hidden;
@@ -3348,6 +3347,7 @@ h3 {
 
 .docs-code-group pre {
     padding: 14px 16px;
+    padding-inline-end: 56px;
 }
 
 .docs-code-bar {
@@ -3738,7 +3738,7 @@ h3 {
         justify-items: end;
         position: fixed;
         bottom: 20px;
-        right: 16px;
+        inset-inline-end: 16px;
         z-index: 50;
     }
 
@@ -3844,7 +3844,7 @@ h3 {
         color: var(--muted);
         font-size: 0.9rem;
         font-weight: 500;
-        text-align: left;
+        text-align: start;
         cursor: pointer;
         transition:
             background 150ms var(--ease-out-smooth),
@@ -4093,7 +4093,7 @@ body[data-sound-muted="true"]::after,
 body[data-sound-muted="false"]::after {
     position: fixed;
     top: 60px;
-    right: 16px;
+    inset-inline-end: 16px;
     z-index: 10000;
     padding: 6px 14px;
     border-radius: 8px;
@@ -4343,7 +4343,7 @@ body[data-sound-muted="false"]::after {
     background: oklch(0.74 0.16 45 / 0.12);
 }
 .docs-anchor {
-    margin-left: 8px;
+    margin-inline-start: 8px;
     color: var(--dim);
     font-weight: 400;
     text-decoration: none;
@@ -4404,8 +4404,8 @@ body[data-sound-muted="false"]::after {
     display: grid;
     gap: 12px;
     min-width: 0;
-    padding-left: clamp(16px, 2.4vw, 28px);
-    border-left: 1px solid var(--border);
+    padding-inline-start: clamp(16px, 2.4vw, 28px);
+    border-inline-start: 1px solid var(--border);
 }
 @media (max-width: 900px) {
     .docs-split {
@@ -4413,17 +4413,15 @@ body[data-sound-muted="false"]::after {
         row-gap: 18px;
     }
     .docs-split-code {
-        padding-left: 0;
-        border-left: none;
+        padding-inline-start: 0;
+        border-inline-start: none;
     }
 }
 
 .docs-prevnext {
     display: flex;
     gap: 12px;
-    margin-top: 28px;
-    padding-top: 16px;
-    border-top: 1px solid var(--border);
+    margin-top: 40px;
 }
 .docs-prevnext-link {
     display: grid;
@@ -4431,9 +4429,9 @@ body[data-sound-muted="false"]::after {
     text-decoration: none;
 }
 .docs-prevnext-link.next {
-    margin-left: auto;
+    margin-inline-start: auto;
     justify-items: end;
-    text-align: right;
+    text-align: end;
 }
 .docs-prevnext-dir {
     color: var(--dim);
@@ -4639,7 +4637,7 @@ body[data-sound-muted="false"]::after {
 .popular-badge {
     position: absolute;
     top: -1px;
-    right: -1px;
+    inset-inline-end: -1px;
     padding: 3px 8px;
     border: 1px solid var(--border-strong);
     border-radius: 0 var(--radius) 0 var(--radius-sm);
@@ -4714,7 +4712,7 @@ body[data-sound-muted="false"]::after {
 .setup-meta-copyable .copy-btn {
     position: absolute;
     top: 4px;
-    right: 4px;
+    inset-inline-end: 4px;
     opacity: 0.55;
     width: 40px;
     height: 40px;

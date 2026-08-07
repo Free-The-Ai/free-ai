@@ -1,7 +1,7 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
     import { onDestroy } from "svelte";
-    import { disconnectPointerDrag, lockBodyScroll, setAppModalOpen, unlockBodyScroll } from "@/shared/lib/dom";
+    import { disconnectPointerDrag, lastPointerWasMouse, lockBodyScroll, setAppModalOpen, unlockBodyScroll } from "@/shared/lib/dom";
     import { motionApply, motionFor } from "@/shared/lib/motion";
     import { portal } from "@/shared/lib/portal";
     import { attrTransition } from "@/shared/lib/attrTransition";
@@ -59,9 +59,11 @@
     // Ignore the compatibility "ghost" click that a touch tap synthesizes ~300ms
     // later: it lands on the freshly-rendered backdrop (which now covers the
     // opener, e.g. the bottom-nav More button) and would otherwise close the
-    // drawer the instant it opened. A real dismiss tap always arrives later.
+    // drawer the instant it opened. Only touch/pen sequences need the guard —
+    // a real mouse click always arrives promptly, so fast mouse dismisses must
+    // never be swallowed.
     function onBackdropClick(): void {
-        if (performance.now() - openedAt < 400) return;
+        if (!lastPointerWasMouse() && performance.now() - openedAt < 400) return;
         close();
     }
 

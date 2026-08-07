@@ -40,6 +40,25 @@ export function unlockBodyScroll(className: string = "scroll-locked"): void {
   document.documentElement.classList.remove(className);
 }
 
+/** Pointer type of the most recent pointerdown, tracked from module load so the
+ * decisive tap is always observed: the same tap both opens a drawer and (~300ms
+ * later) synthesizes the ghost click that the backdrop guard exists to ignore. */
+let lastPointerType = "mouse";
+if (typeof document !== "undefined") {
+  document.addEventListener(
+    "pointerdown",
+    (event) => {
+      lastPointerType = event.pointerType;
+    },
+    { capture: true, passive: true },
+  );
+}
+
+/** True when the latest pointerdown came from a mouse. Touch/pen taps produce a
+ * delayed synthetic click, mouse clicks do not. */
+export function lastPointerWasMouse(): boolean {
+  return lastPointerType === "mouse";
+}
 let openModalCount = 0;
 
 /** Make application content inert while any teleported modal is open. */

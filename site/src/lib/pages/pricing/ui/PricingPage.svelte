@@ -10,7 +10,7 @@
         buildWebsiteJsonLd,
         buildWebApiJsonLd,
     } from "@/shared/lib/jsonLd";
-    import { PaidPlanExplorer } from "@/features/paid-plan-explorer";
+    import { PaidPlanExplorer, FreeTierTable } from "@/features/paid-plan-explorer";
     import { paidPlanData } from "@/entities/paid-plan";
     import { SeoHead } from "@/shared/ui";
 
@@ -47,6 +47,20 @@
 <SeoHead {seo} />
 
 <main class="pricing-main">
+    <section class="pricing-free shell" aria-labelledby="free-access-title">
+        <span class="eyebrow">Free access</span>
+        <h2 id="free-access-title">Every free key, at a glance.</h2>
+        <p>
+            One Discord key, one base URL, zero billing. Keep your key hot with a daily <code>/checkin</code>; invite friends
+            to raise your rate limit. Fair-use invites unlock more headroom for everyone.
+        </p>
+        <FreeTierTable />
+        <p class="pricing-free-note">
+            Need more concurrency or a guaranteed lane? Paid slots below — or read the
+            <a href="/access-policy.json">machine-readable access policy</a>.
+        </p>
+    </section>
+
     <PaidPlanExplorer snapshot={paidPlanData} discordUrl={siteConfig.socials.discord} />
 </main>
 
@@ -54,5 +68,34 @@
 .pricing-main {
     gap: 28px;
     padding: 22px 0 64px;
+}
+
+.pricing-free {
+    display: grid;
+    gap: 14px;
+    align-content: start;
+}
+
+.pricing-free h2 {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: clamp(1.75rem, 3.4vw, 2.6rem);
+    line-height: 1;
+    letter-spacing: -0.04em;
+}
+
+.pricing-free p {
+    margin: 0;
+    max-width: 68ch;
+    color: var(--dim);
+    font-size: 0.96rem;
+    line-height: 1.6;
+    text-wrap: pretty;
+}
+
+.pricing-free-note a {
+    color: var(--text);
+    text-decoration: underline;
+    text-underline-offset: 3px;
 }
 </style>

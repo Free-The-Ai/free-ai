@@ -85,7 +85,7 @@
 
 <SeoHead {seo} />
 
-<main class="quickstart-main">
+<main class="quickstart-main jp-dense">
     <section class="quickstart-card shell">
         <header class="quickstart-head">
             <span class="eyebrow">Quickstart</span>
@@ -212,6 +212,9 @@
     gap: 26px;
     padding: clamp(24px, 4.2vw, 42px);
 }
+.quickstart-head .eyebrow {
+    color: #e60012;
+}
 .quickstart-head {
     display: grid;
     gap: 14px;
@@ -272,7 +275,7 @@
     inset-inline-start: 21px;
     width: 1px;
     height: calc(100% + 4px);
-    background: var(--sk-border);
+    background: #e60012;
 }
 .quickstart-step .quickstart-step-num {
     position: relative;
@@ -284,7 +287,7 @@
     width: 32px;
     height: 32px;
     border: 1px solid var(--sk-border);
-    border-radius: var(--radius-full);
+    border-radius: 0;
     background: var(--sk-inset-bg);
     box-shadow: var(--sk-inset-shadow);
     color: var(--accent-text);
@@ -324,7 +327,7 @@
     gap: 4px;
     padding: 4px;
     border: 1px solid var(--sk-border);
-    border-radius: calc(var(--radius) - 4px);
+    border-radius: 0;
     background: var(--sk-inset-bg);
     box-shadow: var(--sk-inset-shadow);
     width: fit-content;
@@ -341,9 +344,8 @@
     transition: color 140ms var(--ease-out-smooth), background 140ms var(--ease-out-smooth), transform 140ms var(--ease-out-smooth);
 }
 .quickstart-tab.is-active {
-    background: var(--sk-shell-bg);
-    color: var(--accent-text);
-    box-shadow: var(--sk-raised-shadow);
+    background: #e60012;
+    color: #fff;
 }
 .quickstart-tab:hover:not(.is-active) {
     color: var(--text);
@@ -361,7 +363,7 @@
 .quickstart-snippet {
     position: relative;
     border: 1px solid var(--sk-border);
-    border-radius: calc(var(--radius) - 4px);
+    border-radius: 0;
     background: var(--sk-inset-bg);
     box-shadow: var(--sk-inset-shadow);
     overflow: hidden;

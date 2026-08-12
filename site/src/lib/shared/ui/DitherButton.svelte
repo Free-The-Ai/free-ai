@@ -176,7 +176,7 @@
         justify-content: center;
         overflow: hidden;
         border: 0;
-        border-radius: 0.375rem;
+        border-radius: 0;
         padding: 0.5rem 1rem;
         font-family: var(--font-mono, ui-monospace, monospace);
         font-size: 0.75rem;
@@ -193,7 +193,7 @@
     .kb-dither-button[data-size="lg"] {
         padding: 0.72rem 1.25rem;
         font-size: 0.95rem;
-        border-radius: 0.5rem;
+        border-radius: 0;
     }
     .kb-dither-button:focus-visible {
         outline: none;

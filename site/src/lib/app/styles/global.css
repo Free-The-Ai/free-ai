@@ -26,8 +26,8 @@
     --donate-text: oklch(0.916 0 0);
     --danger: oklch(0.673 0.215 25.0);
     --amber: oklch(0.666 0.157 58.3);
-    --radius: 8px;
-    --radius-sm: 5px;
+    --radius: 0;
+    --radius-sm: 0;
     --radius-full: 99px;
     --control-height: 40px;
     --control-height-sm: 32px;
@@ -635,7 +635,7 @@ pre {
     align-self: center;
     width: 16px;
     height: 16px;
-    border-radius: 3px;
+    border-radius: 0;
     object-fit: contain;
     opacity: 0.8;
 }
@@ -1084,7 +1084,7 @@ h3 {
 .docs-content .shiki-wrapper .shiki::-webkit-scrollbar-thumb,
 .docs-rail-stack::-webkit-scrollbar-thumb {
     background: oklch(1 0 0 / 0.16);
-    border-radius: 8px;
+    border-radius: 0;
 }
 
 .docs-code-group pre code {
@@ -1577,7 +1577,7 @@ h3 {
     text-shadow: var(--accent-text-glow);
     background: var(--control-bg);
     padding: 1px 5px;
-    border-radius: 2px;
+    border-radius: 0;
     font-size: 0.85em;
 }
 
@@ -2022,7 +2022,7 @@ h3 {
 .catalog-note code {
     padding: 1px 5px;
     border: 1px solid var(--sk-border);
-    border-radius: 4px;
+    border-radius: 0;
     background: var(--sk-inset-bg);
     color: var(--text);
     font-family: var(--font-mono);
@@ -2086,7 +2086,7 @@ h3 {
     width: 100%;
     max-width: 100%;
     max-height: 88dvh;
-    border-radius: 14px 14px 0 0;
+    border-radius: 0;
     border-top: 1px solid var(--sk-border);
     background: var(--sk-shell-bg);
     outline: 0;
@@ -2105,7 +2105,7 @@ h3 {
     width: 36px;
     height: 4px;
     margin: 10px auto 6px;
-    border-radius: 2px;
+    border-radius: 0;
     background: var(--border-strong);
     flex-shrink: 0;
 }
@@ -2228,7 +2228,7 @@ h3 {
 .model-modal-gate code {
     padding: 1px 5px;
     border: 1px solid var(--sk-border);
-    border-radius: 4px;
+    border-radius: 0;
     background: var(--sk-shell-bg);
     color: var(--text);
     font-family: var(--font-mono);
@@ -2588,7 +2588,7 @@ h3 {
 .status-card:focus-visible {
     outline: 2px solid var(--accent);
     outline-offset: -4px;
-    border-radius: 4px;
+    border-radius: 0;
 }
 .status-card.is-up {
     border-color: oklch(0.622 0.166 146.2 / 0.3);
@@ -2735,7 +2735,7 @@ h3 {
 }
 .provider-popover .popover-avatar {
     flex: none;
-    border-radius: 7px;
+    border-radius: 0;
     overflow: hidden;
 }
 .provider-popover .popover-header-text {
@@ -2932,7 +2932,7 @@ h3 {
     position: absolute;
     width: 100%;
     height: 2px;
-    border-radius: 1px;
+    border-radius: 0;
     background: currentColor;
     transition:
         transform 220ms var(--ease-out-smooth),
@@ -3028,7 +3028,7 @@ h3 {
     pointer-events: auto;
     touch-action: pan-y;
     box-sizing: border-box;
-    border-radius: 14px 14px 0 0;
+    border-radius: 0;
     border-top: 1px solid var(--border);
     padding-bottom: env(safe-area-inset-bottom, 0px);
     outline: 0;
@@ -3050,7 +3050,7 @@ h3 {
     width: 36px;
     height: 4px;
     margin: 10px auto 6px;
-    border-radius: 2px;
+    border-radius: 0;
     background: var(--border-strong);
     flex-shrink: 0;
     touch-action: none;
@@ -3312,7 +3312,7 @@ h3 {
 .docs-content code {
     display: inline-block;
     padding: 1px 5px;
-    border-radius: 4px;
+    border-radius: 0;
     background: oklch(1 0 0 / 0.05);
 }
 /* Inside tables and op strips the pills read as noise; plain mono carries
@@ -3696,7 +3696,7 @@ h3 {
         width: 17px;
         height: 2px;
         background: var(--text);
-        border-radius: 1px;
+        border-radius: 0;
     }
 
     .nav-hamburger[aria-expanded="true"] .hamburger-bar:nth-child(1),
@@ -3785,7 +3785,7 @@ h3 {
         z-index: 102;
         background: var(--surface);
         border-top: 1px solid var(--border);
-        border-radius: 14px 14px 0 0;
+        border-radius: 0;
         padding: 8px 20px calc(20px + env(safe-area-inset-bottom, 0px));
         max-height: 70vh;
         overflow-y: auto;
@@ -3815,7 +3815,7 @@ h3 {
         width: 36px;
         height: 5px;
         background: var(--border-strong);
-        border-radius: 3px;
+        border-radius: 0;
     }
 
     .docs-mobile-toc__label {
@@ -4096,7 +4096,7 @@ body[data-sound-muted="false"]::after {
     inset-inline-end: 16px;
     z-index: 10000;
     padding: 6px 14px;
-    border-radius: 8px;
+    border-radius: 0;
     font: 500 13px/1.4 var(--font-sans);
     letter-spacing: 0.3px;
     pointer-events: none;

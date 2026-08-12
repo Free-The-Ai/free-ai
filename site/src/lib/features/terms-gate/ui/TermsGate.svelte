@@ -1,78 +1,46 @@
 <script lang="ts">
     import { onMount } from "svelte";
-    import {
-        CURRENT_TERMS_VERSION,
-        TERMS_CONTENT_HASH,
-        TERMS_STORAGE_KEY,
-        type TermsAcceptanceLocal,
-    } from "@/entities/terms/model";
+    import { CURRENT_TERMS_VERSION } from "@/entities/terms/model";
+    import { termsState } from "../terms-state.svelte";
 
     let { onAccept }: { onAccept?: () => void } = $props();
 
-    let accepted = $state(true); // default: accepted (no flash)
-    let loading = $state(false);
-    let mounted = $state(false);
-
-    onMount(() => {
-        accepted = checkAccepted();
-        mounted = true;
-    });
-
-    function checkAccepted(): boolean {
-        try {
-            const raw = localStorage.getItem(TERMS_STORAGE_KEY);
-            if (!raw) return false;
-            const data: TermsAcceptanceLocal = JSON.parse(raw);
-            // Re-accept required if content hash changed (ToS was edited)
-            // or if version bumped (major legal change)
-            return (
-                data.content_hash === TERMS_CONTENT_HASH &&
-                data.terms_version === CURRENT_TERMS_VERSION
-            );
-        } catch {
-            return false;
+    /** Svelte action: overlay with escape-to-close and click-outside-to-close. */
+    function overlay(node: HTMLElement): { destroy(): void } {
+        function onKeyDown(e: KeyboardEvent) {
+            if (e.key === "Escape") {
+                // Escape doesn't dismiss — you must accept. But we can focus the button.
+                node.querySelector<HTMLButtonElement>(".terms-accept-btn")?.focus();
+            }
         }
+        function onClick(e: MouseEvent) {
+            // Click outside modal → focus modal (don't dismiss)
+            const modal = node.querySelector(".terms-modal");
+            if (modal && !modal.contains(e.target as Node)) {
+                modal.querySelector<HTMLButtonElement>(".terms-accept-btn")?.focus();
+            }
+        }
+        document.addEventListener("keydown", onKeyDown);
+        node.addEventListener("click", onClick);
+        return {
+            destroy() {
+                document.removeEventListener("keydown", onKeyDown);
+                node.removeEventListener("click", onClick);
+            },
+        };
     }
 
-    async function handleAccept() {
-        loading = true;
-        try {
-            const record: TermsAcceptanceLocal = {
-                terms_version: CURRENT_TERMS_VERSION,
-                content_hash: TERMS_CONTENT_HASH,
-                accepted_at: new Date().toISOString(),
-            };
-            localStorage.setItem(TERMS_STORAGE_KEY, JSON.stringify(record));
+    onMount(() => {
+        termsState.check();
+    });
 
-            // Best-effort gateway logging (unlinked hash computed server-side)
-            try {
-                const apiKey = localStorage.getItem("fta_api_key");
-                if (apiKey) {
-                    await fetch("https://api.freetheai.xyz/v1/terms/accept", {
-                        method: "POST",
-                        headers: { "Content-Type": "application/json" },
-                        body: JSON.stringify({
-                            api_key: apiKey,
-                            terms_version: CURRENT_TERMS_VERSION,
-                            content_hash: TERMS_CONTENT_HASH,
-                        }),
-                        signal: AbortSignal.timeout(5000),
-                    });
-                }
-            } catch {
-                // Gateway is optional — acceptance is still valid locally
-            }
-
-            accepted = true;
-            onAccept?.();
-        } finally {
-            loading = false;
-        }
+    function handleAccept() {
+        termsState.accept().then(() => onAccept?.());
     }
 </script>
 
-{#if mounted && !accepted}
-    <div class="terms-overlay" role="dialog" aria-modal="true" aria-label="Terms of Service">
+{#if termsState.showModal}
+    <div class="terms-overlay" use:overlay role="dialog" aria-modal="true" aria-label="Terms of Service">
         <div class="terms-modal shell">
             <span class="eyebrow">Action Required</span>
             <h2>Terms of Service</h2>
@@ -109,9 +77,9 @@
             <button
                 class="terms-accept-btn"
                 onclick={handleAccept}
-                disabled={loading}
+                disabled={termsState.logging}
             >
-                {#if loading}
+                {#if termsState.logging}
                     Accepting...
                 {:else}
                     I agree to the Terms of Service
@@ -169,7 +137,7 @@
         color: var(--text);
     }
 
-    .terms-point .material-symbols-outlined {
+    .terms-point :global(.material-symbols-outlined) {
         font-size: 16px;
         color: #008000;
         flex-shrink: 0;
@@ -181,7 +149,7 @@
         color: var(--dim);
     }
 
-    .terms-legal a {
+    .terms-legal :global(a) {
         color: var(--text);
         text-decoration: underline;
         text-underline-offset: 2px;

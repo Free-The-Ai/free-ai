@@ -435,8 +435,8 @@
         text-align: center;
     }
     .hp-provider-grid {
-        display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(108px, auto));
+        display: flex;
+        flex-wrap: wrap;
         gap: 1px;
         background: var(--border);
         border: 1px solid var(--border);
@@ -447,6 +447,8 @@
     }
     .hp-provider-item {
         display: flex;
+        flex: 1 1 0;
+        min-width: 108px;
         flex-direction: column;
         align-items: center;
         gap: 8px;

@@ -681,12 +681,12 @@
         }
     }
     .hp-glance-table {
-        max-width: 520px;
+        max-width: 560px;
     }
     .hp-glance-link {
         margin: 0;
-        margin-top: 12px;
-        font-size: 0.88rem;
+        margin-top: 14px;
+        font-size: 0.82rem;
     }
     .hp-glance-link a {
         color: var(--accent-text);

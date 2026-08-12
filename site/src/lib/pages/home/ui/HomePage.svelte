@@ -667,4 +667,17 @@
             }
         }
     }
+    .hp-glance-table {
+        max-width: 520px;
+    }
+    .hp-glance-link {
+        margin: 0;
+        margin-top: 12px;
+        font-size: 0.88rem;
+    }
+    .hp-glance-link a {
+        color: var(--accent-text);
+        text-decoration: underline;
+        text-underline-offset: 3px;
+    }
 </style>

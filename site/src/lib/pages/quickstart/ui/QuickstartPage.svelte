@@ -105,6 +105,7 @@
                         Join <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">discord.gg/secrets</a>,
                         run <code>/signup</code>, and complete the modal. Lost it? Use <code>/resetkey</code>.
                     </span>
+                    <p class="quickstart-reassurance">No credit card, no billing — the free tier stays free.</p>
                 </div>
             </div>
             <div class="quickstart-step" id="step-checkin">
@@ -476,5 +477,10 @@
     .quickstart-snippet :global(.copy-btn) {
         opacity: 1;
     }
+}
+.quickstart-reassurance {
+    margin: 8px 0 0;
+    font-size: 0.82rem;
+    color: var(--dim);
 }
 </style>

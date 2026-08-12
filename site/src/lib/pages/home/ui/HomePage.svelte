@@ -410,6 +410,10 @@
         border-radius: var(--radius-sm);
         background: var(--sk-inset-bg);
         color: var(--muted);
+        font-family: 'Material Symbols Outlined';
+        font-feature-settings: 'liga';
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-style: normal;
     }
     .hp-card h3 {
         font-size: 0.92rem;
@@ -512,6 +516,12 @@
         background: oklch(1 0 0 / 0.08);
         font-size: 13px;
         color: var(--text);
+        /* Explicit re-declaration: Svelte scoped compilation strips inherited
+           font-feature-settings from nested selectors, breaking ligature icons */
+        font-family: 'Material Symbols Outlined';
+        font-feature-settings: 'liga';
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-style: normal;
     }
 
     /* ── Step numbers ── */

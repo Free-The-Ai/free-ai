@@ -2,6 +2,7 @@
     import { onMount } from "svelte";
     import {
         CURRENT_TERMS_VERSION,
+        TERMS_CONTENT_HASH,
         TERMS_STORAGE_KEY,
         type TermsAcceptanceLocal,
     } from "@/entities/terms/model";
@@ -22,7 +23,12 @@
             const raw = localStorage.getItem(TERMS_STORAGE_KEY);
             if (!raw) return false;
             const data: TermsAcceptanceLocal = JSON.parse(raw);
-            return data.terms_version === CURRENT_TERMS_VERSION;
+            // Re-accept required if content hash changed (ToS was edited)
+            // or if version bumped (major legal change)
+            return (
+                data.content_hash === TERMS_CONTENT_HASH &&
+                data.terms_version === CURRENT_TERMS_VERSION
+            );
         } catch {
             return false;
         }
@@ -31,14 +37,14 @@
     async function handleAccept() {
         loading = true;
         try {
-            // Store acceptance locally
             const record: TermsAcceptanceLocal = {
                 terms_version: CURRENT_TERMS_VERSION,
+                content_hash: TERMS_CONTENT_HASH,
                 accepted_at: new Date().toISOString(),
             };
             localStorage.setItem(TERMS_STORAGE_KEY, JSON.stringify(record));
 
-            // Attempt to log to gateway (non-blocking — site works even if gateway is down)
+            // Best-effort gateway logging (unlinked hash computed server-side)
             try {
                 const apiKey = localStorage.getItem("fta_api_key");
                 if (apiKey) {
@@ -46,16 +52,15 @@
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         body: JSON.stringify({
-                            terms_version: CURRENT_TERMS_VERSION,
-                            // The gateway will compute the unlinked hash server-side
-                            // We send the key once; the server hashes it and discards
                             api_key: apiKey,
+                            terms_version: CURRENT_TERMS_VERSION,
+                            content_hash: TERMS_CONTENT_HASH,
                         }),
                         signal: AbortSignal.timeout(5000),
                     });
                 }
             } catch {
-                // Gateway logging is best-effort — acceptance is still valid locally
+                // Gateway is optional — acceptance is still valid locally
             }
 
             accepted = true;

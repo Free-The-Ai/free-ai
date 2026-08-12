@@ -3,13 +3,13 @@
     // that fills as the page scrolls. rAF-throttled scroll listener drives a
     // stroke-dashoffset; decorative, desktop-only (hidden via CSS on small
     // screens where the mobile FAB cluster owns the corner).
-    import { onMount } from "svelte";
 
     const R = 18;
     const CIRCUMFERENCE = 2 * Math.PI * R;
     let progress = $state(0);
 
-    onMount(() => {
+    /** Svelte action: tracks scroll progress on the window. */
+    function scrollTrack(_node: HTMLElement): { destroy(): void } {
         let ticking = false;
         function update(): void {
             ticking = false;
@@ -25,14 +25,16 @@
         update();
         window.addEventListener("scroll", onScroll, { passive: true });
         window.addEventListener("resize", onScroll);
-        return () => {
-            window.removeEventListener("scroll", onScroll);
-            window.removeEventListener("resize", onScroll);
+        return {
+            destroy() {
+                window.removeEventListener("scroll", onScroll);
+                window.removeEventListener("resize", onScroll);
+            },
         };
-    });
+    }
 </script>
 
-<div class="scroll-progress" aria-hidden="true">
+<div class="scroll-progress" use:scrollTrack aria-hidden="true">
     <svg viewBox="0 0 48 48">
         <circle class="scroll-progress-track" cx="24" cy="24" r={R} />
         <circle

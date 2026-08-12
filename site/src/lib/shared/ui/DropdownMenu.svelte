@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
     import { soundPlay } from "@/shared/lib/sound/singleton";
     import { portal } from "@/shared/lib/portal";
     import CheckmarkIcon from "./icons/CheckmarkIcon.svelte";
@@ -29,7 +28,6 @@
     const menuId = $props.id();
     let open = $state(false);
     let closing = $state(false);
-    let root: HTMLElement | undefined = $state();
     let trigger: HTMLButtonElement | undefined = $state();
     let menu: HTMLElement | undefined = $state();
     let panelStyle = $state("");
@@ -124,36 +122,31 @@
         items[next]?.focus();
     }
 
-    function onDocumentClick(event: MouseEvent): void {
-        if (open && root && !root.contains(event.target as Node) && menu && !menu.contains(event.target as Node)) close();
-    }
-
     function onToggleOption(value: string): void {
         soundPlay("interaction.toggle");
         ontoggle?.(value);
     }
 
-    // Attaches window scroll/resize listeners for exactly as long as the menu
-    // panel is in the DOM \u2014 replaces `watch(open, ...)`.
-    function trackPosition(_node: Element): { destroy(): void } {
+    /** Svelte action: click-outside detection + scroll/resize position tracking. */
+    function menuLifecycle(node: HTMLElement): { destroy(): void } {
+        function onDocumentClick(event: MouseEvent): void {
+            if (open && !node.contains(event.target as Node) && menu && !menu.contains(event.target as Node)) close();
+        }
+        document.addEventListener("click", onDocumentClick);
         window.addEventListener("scroll", updatePosition, { passive: true });
         window.addEventListener("resize", updatePosition, { passive: true });
         return {
             destroy() {
+                document.removeEventListener("click", onDocumentClick);
                 window.removeEventListener("scroll", updatePosition);
                 window.removeEventListener("resize", updatePosition);
+                if (closeTimer) window.clearTimeout(closeTimer);
             },
         };
     }
-
-    onMount(() => document.addEventListener("click", onDocumentClick));
-    onDestroy(() => {
-        if (typeof document !== "undefined") document.removeEventListener("click", onDocumentClick);
-        if (closeTimer) window.clearTimeout(closeTimer);
-    });
 </script>
 
-<div bind:this={root} class="kb-menu-root">
+<div use:menuLifecycle class="kb-menu-root">
     <button
         bind:this={trigger}
         type="button"
@@ -183,7 +176,6 @@
                 role="menu"
                 aria-label={triggerLabel}
                 onkeydown={onMenuKeydown}
-                use:trackPosition
             >
                 {#each options as option (option.value)}
                     <button

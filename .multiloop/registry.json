@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "loops": [
+    {
+      "lane": "jp-density",
+      "runTag": "run-20260812-032214",
+      "mode": "dev",
+      "status": "completed",
+      "startedAt": "2026-08-12T03:22:14.827Z",
+      "stateDir": ".multiloop/active/jp-density/run-20260812-032214",
+      "verifyCommand": "grep -rL \"border-left.*#e60012\\|jp-dense\\|\\.jp\" site/src/lib/pages/*/ui/*.svelte 2>/dev/null | wc -l",
+      "guardCommand": "cd /home/drvova/free-ai/site && npx svelte-check --tsconfig ./tsconfig.json --threshold error 2>&1 | tail -1",
+      "promptVerifier": "Each iteration must: (1) do web research on .jp design patterns before implementing, (2) add red left border accent (#e60012) to section headers, (3) ensure sharp edges (no border-radius), (4) add information density (descriptions, counts, specs visible upfront), (5) maintain English text throughout. The page must feel like it could be from a .jp site.",
+      "acceptancePolicy": "metric must improve and all mechanical/prompt verification checks must pass"
+    }
+  ]
+}

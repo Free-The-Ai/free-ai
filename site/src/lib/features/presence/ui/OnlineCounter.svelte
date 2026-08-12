@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
     import { siteConfig } from "@/shared/config/site";
 
     let online = $state<number | null>(null);
@@ -59,16 +58,15 @@
         else stop();
     }
 
-    onMount(() => {
+    $effect(() => {
         if (typeof window === "undefined") return;
         document.addEventListener("visibilitychange", onVisibility);
         start();
-    });
-
-    onDestroy(() => {
-        stop();
-        heartbeatAbort?.abort();
-        if (typeof document !== "undefined") document.removeEventListener("visibilitychange", onVisibility);
+        return () => {
+            stop();
+            heartbeatAbort?.abort();
+            document.removeEventListener("visibilitychange", onVisibility);
+        };
     });
 </script>
 

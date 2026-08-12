@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
 
     let {
         amplitude = 0.32,
@@ -90,7 +89,7 @@ void main() {
 
     let cleanup: (() => void) | null = null;
 
-    onMount(() => {
+    $effect(() => {
         const canvas = canvasEl;
         if (!canvas || typeof window === "undefined") return;
 
@@ -188,9 +187,8 @@ void main() {
             ctx.deleteProgram(prog);
             ctx.deleteBuffer(buf);
         };
+        return () => cleanup?.();
     });
-
-    onDestroy(() => cleanup?.());
 </script>
 
 <canvas

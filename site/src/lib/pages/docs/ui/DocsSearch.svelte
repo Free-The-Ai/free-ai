@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { onMount, tick } from "svelte";
+    import { tick } from "svelte";
     import { SETUP_GUIDES } from "@/entities/setup-guide";
 
     let { endpoints }: { endpoints: [string, string, string, string][] } = $props();
@@ -103,7 +103,7 @@
         }
     }
 
-    onMount(() => {
+    $effect(() => {
         function onGlobalKeydown(event: KeyboardEvent): void {
             const target = event.target as HTMLElement | null;
             const typing = target && (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.isContentEditable);

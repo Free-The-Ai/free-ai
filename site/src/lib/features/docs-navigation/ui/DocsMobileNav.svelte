@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
     import type { Action } from "svelte/action";
     import { disconnectPointerDrag, lockBodyScroll, unlockBodyScroll } from "@/shared/lib/dom";
     import { motionApply, motionFor } from "@/shared/lib/motion";
@@ -99,7 +98,7 @@
         if (event.key === "Escape") close();
     }
 
-    onMount(() => {
+    $effect(() => {
         if (typeof window === "undefined" || !("IntersectionObserver" in window)) return;
         observer = new IntersectionObserver(
             (entries) => {
@@ -113,12 +112,11 @@
             const el = document.getElementById(section.id);
             if (el) observer.observe(el);
         }
-    });
-
-    onDestroy(() => {
-        observer?.disconnect();
-        if (open) unlockBodyScroll("docs-toc-open");
-        disconnectPointerDrag(boundMove, boundUp);
+        return () => {
+            observer?.disconnect();
+            if (open) unlockBodyScroll("docs-toc-open");
+            disconnectPointerDrag(boundMove, boundUp);
+        };
     });
 </script>
 

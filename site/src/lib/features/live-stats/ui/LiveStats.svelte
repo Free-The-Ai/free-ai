@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
     import modelsJson from "@/entities/model/models.json";
     import { NumberFlow } from "@/shared/ui";
 
@@ -12,7 +11,6 @@
     const providerCount = new Set(rows.map((m) => m.prefix).filter(Boolean)).size;
 
     let health = $state<HealthData | null>(null);
-    let interval: number | undefined;
 
     async function fetchHealth(): Promise<void> {
         try {
@@ -23,12 +21,10 @@
         }
     }
 
-    onMount(() => {
+    $effect(() => {
         fetchHealth();
-        interval = window.setInterval(fetchHealth, 30000);
-    });
-    onDestroy(() => {
-        if (interval) window.clearInterval(interval);
+        const id = window.setInterval(fetchHealth, 30000);
+        return () => window.clearInterval(id);
     });
 
     const models = $derived(health?.catalog?.model_count ?? null);

@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
     import { page } from "$app/state";
     import { CATEGORY_LABELS, CATEGORY_ORDER, SETUP_GUIDES, setupGuidesByCategory } from "@/entities/setup-guide";
     import { siteConfig } from "@/shared/config/site";
@@ -56,14 +55,13 @@
         themeToggleEl?.setAttribute("data-scheme", scheme);
     }
 
-    onMount(() => {
+    $effect(() => {
         document.addEventListener("click", onDocumentClick);
         document.addEventListener("keydown", onDocumentKeydown);
-    });
-    onDestroy(() => {
-        if (typeof document === "undefined") return;
-        document.removeEventListener("click", onDocumentClick);
-        document.removeEventListener("keydown", onDocumentKeydown);
+        return () => {
+            document.removeEventListener("click", onDocumentClick);
+            document.removeEventListener("keydown", onDocumentKeydown);
+        };
     });
 </script>
 

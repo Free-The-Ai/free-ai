@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
     import type { CatalogPolicy, Model } from "@/entities/model";
     import { modelSupportsAudio, modelSupportsImage, parseModel } from "@/entities/model";
     import { modelPrefix } from "@/shared/lib/format";
@@ -132,7 +131,7 @@
         if (event.key === "Escape") selected = null;
     }
 
-    onMount(async () => {
+    $effect(() => {
         const params = readCatalogParams();
         if (params.query) query = params.query;
         if (params.prefixes.length > 0) prefixes = new Set(params.prefixes);
@@ -141,6 +140,7 @@
 
         document.addEventListener("keydown", onEscape);
 
+        (async () => {
         try {
             const { payload, src } = await fetchModels();
             const parsed = parsePayload(payload);
@@ -164,10 +164,11 @@
             source = "error";
             loadError = err instanceof Error ? err.message : "Failed to load model catalog.";
         }
-    });
+        })();
 
-    onDestroy(() => {
-        if (typeof document !== "undefined") document.removeEventListener("keydown", onEscape);
+        return () => {
+            document.removeEventListener("keydown", onEscape);
+        };
     });
 
     const providerLabel = $derived(prefixLabel(prefixes));

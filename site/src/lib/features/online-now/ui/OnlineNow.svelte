@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
 
     interface ClientStat {
         client_name: string;
@@ -11,7 +10,6 @@
     }
 
     let count = $state<number | null>(null);
-    let interval: number | undefined;
 
     async function fetchActive(): Promise<void> {
         try {
@@ -24,12 +22,10 @@
         }
     }
 
-    onMount(() => {
+    $effect(() => {
         fetchActive();
-        interval = window.setInterval(fetchActive, 30000);
-    });
-    onDestroy(() => {
-        if (interval) window.clearInterval(interval);
+        const id = window.setInterval(fetchActive, 30000);
+        return () => window.clearInterval(id);
     });
 </script>
 

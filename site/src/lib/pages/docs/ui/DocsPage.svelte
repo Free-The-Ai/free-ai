@@ -12,7 +12,6 @@
     import { SeoHead } from "@/shared/ui";
     import { highlightedCode } from "@/shared/config/highlighted.generated";
     import { docsSnippets } from "@/shared/config/codeSnippets";
-    import { onMount } from "svelte";
     import { DocsMobileNav } from "@/features/docs-navigation";
     import DocsAccordion from "./DocsAccordion.svelte";
     import DocsSearch from "./DocsSearch.svelte";
@@ -102,7 +101,7 @@
 
     // Scrollspy: the reference rail tracks which section is in view.
     let activeSection = $state("");
-    onMount(() => {
+    $effect(() => {
         refreshHealth(false);
         const ids = new Set(
             endpoints.map(([, , , anchor]) => anchor).concat(["auth", "endpoints", "compatibility", "chat", "messages", "models", "other-routes", "responses", "images", "audio", "errors"]),

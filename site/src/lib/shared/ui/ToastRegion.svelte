@@ -1,6 +1,5 @@
 <script lang="ts">
-    import { onMount } from "svelte";
-    import { closeToast, initToastManager, toastState } from "@/shared/lib/toast";
+    import { closeToast, initToastManager, toastState } from "@/shared/lib/toast.svelte";
     import { portal } from "@/shared/lib/portal";
 
     const TOAST_ICONS: Record<string, string> = {
@@ -10,7 +9,7 @@
         warning: "!",
     };
 
-    onMount(initToastManager);
+    $effect(() => { initToastManager(); });
 </script>
 
 <div use:portal={"body"}>

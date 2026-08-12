@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
     import { buildSeo } from "@/shared/lib/seo";
     import { siteConfig } from "@/shared/config/site";
     import { CtaButton, DitherGradient, SeoHead } from "@/shared/ui";
@@ -112,16 +111,15 @@
         });
     }
 
-    onMount(() => {
+    $effect(() => {
         window.addEventListener("scroll", updateScrollProgress, { passive: true });
         window.addEventListener("resize", updateScrollProgress, { passive: true });
         updateScrollProgress();
-    });
-    onDestroy(() => {
-        if (typeof window === "undefined") return;
-        window.removeEventListener("scroll", updateScrollProgress);
-        window.removeEventListener("resize", updateScrollProgress);
-        cancelAnimationFrame(progressFrame);
+        return () => {
+            window.removeEventListener("scroll", updateScrollProgress);
+            window.removeEventListener("resize", updateScrollProgress);
+            cancelAnimationFrame(progressFrame);
+        };
     });
 
     function copyBaseUrl(event: MouseEvent): void {

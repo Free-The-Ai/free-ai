@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import type { CatalogState, PaidPlanSnapshot } from "@/entities/paid-plan";
     import { PLAN_ORDER, fetchLiveCatalog, formatNumber, formatUnitCost, snapshotState } from "@/entities/paid-plan";
     import PlanCard from "./PlanCard.svelte";
@@ -13,12 +12,13 @@
     let catalog = $state<CatalogState>(initialCatalog);
     let selectedPlan = $state(initialCatalog.plans[0]?.id ?? PLAN_ORDER[0]);
 
-    onMount(async () => {
-        try {
+    $effect(() => {
+        (async () => {        try {
             catalog = await fetchLiveCatalog();
         } catch (error) {
             if (import.meta.env.DEV) console.warn("Paid catalog refresh failed.", error);
         }
+        })();
     });
 
     const plans = $derived.by(() =>

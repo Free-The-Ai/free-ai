@@ -1,6 +1,5 @@
 <script lang="ts">
     import type { Snippet } from "svelte";
-    import { onDestroy } from "svelte";
     import { disconnectPointerDrag, lastPointerWasMouse, lockBodyScroll, setAppModalOpen, unlockBodyScroll } from "@/shared/lib/dom";
     import { motionApply, motionFor } from "@/shared/lib/motion";
     import { portal } from "@/shared/lib/portal";
@@ -152,9 +151,11 @@
         };
     }
 
-    onDestroy(() => {
-        disconnectPointerDrag(boundMove, boundUp);
-        if (closeTimer) window.clearTimeout(closeTimer);
+    $effect(() => {
+        return () => {
+            disconnectPointerDrag(boundMove, boundUp);
+            if (closeTimer) window.clearTimeout(closeTimer);
+        };
     });
 </script>
 

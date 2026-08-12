@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onDestroy, onMount } from "svelte";
     import type { HealthPayload, ProviderHealth, ProviderStatus } from "@/entities/provider";
     import { PROVIDER_ORDER, STATUS_LABELS, STATUS_OPTIONS } from "@/entities/provider";
     import { siteConfig } from "@/shared/config/site";
@@ -16,7 +15,6 @@
     let query = $state("");
     let prefixFilters = $state<Set<string>>(new Set());
     let statusFilter = $state<Set<ProviderStatus>>(new Set());
-    let interval: number | undefined;
 
     function togglePrefix(prefix: string): void {
         const next = new Set(prefixFilters);
@@ -46,12 +44,10 @@
         }
     }
 
-    onMount(() => {
+    $effect(() => {
         fetchHealth();
-        interval = window.setInterval(fetchHealth, 30000);
-    });
-    onDestroy(() => {
-        if (interval) window.clearInterval(interval);
+        const id = window.setInterval(fetchHealth, 30000);
+        return () => window.clearInterval(id);
     });
 
     function openPopover(prefix: string): void {
@@ -237,7 +233,6 @@
             </article>
         </div>
     {/if}
-
 
     {#if selectedProvider}
         <ProviderPopover provider={selectedProvider} onclose={closePopover} />

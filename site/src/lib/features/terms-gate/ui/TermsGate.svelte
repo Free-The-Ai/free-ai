@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { onMount } from "svelte";
     import { CURRENT_TERMS_VERSION } from "@/entities/terms/model";
     import { termsState } from "../terms-state.svelte";
 
@@ -30,7 +29,7 @@
         };
     }
 
-    onMount(() => {
+    $effect(() => {
         termsState.check();
     });
 

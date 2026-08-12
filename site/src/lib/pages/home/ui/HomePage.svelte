@@ -154,22 +154,6 @@
         </div>
     </section>
 
-    <section class="hp-section hp-reveal" aria-labelledby="hp-trending-title">
-        <h2 id="hp-trending-title">Popular models</h2>
-        <p class="hp-providers-sub">Trending right now. Tap to browse the full catalog.</p>
-        <div class="hp-trending-tags">
-            <a href="/models" class="hp-tag hp-tag-hot">Claude</a>
-            <a href="/models" class="hp-tag">Gemini</a>
-            <a href="/models" class="hp-tag">GPT</a>
-            <a href="/models" class="hp-tag">DeepSeek</a>
-            <a href="/models" class="hp-tag">Grok</a>
-            <a href="/models" class="hp-tag">Llama</a>
-            <a href="/models" class="hp-tag">Mistral</a>
-            <a href="/models" class="hp-tag">Qwen</a>
-            <a href="/models" class="hp-tag">MiniMax</a>
-            <a href="/models" class="hp-tag">Kimi</a>
-        </div>
-    </section>
 
     <section class="hp-section hp-reveal" aria-labelledby="hp-categories-title">
         <h2 id="hp-categories-title">What you can build</h2>
@@ -540,37 +524,6 @@
         text-align: center;
     }
 
-    /* ── Trending tags (人気キーワード) ── */
-    .hp-trending-tags {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 8px;
-    }
-    .hp-tag {
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        padding: 6px 14px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius-full);
-        background: oklch(1 0 0 / 0.03);
-        color: var(--text);
-        text-decoration: none;
-        transition:
-            background 180ms var(--ease-out-smooth),
-            border-color 180ms var(--ease-out-smooth),
-            transform var(--press-dur) var(--ease-out-smooth);
-    }
-    .hp-tag:hover {
-        background: oklch(1 0 0 / 0.07);
-        border-color: var(--border-strong);
-    }
-    .hp-tag:active {
-        transform: scale(0.97);
-    }
-    .hp-tag-hot {
-        border-color: oklch(0.72 0.11 265 / 0.5);
-        background: oklch(0.72 0.11 265 / 0.08);
-    }
 
     /* ── Model categories (Kakaku.com grid) ── */
     .hp-categories-grid {

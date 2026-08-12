@@ -149,9 +149,6 @@
     gap: 28px;
     padding: 22px 0 64px;
 }
-.support-hero .eyebrow {
-    color: #e60012;
-}
 .support-hero {
     position: relative;
     overflow: hidden;
@@ -202,7 +199,7 @@
     gap: 16px;
 }
 .support-card {
-    border-top: 2px solid #e60012;
+    border-top: 2px solid var(--accent-warm);
     display: grid;
     gap: 10px;
     min-height: 100%;

@@ -22,12 +22,16 @@
     /* Single source of truth for accent-filled control backgrounds. */
     --accent-fill: linear-gradient(180deg, oklch(0.985 0 0) 0%, oklch(0.905 0 0) 100%);
     --accent-fill-hover: linear-gradient(180deg, oklch(1 0 0) 0%, oklch(0.955 0 0) 100%);
+    /* Brand heartbeat: warm red for eyebrows, active states, step markers.
+     * The one point of chroma in the monochrome system. */
+    --accent-warm: oklch(0.577 0.215 27.3);
     --donate: oklch(0.750 0.173 353.8);
     --donate-text: oklch(0.916 0 0);
     --danger: oklch(0.673 0.215 25.0);
     --amber: oklch(0.666 0.157 58.3);
     --radius: 0;
     --radius-sm: 0;
+    --radius-control: 3px;
     --radius-full: 99px;
     --control-height: 40px;
     --control-height-sm: 32px;
@@ -828,7 +832,7 @@ main > * {
 .eyebrow {
     display: inline-block;
     margin-bottom: 10px;
-    color: var(--muted);
+    color: var(--accent-warm);
     font-family: var(--font-mono);
     font-size: 0.68rem;
     font-weight: 500;

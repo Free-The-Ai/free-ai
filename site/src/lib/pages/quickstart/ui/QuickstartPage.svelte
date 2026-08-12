@@ -193,7 +193,7 @@
             </a>
             <a class="quickstart-link" href="/pricing">
                 <strong>Pricing</strong>
-                <span>The free tier stays free. Optional paid slots start at $8/month.</span>
+                <span>The free tier stays free. Optional paid slots start at $5/month.</span>
             </a>
             <a class="quickstart-link" href="/status">
                 <strong>Status</strong>
@@ -211,9 +211,6 @@
     display: grid;
     gap: 26px;
     padding: clamp(24px, 4.2vw, 42px);
-}
-.quickstart-head .eyebrow {
-    color: #e60012;
 }
 .quickstart-head {
     display: grid;
@@ -275,7 +272,7 @@
     inset-inline-start: 21px;
     width: 1px;
     height: calc(100% + 4px);
-    background: #e60012;
+    background: var(--accent-warm);
 }
 .quickstart-step .quickstart-step-num {
     position: relative;
@@ -335,7 +332,7 @@
 .quickstart-tab {
     padding: 8px 14px;
     border: none;
-    border-radius: calc(var(--radius) - 8px);
+    border-radius: var(--radius-control);
     background: transparent;
     color: var(--muted);
     font-family: var(--font-mono);
@@ -344,7 +341,7 @@
     transition: color 140ms var(--ease-out-smooth), background 140ms var(--ease-out-smooth), transform 140ms var(--ease-out-smooth);
 }
 .quickstart-tab.is-active {
-    background: #e60012;
+    background: var(--accent-warm);
     color: #fff;
 }
 .quickstart-tab:hover:not(.is-active) {
@@ -375,7 +372,7 @@
 .quickstart-snippet :global(.copy-btn) {
     top: 8px;
     inset-inline-end: 8px;
-    border-radius: calc(var(--radius-sm) - 2px);
+    border-radius: var(--radius-control);
     transition: transform 140ms var(--ease-out-smooth), opacity 140ms var(--ease-out-smooth);
 }
 .quickstart-snippet :global(.copy-btn:active) {
@@ -450,14 +447,14 @@
 @media (max-width: 640px) {
     .quickstart-tab-list {
         width: 100%;
-        border-radius: calc(var(--radius) - 2px);
+        border-radius: var(--radius-control);
     }
     .quickstart-tab {
         flex: 1 1 auto;
-        border-radius: calc(var(--radius) - 6px);
+        border-radius: var(--radius-control);
     }
     .quickstart-snippet {
-        border-radius: calc(var(--radius) - 2px);
+        border-radius: var(--radius-control);
     }
     .quickstart-link-grid {
         grid-template-columns: 1fr;

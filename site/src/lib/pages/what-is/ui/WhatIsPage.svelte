@@ -206,7 +206,7 @@
     font-family: var(--font-serif);
     font-size: 1.35rem;
 
-        border-left: 3px solid #e60012;
+        border-left: 3px solid var(--accent-warm);
         padding-left: 12px;}
 .explainer-card p {
     margin: 0 0 10px;

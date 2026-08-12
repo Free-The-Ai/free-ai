@@ -195,7 +195,6 @@
 </main>
 
 <style>
-    .eyebrow { color: #e60012; }
 .intent-main {
     gap: 24px;
     padding: 22px 0 64px;
@@ -279,7 +278,7 @@
     font-size: clamp(1.35rem, 2.4vw, 1.8rem);
     letter-spacing: -0.02em;
 
-        border-left: 3px solid #e60012;
+        border-left: 3px solid var(--accent-warm);
         padding-left: 12px;}
 .intent-section-head p {
     max-width: 64ch;

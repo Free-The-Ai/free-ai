@@ -132,8 +132,6 @@
     justify-items: center;
 }
 .models-hero .eyebrow {
-    color: #e60012;
-    font-family: var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -193,7 +191,7 @@
 }
 .models-hero-link:hover {
     border-color: var(--border-strong);
-    border-color: #e60012;
+    border-color: var(--accent-warm);
 }
 .models-static-catalog {
     position: absolute;

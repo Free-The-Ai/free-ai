@@ -149,7 +149,6 @@
 </main>
 
 <style>
-    .eyebrow { color: #e60012; }
 .team-main {
     gap: 28px;
     padding: 22px 0 64px;
@@ -296,7 +295,7 @@
     font-size: 1.2rem;
     line-height: 1.15;
 
-        border-left: 3px solid #e60012;
+        border-left: 3px solid var(--accent-warm);
         padding-left: 12px;}
 .team-role {
     display: inline-block;

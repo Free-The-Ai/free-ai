@@ -379,11 +379,11 @@
         font-family: var(--font-mono);
         font-size: 0.58rem;
         letter-spacing: 0.14em;
-        color: #e60012;
+        color: var(--accent-warm);
         margin-bottom: 6px;
     }
     .hp-section h2 {
-        border-left: 3px solid #e60012;
+        border-left: 3px solid var(--accent-warm);
         padding-left: 12px;
     }
     .hp-split {
@@ -577,7 +577,7 @@
         letter-spacing: 0.04em;
     }
     .hp-cat-badge-hot {
-        background: #e60012;
+        background: var(--accent-warm);
         color: #fff;
     }
     .hp-cat-badge-practical {

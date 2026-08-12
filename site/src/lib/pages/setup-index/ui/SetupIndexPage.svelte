@@ -169,7 +169,6 @@
 </main>
 
 <style>
-    .eyebrow { color: #e60012; }
 .setup-main {
     gap: 28px;
     padding: 22px 0 64px;
@@ -288,7 +287,7 @@
     font-size: 1.5rem;
     letter-spacing: -0.02em;
 
-        border-left: 3px solid #e60012;
+        border-left: 3px solid var(--accent-warm);
         padding-left: 12px;}
 .setup-section-head p {
     margin: 0;

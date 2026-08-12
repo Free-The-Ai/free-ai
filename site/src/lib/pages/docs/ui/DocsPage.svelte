@@ -285,7 +285,6 @@
 </main>
 
 <style>
-    .eyebrow { color: #e60012; }
 .docs-hero {
     display: grid;
     grid-template-columns: minmax(0, 1fr);
@@ -412,7 +411,7 @@
     height: 34px;
     padding: 0;
     border: 1px solid var(--border);
-    border-radius: calc(var(--radius-sm) - 2px);
+    border-radius: var(--radius-control);
     background: transparent;
     color: var(--muted);
     cursor: pointer;
@@ -489,7 +488,7 @@
 }
 @media (max-width: 760px) {
     .docs-server-copy {
-        border-radius: calc(var(--radius) - 6px);
+        border-radius: var(--radius-control);
     }
     .docs-endpoint-row {
         grid-template-columns: 60px 1fr;

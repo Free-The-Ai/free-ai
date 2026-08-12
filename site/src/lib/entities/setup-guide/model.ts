@@ -1273,7 +1273,7 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
     {
         slug: "big-agi",
         name: "Big-AGI",
-        logoUrl: "/client-icons/big-agi.ico",
+        logoUrl: "/client-icons/bigagi.ico",
         tagline: "Open-source web AI workbench for power users.",
         category: "general",
         categoryLabel: "General chat clients",

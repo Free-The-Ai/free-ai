@@ -1,7 +1,7 @@
 <script lang="ts">
     import { buildSeo } from "@/shared/lib/seo";
     import { siteConfig } from "@/shared/config/site";
-    import { CtaButton, DitherGradient, SeoHead } from "@/shared/ui";
+    import { CtaButton, ClientIcon, DitherGradient, SeoHead } from "@/shared/ui";
     import { highlightedCode } from "@/shared/config/highlighted.generated";
     import { CATEGORY_LABELS, type HighlightLang, type SetupGuide } from "@/entities/setup-guide";
     import { buildBreadcrumbJsonLd, buildOrganizationJsonLd, buildSoftwareJsonLd, buildWebApiJsonLd, buildWebsiteJsonLd } from "@/shared/lib/jsonLd";
@@ -148,6 +148,7 @@
     <section class="setup-detail-hero shell">
         <DitherGradient class="setup-detail-glow" from="grey" direction="up" opacity={0.28} />
         <span class="eyebrow">{CATEGORY_LABELS[guide.category]}</span>
+        <div class="setup-detail-icon"><ClientIcon name={guide.name} size={48} /></div>
         <h1>{guide.name}</h1>
         <p class="setup-detail-tagline">{guide.tagline}</p>
         <p class="setup-detail-summary">{guide.summary}</p>
@@ -333,6 +334,15 @@
     display: grid;
     gap: 14px;
     padding: clamp(28px, 4.6vw, 52px);
+}
+.setup-detail-icon {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.setup-detail-icon :global(.client-icon) {
+    width: 48px;
+    height: 48px;
 }
 .setup-detail-hero h1 {
     margin: 0;

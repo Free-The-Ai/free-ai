@@ -135,7 +135,7 @@
 
 <SeoHead {seo} />
 
-<main class="setup-detail-main" jp-dense>
+<main class="setup-detail-main jp-dense">
     <div class="setup-scroll-progress" aria-hidden="true">
         <span id="setup-progress-fill" bind:this={progressFill}></span>
     </div>

@@ -38,6 +38,7 @@
 </main>
 
 <style>
+    .eyebrow { color: #e60012; }
 .status-hero {
     display: grid;
     gap: 12px;

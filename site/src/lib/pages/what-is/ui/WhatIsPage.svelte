@@ -205,7 +205,9 @@
     margin: 0 0 12px;
     font-family: var(--font-serif);
     font-size: 1.35rem;
-}
+
+        border-left: 3px solid #e60012;
+        padding-left: 12px;}
 .explainer-card p {
     margin: 0 0 10px;
     color: var(--muted);

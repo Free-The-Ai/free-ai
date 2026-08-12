@@ -285,6 +285,7 @@
 </main>
 
 <style>
+    .eyebrow { color: #e60012; }
 .docs-hero {
     display: grid;
     grid-template-columns: minmax(0, 1fr);

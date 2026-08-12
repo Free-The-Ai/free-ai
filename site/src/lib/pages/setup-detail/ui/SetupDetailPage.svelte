@@ -288,6 +288,7 @@
 </main>
 
 <style>
+    .eyebrow { color: #e60012; }
 .setup-detail-main {
     gap: 24px;
     padding: 22px 0 64px;
@@ -453,7 +454,9 @@
     font-family: var(--font-serif);
     font-size: 1.5rem;
     letter-spacing: -0.02em;
-}
+
+        border-left: 3px solid #e60012;
+        padding-left: 12px;}
 .setup-detail-list {
     display: grid;
     gap: 14px;

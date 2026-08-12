@@ -45,6 +45,7 @@
 </main>
 
 <style>
+    .eyebrow { color: #e60012; }
 .not-found-main {
     flex: 1;
     display: flex;

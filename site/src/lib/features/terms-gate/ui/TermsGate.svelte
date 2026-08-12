@@ -128,6 +128,12 @@
         -webkit-overflow-scrolling: touch;
     }
 
+    .terms-gate-scroll > :global(.terms-body) {
+        width: min(1500px, calc(100vw - 32px));
+        margin: 0 auto;
+        padding: 16px;
+    }
+
     .terms-gate-actions {
         display: flex;
         flex-direction: column;
@@ -186,6 +192,13 @@
     .terms-accept-btn:disabled {
         opacity: 0.3;
         cursor: not-allowed;
+    }
+
+    @media (max-width: 820px) {
+        .terms-gate-scroll > :global(.terms-body) {
+            width: min(100vw - 20px, 1220px);
+            padding: 10px;
+        }
     }
 
     @media (max-width: 600px) {

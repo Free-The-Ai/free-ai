@@ -255,18 +255,6 @@
         <p class="hp-cta-reassurance">Open source · Discord support · No lock-in · Cancel anytime</p>
     </section>
 
-    <div class="hp-activity hp-reveal" aria-label="Live activity">
-        <span class="hp-activity-item">
-            <span class="hp-activity-dot" aria-hidden="true"></span>
-            Live API
-        </span>
-        <span class="hp-stat-sep" aria-hidden="true"></span>
-        <span class="hp-activity-item">80+ models online</span>
-        <span class="hp-stat-sep" aria-hidden="true"></span>
-        <span class="hp-activity-item">Daily check-in active</span>
-        <span class="hp-stat-sep" aria-hidden="true"></span>
-        <span class="hp-activity-item">Discord community online</span>
-    </div>
 
 
     <section class="hp-start hp-crop hp-reveal" aria-labelledby="hp-start-title">
@@ -633,38 +621,6 @@
         color: var(--dim);
     }
 
-    /* ── Activity strip ── */
-    .hp-activity {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: 6px 0;
-        padding: clamp(10px, 1.5vw, 14px) clamp(16px, 3vw, 32px);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        background: oklch(1 0 0 / 0.02);
-    }
-    .hp-activity-item {
-        font-family: var(--font-mono);
-        font-size: 0.66rem;
-        color: var(--dim);
-        white-space: nowrap;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-    }
-    .hp-activity-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: oklch(0.75 0.15 145);
-        animation: hp-pulse-dot 2s ease-in-out infinite;
-    }
-    @keyframes hp-pulse-dot {
-        0%, 100% { opacity: 1; }
-        50% { opacity: 0.4; }
-    }
     /* ── Trust badges (Anshin) ── */
     .hp-trust {
         display: flex;
@@ -718,14 +674,6 @@
         font-style: normal;
     }
 
-    /* ── Sep for activity strip ── */
-    .hp-stat-sep {
-        width: 1px;
-        height: 14px;
-        background: var(--border);
-        margin: 0 clamp(10px, 1.5vw, 20px);
-        align-self: center;
-    }
 
 
     /* ── Step numbers ── */

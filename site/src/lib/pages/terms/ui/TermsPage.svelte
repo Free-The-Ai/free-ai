@@ -458,8 +458,6 @@
             </article>
             <article class="panel policy-panel">
                 <h3>Data Processing</h3>
-            <article class="panel policy-panel">
-                <h3>Data Processing</h3>
                 <p>
                     FreeTheAi operates as an API gateway and relay. We process Inputs solely to
                     route them to the appropriate Third-Party Model provider and return the

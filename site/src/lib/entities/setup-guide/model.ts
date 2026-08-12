@@ -72,7 +72,7 @@ export const SETUP_GUIDES: SetupGuide[] = [
         homepage: "https://opencode.ai",
         repository: "https://github.com/sst/opencode",
         docsUrl: "https://opencode.ai/docs/",
-        logoUrl: "/opencode.svg",
+        logoUrl: "/client-icons/opencode.svg",
         summary:
             "OpenCode reads its providers from a JSON config file. Add FreeTheAi as a custom provider with the OpenAI-compatible adapter and you can pick any FreeTheAi alias as the active model.",
         recommendedModels: [
@@ -204,6 +204,8 @@ Supports tools: enabled`,
         keywords: ["kilo code", "kilocode", "vscode", "agent"],
     },
     {
+        
+        logoUrl: "/client-icons/kilo.svg",
         slug: "zed",
         name: "Zed IDE",
         tagline: "Native editor with first-class agent support.",
@@ -257,6 +259,8 @@ API key: PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["zed", "zed ide", "zed industries"],
     },
     {
+        
+        logoUrl: "/client-icons/zed.png",
         slug: "sillytavern",
         name: "SillyTavern",
         tagline: "Power-user roleplay frontend with deep prompt control.",
@@ -318,6 +322,8 @@ Custom API Key: PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["sillytavern", "silly tavern", "st", "roleplay"],
     },
     {
+        
+        logoUrl: "/client-icons/sillytavern.png",
         slug: "janitor-ai",
         name: "Janitor AI",
         tagline: "Roleplay site that connects through a reverse proxy.",
@@ -374,6 +380,8 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["janitor", "janitor ai", "janitorai", "roleplay"],
     },
     {
+        
+        logoUrl: "/client-icons/janitor.png",
         slug: "chub-ai",
         name: "Chub AI",
         tagline: "Open roleplay platform with Secrets-based proxy slots.",
@@ -433,6 +441,8 @@ Model: bbl/gpt-5.5-mini`,
         keywords: ["chub", "chub ai", "venus", "characterhub", "roleplay"],
     },
     {
+        
+        logoUrl: "/client-icons/chub.png",
         slug: "risuai",
         name: "RisuAI",
         tagline: "Local-first roleplay client with deep prompt control.",
@@ -488,6 +498,8 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["risu", "risuai", "roleplay", "kwaroran"],
     },
     {
+        
+        logoUrl: "/client-icons/risu.png",
         slug: "cline",
         name: "Cline",
         tagline: "VSCode autonomous coding agent.",
@@ -539,6 +551,8 @@ Model ID: glm/glm-5.1`,
         keywords: ["cline", "vscode", "autonomous agent"],
     },
     {
+        
+        logoUrl: "/client-icons/cline.png",
         slug: "roo-code",
         name: "Roo Code",
         tagline: "Multi-agent VSCode dev team forked from Cline.",
@@ -590,6 +604,8 @@ Model: glm/glm-5.1`,
         keywords: ["roo code", "roo cline", "roocode", "vscode"],
     },
     {
+        
+        logoUrl: "/client-icons/roocode.png",
         slug: "continue-dev",
         name: "Continue.dev",
         tagline: "Open-source assistant for VSCode and JetBrains.",
@@ -646,6 +662,8 @@ Model: glm/glm-5.1`,
         keywords: ["continue", "continue.dev", "jetbrains", "vscode"],
     },
     {
+        
+        logoUrl: "/client-icons/continue.png",
         slug: "aider",
         name: "Aider",
         tagline: "AI pair-programming CLI driven by LiteLLM.",
@@ -703,6 +721,8 @@ model: openai/glm/glm-5.1`,
         keywords: ["aider", "litellm", "cli", "pair programming"],
     },
     {
+        
+        logoUrl: "/client-icons/aider.png",
         slug: "claude-code",
         name: "Claude Code",
         tagline: "Anthropic's terminal coding agent via Messages route.",
@@ -760,6 +780,8 @@ export ANTHROPIC_AUTH_TOKEN=fta_PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["claude code", "anthropic", "claude", "cli"],
     },
     {
+        
+        logoUrl: "/client-icons/claude.svg",
         slug: "librechat",
         name: "LibreChat",
         tagline: "Self-hosted multi-model chat UI.",
@@ -822,6 +844,8 @@ export ANTHROPIC_AUTH_TOKEN=fta_PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["librechat", "self hosted", "danny avila"],
     },
     {
+        
+        logoUrl: "/client-icons/librechat.svg",
         slug: "open-webui",
         name: "Open WebUI",
         tagline: "Self-hosted ChatGPT-style UI with native OpenAI connections.",
@@ -874,6 +898,8 @@ OpenAI API Key: PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["open webui", "openwebui", "self hosted"],
     },
     {
+        
+        logoUrl: "/client-icons/openwebui.svg",
         slug: "lobechat",
         name: "LobeChat",
         tagline: "Modern open-source web chat UI.",
@@ -930,6 +956,8 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["lobechat", "lobehub", "lobe-chat", "self hosted"],
     },
     {
+        
+        logoUrl: "/client-icons/lobechat.png",
         slug: "anythingllm",
         name: "AnythingLLM",
         tagline: "Self-hosted RAG and chat workspace.",
@@ -980,6 +1008,8 @@ Token context window: 50000`,
         keywords: ["anythingllm", "anything-llm", "rag", "self hosted"],
     },
     {
+        
+        logoUrl: "/client-icons/anythingllm.png",
         slug: "cherry-studio",
         name: "Cherry Studio",
         tagline: "Cross-platform desktop chat client.",
@@ -1028,6 +1058,8 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["cherry studio", "cherryhq", "cherry-ai"],
     },
     {
+        
+        logoUrl: "/client-icons/cherry.png",
         slug: "typingmind",
         name: "TypingMind",
         tagline: "Polished BYOK web frontend.",
@@ -1080,6 +1112,8 @@ Model ID: olm/deepseek-v4-pro`,
         keywords: ["typingmind", "byok", "chat"],
     },
     {
+        
+        logoUrl: "/client-icons/typingmind.ico",
         slug: "boltai",
         name: "BoltAI",
         tagline: "Native macOS AI assistant in any app.",
@@ -1129,6 +1163,8 @@ Context Length: 80000`,
         keywords: ["boltai", "bolt ai", "macos"],
     },
     {
+        
+        logoUrl: "/client-icons/boltai.png",
         slug: "page-assist",
         name: "Page Assist",
         tagline: "Browser extension for AI while you browse.",
@@ -1179,6 +1215,8 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         keywords: ["page assist", "browser extension", "n4ze3m"],
     },
     {
+        
+        logoUrl: "/client-icons/pageassist.png",
         slug: "chatbox",
         name: "Chatbox",
         tagline: "Cross-platform desktop and mobile chat client.",
@@ -1237,6 +1275,7 @@ API Key: PASTE_YOUR_FREETHEAI_KEY`,
         tagline: "Open-source web AI workbench for power users.",
         category: "general",
         categoryLabel: "General chat clients",
+        logoUrl: "/client-icons/big-agi.ico",
         homepage: "https://big-agi.com",
         repository: "https://github.com/enricoros/big-AGI",
         summary:

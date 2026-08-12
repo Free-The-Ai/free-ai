@@ -121,17 +121,6 @@
         <LiveStats />
     </div>
 
-    <div class="hp-stats-bar hp-reveal" aria-label="Platform stats">
-        <span class="hp-stat"><strong>80+</strong> models</span>
-        <span class="hp-stat-sep" aria-hidden="true"></span>
-        <span class="hp-stat"><strong>12</strong> providers</span>
-        <span class="hp-stat-sep" aria-hidden="true"></span>
-        <span class="hp-stat"><strong>3</strong> API formats</span>
-        <span class="hp-stat-sep" aria-hidden="true"></span>
-        <span class="hp-stat"><strong>100%</strong> open source</span>
-        <span class="hp-stat-sep" aria-hidden="true"></span>
-        <span class="hp-stat"><strong>2000+</strong> community</span>
-    </div>
 
     <section class="hp-section hp-reveal" aria-labelledby="hp-how-title">
         <div class="hp-split">
@@ -729,27 +718,7 @@
         font-style: normal;
     }
 
-    /* ── Stats bar (Ichimoku Ryouzen) ── */
-    .hp-stats-bar {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 6px 0;
-        padding: clamp(14px, 2vw, 20px) clamp(16px, 3vw, 32px);
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        background: oklch(1 0 0 / 0.02);
-    }
-    .hp-stat {
-        font-family: var(--font-mono);
-        font-size: 0.74rem;
-        color: var(--dim);
-        white-space: nowrap;
-    }
-    .hp-stat strong {
-        color: var(--text);
-        font-weight: 600;
-    }
+    /* ── Sep for activity strip ── */
     .hp-stat-sep {
         width: 1px;
         height: 14px;
@@ -757,17 +726,7 @@
         margin: 0 clamp(10px, 1.5vw, 20px);
         align-self: center;
     }
-    @media (max-width: 48em) {
-        .hp-stats-bar {
-            gap: 8px 0;
-        }
-        .hp-stat-sep {
-            display: none;
-        }
-        .hp-stats-bar {
-            justify-content: space-around;
-        }
-    }
+
 
     /* ── Step numbers ── */
     .hp-step-num {

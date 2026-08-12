@@ -33,8 +33,13 @@
         termsState.check();
     });
 
+    let accepted = $state(false);
+
     function handleAccept() {
-        termsState.accept().then(() => onAccept?.());
+        termsState.accept().then(() => {
+            accepted = true;
+            setTimeout(() => onAccept?.(), 3000);
+        });
     }
 </script>
 
@@ -84,6 +89,24 @@
                     I agree to the Terms of Service
                 {/if}
             </button>
+
+            {#if accepted}
+                <div class="terms-success">
+                    <span class="material-symbols-outlined" aria-hidden="true">check_circle</span>
+                    <span>You're in. Enjoy building.</span>
+                </div>
+                <a
+                    class="terms-star-prompt"
+                    href="https://github.com/Free-The-Ai/free-ai"
+                    target="_blank"
+                    rel="noreferrer"
+                >
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+                        <path d="M8 .25a.75.75 0 01.673.418l1.882 3.815 4.21.612a.75.75 0 01.416 1.279l-3.046 2.97.719 4.192a.75.75 0 01-1.088.791L8 12.347l-3.766 1.98a.75.75 0 01-1.088-.79l.72-4.194L.818 6.374a.75.75 0 01.416-1.28l4.21-.611L7.327.668A.75.75 0 018 .25z"/>
+                    </svg>
+                    Star us on GitHub — it helps others find us
+                </a>
+            {/if}
         </div>
     </div>
 {/if}
@@ -175,7 +198,42 @@
         opacity: 0.5;
         cursor: not-allowed;
     }
+    .terms-accept-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
 
+    .terms-success {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: #008000;
+    }
+    .terms-success :global(.material-symbols-outlined) {
+        font-size: 18px;
+    }
+
+    .terms-star-prompt {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+        padding: 10px 16px;
+        border: 1px solid var(--sk-border);
+        background: var(--sk-inset-bg);
+        color: var(--text);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        text-decoration: none;
+        text-align: center;
+        transition: border-color 150ms, color 150ms;
+    }
+    .terms-star-prompt:hover {
+        border-color: var(--accent-text);
+        color: var(--accent-text);
+    }
     @media (max-width: 480px) {
         .terms-modal {
             max-height: 100vh;

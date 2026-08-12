@@ -681,7 +681,7 @@
         }
     }
     .hp-glance-table {
-        max-width: 560px;
+        width: 100%;
     }
     .hp-glance-link {
         margin: 0;

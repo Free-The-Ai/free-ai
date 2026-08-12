@@ -309,7 +309,7 @@
         font-family: var(--font-mono);
         font-size: 0.68rem;
         letter-spacing: 0.12em;
-        color: var(--dim);
+        color: var(--muted);
         margin-bottom: 12px;
     }
     .hp-split {
@@ -353,6 +353,7 @@
     .hp-bento-6 > :nth-child(2) { grid-column: span 4; }
     .hp-bento-6 > :nth-child(3) { grid-column: span 3; }
     .hp-bento-6 > :nth-child(4) { grid-column: span 3; }
+    .hp-bento-6 > :nth-child(5) { grid-column: span 5; }
     .hp-bento-6 > :nth-child(6) { grid-column: span 4; }
 
     /* ── Cards ── */
@@ -470,7 +471,7 @@
         font-family: var(--font-mono);
         font-size: 0.68rem;
         line-height: 1;
-        color: var(--dim);
+        color: var(--muted);
         border-inline-end: 1px solid var(--border);
     }
     .hp-trust li:first-child {

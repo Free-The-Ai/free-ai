@@ -29,7 +29,7 @@
 
 <SeoHead {seo} />
 
-<main class="not-found-main">
+<main class="not-found-main jp-dense">
     <section class="not-found-card shell">
         <span class="not-found-watermark" aria-hidden="true">404</span>
         <span class="eyebrow">Error</span>

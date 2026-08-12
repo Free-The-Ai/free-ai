@@ -93,7 +93,7 @@
 
 <SeoHead {seo} />
 
-<main class="intent-main">
+<main class="intent-main jp-dense">
     <section class="intent-hero shell">
         <DitherGradient class="intent-glow" from="grey" direction="up" opacity={0.3} />
         <span class="eyebrow">{page.eyebrow}</span>

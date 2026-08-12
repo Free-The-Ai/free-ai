@@ -140,7 +140,7 @@
 <SeoHead {seo} />
 <ScrollProgress />
 
-<main class="docs-main" data-docs-nav>
+<main class="docs-main jp-dense" data-docs-nav>
     <DocsMobileNav />
     <section class="docs-layout">
         <div class="docs-rail-stack">

@@ -43,7 +43,7 @@
 
 <SeoHead {seo} />
 
-<main>
+<main class="jp-dense">
     <section class="policy-hero shell">
         <DitherGradient class="policy-glow" from="grey" direction="up" opacity={0.26} />
         <span class="eyebrow">Privacy Policy</span>

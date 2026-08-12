@@ -28,6 +28,15 @@
                 ["/support", "Support"],
                 ["/privacy", "Privacy"],
                 ["/terms", "Terms"],
+            ],
+        },
+        {
+            label: "Contact",
+            links: [
+                ["mailto:" + siteConfig.socials.supportEmail, siteConfig.socials.supportEmail],
+                ["/team", "Team"],
+                [siteConfig.socials.github, "GitHub", true],
+                [siteConfig.socials.discord, "Discord", true],
                 [siteConfig.socials.donate, "Donate", true],
             ],
         },
@@ -61,7 +70,7 @@
 <style>
     .footer-columns {
         display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         gap: 24px;
         padding: 8px 0 40px;
     }

@@ -72,7 +72,7 @@
 
 <SeoHead {seo} />
 
-<main class="models-main">
+<main class="models-main jp-dense">
     <section class="models-hero shell">
         <DitherGradient class="models-glow" from="grey" direction="up" opacity={0.28} />
         <span class="eyebrow">Model catalog</span>
@@ -132,7 +132,7 @@
     justify-items: center;
 }
 .models-hero .eyebrow {
-    color: var(--dim);
+    color: #e60012;
     font-family: var(--font-mono);
     font-size: 0.7rem;
     letter-spacing: 0.12em;
@@ -166,9 +166,8 @@
     gap: 6px;
     padding: 6px 12px;
     border: 1px solid var(--sk-border);
-    border-radius: var(--radius);
+    border-radius: 0;
     background: var(--sk-inset-bg);
-    box-shadow: var(--sk-inset-shadow);
     color: var(--muted);
     font-size: 0.85rem;
 }
@@ -184,9 +183,8 @@
     gap: 6px;
     padding: 6px 12px;
     border: 1px solid var(--sk-border);
-    border-radius: var(--radius);
+    border-radius: 0;
     background: var(--sk-shell-bg);
-    box-shadow: var(--sk-raised-shadow);
     color: var(--text);
     font-size: 0.85rem;
     font-weight: 500;
@@ -195,7 +193,7 @@
 }
 .models-hero-link:hover {
     border-color: var(--border-strong);
-    box-shadow: var(--sk-raised-shadow), var(--sk-accent-glow);
+    border-color: #e60012;
 }
 .models-static-catalog {
     position: absolute;

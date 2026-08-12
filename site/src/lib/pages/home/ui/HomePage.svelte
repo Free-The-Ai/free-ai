@@ -18,6 +18,7 @@
     import { siteConfig } from "@/shared/config/site";
     import { CtaButton, DitherButton, SeoHead } from "@/shared/ui";
     import { LiveStats } from "@/features/live-stats";
+    import { FreeTierTable } from "@/features/paid-plan-explorer";
     import {
         buildWebsiteJsonLd,
         buildOrganizationJsonLd,
@@ -105,11 +106,11 @@
                     data-sound="interaction.confirm">Get a free key</DitherButton>
                 <a class="hp-btn-ghost" href="/models" data-sound="interaction.tap">Browse models</a>
         </div>
-        <ul class="hp-trust">
-            <li><span class="material-symbols-outlined" aria-hidden="true">credit_card_off</span>No credit card</li>
-            <li><span class="material-symbols-outlined" aria-hidden="true">deployed_code</span>80+ active models</li>
-            <li><span class="material-symbols-outlined" aria-hidden="true">key</span>One Discord key</li>
-            <li><span class="material-symbols-outlined" aria-hidden="true">payments</span>Zero billing</li>
+        <ul class="hp-trust" aria-label="Key guarantees">
+            <li><span class="material-symbols-outlined" aria-hidden="true">credit_card_off</span> No credit card</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">deployed_code</span> 80+ active models</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">key</span> One Discord key</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">payments</span> Zero billing</li>
         </ul>
         </div>
     </section>
@@ -163,6 +164,18 @@
                         <p>{text}</p>
                     </article>
                 {/each}
+            </div>
+        </div>
+    </section>
+    <section class="hp-section hp-reveal" aria-labelledby="hp-glance-title">
+        <div class="hp-split">
+            <div class="hp-split-head">
+                <h2 id="hp-glance-title">Free access at a glance</h2>
+                <p>No credit card, no billing, no surprises. See exactly what the free tier gives you.</p>
+            </div>
+            <div class="hp-glance-table">
+                <FreeTierTable />
+                <p class="hp-glance-link"><a href="/pricing">See full pricing &amp; paid slots &rarr;</a></p>
             </div>
         </div>
     </section>
@@ -458,7 +471,7 @@
     .hp-trust {
         display: flex;
         flex-wrap: wrap;
-        gap: 0;
+        gap: 8px;
         margin: 28px 0 0;
         padding: 0;
         list-style: none;
@@ -466,23 +479,39 @@
     .hp-trust li {
         display: inline-flex;
         align-items: center;
-        gap: 6px;
-        padding: 0 14px;
+        gap: 8px;
+        padding: 7px 13px 7px 7px;
         font-family: var(--font-mono);
-        font-size: 0.68rem;
+        font-size: 0.66rem;
         line-height: 1;
-        color: var(--muted);
-        border-inline-end: 1px solid var(--border);
+        color: var(--text);
+        white-space: nowrap;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        background: oklch(1 0 0 / 0.025);
+        transition:
+            background 180ms var(--ease-out-smooth),
+            border-color 180ms var(--ease-out-smooth),
+            transform var(--press-dur) var(--ease-out-smooth);
     }
-    .hp-trust li:first-child {
-        padding-inline-start: 0;
+    .hp-trust li:hover {
+        background: oklch(1 0 0 / 0.06);
+        border-color: var(--border-strong);
     }
-    .hp-trust li:last-child {
-        border-inline-end: 0;
+    .hp-trust li:active {
+        transform: scale(0.97);
     }
     .hp-trust .material-symbols-outlined {
-        font-size: 15px;
-        color: var(--muted);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 22px;
+        height: 22px;
+        flex-shrink: 0;
+        border-radius: var(--radius-full);
+        background: oklch(1 0 0 / 0.08);
+        font-size: 13px;
+        color: var(--text);
     }
 
     /* ── Step numbers ── */

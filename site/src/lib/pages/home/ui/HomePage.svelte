@@ -107,11 +107,11 @@
                 <a class="hp-btn-ghost" href="/models" data-sound="interaction.tap">Browse models</a>
         </div>
         <ul class="hp-trust" aria-label="Key guarantees">
-            <li><span class="material-symbols-outlined" aria-hidden="true">deployed_code</span> 80+ active models</li>
-            <li><span class="material-symbols-outlined" aria-hidden="true">terminal</span> OpenAI + Anthropic compatible</li>
-            <li><span class="material-symbols-outlined" aria-hidden="true">speed</span> 10–35 req/min</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">verified_user</span> 80+ active models</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">code</span> OpenAI + Anthropic compatible</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span> 10–35 req/min</li>
             <li><span class="material-symbols-outlined" aria-hidden="true">key</span> One Discord key</li>
-            <li><span class="material-symbols-outlined" aria-hidden="true">cloud_done</span> No credit card</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> No credit card</li>
         </ul>
         </div>
     </section>

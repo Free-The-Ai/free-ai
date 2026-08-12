@@ -105,6 +105,7 @@ Fbe
 .pricing-free {
     display: grid;
     gap: 14px;
+    padding: clamp(22px, 4vw, 38px);
     align-content: start;
 }
 
@@ -134,6 +135,7 @@ Fbe
 .pricing-compare {
     display: grid;
     gap: 16px;
+    padding: clamp(22px, 4vw, 38px);
     align-content: start;
 }
 

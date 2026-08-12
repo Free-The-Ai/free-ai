@@ -48,19 +48,19 @@
         ],
     });
 
-    const providerData: [typeof siAnthropic, string][] = [
-        [siAnthropic, "Claude"],
-        [siGooglegemini, "Gemini"],
-        [siDeepseek, "DeepSeek"],
-        [siMeta, "Llama"],
-        [siMistralai, "Mistral"],
-        [siQwen, "Qwen"],
-        [siX, "Grok"],
-        [siNvidia, "NVIDIA NIM"],
-        [siMinimax, "MiniMax"],
-        [siKimi, "Kimi"],
-        [siOllama, "Local"],
-        [siHuggingface, "HF Inference"],
+    const providerIcons = [
+        siAnthropic,
+        siGooglegemini,
+        siDeepseek,
+        siMeta,
+        siMistralai,
+        siQwen,
+        siX,
+        siNvidia,
+        siMinimax,
+        siKimi,
+        siOllama,
+        siHuggingface,
     ];
 
     const howItWorks: [string, string, string][] = [
@@ -142,11 +142,10 @@
     <section class="hp-section hp-providers hp-reveal" aria-labelledby="hp-providers-title">
         <h2 id="hp-providers-title">The providers you already&nbsp;know</h2>
         <div class="hp-provider-grid">
-            {#each providerData as [icon, tag] (icon.slug)}
+            {#each providerIcons as icon (icon.slug)}
                 <span class="hp-provider-item" title={icon.title}>
                     <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label={icon.title}><path d={icon.path} /></svg>
                     <span class="hp-provider-name">{icon.title}</span>
-                    <span class="hp-provider-tag">{tag}</span>
                 </span>
             {/each}
         </div>
@@ -437,7 +436,7 @@
     }
     .hp-provider-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+        grid-template-columns: repeat(auto-fill, minmax(108px, auto));
         gap: 1px;
         background: var(--border);
         border: 1px solid var(--border);
@@ -471,13 +470,6 @@
         font-size: 0.66rem;
         line-height: 1.2;
         text-align: center;
-    }
-    .hp-provider-tag {
-        font-family: var(--font-mono);
-        font-size: 0.58rem;
-        letter-spacing: 0.06em;
-        color: var(--dim);
-        text-transform: uppercase;
     }
 
     /* ── Trust badges (Anshin) ── */

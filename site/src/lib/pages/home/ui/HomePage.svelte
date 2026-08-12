@@ -48,19 +48,19 @@
         ],
     });
 
-    const providerIcons = [
-        siAnthropic,
-        siGooglegemini,
-        siDeepseek,
-        siMeta,
-        siMistralai,
-        siQwen,
-        siX,
-        siNvidia,
-        siMinimax,
-        siKimi,
-        siOllama,
-        siHuggingface,
+    const providerData: [typeof siAnthropic, string][] = [
+        [siAnthropic, "Claude"],
+        [siGooglegemini, "Gemini"],
+        [siDeepseek, "DeepSeek"],
+        [siMeta, "Llama"],
+        [siMistralai, "Mistral"],
+        [siQwen, "Qwen"],
+        [siX, "Grok"],
+        [siNvidia, "NVIDIA NIM"],
+        [siMinimax, "MiniMax"],
+        [siKimi, "Kimi"],
+        [siOllama, "Local"],
+        [siHuggingface, "HF Inference"],
     ];
 
     const howItWorks: [string, string, string][] = [
@@ -142,10 +142,11 @@
     <section class="hp-section hp-providers hp-reveal" aria-labelledby="hp-providers-title">
         <h2 id="hp-providers-title">The providers you already&nbsp;know</h2>
         <div class="hp-provider-grid">
-            {#each providerIcons as icon (icon.slug)}
+            {#each providerData as [icon, tag] (icon.slug)}
                 <span class="hp-provider-item" title={icon.title}>
                     <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label={icon.title}><path d={icon.path} /></svg>
                     <span class="hp-provider-name">{icon.title}</span>
+                    <span class="hp-provider-tag">{tag}</span>
                 </span>
             {/each}
         </div>
@@ -470,6 +471,13 @@
         font-size: 0.66rem;
         line-height: 1.2;
         text-align: center;
+    }
+    .hp-provider-tag {
+        font-family: var(--font-mono);
+        font-size: 0.58rem;
+        letter-spacing: 0.06em;
+        color: var(--dim);
+        text-transform: uppercase;
     }
 
     /* ── Trust badges (Anshin) ── */

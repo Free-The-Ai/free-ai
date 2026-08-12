@@ -89,10 +89,9 @@
     <section class="quickstart-card shell">
         <header class="quickstart-head">
             <span class="eyebrow">Quickstart</span>
-            <h1>Free AI API, ready in minutes.</h1>
+            <h1>Ship with free AI. Right now.</h1>
             <p class="quickstart-lede">
-                Sign up in Discord, unlock your key with <code>/checkin</code>, point the OpenAI SDK at FreeTheAi, send a
-                chat completion.
+                Grab a key from Discord, unlock it for the day, and send your first chat completion in under five minutes. No credit card. No waiting list. Just code.
             </p>
         </header>
 
@@ -100,10 +99,9 @@
             <div class="quickstart-step" id="step-key">
                 <span class="quickstart-step-num">1</span>
                 <div class="quickstart-step-body">
-                    <strong>Get a free key.</strong>
+                    <strong>1. Grab your key.</strong>
                     <span>
-                        Join <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">discord.gg/secrets</a>,
-                        run <code>/signup</code>, and complete the modal. Lost it? Use <code>/resetkey</code>.
+                        Head to <a href={siteConfig.socials.discord} target="_blank" rel="noreferrer">discord.gg/secrets</a>, type <code>/signup</code>, and fill out the modal. That's it — your key arrives instantly. Misplaced it? <code>/resetkey</code> generates a fresh one.
                     </span>
                     <p class="quickstart-reassurance">No credit card, no billing — the free tier stays free.</p>
                 </div>
@@ -111,7 +109,7 @@
             <div class="quickstart-step" id="step-checkin">
                 <span class="quickstart-step-num">2</span>
                 <div class="quickstart-step-body">
-                    <strong>Unlock today.</strong>
+                    <strong>2. Check in for the day.</strong>
                     <span>
                         Run <code>/checkin</code> once per UTC day and solve the human challenge. Until then, the API
                         returns <code>403 daily_checkin_required</code>.
@@ -121,10 +119,9 @@
             <div class="quickstart-step" id="step-request">
                 <span class="quickstart-step-num">3</span>
                 <div class="quickstart-step-body">
-                    <strong>Send a request.</strong>
+                    <strong>3. Start building.</strong>
                     <span>
-                        Install the OpenAI SDK, set <code>base_url</code> to <code>https://api.freetheai.xyz/v1</code>, and
-                        pick any alias from the model catalog.
+                        Install the OpenAI SDK, point <code>base_url</code> at <code>https://api.freetheai.xyz/v1</code>, and choose any model alias from the catalog. Your first completion fires in one API call.
                     </span>
                 </div>
             </div>

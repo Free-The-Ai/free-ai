@@ -57,10 +57,9 @@
         </div>
         <div class="support-hero-content">
             <span class="eyebrow">Support</span>
-            <h1 id="support-hero-heading">Report issues, get help, or contact the team.</h1>
+            <h1 id="support-hero-heading">Need help? We're here.</h1>
             <p class="hero-text">
-                If something is broken, unsafe, or unclear, use one of the public support paths below. This page exists so
-                Discord users and app reviewers have a clear way to contact us about the application and its use.
+                Something broken? Confused about a route? Just want to say hi? Use any of the channels below. We read every message.
             </p>
         </div>
     </section>

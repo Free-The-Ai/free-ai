@@ -47,12 +47,12 @@
         <header class="explainer-head">
             <DitherGradient class="explainer-glow" from="grey" direction="up" opacity={0.28} />
             <span class="eyebrow">About</span>
-            <h1>What Is Free The AI?</h1>
+            <h1>Free AI for everyone who builds.</h1>
             <p class="explainer-lede">
                 <strong>FreeTheAi</strong> is a free OpenAI-compatible AI API built by
                 <a href="https://github.com/vibheksoni" target="_blank" rel="noreferrer">Vibhek Soni</a>
-                to share the AI tools he had access to with everyone. Free chat, free Anthropic-style messages, no credit
-                card, no waiting list.
+                to share AI tools with everyone. One Discord key, 80+ models, zero credit cards, zero waiting lists.
+                If you can write a curl command, you can use FreeTheAi.
             </p>
             <p class="explainer-sub">
                 If you searched for <em>FreeTheAi</em>, <em>Free The AI</em>, <em>Free The Ai</em>,
@@ -70,16 +70,12 @@
         </header>
 
         <section class="explainer-card">
-            <h2>Why FreeTheAi exists</h2>
+            <h2>Why we built this</h2>
             <p>
-                Vibhek had access to a lot of free AI resources spread across different platforms, providers, and trial
-                pools. Most developers either never find them or stitch together a dozen APIs to use them. FreeTheAi pools
-                all of that into one OpenAI-compatible endpoint so anyone can build with real models without paying upfront,
-                signing up to ten dashboards, or fighting expired free tiers.
+                Vibhek had access to free AI resources scattered across dozens of platforms, trial pools, and provider dashboards. Most developers never find them — or give up stitching together a dozen APIs. FreeTheAi pools everything into one endpoint so you can build with real models without paying upfront, juggling accounts, or watching free tiers expire.
             </p>
             <p>
-                The free tier stays free. The Discord-based signup and daily <code>/checkin</code> exist to keep automated
-                abuse off the pool so it stays usable for actual builders.
+                The free tier stays free, always. The Discord signup and daily <code>/checkin</code> keep automated abuse out so the pool stays healthy for real builders like you.
             </p>
             <p>
                 The project is open source on
@@ -95,7 +91,7 @@
                 <li>80+ active models across chat, tool calling, and compatibility routes</li>
                 <li>Drop-in for the OpenAI Python and JavaScript SDKs - just change <code>base_url</code> and the API key</li>
                 <li>Anthropic-style <code>/v1/messages</code> compatibility for Claude-style clients</li>
-                <li>No credit card. Keys come from the FreeTheAi Discord with <code>/signup</code> and a one-tap daily <code>/checkin</code>.</li>
+                <li>No credit card, ever. Grab a key from Discord with <code>/signup</code> and tap <code>/checkin</code> once a day.</li>
             </ul>
         </section>
 
@@ -104,7 +100,7 @@
             <div class="explainer-links">
                 <a class="explainer-link" href="/quickstart">
                     <strong>Quickstart</strong>
-                    <span>Get a key, send your first OpenAI-compatible request, see a 200 in under a minute.</span>
+                    <span>Grab a key and fire your first API call in under five minutes.</span>
                 </a>
                 <a class="explainer-link" href="/docs">
                     <strong>API docs</strong>
@@ -120,7 +116,7 @@
                 </a>
                 <a class="explainer-link" href="/pricing">
                     <strong>Pricing</strong>
-                    <span>The free tier stays free. Optional $8/month launch slots cover separate higher-power models.</span>
+                    <span>Free tier stays free. Optional $5/month paid slots unlock dedicated roleplay models.</span>
                 </a>
                 <a class="explainer-link" href="/status">
                     <strong>Status</strong>

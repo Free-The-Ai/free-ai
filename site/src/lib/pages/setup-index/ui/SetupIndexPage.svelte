@@ -53,6 +53,37 @@
         ],
     });
 
+
+    // Client avatar colors and initials — gives each card visual identity
+    const CLIENT_AVATARS: Record<string, { color: string; letter: string }> = {
+        "OpenCode": { color: "#e60012", letter: "OC" },
+        "Kilo Code": { color: "#0066cc", letter: "KC" },
+        "Zed IDE": { color: "#1a1a2e", letter: "Ze" },
+        "SillyTavern": { color: "#ff8c00", letter: "ST" },
+        "Janitor AI": { color: "#008000", letter: "JA" },
+        "Chub AI": { color: "#8b5cf6", letter: "Ch" },
+        "RisuAI": { color: "#ec4899", letter: "Ri" },
+        "Cline": { color: "#0891b2", letter: "Cl" },
+        "Roo Code": { color: "#ea580c", letter: "RC" },
+        "Continue.dev": { color: "#059669", letter: "Cd" },
+        "Aider": { color: "#7c3aed", letter: "Ai" },
+        "Claude Code": { color: "#d97706", letter: "CC" },
+        "LibreChat": { color: "#2563eb", letter: "LC" },
+        "Open WebUI": { color: "#0d9488", letter: "OW" },
+        "LobeChat": { color: "#6366f1", letter: "LB" },
+        "AnythingLLM": { color: "#4f46e5", letter: "AL" },
+        "Cherry Studio": { color: "#dc2626", letter: "CS" },
+        "TypingMind": { color: "#059669", letter: "TM" },
+        "BoltAI": { color: "#2563eb", letter: "BA" },
+        "Page Assist": { color: "#0891b2", letter: "PA" },
+        "Chatbox": { color: "#7c3aed", letter: "CB" },
+        "Big-AGI": { color: "#ea580c", letter: "BG" },
+    };
+
+    function getClientAvatar(name: string): { color: string; letter: string } {
+        return CLIENT_AVATARS[name] ?? { color: "#6b7280", letter: name.slice(0, 2) };
+    }
+
     let filterQuery = $state("");
     const normalizedQuery = $derived(filterQuery.trim().toLowerCase());
 
@@ -81,9 +112,9 @@
     <section class="setup-hero shell">
         <DitherGradient class="setup-glow" from="grey" direction="up" opacity={0.28} />
         <span class="eyebrow">Setup guides</span>
-        <h1>Plug FreeTheAi into your favorite client.</h1>
+        <h1>Your favorite client, now free.</h1>
         <p class="setup-lede">
-            One key, one base URL, every model. Pick your client below and follow the exact steps. All guides use
+            One key. One URL. Every model. Pick your client below and follow the steps. All guides use
             <code>https://api.freetheai.xyz/v1</code>.
         </p>
         <div class="setup-cta-row">
@@ -135,6 +166,7 @@
                         <a class="setup-card" href={`/setup/${guide.slug}`} style="position: relative">
                             {#if guide.slug === firstGuideSlug}<span class="popular-badge">Popular</span>{/if}
                             <header class="setup-card-head">
+                                <span class="setup-card-avatar" style="background: {getClientAvatar(guide.name).color}" aria-hidden="true">{getClientAvatar(guide.name).letter}</span>
                                 <h3>{guide.name}</h3>
                                 <span class="setup-card-arrow" aria-hidden="true">&rarr;</span>
                             </header>
@@ -319,7 +351,6 @@
 .setup-card-head {
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 10px;
 }
 .setup-card-head h3 {

@@ -93,7 +93,7 @@
         <div class="hp-hero-content">
             <h1>The models you want. The bill <span class="hp-underline">you&nbsp;never&nbsp;see.</span></h1>
             <p class="hp-hero-sub">
-                Free OpenAI-compatible API. One Discord key, one base URL, daily check-in, zero billing.
+                Free OpenAI-compatible API. One Discord key, one base URL, daily check-in, zero credit cards.
             </p>
             <div class="hp-cta-row">
                 <DitherButton

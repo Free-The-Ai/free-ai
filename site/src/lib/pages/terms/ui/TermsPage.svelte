@@ -10,15 +10,15 @@
         buildWebApiJsonLd,
     } from "@/shared/lib/jsonLd";
 
-    const pageTitle = "Terms of Use | FreeTheAi";
+    const pageTitle = "Terms of Service | FreeTheAi";
     const pageDescription =
-        "FreeTheAi terms of use covering acceptable use, API limits, account rules, metadata logging, and service availability.";
+        "FreeTheAi Terms of Service covering service description, acceptable use, data protection, intellectual property, liability limitations, dispute resolution, and worldwide legal compliance.";
 
     const seo = buildSeo({
         title: pageTitle,
         description: pageDescription,
         path: "/terms",
-        keywords: "FreeTheAi terms, FreeTheAi acceptable use, free ai api rules, api abuse policy",
+        keywords: "FreeTheAi terms, FreeTheAi terms of service, free ai api terms, api acceptable use, data protection, GDPR, CCPA",
         jsonLd: [
             buildWebsiteJsonLd(),
             buildOrganizationJsonLd(),
@@ -28,14 +28,14 @@
             {
                 "@context": "https://schema.org",
                 "@type": "WebPage",
-                name: "FreeTheAi Terms of Use",
+                name: "FreeTheAi Terms of Service",
                 url: "https://freetheai.xyz/terms",
                 description: pageDescription,
                 isPartOf: { "@id": "https://freetheai.xyz/#website" },
             },
             buildBreadcrumbJsonLd([
                 { name: "FreeTheAi", url: "https://freetheai.xyz/home" },
-                { name: "Terms of Use", url: "https://freetheai.xyz/terms" },
+                { name: "Terms of Service", url: "https://freetheai.xyz/terms" },
             ]),
         ],
     });
@@ -46,94 +46,781 @@
 <main class="jp-dense">
     <section class="policy-hero shell">
         <DitherGradient class="policy-glow" from="grey" direction="up" opacity={0.26} />
-        <span class="eyebrow">Terms of Use</span>
-        <h1>Use the API without abusing the shared pool.</h1>
+        <span class="eyebrow">Terms of Service</span>
+        <h1>Terms of Service</h1>
         <p class="hero-text">
-            FreeTheAi gives the community free and optional paid API access. By using the site, Discord bot, API keys, or API
-            endpoints, you agree to these terms and to the privacy policy.
+            These Terms of Service ("Terms") govern your access to and use of the FreeTheAi platform, including
+            the website at freetheai.xyz, the Discord bot, API keys, and all associated API endpoints
+            (collectively, the "Service"). By accessing or using the Service, you agree to be bound by these Terms.
         </p>
         <span class="policy-badge">
             <span class="material-symbols-outlined" aria-hidden="true">event</span>
-            Effective date: May 31, 2026
+            Effective date: August 12, 2026
         </span>
     </section>
 
-    <section class="section shell policy-section">
-        <div class="two-panel">
-            <article class="panel policy-panel">
-                <span class="eyebrow">Allowed use</span>
-                <h2>Build, test, learn, and create.</h2>
-                <p>
-                    You may use FreeTheAi for normal personal projects, learning, experiments, roleplay clients, coding agents,
-                    bots, and apps that follow Discord rules, applicable law, and these terms.
-                </p>
-            </article>
-
-            <article class="panel policy-panel">
-                <span class="eyebrow">Not allowed</span>
-                <h2>No abuse, bypassing, or harm.</h2>
-                <p>
-                    Do not use FreeTheAi for spam, malware, credential theft, harassment, illegal content, evading bans or
-                    limits, mass account creation, key resale, denial-of-service behavior, scraping the service, or anything
-                    that harms the platform or community.
-                </p>
-            </article>
-        </div>
-    </section>
-
+    <!-- Section 1: Definitions -->
     <section class="section shell policy-section">
         <header class="section-head">
-            <span class="eyebrow">Account rules</span>
-            <h2>Keys are tied to real access checks.</h2>
-            <p>
-                API keys may require Discord signup, membership checks, daily check-ins, role eligibility, rate limits, and
-                concurrency limits. Do not share, sell, automate, or rotate keys to bypass those checks. We may revoke, suspend,
-                rate-limit, or block access when behavior looks abusive or unsafe.
-            </p>
+            <span class="eyebrow">Section 1</span>
+            <h2>Definitions</h2>
+            <p>For the purposes of these Terms:</p>
         </header>
-
         <div class="privacy-columns">
             <article class="panel policy-panel">
-                <h3>Logging disclosure</h3>
+                <h3>"Service"</h3>
                 <p>
-                    We do not store prompts, completions, uploaded media, or conversation history as operational logs. We do log
-                    IP addresses and other security, request, account, usage, and client metadata to validate access, secure the
-                    service, debug failures, and protect against abuse.
+                    The FreeTheAi platform, including the website at freetheai.xyz, the Discord bot, API keys,
+                    API endpoints, model catalog, documentation, and all related features and infrastructure.
                 </p>
             </article>
-
             <article class="panel policy-panel">
-                <h3>Availability</h3>
+                <h3>"User", "you", "your"</h3>
                 <p>
-                    Free access is best effort. Models, limits, routes, features, plans, and access rules can change as
-                    capacity, security, or provider behavior changes. Optional paid slots are separate and may have their own
-                    plan limits.
+                    Any individual, organization, or entity that accesses or uses the Service, including
+                    visitors to the website, Discord server members, and API key holders.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>"API Key"</h3>
+                <p>
+                    A unique credential issued through the FreeTheAi Discord bot that authorizes access
+                    to the Service's API endpoints. API keys are personal, non-transferable, and tied to
+                    access checks including daily check-ins and rate limits.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>"Content"</h3>
+                <p>
+                    All text, code, data, images, audio, video, and other materials submitted to or
+                    generated by the Service through API calls, including prompts, completions, and
+                    model outputs.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>"Paid Plan"</h3>
+                <p>
+                    An optional subscription plan that provides enhanced access to specific model
+                    categories, higher rate limits, and additional concurrency. Paid Plans are
+                    separate from free-tier access.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>"Community"</h3>
+                <p>
+                    The FreeTheAi user community, including Discord server members, contributors,
+                    and developers who use or support the Service.
                 </p>
             </article>
         </div>
     </section>
 
+    <!-- Section 2: Acceptance and Eligibility -->
     <section class="section shell policy-section">
         <header class="section-head">
-            <span class="eyebrow">User responsibility</span>
-            <h2>Do not send secrets to AI systems.</h2>
-            <p>
-                You are responsible for what your client sends. Do not submit passwords, private keys, tokens, payment data,
-                private personal information, or material you do not have the right to process. You are also responsible for
-                your client configuration, prompts, outputs, and how you use model responses.
-            </p>
+            <span class="eyebrow">Section 2</span>
+            <h2>Acceptance and Eligibility</h2>
         </header>
+        <div class="two-panel">
+            <article class="panel policy-panel">
+                <h3>Agreement to Terms</h3>
+                <p>
+                    By creating an API key, accessing the Service, or using any API endpoint, you
+                    acknowledge that you have read, understood, and agree to be bound by these Terms
+                    and our Privacy Policy. If you do not agree, you must not use the Service.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Eligibility Requirements</h3>
+                <p>
+                    You must be at least 13 years of age (or the minimum age required in your jurisdiction)
+                    to use the Service. If you are between 13 and 18 years of age (or the age of majority
+                    in your jurisdiction), you may only use the Service with the consent and supervision of
+                    a parent or legal guardian who agrees to these Terms. By using the Service, you
+                    represent and warrant that you meet these age requirements.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Capacity to Contract</h3>
+                <p>
+                    You represent that you have the legal capacity to enter into a binding agreement
+                    in your jurisdiction. If you are using the Service on behalf of an organization,
+                    you represent that you have the authority to bind that organization to these Terms,
+                    and "you" refers to both you individually and the organization.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Compliance with Laws</h3>
+                <p>
+                    You agree to use the Service in compliance with all applicable local, state,
+                    national, and international laws, regulations, and ordinances. You are responsible
+                    for ensuring that your use of the Service is lawful in your jurisdiction.
+                </p>
+            </article>
+        </div>
     </section>
 
+    <!-- Section 3: Service Description -->
     <section class="section shell policy-section">
         <header class="section-head">
-            <span class="eyebrow">Legal links</span>
-            <h2>Related pages.</h2>
+            <span class="eyebrow">Section 3</span>
+            <h2>Service Description</h2>
+        </header>
+        <div class="two-panel">
+            <article class="panel policy-panel">
+                <h3>What We Provide</h3>
+                <p>
+                    FreeTheAi provides a free, OpenAI-compatible API gateway that gives users access to
+                    multiple AI models from various providers. The Service includes a Discord bot for
+                    key management, a model catalog, API endpoints for chat completions and other
+                    AI tasks, documentation, and community support.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Free Tier</h3>
+                <p>
+                    The free tier provides access to the general AI model catalog subject to rate limits,
+                    concurrency limits, and daily check-in requirements. Free tier access is best-effort
+                    and may be subject to capacity constraints, model availability changes, and fair-use
+                    policies. Specific limits are documented at /access-policy.json and may be updated
+                    without notice.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Paid Plans</h3>
+                <p>
+                    Optional Paid Plans provide enhanced access to specific model categories (such as
+                    dedicated roleplay models) with separate rate limits, concurrency, and pricing.
+                    Paid Plans are billed monthly and are subject to the plan-specific terms described
+                    at the time of purchase. Paid Plans do not affect free-tier access.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Service Modifications</h3>
+                <p>
+                    We reserve the right to modify, suspend, or discontinue any part of the Service
+                    at any time, including models, rate limits, features, endpoints, and access rules.
+                    We will make reasonable efforts to provide notice of material changes, but are not
+                    obligated to do so. Continued use of the Service after changes constitutes
+                    acceptance of the modified terms.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 4: Account and API Keys -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 4</span>
+            <h2>Account and API Keys</h2>
+        </header>
+        <div class="privacy-columns">
+            <article class="panel policy-panel">
+                <h3>Key Issuance</h3>
+                <p>
+                    API keys are issued through the FreeTheAi Discord bot upon completion of the
+                    /signup process and human verification challenge. Each key is unique, tied to
+                    your Discord account, and subject to access checks including daily check-ins,
+                    role eligibility, and rate limits.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Key Security</h3>
+                <p>
+                    You are solely responsible for maintaining the confidentiality of your API key.
+                    Do not share, publish, embed in client-side code, or expose your key in any
+                    public repository, gist, or log. You must notify us immediately if you believe
+                    your key has been compromised. We are not liable for any loss arising from
+                    unauthorized use of your key.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Key Restrictions</h3>
+                <p>
+                    Do not sell, rent, lease, or transfer your API key to any third party. Do not
+                    create multiple accounts to circumvent rate limits, bans, or access restrictions.
+                    Do not automate key creation, rotation, or check-in processes. Each person or
+                    entity may hold only one active API key.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Revocation</h3>
+                <p>
+                    We reserve the right to revoke, suspend, or restrict your API key at any time,
+                    with or without notice, for any reason including but not limited to suspected
+                    abuse, violation of these Terms, security concerns, or capacity management.
+                    Upon revocation, your access to the Service ceases immediately.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 5: Acceptable Use -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 5</span>
+            <h2>Acceptable Use Policy</h2>
+        </header>
+        <div class="two-panel">
+            <article class="panel policy-panel">
+                <h3>Permitted Uses</h3>
+                <p>
+                    You may use the Service for personal projects, learning, research, experimentation,
+                    roleplay clients, coding agents, bots, applications, and any other purpose that
+                    complies with these Terms, applicable law, and Discord's Terms of Service. The
+                    Service is designed to support creative, educational, and professional AI applications.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Prohibited Uses</h3>
+                <p>
+                    You must not use the Service to: (a) generate, store, or distribute content that is
+                    illegal, harmful, threatening, abusive, harassing, defamatory, or otherwise objectionable;
+                    (b) impersonate any person or entity; (c) transmit spam, chain letters, or unsolicited
+                    communications; (d) distribute malware, viruses, or other malicious code; (e) attempt
+                    to gain unauthorized access to any part of the Service or related systems; (f) interfere
+                    with or disrupt the Service or servers; (g) violate any applicable law or regulation;
+                    (h) infringe any third-party intellectual property rights; (i) collect or harvest user
+                    data without consent; (j) use the Service for commercial purposes without authorization;
+                    (k) bypass, circumvent, or attempt to bypass any rate limits, access controls, or
+                    security features; (l) resell, sublicense, or redistribute API access; or (m) use the
+                    Service to train competing AI models or services.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Content Responsibility</h3>
+                <p>
+                    You are solely responsible for all Content you submit to the Service, including
+                    prompts, instructions, and any data embedded in API calls. You represent and
+                    warrant that you have all necessary rights and permissions to submit such Content.
+                    We do not claim ownership of your Content, but you grant us a limited license to
+                    process it as necessary to provide the Service.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Output Disclaimer</h3>
+                <p>
+                    AI-generated outputs may contain inaccuracies, biases, or inappropriate content.
+                    You are responsible for reviewing and validating all outputs before use. We do not
+                    endorse, guarantee, or assume responsibility for any Content generated through the
+                    Service. Outputs should not be used as the sole basis for any decision that could
+                    result in harm to persons or property.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 6: Data Protection and Privacy -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 6</span>
+            <h2>Data Protection and Privacy</h2>
+        </header>
+        <div class="privacy-columns">
+            <article class="panel policy-panel">
+                <h3>Privacy Policy</h3>
+                <p>
+                    Our collection and use of personal information is governed by our
+                    <a href="/privacy">Privacy Policy</a>, which is incorporated into these Terms
+                    by reference. By using the Service, you consent to the collection, use, and
+                    processing of your data as described in the Privacy Policy.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Data Processing</h3>
+                <p>
+                    We process prompts, completions, and other Content solely to deliver the requested
+                    API response. We do not store prompts, completions, uploaded media, or conversation
+                    history as operational logs. We do log IP addresses, request metadata, account
+                    information, and usage data for security, access validation, debugging, and
+                    abuse prevention.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>GDPR Compliance (EU/EEA)</h3>
+                <p>
+                    If you are in the European Union or European Economic Area, you have rights under
+                    the General Data Protection Regulation (GDPR), including the right to access,
+                    rectify, erase, restrict processing, port data, and object to processing. To
+                    exercise these rights, contact us at the address below. We process data based
+                    on consent, contractual necessity, legitimate interests, and legal obligations.
+                    Data may be transferred outside the EU/EEA; such transfers are protected by
+                    appropriate safeguards including Standard Contractual Clauses.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>CCPA Compliance (California)</h3>
+                <p>
+                    If you are a California resident, the California Consumer Privacy Act (CCPA)
+                    grants you the right to know what personal information we collect, request
+                    deletion of your personal information, opt out of the sale of personal information,
+                    and not be discriminated against for exercising your rights. We do not sell
+                    personal information. To exercise your rights, contact us at the address below.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>LGPD Compliance (Brazil)</h3>
+                <p>
+                    If you are in Brazil, you have rights under the Lei Geral de Protecao de Dados
+                    (LGPD), including access, correction, anonymization, blocking, deletion, data
+                    portability, and information about sharing. To exercise these rights, contact
+                    us at the address below.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Other Jurisdictions</h3>
+                <p>
+                    We comply with applicable data protection laws in all jurisdictions where we
+                    operate, including but not limited to PIPEDA (Canada), the Privacy Act 1988
+                    (Australia), the Personal Data Protection Act (Singapore), the Protection of
+                    Personal Information Act (South Africa), and the Federal Law on Personal Data
+                    (Russia). If your jurisdiction provides specific data protection rights not
+                    addressed here, contact us to exercise them.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 7: Intellectual Property -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 7</span>
+            <h2>Intellectual Property</h2>
+        </header>
+        <div class="two-panel">
+            <article class="panel policy-panel">
+                <h3>Our Intellectual Property</h3>
+                <p>
+                    The Service, including its website, code, documentation, model catalog, branding,
+                    logos, and all related materials, is owned by FreeTheAi and protected by copyright,
+                    trademark, and other intellectual property laws. You may not copy, modify,
+                    distribute, sell, or lease any part of the Service without our prior written
+                    consent.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Your Content</h3>
+                <p>
+                    You retain all rights to Content you submit to the Service. By submitting Content,
+                    you grant FreeTheAi a worldwide, non-exclusive, royalty-free, sublicensable license
+                    to use, reproduce, modify, and process your Content solely for the purpose of
+                    providing and improving the Service. This license terminates when you delete your
+                    Content or API key.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>AI-Generated Outputs</h3>
+                <p>
+                    You own the outputs generated by the Service in response to your prompts, subject
+                    to the underlying model providers' terms. We make no claims of ownership over
+                    AI-generated outputs. However, you acknowledge that similar prompts may generate
+                    similar or identical outputs for other users, and that outputs may contain elements
+                    derived from training data owned by third parties.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Open Source</h3>
+                <p>
+                    FreeTheAi is open source software. The source code is available under the applicable
+                    open source license. Using the Service does not grant you any rights to our
+                    trademarks, logos, or brand materials beyond what is necessary to use the Service
+                    as intended.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 8: Payments and Refunds -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 8</span>
+            <h2>Payments and Refunds</h2>
+        </header>
+        <div class="privacy-columns">
+            <article class="panel policy-panel">
+                <h3>Paid Plan Billing</h3>
+                <p>
+                    Paid Plans are billed monthly in advance. By subscribing to a Paid Plan, you
+                    authorize us to charge your payment method on a recurring basis until you cancel.
+                    All fees are non-refundable except as required by applicable law. We reserve
+                    the right to change pricing with 30 days' notice.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Refund Policy</h3>
+                <p>
+                    If you are in the European Union, you have the right to withdraw from a
+                    distance selling agreement within 14 days of purchase without giving any reason,
+                    under the Consumer Rights Directive. To exercise this right, contact us within
+                    14 days of your purchase. For jurisdictions with mandatory refund rights,
+                    those rights are preserved. In all other cases, refunds are issued at our
+                    sole discretion.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Chargebacks</h3>
+                <p>
+                    If you initiate a chargeback or payment dispute without first contacting us to
+                    resolve the issue, we reserve the right to immediately suspend or terminate
+                    your access to the Service and all Paid Plan benefits.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Taxes</h3>
+                <p>
+                    You are responsible for any applicable taxes associated with your use of Paid
+                    Plans. Prices displayed may not include taxes, which will be calculated and
+                    displayed at checkout where required by law.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 9: Disclaimers -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 9</span>
+            <h2>Disclaimers and Warranty Limitations</h2>
+        </header>
+        <div class="two-panel">
+            <article class="panel policy-panel">
+                <h3>"As Is" and "As Available"</h3>
+                <p>
+                    THE SERVICE IS PROVIDED ON AN "AS IS" AND "AS AVAILABLE" BASIS WITHOUT WARRANTIES
+                    OF ANY KIND, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING BUT NOT LIMITED TO
+                    WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT,
+                    ACCURACY, COMPLETENESS, OR RELIABILITY. WE DO NOT WARRANT THAT THE SERVICE WILL
+                    BE UNINTERRUPTED, ERROR-FREE, SECURE, OR FREE OF VIRUSES OR OTHER HARMFUL
+                    COMPONENTS.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>No Professional Advice</h3>
+                <p>
+                    THE SERVICE AND ANY OUTPUTS GENERATED THROUGH IT ARE NOT INTENDED TO PROVIDE
+                    PROFESSIONAL ADVICE OF ANY KIND, INCLUDING BUT NOT LIMITED TO LEGAL, FINANCIAL,
+                    MEDICAL, OR TECHNICAL ADVICE. YOU SHOULD CONSULT WITH QUALIFIED PROFESSIONALS
+                    BEFORE MAKING DECISIONS BASED ON AI-GENERATED CONTENT.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Third-Party Models</h3>
+                <p>
+                    The Service provides access to AI models operated by third-party providers. We do
+                    not control these providers and are not responsible for their models' behavior,
+                    accuracy, availability, or compliance with applicable laws. Your use of
+                    third-party models may be subject to additional terms imposed by those providers.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Service Availability</h3>
+                <p>
+                    Free access is best effort. We do not guarantee uptime, availability, or
+                    performance of the Service. Models, limits, routes, features, plans, and access
+                    rules may change at any time based on capacity, security, provider behavior,
+                    or other factors beyond our control.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 10: Limitation of Liability -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 10</span>
+            <h2>Limitation of Liability</h2>
+        </header>
+        <div class="two-panel">
+            <article class="panel policy-panel">
+                <h3>Cap on Liability</h3>
+                <p>
+                    TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, IN NO EVENT SHALL FREE THE AI,
+                    ITS AFFILIATES, OFFICERS, DIRECTORS, EMPLOYEES, AGENTS, OR LICENSORS BE LIABLE
+                    FOR ANY INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, PUNITIVE, OR EXEMPLARY
+                    DAMAGES, INCLUDING BUT NOT LIMITED TO DAMAGES FOR LOSS OF PROFITS, GOODWILL,
+                    DATA, OR OTHER INTANGIBLE LOSSES, ARISING OUT OF OR IN CONNECTION WITH YOUR USE
+                    OF OR INABILITY TO USE THE SERVICE.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Maximum Aggregate Liability</h3>
+                <p>
+                    TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, OUR TOTAL AGGREGATE LIABILITY
+                    FOR ALL CLAIMS ARISING OUT OF OR RELATING TO THESE TERMS OR THE SERVICE SHALL NOT
+                    EXCEED THE GREATER OF: (A) THE AMOUNT YOU PAID TO US IN THE TWELVE (12) MONTHS
+                    PRECEDING THE CLAIM; OR (B) ONE HUNDRED US DOLLARS (USD $100.00).
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Exceptions</h3>
+                <p>
+                    Nothing in these Terms shall exclude or limit liability for: (a) death or personal
+                    injury caused by negligence; (b) fraud or fraudulent misrepresentation; (c) any
+                    liability that cannot be excluded or limited under applicable law; or (d) willful
+                    misconduct. In jurisdictions that do not allow the exclusion of certain warranties
+                    or limitations of liability, our liability is limited to the greatest extent
+                    permitted by law.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Essential Purpose</h3>
+                <p>
+                    The limitations of liability in these Terms apply even if any limited remedy
+                    provided herein fails of its essential purpose. You acknowledge that FreeTheAi
+                    provides the Service at no charge (for free-tier access) and that these
+                    limitations reflect a reasonable allocation of risk.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 11: Indemnification -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 11</span>
+            <h2>Indemnification</h2>
+        </header>
+        <div class="two-panel">
+            <article class="panel policy-panel">
+                <h3>Your Indemnification Obligations</h3>
+                <p>
+                    You agree to indemnify, defend, and hold harmless FreeTheAi, its affiliates,
+                    officers, directors, employees, agents, and licensors from and against any and
+                    all claims, liabilities, damages, losses, costs, and expenses (including
+                    reasonable attorneys' fees) arising out of or relating to: (a) your use of the
+                    Service; (b) your violation of these Terms; (c) your violation of any applicable
+                    law or third-party rights; or (d) any Content you submit through the Service.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Notice and Cooperation</h3>
+                <p>
+                    We will provide you with prompt notice of any claim for which indemnification
+                    is sought and will cooperate with you in the defense of any such claim. We
+                    reserve the right, at our expense, to assume the exclusive defense and control
+                    of any matter subject to indemnification by you, in which event you shall
+                    cooperate with us in asserting any available defenses.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 12: Termination -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 12</span>
+            <h2>Termination and Suspension</h2>
+        </header>
+        <div class="two-panel">
+            <article class="panel policy-panel">
+                <h3>Termination by You</h3>
+                <p>
+                    You may terminate your use of the Service at any time by ceasing all use of
+                    the Service, revoking your API key through the Discord bot, and deleting any
+                    copies of the Service software you have installed. Termination does not relieve
+                    you of any obligations incurred prior to termination.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Termination by Us</h3>
+                <p>
+                    We may terminate or suspend your access to the Service immediately, without
+                    prior notice or liability, for any reason, including but not limited to breach
+                    of these Terms, suspected abuse, security concerns, or discontinuation of the
+                    Service. Upon termination, your right to use the Service ceases immediately.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Survival</h3>
+                <p>
+                    All provisions of these Terms which by their nature should survive termination
+                    shall survive, including but not limited to ownership provisions, warranty
+                    disclaimers, indemnification, limitation of liability, and dispute resolution.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Effect of Termination</h3>
+                <p>
+                    Upon termination, all API keys are revoked, access to the Service is disabled,
+                    and any data associated with your account may be deleted. We are not liable
+                    for any loss of data or Content resulting from termination. You are responsible
+                    for exporting any data you wish to retain before termination.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 13: Dispute Resolution -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 13</span>
+            <h2>Dispute Resolution and Governing Law</h2>
+        </header>
+        <div class="privacy-columns">
+            <article class="panel policy-panel">
+                <h3>Governing Law</h3>
+                <p>
+                    These Terms shall be governed by and construed in accordance with the laws
+                    of the United States, without regard to its conflict of law provisions. For
+                    users in the European Union, nothing in these Terms deprives you of the
+                    protection afforded by mandatory provisions of consumer protection law in your
+                    country of residence.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Informal Resolution</h3>
+                <p>
+                    Before filing any formal dispute, you agree to contact us and attempt to
+                    resolve the dispute informally by sending a written notice describing the
+                    nature and basis of the claim. We will attempt to resolve the dispute within
+                    60 days of receiving your notice.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Binding Arbitration</h3>
+                <p>
+                    If the dispute cannot be resolved informally, any dispute, controversy, or
+                    claim arising out of or relating to these Terms shall be resolved by binding
+                    arbitration administered by the American Arbitration Association (AAA) under
+                    its Consumer Arbitration Rules. The arbitration shall be conducted in English
+                    and may be conducted remotely. The arbitrator's decision is final and binding,
+                    and judgment may be entered in any court of competent jurisdiction.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Class Action Waiver</h3>
+                <p>
+                    TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, YOU AGREE THAT ANY DISPUTE
+                    RESOLUTION PROCEEDINGS WILL BE CONDUCTED ON AN INDIVIDUAL BASIS AND NOT AS A
+                    CLASS, CONSOLIDATED, OR REPRESENTATIVE ACTION. YOU WAIVE ANY RIGHT TO PARTICIPATE
+                    IN A CLASS ACTION LAWSUIT OR CLASS-WIDE ARBITRATION AGAINST FREE THE AI.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Exceptions to Arbitration</h3>
+                <p>
+                    Notwithstanding the above, either party may seek injunctive or other equitable
+                    relief in any court of competent jurisdiction to prevent the actual or threatened
+                    infringement, misappropriation, or violation of intellectual property rights.
+                    Either party may also bring an individual action in small claims court for
+                    disputes within that court's jurisdiction.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>EU Consumer Rights</h3>
+                <p>
+                    If you are a consumer in the European Union, you may also bring proceedings
+                    in the courts of your country of residence. Nothing in these Terms affects
+                    your rights as a consumer under the applicable mandatory laws of your country
+                    of residence, including the right to use the dispute resolution platform of the
+                    European Commission.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 14: General Provisions -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 14</span>
+            <h2>General Provisions</h2>
+        </header>
+        <div class="privacy-columns">
+            <article class="panel policy-panel">
+                <h3>Entire Agreement</h3>
+                <p>
+                    These Terms, together with the Privacy Policy and any additional terms
+                    applicable to specific features or Paid Plans, constitute the entire
+                    agreement between you and FreeTheAi regarding the Service and supersede
+                    all prior agreements and understandings.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Severability</h3>
+                <p>
+                    If any provision of these Terms is held to be invalid, illegal, or
+                    unenforceable, the remaining provisions shall continue in full force
+                    and effect. The invalid provision shall be modified to the minimum
+                    extent necessary to make it valid and enforceable.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Waiver</h3>
+                <p>
+                    No waiver of any term or condition shall be deemed a further or continuing
+                    waiver of such term or any other term. Our failure to assert any right or
+                    provision under these Terms shall not constitute a waiver of such right or
+                    provision.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Assignment</h3>
+                <p>
+                    You may not assign or transfer these Terms or any rights under them without
+                    our prior written consent. We may assign these Terms without restriction,
+                    including in connection with a merger, acquisition, corporate reorganization,
+                    or sale of all or substantially all of our assets.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Force Majeure</h3>
+                <p>
+                    We shall not be liable for any failure or delay in performance resulting from
+                    causes beyond our reasonable control, including but not limited to natural
+                    disasters, pandemics, government actions, power outages, internet failures,
+                    cyberattacks, or acts of third-party providers.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Modifications to Terms</h3>
+                <p>
+                    We reserve the right to modify these Terms at any time. Material changes
+                    will be posted on this page with an updated effective date. Your continued
+                    use of the Service after changes are posted constitutes acceptance of the
+                    modified Terms. We encourage you to review these Terms periodically.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Section 15: Contact -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Section 15</span>
+            <h2>Contact Information</h2>
+        </header>
+        <div class="two-panel">
+            <article class="panel policy-panel">
+                <h3>General Inquiries</h3>
+                <p>
+                    For questions about these Terms, contact us at
+                    <a href="mailto:complex.hummingbird.nliw@masked.me">complex.hummingbird.nliw@masked.me</a>
+                    or through our <a href="/support">Support page</a>.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Data Protection Inquiries</h3>
+                <p>
+                    For data protection or privacy-related inquiries, including exercising
+                    your rights under GDPR, CCPA, LGPD, or other data protection laws,
+                    contact us at
+                    <a href="mailto:complex.hummingbird.nliw@masked.me">complex.hummingbird.nliw@masked.me</a>.
+                    We will respond to data protection requests within 30 days.
+                </p>
+            </article>
+        </div>
+    </section>
+
+    <!-- Legal links -->
+    <section class="section shell policy-section">
+        <header class="section-head">
+            <span class="eyebrow">Related</span>
+            <h2>Related pages</h2>
         </header>
         <div class="legal-foot">
             <a href="/privacy">Privacy Policy</a>
             <a href="/support">Support</a>
-            <a href="/terms">Terms of Use</a>
+            <a href="/terms">Terms of Service</a>
         </div>
     </section>
 </main>

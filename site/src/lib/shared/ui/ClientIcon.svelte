@@ -16,23 +16,17 @@
         "LibreChat": "/client-icons/librechat.svg",
         "Open WebUI": "/client-icons/openwebui.svg",
         "LobeChat": "/client-icons/lobechat.png",
-        "AnythingLLM": "",
+        "AnythingLLM": "/client-icons/anythingllm.png",
         "Cherry Studio": "/client-icons/cherry.png",
         "TypingMind": "/client-icons/typingmind.ico",
-        "BoltAI": "",
+        "BoltAI": "/client-icons/boltai.png",
         "Page Assist": "/client-icons/pageassist.png",
         "Chatbox": "/client-icons/chatbox.ico",
         "Big-AGI": "/client-icons/bigagi.ico",
-        "Zed IDE": "",
-    };
-
-    const FALLBACK_SVG: Record<string, string> = {
-        "Zed IDE": `<path d="M6 7h12l-6 5 6 5H6l6-5z" fill="currentColor"/>`,
-        "BoltAI": `<path d="M13 4L5 14h6l-2 6 8-10h-6z" fill="currentColor" opacity="0.15" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/>`,
+        "Zed IDE": "/client-icons/zed.png",
     };
 
     const iconSrc = $derived(ICON_MAP[name] ?? "");
-    const fallbackSvg = $derived(FALLBACK_SVG[name] ?? "");
 </script>
 
 {#if iconSrc}
@@ -44,18 +38,6 @@
         class="client-icon"
         aria-hidden="true"
     />
-{:else if fallbackSvg}
-    <svg
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 24 24"
-        width={size}
-        height={size}
-        fill="none"
-        class="client-icon"
-        aria-hidden="true"
-    >
-        {@html fallbackSvg}
-    </svg>
 {:else}
     <span
         class="client-icon client-icon--fallback"
@@ -83,6 +65,5 @@
         color: var(--text-2, #999);
         font-weight: 700;
         font-family: var(--font-mono, monospace);
-        border-radius: 0;
     }
 </style>

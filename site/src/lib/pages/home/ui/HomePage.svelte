@@ -165,6 +165,59 @@
         </div>
     </section>
 
+    <section class="hp-section hp-reveal" aria-labelledby="hp-trending-title">
+        <h2 id="hp-trending-title">Popular models</h2>
+        <p class="hp-providers-sub">Trending right now. Tap to browse the full catalog.</p>
+        <div class="hp-trending-tags">
+            <a href="/models" class="hp-tag hp-tag-hot">Claude</a>
+            <a href="/models" class="hp-tag">Gemini</a>
+            <a href="/models" class="hp-tag">GPT</a>
+            <a href="/models" class="hp-tag">DeepSeek</a>
+            <a href="/models" class="hp-tag">Grok</a>
+            <a href="/models" class="hp-tag">Llama</a>
+            <a href="/models" class="hp-tag">Mistral</a>
+            <a href="/models" class="hp-tag">Qwen</a>
+            <a href="/models" class="hp-tag">MiniMax</a>
+            <a href="/models" class="hp-tag">Kimi</a>
+        </div>
+    </section>
+
+    <section class="hp-section hp-reveal" aria-labelledby="hp-categories-title">
+        <h2 id="hp-categories-title">What you can build</h2>
+        <div class="hp-categories-grid">
+            <a href="/models" class="hp-cat-card">
+                <span class="material-symbols-outlined" aria-hidden="true">chat</span>
+                <span class="hp-cat-name">Chat</span>
+                <span class="hp-cat-count">40+ models</span>
+            </a>
+            <a href="/models" class="hp-cat-card">
+                <span class="material-symbols-outlined" aria-hidden="true">code</span>
+                <span class="hp-cat-name">Code</span>
+                <span class="hp-cat-count">15+ models</span>
+            </a>
+            <a href="/models" class="hp-cat-card">
+                <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+                <span class="hp-cat-name">Roleplay</span>
+                <span class="hp-cat-count">40 paid slots</span>
+            </a>
+            <a href="/models" class="hp-cat-card">
+                <span class="material-symbols-outlined" aria-hidden="true">image</span>
+                <span class="hp-cat-name">Vision</span>
+                <span class="hp-cat-count">10+ models</span>
+            </a>
+            <a href="/models" class="hp-cat-card">
+                <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                <span class="hp-cat-name">Search</span>
+                <span class="hp-cat-count">4 models</span>
+            </a>
+            <a href="/models" class="hp-cat-card">
+                <span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span>
+                <span class="hp-cat-name">Audio</span>
+                <span class="hp-cat-count">3 models</span>
+            </a>
+        </div>
+    </section>
+
     <section class="hp-section hp-reveal" aria-labelledby="hp-why-title">
         <div class="hp-split">
             <div class="hp-split-head">
@@ -212,6 +265,20 @@
         </div>
         <p class="hp-cta-reassurance">Open source · Discord support · No lock-in · Cancel anytime</p>
     </section>
+
+    <div class="hp-activity hp-reveal" aria-label="Live activity">
+        <span class="hp-activity-item">
+            <span class="hp-activity-dot" aria-hidden="true"></span>
+            Live API
+        </span>
+        <span class="hp-stat-sep" aria-hidden="true"></span>
+        <span class="hp-activity-item">80+ models online</span>
+        <span class="hp-stat-sep" aria-hidden="true"></span>
+        <span class="hp-activity-item">Daily check-in active</span>
+        <span class="hp-stat-sep" aria-hidden="true"></span>
+        <span class="hp-activity-item">Discord community online</span>
+    </div>
+
 
     <section class="hp-start hp-crop hp-reveal" aria-labelledby="hp-start-title">
         <h2 id="hp-start-title">Get started<br />with FreeTheAI</h2>
@@ -496,6 +563,119 @@
         text-align: center;
     }
 
+    /* ── Trending tags (人気キーワード) ── */
+    .hp-trending-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+    }
+    .hp-tag {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        padding: 6px 14px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius-full);
+        background: oklch(1 0 0 / 0.03);
+        color: var(--text);
+        text-decoration: none;
+        transition:
+            background 180ms var(--ease-out-smooth),
+            border-color 180ms var(--ease-out-smooth),
+            transform var(--press-dur) var(--ease-out-smooth);
+    }
+    .hp-tag:hover {
+        background: oklch(1 0 0 / 0.07);
+        border-color: var(--border-strong);
+    }
+    .hp-tag:active {
+        transform: scale(0.97);
+    }
+    .hp-tag-hot {
+        border-color: oklch(0.72 0.11 265 / 0.5);
+        background: oklch(0.72 0.11 265 / 0.08);
+    }
+
+    /* ── Model categories (Kakaku.com grid) ── */
+    .hp-categories-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        gap: 10px;
+    }
+    .hp-cat-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 6px;
+        padding: clamp(14px, 2vw, 20px) 12px;
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: oklch(1 0 0 / 0.02);
+        color: var(--text);
+        text-decoration: none;
+        text-align: center;
+        transition:
+            background 180ms var(--ease-out-smooth),
+            border-color 180ms var(--ease-out-smooth),
+            transform var(--press-dur) var(--ease-out-smooth);
+    }
+    .hp-cat-card:hover {
+        background: oklch(1 0 0 / 0.05);
+        border-color: var(--border-strong);
+        transform: translateY(-2px);
+    }
+    .hp-cat-card:active {
+        transform: scale(0.97);
+    }
+    .hp-cat-card .material-symbols-outlined {
+        font-size: 20px;
+        color: var(--accent-text);
+        font-family: 'Material Symbols Outlined';
+        font-feature-settings: 'liga';
+        font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        font-style: normal;
+    }
+    .hp-cat-name {
+        font-weight: 600;
+        font-size: 0.82rem;
+    }
+    .hp-cat-count {
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        color: var(--dim);
+    }
+
+    /* ── Activity strip ── */
+    .hp-activity {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        align-items: center;
+        gap: 6px 0;
+        padding: clamp(10px, 1.5vw, 14px) clamp(16px, 3vw, 32px);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: oklch(1 0 0 / 0.02);
+    }
+    .hp-activity-item {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        color: var(--dim);
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+    }
+    .hp-activity-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: oklch(0.75 0.15 145);
+        animation: hp-pulse-dot 2s ease-in-out infinite;
+    }
+    @keyframes hp-pulse-dot {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+    }
     /* ── Trust badges (Anshin) ── */
     .hp-trust {
         display: flex;

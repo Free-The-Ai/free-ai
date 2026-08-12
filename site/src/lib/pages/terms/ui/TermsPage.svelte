@@ -458,19 +458,21 @@
             </article>
             <article class="panel policy-panel">
                 <h3>Data Processing</h3>
+            <article class="panel policy-panel">
+                <h3>Data Processing</h3>
                 <p>
-                    We process Inputs, Outputs, and other Content solely to deliver the
-                    requested API response and to operate, maintain, and improve the Service.
-                    We do not store prompts, completions, uploaded media, or conversation
-                    history as operational logs beyond what is necessary to deliver the response
-                    and maintain service integrity. We do log: (a) IP addresses; (b) request
+                    FreeTheAi operates as an API gateway and relay. We process Inputs solely to
+                    route them to the appropriate Third-Party Model provider and return the
+                    resulting Output to you. We do not store prompts, completions, uploaded
+                    media, or conversation history. We do log: (a) IP addresses; (b) request
                     metadata (timestamps, endpoints, status codes, model used); (c) account
                     information (Discord user ID, key identifier); (d) usage data (request
                     counts, rate limits, error rates); and (e) client information (user agent,
                     SDK version). These logs are used for security, access validation, debugging,
                     abuse prevention, and service improvement. Logs are retained for a maximum
                     of 90 days unless longer retention is required for legal compliance or
-                    dispute resolution.
+                    dispute resolution. We do not use your Inputs to train, fine-tune, or
+                    improve any AI models, and we do not sell your data.
                 </p>
             </article>
             <article class="panel policy-panel">
@@ -484,6 +486,40 @@
                     (c) enforcement of these Terms; or (d) technical necessity (such as backup
                     archives, which are purged within 90 days). You may request early deletion
                     of your data by contacting us at the address below.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Third-Party Data Handling</h3>
+                <p>
+                    When you send a request through FreeTheAi, your Input is relayed to a
+                    Third-Party Model provider (such as Anthropic, Google, Meta, Mistral, or
+                    others) to generate the Output. Each Third-Party Model provider has its own
+                    privacy policy, data retention policy, and terms of service that govern how
+                    they process your Input and any associated data. We do not control, and are
+                    not responsible for, the data handling practices of Third-Party Model
+                    providers. Third-Party Model providers may: (a) log your Inputs, Outputs,
+                    or metadata for their own purposes, including safety monitoring, abuse
+                    prevention, research, and model improvement; (b) retain data for periods
+                    determined by their own policies; (c) process data in jurisdictions other
+                    than your own; and (d) share data with subprocessors or affiliates.
+                </p>
+            </article>
+            <article class="panel policy-panel">
+                <h3>Third-Party Data Recommendations</h3>
+                <p>
+                    We strongly recommend that you: (a) review the privacy policy and terms of
+                    service of each Third-Party Model provider before sending sensitive, personal,
+                    confidential, or proprietary data through the Service; (b) avoid submitting
+                    Sensitive Data, Personal Data, or information subject to special regulatory
+                    requirements (such as HIPAA, FERPA, or PCI-DSS) through the Service unless
+                    you have verified that the relevant Third-Party Model provider offers
+                    appropriate protections; (c) use the Service in compliance with your
+                    organization's data handling policies; and (d) consult with your data
+                    protection officer or legal counsel if you have questions about data
+                    processing by Third-Party Model providers. Current provider privacy policies
+                    are available at: Anthropic (anthropic.com/privacy), Google
+                    (policies.google.com/privacy), Meta (mbasic.facebook.com/privacy/policy/),
+                    and Mistral (mistral.ai/privacy-policy).
                 </p>
             </article>
             <article class="panel policy-panel">

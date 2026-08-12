@@ -55,7 +55,7 @@
 
 <SeoHead {seo} />
 
-<main class="pricing-main">
+<main class="pricing-main" jp-dense>
     <section class="pricing-free shell" aria-labelledby="free-access-title">
         <span class="eyebrow">Free access</span>
         <h2 id="free-access-title">Every free key, at a glance.</h2>

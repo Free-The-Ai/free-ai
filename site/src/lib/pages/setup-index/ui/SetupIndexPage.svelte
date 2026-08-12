@@ -77,7 +77,7 @@
 
 <SeoHead {seo} />
 
-<main class="setup-main">
+<main class="setup-main" jp-dense>
     <section class="setup-hero shell">
         <DitherGradient class="setup-glow" from="grey" direction="up" opacity={0.28} />
         <span class="eyebrow">Setup guides</span>

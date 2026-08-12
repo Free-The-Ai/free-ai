@@ -42,7 +42,7 @@
 
 <SeoHead {seo} />
 
-<main class="explainer-main">
+<main class="explainer-main" jp-dense>
     <article class="explainer-shell shell">
         <header class="explainer-head">
             <DitherGradient class="explainer-glow" from="grey" direction="up" opacity={0.28} />

@@ -23,7 +23,7 @@
 
 <SeoHead {seo} />
 
-<main class="status-main">
+<main class="status-main" jp-dense>
     <section class="status-hero shell">
         <DitherGradient class="status-glow" from="grey" direction="up" opacity={0.28} />
         <span class="eyebrow">Live status</span>

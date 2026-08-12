@@ -80,7 +80,7 @@
 
 <SeoHead {seo} />
 
-<main class="team-main">
+<main class="team-main" jp-dense>
     <section class="team-hero shell">
         <DitherGradient class="team-hero-glow" from="grey" direction="up" opacity={0.4} />
         <span class="eyebrow">Team</span>

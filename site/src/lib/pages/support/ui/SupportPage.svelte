@@ -49,7 +49,7 @@
 
 <SeoHead {seo} />
 
-<main class="support-main">
+<main class="support-main jp-dense">
     <section class="support-hero shell" aria-labelledby="support-hero-heading">
         <DitherGradient class="support-hero-glow" from="grey" direction="up" opacity={0.32} />
         <div class="support-hero-orb" aria-hidden="true">
@@ -149,6 +149,9 @@
     gap: 28px;
     padding: 22px 0 64px;
 }
+.support-hero .eyebrow {
+    color: #e60012;
+}
 .support-hero {
     position: relative;
     overflow: hidden;
@@ -199,6 +202,7 @@
     gap: 16px;
 }
 .support-card {
+    border-top: 2px solid #e60012;
     display: grid;
     gap: 10px;
     min-height: 100%;

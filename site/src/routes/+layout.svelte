@@ -13,9 +13,9 @@
     import { SiteFooter } from "@/widgets/footer";
     import { MobileNav } from "@/widgets/mobile-nav";
     import { ToastRegion, ProgressiveBlur } from "@/shared/ui";
+    import { TermsGate } from "@/features/terms-gate";
 
     let { children }: { children: Snippet } = $props();
-
     const fontHref =
         "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=STIX+Two+Text:ital,wght@0,400;0,500;0,600;0,700;1,400&display=optional";
 
@@ -100,4 +100,5 @@
     <SiteFooter flush={isNotFoundRoute} />
     <MobileNav />
     <ToastRegion />
+    <TermsGate />
 </div>

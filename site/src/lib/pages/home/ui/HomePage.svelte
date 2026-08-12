@@ -159,34 +159,46 @@
         <h2 id="hp-categories-title">What you can build</h2>
         <div class="hp-categories-grid">
             <a href="/models" class="hp-cat-card">
-                <span class="material-symbols-outlined" aria-hidden="true">chat</span>
+                <span class="hp-cat-accent" aria-hidden="true"></span>
+                <span class="hp-cat-icon material-symbols-outlined" aria-hidden="true">chat</span>
                 <span class="hp-cat-name">Chat</span>
-                <span class="hp-cat-count">40+ models</span>
+                <span class="hp-cat-desc">Conversations, writing, analysis</span>
+                <span class="hp-cat-count"><span class="hp-cat-num">40+</span> models</span>
             </a>
             <a href="/models" class="hp-cat-card">
-                <span class="material-symbols-outlined" aria-hidden="true">code</span>
+                <span class="hp-cat-accent" aria-hidden="true"></span>
+                <span class="hp-cat-icon material-symbols-outlined" aria-hidden="true">code</span>
                 <span class="hp-cat-name">Code</span>
-                <span class="hp-cat-count">15+ models</span>
+                <span class="hp-cat-desc">Generation, review, debug</span>
+                <span class="hp-cat-count"><span class="hp-cat-num">15+</span> models</span>
             </a>
             <a href="/models" class="hp-cat-card">
-                <span class="material-symbols-outlined" aria-hidden="true">favorite</span>
+                <span class="hp-cat-accent" aria-hidden="true"></span>
+                <span class="hp-cat-icon material-symbols-outlined" aria-hidden="true">favorite</span>
                 <span class="hp-cat-name">Roleplay</span>
-                <span class="hp-cat-count">40 paid slots</span>
+                <span class="hp-cat-desc">Characters, stories, scenarios</span>
+                <span class="hp-cat-count"><span class="hp-cat-num">40</span> paid slots</span>
             </a>
             <a href="/models" class="hp-cat-card">
-                <span class="material-symbols-outlined" aria-hidden="true">image</span>
+                <span class="hp-cat-accent" aria-hidden="true"></span>
+                <span class="hp-cat-icon material-symbols-outlined" aria-hidden="true">image</span>
                 <span class="hp-cat-name">Vision</span>
-                <span class="hp-cat-count">10+ models</span>
+                <span class="hp-cat-desc">Image understanding, OCR</span>
+                <span class="hp-cat-count"><span class="hp-cat-num">10+</span> models</span>
             </a>
             <a href="/models" class="hp-cat-card">
-                <span class="material-symbols-outlined" aria-hidden="true">search</span>
+                <span class="hp-cat-accent" aria-hidden="true"></span>
+                <span class="hp-cat-icon material-symbols-outlined" aria-hidden="true">search</span>
                 <span class="hp-cat-name">Search</span>
-                <span class="hp-cat-count">4 models</span>
+                <span class="hp-cat-desc">Web search, grounding</span>
+                <span class="hp-cat-count"><span class="hp-cat-num">4</span> models</span>
             </a>
             <a href="/models" class="hp-cat-card">
-                <span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span>
+                <span class="hp-cat-accent" aria-hidden="true"></span>
+                <span class="hp-cat-icon material-symbols-outlined" aria-hidden="true">graphic_eq</span>
                 <span class="hp-cat-name">Audio</span>
-                <span class="hp-cat-count">3 models</span>
+                <span class="hp-cat-desc">Transcription, TTS</span>
+                <span class="hp-cat-count"><span class="hp-cat-num">3</span> models</span>
             </a>
         </div>
     </section>
@@ -525,53 +537,98 @@
     }
 
 
-    /* ── Model categories (Kakaku.com grid) ── */
+    /* ── Model categories — Japanese luxury density ── */
     .hp-categories-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+        grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
         gap: 10px;
     }
     .hp-cat-card {
+        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
-        gap: 6px;
-        padding: clamp(14px, 2vw, 20px) 12px;
+        gap: 8px;
+        padding: clamp(20px, 2.5vw, 28px) 14px clamp(16px, 2vw, 22px);
         border: 1px solid var(--border);
         border-radius: var(--radius);
         background: oklch(1 0 0 / 0.02);
         color: var(--text);
         text-decoration: none;
         text-align: center;
+        overflow: hidden;
         transition:
-            background 180ms var(--ease-out-smooth),
-            border-color 180ms var(--ease-out-smooth),
-            transform var(--press-dur) var(--ease-out-smooth);
+            background 200ms var(--ease-out-smooth),
+            border-color 200ms var(--ease-out-smooth),
+            transform var(--press-dur) var(--ease-out-smooth),
+            box-shadow 200ms var(--ease-out-smooth);
+    }
+    .hp-cat-accent {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, transparent, var(--accent-text), transparent);
+        opacity: 0;
+        transition: opacity 200ms var(--ease-out-smooth);
+    }
+    .hp-cat-card:hover .hp-cat-accent {
+        opacity: 1;
     }
     .hp-cat-card:hover {
-        background: oklch(1 0 0 / 0.05);
+        background: oklch(1 0 0 / 0.04);
         border-color: var(--border-strong);
         transform: translateY(-2px);
+        box-shadow: 0 8px 24px oklch(0 0 0 / 0.15);
     }
     .hp-cat-card:active {
         transform: scale(0.97);
     }
-    .hp-cat-card .material-symbols-outlined {
-        font-size: 20px;
+    .hp-cat-icon {
+        font-size: 22px;
         color: var(--accent-text);
         font-family: 'Material Symbols Outlined';
         font-feature-settings: 'liga';
         font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
         font-style: normal;
+        width: 40px;
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: var(--radius-sm);
+        background: oklch(1 0 0 / 0.04);
+        border: 1px solid var(--border);
+    }
+    .hp-cat-card:hover .hp-cat-icon {
+        background: oklch(0.72 0.11 265 / 0.08);
+        border-color: oklch(0.72 0.11 265 / 0.3);
     }
     .hp-cat-name {
         font-weight: 600;
-        font-size: 0.82rem;
+        font-size: 0.88rem;
+        letter-spacing: -0.01em;
+    }
+    .hp-cat-desc {
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        line-height: 1.5;
+        color: var(--dim);
+        max-width: 20ch;
     }
     .hp-cat-count {
         font-family: var(--font-mono);
         font-size: 0.62rem;
         color: var(--dim);
+        margin-top: auto;
+        padding-top: 8px;
+        border-top: 1px solid var(--border);
+        width: 100%;
+    }
+    .hp-cat-num {
+        color: var(--accent-text);
+        font-weight: 600;
     }
 
     /* ── Trust badges (Anshin) ── */

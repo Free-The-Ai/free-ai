@@ -19,3 +19,4 @@ export { default as TextRoll } from "./TextRoll.svelte";
 export { default as NumberFlow } from "./NumberFlow.svelte";
 export { default as ScrollProgress } from "./ScrollProgress.svelte";
 export { default as ProgressiveBlur } from "./ProgressiveBlur.svelte";
+export { default as ClientIcon } from "./ClientIcon.svelte";

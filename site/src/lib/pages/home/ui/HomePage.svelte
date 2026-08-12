@@ -371,16 +371,20 @@
     .hp-section {
         counter-increment: section;
         display: grid;
-        gap: clamp(28px, 4vw, 44px);
+        gap: clamp(18px, 3vw, 32px);
     }
     .hp-section h2::before {
         content: counter(section, decimal-leading-zero);
         display: block;
         font-family: var(--font-mono);
-        font-size: 0.68rem;
-        letter-spacing: 0.12em;
-        color: var(--muted);
-        margin-bottom: 12px;
+        font-size: 0.58rem;
+        letter-spacing: 0.14em;
+        color: #e60012;
+        margin-bottom: 6px;
+    }
+    .hp-section h2 {
+        border-left: 3px solid #e60012;
+        padding-left: 12px;
     }
     .hp-split {
         display: grid;
@@ -414,7 +418,7 @@
         display: grid;
         grid-template-columns: repeat(12, minmax(0, 1fr));
         grid-auto-flow: dense;
-        gap: 14px;
+        gap: 2px;
     }
     .hp-bento-3 > :nth-child(1) { grid-column: span 5; grid-row: span 2; }
     .hp-bento-3 > :nth-child(2) { grid-column: span 7; }
@@ -646,7 +650,7 @@
         color: var(--text);
         white-space: nowrap;
         border: 1px solid var(--border);
-        border-radius: var(--radius-full);
+        border-radius: 0;
         background: oklch(1 0 0 / 0.025);
         transition:
             background 180ms var(--ease-out-smooth),
@@ -667,7 +671,7 @@
         width: 22px;
         height: 22px;
         flex-shrink: 0;
-        border-radius: var(--radius-full);
+        border-radius: 0;
         background: oklch(1 0 0 / 0.08);
         font-size: 13px;
         color: var(--text);

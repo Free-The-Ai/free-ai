@@ -104,7 +104,13 @@
                     size="lg"
                     data-sound="interaction.confirm">Get a free key</DitherButton>
                 <a class="hp-btn-ghost" href="/models" data-sound="interaction.tap">Browse models</a>
-            </div>
+        </div>
+        <ul class="hp-trust">
+            <li><span class="material-symbols-outlined" aria-hidden="true">credit_card_off</span>No credit card</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">deployed_code</span>80+ active models</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">key</span>One Discord key</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">payments</span>Zero billing</li>
+        </ul>
         </div>
     </section>
 
@@ -118,9 +124,10 @@
                 <h2 id="hp-how-title">How it works</h2>
                 <p>One key, one base URL, a catalog full of models.</p>
             </div>
-            <div class="hp-card-grid hp-card-grid-3">
-                {#each howItWorks as [title, text, icon] (title)}
-                    <article class="hp-card" use:spotlight>
+            <div class="hp-bento hp-bento-3">
+                {#each howItWorks as [title, text, icon], i (title)}
+                    <article class="hp-card hp-card-step" style="--step: {i + 1}" use:spotlight>
+                        <span class="hp-step-num" aria-hidden="true">{i + 1}</span>
                         <span class="hp-card-icon material-symbols-outlined" aria-hidden="true">{icon}</span>
                         <h3>{title}</h3>
                         <p>{text}</p>
@@ -132,10 +139,11 @@
 
     <section class="hp-section hp-providers hp-reveal" aria-labelledby="hp-providers-title">
         <h2 id="hp-providers-title">The providers you already&nbsp;know</h2>
-        <div class="hp-provider-row">
+        <div class="hp-provider-grid">
             {#each providerIcons as icon (icon.slug)}
-                <span class="hp-provider-icon" title={icon.title}>
+                <span class="hp-provider-item" title={icon.title}>
                     <svg viewBox="0 0 24 24" fill="currentColor" role="img" aria-label={icon.title}><path d={icon.path} /></svg>
+                    <span class="hp-provider-name">{icon.title}</span>
                 </span>
             {/each}
         </div>
@@ -147,7 +155,7 @@
                 <h2 id="hp-why-title">Why FreeTheAI</h2>
                 <p>One free key, every major model family, no billing anywhere.</p>
             </div>
-            <div class="hp-card-grid hp-card-grid-3">
+            <div class="hp-bento hp-bento-6">
                 {#each whyCards as [title, text, icon] (title)}
                     <article class="hp-card" use:spotlight>
                         <span class="hp-card-icon material-symbols-outlined" aria-hidden="true">{icon}</span>
@@ -184,9 +192,9 @@
 
 <style>
     main {
+        counter-reset: section;
         gap: clamp(56px, 8vw, 96px);
     }
-
     /* ── Hero ── */
     .hp-hero {
         position: relative;
@@ -291,8 +299,18 @@
 
     /* ── Sections ── */
     .hp-section {
+        counter-increment: section;
         display: grid;
         gap: clamp(28px, 4vw, 44px);
+    }
+    .hp-section h2::before {
+        content: counter(section, decimal-leading-zero);
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 0.12em;
+        color: var(--dim);
+        margin-bottom: 12px;
     }
     .hp-split {
         display: grid;
@@ -321,13 +339,23 @@
     }
 
     /* ── Cards ── */
-    .hp-card-grid {
+    /* ── Bento grids ── */
+    .hp-bento {
         display: grid;
+        grid-template-columns: repeat(12, minmax(0, 1fr));
+        grid-auto-flow: dense;
         gap: 14px;
     }
-    .hp-card-grid-3 {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-    }
+    .hp-bento-3 > :nth-child(1) { grid-column: span 5; grid-row: span 2; }
+    .hp-bento-3 > :nth-child(2) { grid-column: span 7; }
+    .hp-bento-3 > :nth-child(3) { grid-column: span 7; }
+    .hp-bento-6 > :nth-child(1) { grid-column: span 5; }
+    .hp-bento-6 > :nth-child(2) { grid-column: span 4; }
+    .hp-bento-6 > :nth-child(3) { grid-column: span 3; }
+    .hp-bento-6 > :nth-child(4) { grid-column: span 3; }
+    .hp-bento-6 > :nth-child(6) { grid-column: span 4; }
+
+    /* ── Cards ── */
     .hp-card {
         position: relative;
         overflow: hidden;
@@ -387,23 +415,87 @@
         justify-items: center;
         text-align: center;
     }
-    .hp-provider-row {
+    .hp-provider-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(108px, 1fr));
+        gap: 1px;
+        background: var(--border);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        overflow: hidden;
+        width: 100%;
+        max-width: 920px;
+    }
+    .hp-provider-item {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+        padding: clamp(16px, 2.5vw, 24px) 12px;
+        background: var(--bg);
+        color: var(--dim);
+        transition:
+            color 200ms var(--ease-out-smooth),
+            background 200ms var(--ease-out-smooth);
+    }
+    .hp-provider-item:hover {
+        color: var(--text);
+        background: oklch(1 0 0 / 0.03);
+    }
+    .hp-provider-item svg {
+        width: 24px;
+        height: 24px;
+    }
+    .hp-provider-name {
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        line-height: 1.2;
+        text-align: center;
+    }
+
+    /* ── Trust badges (Anshin) ── */
+    .hp-trust {
         display: flex;
         flex-wrap: wrap;
-        justify-content: center;
-        align-items: center;
-        gap: clamp(22px, 4vw, 44px);
+        gap: 0;
+        margin: 28px 0 0;
+        padding: 0;
+        list-style: none;
     }
-    .hp-provider-icon {
+    .hp-trust li {
         display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 0 14px;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        line-height: 1;
         color: var(--dim);
+        border-inline-end: 1px solid var(--border);
     }
-    .hp-provider-icon:hover {
-        color: var(--text);
+    .hp-trust li:first-child {
+        padding-inline-start: 0;
     }
-    .hp-provider-icon svg {
-        width: 26px;
-        height: 26px;
+    .hp-trust li:last-child {
+        border-inline-end: 0;
+    }
+    .hp-trust .material-symbols-outlined {
+        font-size: 15px;
+        color: var(--muted);
+    }
+
+    /* ── Step numbers ── */
+    .hp-step-num {
+        position: absolute;
+        top: 14px;
+        inset-inline-end: 16px;
+        font-family: var(--font-display);
+        font-size: 2.4rem;
+        font-weight: 600;
+        line-height: 1;
+        color: oklch(1 0 0 / 0.06);
+        letter-spacing: -0.04em;
+        z-index: 0;
     }
 
     /* ── CTA panels with crop marks ── */
@@ -468,8 +560,18 @@
         .hp-split-head {
             position: static;
         }
-        .hp-card-grid-3 {
-            grid-template-columns: repeat(2, minmax(0, 1fr));
+        .hp-bento {
+            grid-template-columns: repeat(6, minmax(0, 1fr));
+        }
+        .hp-bento-3 > :nth-child(n) {
+            grid-column: span 6;
+            grid-row: auto;
+        }
+        .hp-bento-6 > :nth-child(n) {
+            grid-column: span 3;
+        }
+        .hp-bento-6 > :nth-child(5) {
+            grid-column: span 6;
         }
         .hp-cta,
         .hp-start {
@@ -478,8 +580,9 @@
         }
     }
     @media (max-width: 34em) {
-        .hp-card-grid-3 {
-            grid-template-columns: 1fr;
+        .hp-bento > :nth-child(n) {
+            grid-column: 1 / -1;
+            grid-row: auto;
         }
     }
 
@@ -503,12 +606,10 @@
         border-color: var(--border-strong);
         background: oklch(1 0 0 / 0.04);
     }
-    .hp-provider-icon {
-        transition:
-            color 150ms var(--ease-out-smooth),
-            transform 150ms var(--ease-out-smooth);
+    .hp-provider-item svg {
+        transition: transform 150ms var(--ease-out-smooth);
     }
-    .hp-provider-icon:hover {
+    .hp-provider-item:hover svg {
         transform: translateY(-2px) scale(1.08);
     }
 

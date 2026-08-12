@@ -70,14 +70,13 @@
     ];
 
     const whyCards: [string, string, string][] = [
-        ["One key, zero billing", "Every model on the catalog answers to the same Discord key. No subscriptions, no meters, no invoices.", "key"],
-        ["Free by design", "Donated and sponsored capacity keeps the free tier online. Daily check-in keeps it shared fairly.", "favorite"],
-        ["Paid slots when you need more", "Optional paid slots unlock separate higher-power models. The free tier stays free either way.", "speed"],
-        ["Your clients already work", "SillyTavern, OpenCode, Cline, Zed, and any OpenAI SDK point at one base URL. Setup guides cover 20+ apps.", "devices"],
-        ["Three formats, one API", "OpenAI Chat Completions, OpenAI Responses, and Anthropic Messages use one account and one base URL.", "toc"],
-        ["Community funded", "A small donation covers servers and keeps more free capacity online. Issues and requests land on the support page.", "support_agent"],
+        ["One key, zero billing", "80+ models, 1 Discord key. No subscriptions, no meters, no invoices, no surprises.", "key"],
+        ["Free by design", "Donated and sponsored capacity. 2000+ community members keep it running. Daily check-in shares capacity fairly.", "favorite"],
+        ["Paid slots when you need more", "Optional paid slots unlock 40+ dedicated roleplay models. The free tier stays free either way.", "speed"],
+        ["Your clients already work", "SillyTavern, OpenCode, Cline, Zed, and any OpenAI SDK. Setup guides cover 20+ apps, one base URL.", "devices"],
+        ["Three formats, one API", "OpenAI Chat Completions, OpenAI Responses, and Anthropic Messages. One account, one URL, zero config.", "toc"],
+        ["Community funded", "100% open source. A small donation covers servers and keeps more free capacity online.", "support_agent"],
     ];
-
 </script>
 
 <svelte:head>
@@ -109,15 +108,29 @@
         <ul class="hp-trust" aria-label="Key guarantees">
             <li><span class="material-symbols-outlined" aria-hidden="true">verified_user</span> 80+ active models</li>
             <li><span class="material-symbols-outlined" aria-hidden="true">code</span> OpenAI + Anthropic compatible</li>
-            <li><span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span> 10–35 req/min</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">graphic_eq</span> 10–35 req/min free</li>
             <li><span class="material-symbols-outlined" aria-hidden="true">key</span> One Discord key</li>
             <li><span class="material-symbols-outlined" aria-hidden="true">check_circle</span> No credit card</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">chat</span> 2000+ community</li>
+            <li><span class="material-symbols-outlined" aria-hidden="true">shield</span> 100% open source</li>
         </ul>
         </div>
     </section>
 
     <div class="hp-reveal">
         <LiveStats />
+    </div>
+
+    <div class="hp-stats-bar hp-reveal" aria-label="Platform stats">
+        <span class="hp-stat"><strong>80+</strong> models</span>
+        <span class="hp-stat-sep" aria-hidden="true"></span>
+        <span class="hp-stat"><strong>12</strong> providers</span>
+        <span class="hp-stat-sep" aria-hidden="true"></span>
+        <span class="hp-stat"><strong>3</strong> API formats</span>
+        <span class="hp-stat-sep" aria-hidden="true"></span>
+        <span class="hp-stat"><strong>100%</strong> open source</span>
+        <span class="hp-stat-sep" aria-hidden="true"></span>
+        <span class="hp-stat"><strong>2000+</strong> community</span>
     </div>
 
     <section class="hp-section hp-reveal" aria-labelledby="hp-how-title">
@@ -141,6 +154,7 @@
 
     <section class="hp-section hp-providers hp-reveal" aria-labelledby="hp-providers-title">
         <h2 id="hp-providers-title">The providers you already&nbsp;know</h2>
+        <p class="hp-providers-sub">80+ models across 12 providers. One key, every family.</p>
         <div class="hp-provider-grid">
             {#each providerIcons as icon (icon.slug)}
                 <span class="hp-provider-item" title={icon.title}>
@@ -196,6 +210,7 @@
                 data-sound="interaction.confirm">Get a free key</DitherButton>
             <a class="hp-btn-ghost" href="/models" data-sound="interaction.tap">Browse models</a>
         </div>
+        <p class="hp-cta-reassurance">Open source · Discord support · No lock-in · Cancel anytime</p>
     </section>
 
     <section class="hp-start hp-crop hp-reveal" aria-labelledby="hp-start-title">
@@ -434,6 +449,13 @@
         justify-items: center;
         text-align: center;
     }
+    .hp-providers-sub {
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        line-height: 1.7;
+        color: var(--muted);
+        margin: -8px 0 0;
+    }
     .hp-provider-grid {
         display: flex;
         flex-wrap: wrap;
@@ -527,6 +549,46 @@
         font-style: normal;
     }
 
+    /* ── Stats bar (Ichimoku Ryouzen) ── */
+    .hp-stats-bar {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px 0;
+        padding: clamp(14px, 2vw, 20px) clamp(16px, 3vw, 32px);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        background: oklch(1 0 0 / 0.02);
+    }
+    .hp-stat {
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        color: var(--dim);
+        white-space: nowrap;
+    }
+    .hp-stat strong {
+        color: var(--text);
+        font-weight: 600;
+    }
+    .hp-stat-sep {
+        width: 1px;
+        height: 14px;
+        background: var(--border);
+        margin: 0 clamp(10px, 1.5vw, 20px);
+        align-self: center;
+    }
+    @media (max-width: 48em) {
+        .hp-stats-bar {
+            gap: 8px 0;
+        }
+        .hp-stat-sep {
+            display: none;
+        }
+        .hp-stats-bar {
+            justify-content: space-around;
+        }
+    }
+
     /* ── Step numbers ── */
     .hp-step-num {
         position: absolute;
@@ -566,6 +628,7 @@
     .hp-cta,
     .hp-start {
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: 24px;
@@ -584,6 +647,14 @@
         font-size: 0.74rem;
         line-height: 1.7;
         color: var(--muted);
+    }
+    .hp-cta-reassurance {
+        width: 100%;
+        margin-top: 16px;
+        font-family: var(--font-mono);
+        font-size: 0.66rem;
+        color: var(--dim);
+        text-align: center;
     }
     .hp-cta .hp-cta-row {
         margin-top: 0;
@@ -620,6 +691,9 @@
         .hp-start {
             flex-direction: column;
             align-items: flex-start;
+        }
+        .hp-cta-reassurance {
+            text-align: left;
         }
     }
     @media (max-width: 34em) {

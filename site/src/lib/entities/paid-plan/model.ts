@@ -83,6 +83,11 @@ export const PLAN_COPY: Record<string, { tag: string; bestFor: string; accent: s
     },
 };
 
+export const PLAN_UNAVAILABLE_NOTICE: Record<string, string> = {
+    roleplay: "This plan is unavailable temporarily.",
+};
+
+
 export const PLAN_PRICE_FALLBACKS: Record<string, string> = {
     coding: "$8",
     roleplay: "$5",

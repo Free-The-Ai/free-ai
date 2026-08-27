@@ -9,6 +9,7 @@ export type {
 } from "./model";
 export {
     PLAN_COPY,
+    PLAN_UNAVAILABLE_NOTICE,
     PLAN_PRICE_FALLBACKS,
     PLAN_ORDER,
     LIMIT_ORDER,

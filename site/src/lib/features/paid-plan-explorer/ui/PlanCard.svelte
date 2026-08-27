@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { PaidPlan } from "@/entities/paid-plan";
-    import { PLAN_COPY, formatNumber, formatPlanPrice, limitEntries, planPeriod, LIMIT_LABELS } from "@/entities/paid-plan";
+    import { PLAN_COPY, PLAN_UNAVAILABLE_NOTICE, formatNumber, formatPlanPrice, limitEntries, planPeriod, LIMIT_LABELS } from "@/entities/paid-plan";
     import { DitherButton } from "@/shared/ui";
 
     let { plan, active, period, selectable = true, onselect }: { plan: PaidPlan; active: boolean; period?: string; selectable?: boolean; onselect?: () => void } = $props();
@@ -14,10 +14,13 @@
     );
     const resolvedPeriod = $derived(planPeriod(plan, period));
     const limits = $derived(limitEntries(plan).slice(0, 3));
+    const unavailable = $derived(PLAN_UNAVAILABLE_NOTICE[plan.id]);
+
 </script>
 
-<article class={["paid-plan-option", { "is-active": active }]}>
+<article class={["paid-plan-option", { "is-active": active, "is-unavailable": !!unavailable }]}>
     {#if active}<span class="paid-plan-badge">Recommended</span>{/if}
+    {#if unavailable}<span class="paid-plan-badge paid-plan-unavailable-badge" title={unavailable}>Unavailable temporarily</span>{/if}
     <div class="paid-plan-option-top">
         <span class="pricing-route-pill">{copy.tag}</span>
         <span class="paid-plan-option-price">
@@ -49,13 +52,14 @@
     {#if selectable}
         <DitherButton
             class="paid-plan-select-dither"
-            color={active ? "green" : "blue"}
+            color={unavailable ? "grey" : active ? "green" : "blue"}
             variant={active ? "solid" : "gradient"}
-            bloom="low"
+            bloom={unavailable ? "off" : "low"}
+            disabled={!!unavailable}
             data-sound="interaction.tap"
             onclick={() => onselect?.()}
         >
-            {active ? "Selected" : `Compare ${plan.display_name}`}
+            {unavailable ? "Unavailable" : active ? "Selected" : `Compare ${plan.display_name}`}
         </DitherButton>
     {/if}
 </article>

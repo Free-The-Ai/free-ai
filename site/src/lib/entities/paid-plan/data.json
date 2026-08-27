@@ -33,7 +33,7 @@
                       "billing_period":  "month",
                       "concurrency_limit":  2,
                       "description":  "For roleplay and chat clients that need a smaller curated model set.",
-                      "display_name":  "Roleplay",
+                      "display_name":  "Curated chat",
                       "family":  "roleplay",
                       "highlights":  [
                                          "Uses a roleplay-focused model allowlist.",

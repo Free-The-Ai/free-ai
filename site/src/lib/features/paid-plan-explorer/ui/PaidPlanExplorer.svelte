@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from "svelte";
     import type { CatalogState, PaidPlanSnapshot } from "@/entities/paid-plan";
-    import { PLAN_ORDER, fetchLiveCatalog, formatNumber, formatUnitCost, snapshotState } from "@/entities/paid-plan";
+    import { PLAN_ORDER, PLAN_UNAVAILABLE_NOTICE, fetchLiveCatalog, formatNumber, formatUnitCost, snapshotState } from "@/entities/paid-plan";
     import PlanCard from "./PlanCard.svelte";
     import PaidModelTable from "./PaidModelTable.svelte";
     import { CtaButton, DitherGradient } from "@/shared/ui";
@@ -95,7 +95,11 @@
                     concurrent
                 </span>
             </div>
-            <CtaButton href={discordUrl} target="_blank" rel="noreferrer">Get a paid key</CtaButton>
+            {#if selected && PLAN_UNAVAILABLE_NOTICE[selected.id]}
+                <div class="paid-plan-unavailable-note">{PLAN_UNAVAILABLE_NOTICE[selected.id]}</div>
+            {:else}
+                <CtaButton href={discordUrl} target="_blank" rel="noreferrer">Get a paid key</CtaButton>
+            {/if}
         </div>
 
         <PaidModelTable groups={catalog.groups} activePlan={selectedPlan} />
@@ -230,6 +234,27 @@
     letter-spacing: 0.04em;
     text-transform: uppercase;
     text-shadow: var(--accent-text-glow);
+}
+
+:global(.paid-plan-badge.paid-plan-unavailable-badge) {
+    border-color: var(--danger, #d93025);
+    background: transparent;
+    color: var(--danger, #d93025);
+    text-shadow: none;
+}
+
+:global(.paid-plan-option.is-unavailable) {
+    opacity: 0.72;
+}
+
+:global(.paid-plan-unavailable-note) {
+    padding: 10px 14px;
+    border: 1px dashed var(--danger, #d93025);
+    border-radius: var(--radius-sm);
+    color: var(--danger, #d93025);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    max-width: 320px;
 }
 
 :global(.paid-plan-option-top),

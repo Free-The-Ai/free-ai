@@ -19,7 +19,7 @@
 </script>
 
 <article class={["paid-plan-option", { "is-active": active, "is-unavailable": !!unavailable }]}>
-    {#if active}<span class="paid-plan-badge">Recommended</span>{/if}
+    {#if active && !unavailable}<span class="paid-plan-badge">Recommended</span>{/if}
     {#if unavailable}<span class="paid-plan-badge paid-plan-unavailable-badge" title={unavailable}>Unavailable temporarily</span>{/if}
     <div class="paid-plan-option-top">
         <span class="pricing-route-pill">{copy.tag}</span>

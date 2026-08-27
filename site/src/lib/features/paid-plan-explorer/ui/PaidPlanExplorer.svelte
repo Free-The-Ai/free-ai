@@ -237,10 +237,13 @@
 }
 
 :global(.paid-plan-badge.paid-plan-unavailable-badge) {
+    right: auto;
+    left: 14px;
     border-color: var(--danger, #d93025);
     background: transparent;
     color: var(--danger, #d93025);
     text-shadow: none;
+    white-space: nowrap;
 }
 
 :global(.paid-plan-option.is-unavailable) {

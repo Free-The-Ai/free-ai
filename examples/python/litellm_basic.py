@@ -27,10 +27,10 @@ def main() -> None:
         raise RuntimeError("Set FREETHEAI_API_KEY before running this example.")
 
     response = completion(
-        model="openai/glm/glm-5.1",
+        model="openai/fta/zai/glm-5.3",
         messages=[{"role": "user", "content": "Reply with exactly: OK"}],
         api_key=key,
-        api_base="https://api.freetheai.xyz/v1",
+        api_base="https://api.freetheai.org/v1",
         max_tokens=64,
     )
     print(response["choices"][0]["message"]["content"])

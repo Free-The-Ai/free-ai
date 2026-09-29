@@ -14,10 +14,10 @@ if (!apiKey) {
 }
 
 const llm = new ChatOpenAI({
-    model: "glm/glm-5.1",
+    model: "fta/zai/glm-5.3",
     apiKey,
     configuration: {
-        baseURL: "https://api.freetheai.xyz/v1",
+        baseURL: "https://api.freetheai.org/v1",
     },
     maxTokens: 128,
 });

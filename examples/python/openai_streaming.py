@@ -23,7 +23,7 @@ def get_client() -> OpenAI:
     key = os.environ.get("FREETHEAI_API_KEY")
     if not key:
         raise RuntimeError("Set FREETHEAI_API_KEY before running this example.")
-    return OpenAI(api_key=key, base_url="https://api.freetheai.xyz/v1")
+    return OpenAI(api_key=key, base_url="https://api.freetheai.org/v1")
 
 
 def main() -> None:
@@ -34,7 +34,7 @@ def main() -> None:
     """
     client = get_client()
     with client.chat.completions.stream(
-        model="bbl/gpt-5.5-mini",
+        model="fta/bbl/gpt-5.4-mini",
         messages=[
             {"role": "user", "content": "Stream a haiku about pair programming."},
         ],

@@ -14,11 +14,11 @@ if (!apiKey) {
 
 const client = new OpenAI({
     apiKey,
-    baseURL: "https://api.freetheai.xyz/v1",
+    baseURL: "https://api.freetheai.org/v1",
 });
 
 const response = await client.chat.completions.create({
-    model: "glm/glm-5.1",
+    model: "fta/zai/glm-5.3",
     messages: [
         { role: "system", content: "You are concise." },
         { role: "user", content: "Reply with exactly: OK" },

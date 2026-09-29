@@ -1,0 +1,193 @@
+---
+import Layout from '../layouts/Layout.astro';
+
+const org = 'https://freetheai.org';
+const discord = 'https://discord.gg/secrets';
+
+const steps = [
+  {
+    title: 'Create an account',
+    body: 'Sign up at freetheai.org with a Gmail, Outlook, Yahoo, or iCloud address and pass the quick security check. Then press Send link and confirm your email from the message we send.',
+    href: `${org}/signup`,
+    label: 'Sign up',
+  },
+  {
+    title: 'Make an API key',
+    body: 'Open API keys in your dashboard and create a key. You can limit a key to certain models or providers if you like.',
+    href: `${org}/dashboard/api-keys`,
+    label: 'API keys',
+  },
+  {
+    title: 'Check in once a day',
+    body: 'Free models unlock after a short daily check-in (a small security game). It lasts until 00:00 UTC.',
+    href: `${org}/checkin`,
+    label: 'Check in',
+  },
+  {
+    title: 'Point your app at the new API',
+    body: 'Use the base URL below with your new key. Anything that speaks the OpenAI API works: SillyTavern, JanitorAI, chub.ai, RisuAI, Open WebUI, Cline, and more.',
+    href: `${org}/docs`,
+    label: 'Docs',
+  },
+];
+
+const links = [
+  { label: 'Website', href: org, note: 'freetheai.org' },
+  { label: 'Docs', href: `${org}/docs`, note: 'Endpoints, errors, examples' },
+  { label: 'Models', href: `${org}/models`, note: 'Every model and its limits' },
+  { label: 'Check-in', href: `${org}/checkin`, note: 'Unlock free models today' },
+  { label: 'Status', href: `${org}/status`, note: 'Live uptime and provider health' },
+  { label: 'Stats', href: `${org}/stats`, note: 'Tokens and requests served' },
+  { label: 'Plans', href: `${org}/plans`, note: 'Paid plans, coming soon' },
+  { label: 'Donate a key', href: `${org}/dashboard/donate-keys`, note: 'Raise your daily limit' },
+  { label: 'Discord', href: discord, note: 'Help, news, and the community' },
+  { label: 'Support the project', href: 'https://buymeacoffee.com/vibheksoni', note: 'Buy Me a Coffee' },
+  { label: 'GitHub', href: 'https://github.com/Free-The-Ai/free-ai', note: 'This page and the docs' },
+];
+
+const curl = `curl https://api.freetheai.org/v1/chat/completions \\
+  -H "Authorization: Bearer YOUR_API_KEY" \\
+  -H "Content-Type: application/json" \\
+  -d '{
+    "model": "fta/zai/glm-5.3",
+    "messages": [{"role": "user", "content": "Hello!"}]
+  }'`;
+
+const python = `from openai import OpenAI
+
+client = OpenAI(
+    base_url="https://api.freetheai.org/v1",
+    api_key="YOUR_API_KEY",
+)
+reply = client.chat.completions.create(
+    model="fta/zai/glm-5.3",
+    messages=[{"role": "user", "content": "Hello!"}],
+)
+print(reply.choices[0].message.content)`;
+---
+
+<Layout
+  title="FreeTheAI has moved to freetheai.org"
+  description="FreeTheAI now runs at freetheai.org: a free, OpenAI-compatible AI API with 50+ models. Here is how the new setup works, how to get a key, and every new link."
+>
+  <header class="top">
+    <a class="brand" href={org}>
+      <img src="/logo.png" alt="FreeTheAI" width="146" height="24" />
+    </a>
+    <nav aria-label="Main">
+      <a href={`${org}/docs`}>Docs</a>
+      <a href={`${org}/models`}>Models</a>
+      <a href={discord}>Discord</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p class="eyebrow">We moved</p>
+      <h1>FreeTheAI now lives at <a href={org}>freetheai.org</a></h1>
+      <p class="lead">
+        Same free, OpenAI-compatible API, rebuilt from scratch: one account, a proper dashboard, 50+ models, and a
+        daily free allowance you can raise.
+      </p>
+      <div class="actions">
+        <a class="button primary" href={`${org}/signup`}>Create a free account</a>
+        <a class="button" href={`${org}/docs`}>Read the docs</a>
+        <a class="button" href={discord}>Join the Discord</a>
+      </div>
+      <div class="notice" role="note">
+        <strong>The old API is retired.</strong>
+        <span>
+          <code>api.freetheai.xyz</code>, old API keys, and the Discord <code>/signup</code> command no longer work.
+          Make an account at freetheai.org and use the new base URL below.
+        </span>
+      </div>
+    </section>
+
+    <section aria-labelledby="how">
+      <h2 id="how">How it works now</h2>
+      <ol class="steps">
+        {steps.map((step, index) => (
+          <li>
+            <span class="step-number" aria-hidden="true">{index + 1}</span>
+            <h3>{step.title}</h3>
+            <p>{step.body}</p>
+            <a href={step.href}>{step.label} →</a>
+          </li>
+        ))}
+      </ol>
+    </section>
+
+    <section aria-labelledby="free">
+      <h2 id="free">Your free daily requests</h2>
+      <div class="cards">
+        <div class="card">
+          <p class="big">50</p>
+          <p class="card-title">free requests every day</p>
+          <p>On every FreeTheAI-hosted model. The count resets at 00:00 UTC, and requests that fail don't count.</p>
+        </div>
+        <div class="card">
+          <p class="big">+50</p>
+          <p class="card-title">for linking Discord</p>
+          <p>
+            In your dashboard, open Settings and press Link Discord. Linking also adds you to the FreeTheAI Discord
+            server, where help and news live.
+          </p>
+        </div>
+        <div class="card">
+          <p class="big">up to +150</p>
+          <p class="card-title">for donating an API key</p>
+          <p>
+            Donate a spare key from a supported provider on the Donate keys page. Most keys add 50 requests a day, up
+            to 150 extra in total.
+          </p>
+        </div>
+      </div>
+      <p class="muted">Paid plans and the model marketplace are coming soon. Free models stay free.</p>
+    </section>
+
+    <section aria-labelledby="start">
+      <h2 id="start">Quick start</h2>
+      <dl class="facts">
+        <div><dt>Base URL</dt><dd><code>https://api.freetheai.org/v1</code></dd></div>
+        <div><dt>Auth</dt><dd><code>Authorization: Bearer YOUR_API_KEY</code></dd></div>
+        <div><dt>Model IDs</dt><dd><code>fta/&lt;tag&gt;/&lt;model&gt;</code>, for example <code>fta/zai/glm-5.3</code></dd></div>
+        <div><dt>Endpoints</dt><dd>Chat Completions (streaming and tool calling) and <code>GET /v1/models</code></dd></div>
+      </dl>
+      <div class="code-grid">
+        <figure>
+          <figcaption>curl</figcaption>
+          <pre><code>{curl}</code></pre>
+        </figure>
+        <figure>
+          <figcaption>Python (OpenAI SDK)</figcaption>
+          <pre><code>{python}</code></pre>
+        </figure>
+      </div>
+      <p class="muted">
+        Call the API straight from your app or device. Requests relayed through a Cloudflare Worker are refused. The
+        full model list with context sizes is on the <a href={`${org}/models`}>models page</a>.
+      </p>
+    </section>
+
+    <section aria-labelledby="links">
+      <h2 id="links">All the new links</h2>
+      <ul class="links">
+        {links.map((link) => (
+          <li>
+            <a href={link.href}>
+              <span class="link-label">{link.label}</span>
+              <span class="link-note">{link.note}</span>
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Built by <a href="https://vibheksoni.com" rel="author">Vibhek Soni</a>. Prompts and replies are not stored. See
+      the{' '}<a href={`${org}/terms`}>Terms</a> and <a href={`${org}/privacy`}>Privacy Policy</a>.
+    </p>
+  </footer>
+</Layout>

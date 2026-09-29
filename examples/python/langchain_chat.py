@@ -27,9 +27,9 @@ def main() -> None:
         raise RuntimeError("Set FREETHEAI_API_KEY before running this example.")
 
     llm = ChatOpenAI(
-        model="glm/glm-5.1",
+        model="fta/zai/glm-5.3",
         api_key=key,
-        base_url="https://api.freetheai.xyz/v1",
+        base_url="https://api.freetheai.org/v1",
         max_tokens=128,
     )
     response = llm.invoke([

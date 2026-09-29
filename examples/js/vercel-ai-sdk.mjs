@@ -16,11 +16,11 @@ if (!apiKey) {
 const freetheai = createOpenAICompatible({
     name: "freetheai",
     apiKey,
-    baseURL: "https://api.freetheai.xyz/v1",
+    baseURL: "https://api.freetheai.org/v1",
 });
 
 const { text } = await generateText({
-    model: freetheai.chatModel("glm/glm-5.1"),
+    model: freetheai.chatModel("fta/zai/glm-5.3"),
     prompt: "Reply with exactly: OK",
     maxOutputTokens: 64,
 });

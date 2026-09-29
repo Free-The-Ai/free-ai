@@ -1,22 +1,20 @@
-# v2026.05.08 - Catalog and docs refresh
+# v2026.09.29 - FreeTheAI moved to freetheai.org
 
 ## What changed
 
-- Removed stale direct `glm/*` provider examples from README and website docs.
-- Updated chat examples to use current live catalog aliases.
-- Removed stale `glm/*` entries from the static model catalog fallback.
-- Added a growth playbook for GitHub releases, SEO, repo topics, and launch distribution.
+- FreeTheAI now runs at https://freetheai.org with a new API at `https://api.freetheai.org/v1`.
+- Accounts are made on the website (email plus a security check) instead of the Discord `/signup` command, and the daily check-in happens at https://freetheai.org/checkin.
+- freetheai.xyz is now a small page that explains the move and forwards old links.
+- README, SKILL.md, and examples use the new base URL and `fta/<tag>/<model>` model IDs.
 
 ## User impact
 
-- Copy-paste examples now point at active model aliases.
-- The model page fallback no longer shows the retired direct `glm/*` provider.
-- Contributors have a repeatable release and SEO checklist for future updates.
+- Old `api.freetheai.xyz` keys stop working. Create a free account at https://freetheai.org/signup and make a new key.
+- Free tier: 50 requests a day, +50 for linking Discord, up to +150 for donating API keys.
 
 ## Links
 
-- Website: https://freetheai.xyz
-- Docs: https://freetheai.xyz/docs
-- Model catalog: https://freetheai.xyz/models
+- Website: https://freetheai.org
+- Docs: https://freetheai.org/docs
+- Models: https://freetheai.org/models
 - Discord: https://discord.gg/secrets
-

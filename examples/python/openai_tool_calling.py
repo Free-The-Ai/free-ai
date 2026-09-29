@@ -58,7 +58,7 @@ def get_client() -> OpenAI:
     key = os.environ.get("FREETHEAI_API_KEY")
     if not key:
         raise RuntimeError("Set FREETHEAI_API_KEY before running this example.")
-    return OpenAI(api_key=key, base_url="https://api.freetheai.xyz/v1")
+    return OpenAI(api_key=key, base_url="https://api.freetheai.org/v1")
 
 
 def main() -> None:
@@ -73,7 +73,7 @@ def main() -> None:
     ]
 
     first = client.chat.completions.create(
-        model="glm/glm-5.1",
+        model="fta/zai/glm-5.3",
         messages=messages,
         tools=TOOLS,
         tool_choice="auto",
@@ -98,7 +98,7 @@ def main() -> None:
             )
 
     final = client.chat.completions.create(
-        model="glm/glm-5.1",
+        model="fta/zai/glm-5.3",
         messages=messages,
         max_tokens=256,
     )

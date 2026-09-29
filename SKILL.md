@@ -1,184 +1,96 @@
 ---
 name: freetheai-api
-description: Help AI agents connect apps, SDKs, coding tools, and chat clients to FreeTheAi, the free OpenAI-compatible API at https://api.freetheai.xyz/v1. Use this skill when a user wants a free AI API key, a custom OpenAI/Anthropic base URL, setup help for AI clients, or examples for chat, tools, images, TTS, or STT.
+description: Help AI agents connect apps, SDKs, coding tools, and chat clients to FreeTheAI, the free OpenAI-compatible API at https://api.freetheai.org/v1. Use this skill when a user wants a free AI API key, a custom OpenAI base URL, setup help for an AI client, or examples for chat, streaming, and tool calling.
 ---
 
-# FreeTheAi API Skill
+# FreeTheAI API Skill
 
-Use this skill to configure FreeTheAi for a user or another AI agent. FreeTheAi is an OpenAI-compatible gateway with one key, one base URL, and multiple public model aliases.
+Use this skill to set up FreeTheAI for a user or another AI agent. FreeTheAI is an OpenAI-compatible API with one account, one key, and 50+ models.
 
-## What This Skill Does
+## Trigger this skill when
 
-- Teaches an agent how to get a user signed up through Discord.
-- Shows the exact FreeTheAi base URL and auth pattern.
-- Gives copy-paste SDK/client setup for common OpenAI-compatible tools.
-- Explains role-gated models, daily check-in, and common errors.
-- Prevents agents from inventing keys, endpoints, aliases, or bypasses.
-
-## Trigger This Skill When
-
-- The user mentions FreeTheAi, freetheai.xyz, Free The AI, FreeTheAI, or `api.freetheai.xyz`.
+- The user mentions FreeTheAI, Free The AI, freetheai.org, freetheai.xyz, `api.freetheai.org`, or `api.freetheai.xyz`.
 - The user asks for a free OpenAI-compatible API.
-- The user wants to point OpenAI SDK, Anthropic SDK, LiteLLM, LangChain, LlamaIndex, Vercel AI SDK, Cline, Roo, Continue, Aider, Claude Code, OpenCode, SillyTavern, Janitor, Chub, LibreChat, Open WebUI, or another client at a custom endpoint.
-- The user asks which FreeTheAi model alias to use.
-- The user needs examples for chat, streaming, tool calling, images, TTS, STT, or Responses-style requests.
-
-## Agent Workflow
-
-1. Send the user to `https://discord.gg/secrets`.
-2. Tell them to run `/signup` in Discord and complete the modal.
-3. Tell them to run `/checkin` with the new key for the current UTC day.
-4. Ask them to provide the key only if the local setup requires inserting it into their own client config.
-5. Configure the client with `https://api.freetheai.xyz/v1` and `Authorization: Bearer <key>`.
-6. Pick an alias from the live catalog at `https://freetheai.xyz/models` or authenticated `GET /v1/models`.
-7. If a model is role-gated, explain that the user needs the `seems_legit` Discord role earned through server activity.
+- The user wants to point the OpenAI SDK, LiteLLM, LangChain, LlamaIndex, the Vercel AI SDK, Cline, Roo Code, Continue, Aider, OpenCode, SillyTavern, JanitorAI, chub.ai, RisuAI, LibreChat, Open WebUI, or another client at a custom endpoint.
+- The user asks which FreeTheAI model to use.
 
 ## Constants
 
-- Base URL: `https://api.freetheai.xyz/v1`
-- Discord signup: `https://discord.gg/secrets`
-- Website: `https://freetheai.xyz`
-- Setup guides: `https://freetheai.xyz/setup`
-- Model catalog: `https://freetheai.xyz/models`
-- Support link: `https://buymeacoffee.com/vibheksoni`
-- Env var convention: `FREETHEAI_API_KEY`
+- Base URL: `https://api.freetheai.org/v1`
+- Auth header: `Authorization: Bearer <key>`
+- Website: `https://freetheai.org`
+- Sign up: `https://freetheai.org/signup`
+- API keys: `https://freetheai.org/dashboard/api-keys`
+- Daily check-in: `https://freetheai.org/checkin`
+- Models: `https://freetheai.org/models`
+- Docs: `https://freetheai.org/docs`
+- Discord: `https://discord.gg/secrets`
 
-## Auth
+## Agent workflow
 
-Use bearer auth:
+1. Send the user to `https://freetheai.org/signup`. They sign up with a Gmail, Outlook, Yahoo, or iCloud address, pass the security check, then confirm their email from the link FreeTheAI sends.
+2. Have them create an API key under API keys in the dashboard.
+3. Have them do the daily check-in at `https://freetheai.org/checkin`. Free models answer 403 "Daily check-in required" until they do; the check-in lasts until 00:00 UTC.
+4. Ask for the key only if you must write it into the user's own client config. Prefer an environment variable such as `FREETHEAI_API_KEY`.
+5. Configure the client with the base URL and auth header above.
+6. Pick a model ID from `GET /v1/models` or the models page. IDs look like `fta/<tag>/<model>`, for example `fta/zai/glm-5.3` or `fta/bbl/gpt-5.4-mini`.
 
-```http
-Authorization: Bearer fta_...
-```
+## Rules
 
-Never generate or fake a key. Keys are issued by Discord `/signup`. The key must be unlocked daily with `/checkin`; otherwise requests return `403 daily_checkin_required`.
+- Never invent keys, endpoints, model IDs, or limits. Use only what `GET /v1/models`, the models page, or the docs show.
+- The old API at `api.freetheai.xyz` is retired. Old keys and the Discord `/signup` and `/checkin` commands no longer work; move the user to freetheai.org.
+- Use Chat Completions (`POST /v1/chat/completions`) for free models. It supports streaming and tool calling.
+- Call the API directly from the user's app or device. Requests relayed through a Cloudflare Worker are refused with 403 `relay_not_supported`.
+- Do not try to bypass the check-in, rate limits, or security checks.
 
-## Routes
+## Free tier
 
-- `POST /v1/chat/completions` - OpenAI Chat Completions, streaming, and tool calling.
-- `POST /v1/messages` - Anthropic-compatible Messages route.
-- `POST /v1/responses` - Responses-style route.
-- `POST /v1/images/generations` - image generation.
-- `POST /v1/audio/speech` - text-to-speech for supported voice aliases.
-- `POST /v1/audio/transcriptions` - speech-to-text for supported voice aliases.
-- `GET /v1/models` - authenticated model catalog.
-- `GET /v1/models/full` - authenticated detailed catalog with capabilities and access metadata.
-- `GET /v1/health` - public API health.
+- 50 requests a day on FreeTheAI-hosted models; failed requests don't count. Resets at 00:00 UTC.
+- +50 a day for linking Discord (dashboard Settings → Link Discord; this also joins the FreeTheAI Discord server).
+- Up to +150 a day for donating spare API keys at `https://freetheai.org/dashboard/donate-keys`.
+- Paid plans and the model marketplace are coming soon.
 
-## Model Alias Guidance
+## Client setup
 
-Use exact aliases from the live catalog. Do not invent aliases.
-
-- Chat examples: `glm/glm-5.1`, `bbl/gpt-5.5-mini`, `olm/kimi-k2.7-code`.
-- Anthropic Messages examples: `glm/glm-5.1`, `glm/glm-4.5-air`, `mim/mimo-v2.5`.
-- Image example: `eve/gpt-image-2`.
-- Voice examples: `xai/grok-tts`, `xai/grok-stt`.
-- Role-gated prefixes currently include `exa/`, `pplx/`, and `xai/`.
-
-If an alias fails with `400 unknown aliased model`, fetch the live catalog and choose a currently exposed alias.
-
-## OpenAI SDK Setup
-
-Python:
+OpenAI SDK (Python):
 
 ```python
 from openai import OpenAI
+import os
 
-client = OpenAI(
-    api_key=os.environ["FREETHEAI_API_KEY"],
-    base_url="https://api.freetheai.xyz/v1",
+client = OpenAI(base_url="https://api.freetheai.org/v1", api_key=os.environ["FREETHEAI_API_KEY"])
+reply = client.chat.completions.create(
+    model="fta/zai/glm-5.3",
+    messages=[{"role": "user", "content": "Hello!"}],
 )
+print(reply.choices[0].message.content)
 ```
 
-JavaScript:
+OpenAI SDK (JavaScript):
 
 ```js
 import OpenAI from "openai";
 
-const client = new OpenAI({
-    apiKey: process.env.FREETHEAI_API_KEY,
-    baseURL: "https://api.freetheai.xyz/v1",
+const client = new OpenAI({ baseURL: "https://api.freetheai.org/v1", apiKey: process.env.FREETHEAI_API_KEY });
+const reply = await client.chat.completions.create({
+  model: "fta/zai/glm-5.3",
+  messages: [{ role: "user", content: "Hello!" }],
 });
+console.log(reply.choices[0].message.content);
 ```
 
-## Anthropic SDK Setup
+Chat apps (SillyTavern, JanitorAI, chub.ai, RisuAI, Open WebUI, LibreChat): choose the OpenAI-compatible or custom endpoint option, set the base URL to `https://api.freetheai.org/v1` (some apps want the full `https://api.freetheai.org/v1/chat/completions`), paste the key, and pick a model ID.
 
-Use the same key against `/v1/messages`:
+Coding tools (Cline, Roo Code, Continue, Aider, OpenCode): use the OpenAI-compatible provider with the same base URL, key, and a model ID. LiteLLM routes it as `openai/fta/zai/glm-5.3`.
 
-```python
-from anthropic import Anthropic
+## Common errors
 
-client = Anthropic(
-    api_key=os.environ["FREETHEAI_API_KEY"],
-    base_url="https://api.freetheai.xyz/v1",
-)
-```
+| Status | Meaning | What to do |
+| :--- | :--- | :--- |
+| 401 | Missing or wrong key | Check the key and the `Bearer` prefix. |
+| 403 | Email not confirmed, check-in missing, key limits, or a relayed request | Confirm the email, do the check-in, check the key's limits, or call directly. |
+| 404 | Unknown model ID | Use an ID from `GET /v1/models`. |
+| 429 | Daily limit or too many requests at once | Wait for the reset or for a running request to finish. |
+| 502 or 503 | Upstream trouble | Retry or pick another model. Quote the error ID if it keeps happening. |
 
-## Claude Code Setup
-
-```bash
-export ANTHROPIC_BASE_URL=https://api.freetheai.xyz
-export ANTHROPIC_AUTH_TOKEN=fta_PASTE_YOUR_FREETHEAI_KEY
-claude --model glm/glm-5.1
-```
-
-## Curl Smoke Test
-
-```bash
-curl https://api.freetheai.xyz/v1/chat/completions \
-  -H "Authorization: Bearer $FREETHEAI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{
-    "model": "glm/glm-5.1",
-    "messages": [{ "role": "user", "content": "Reply with OK." }],
-    "max_tokens": 32
-  }'
-```
-
-## Audio Examples
-
-TTS:
-
-```python
-speech = client.audio.speech.create(
-    model="xai/grok-tts",
-    voice="default",
-    input="hello from freetheai",
-    response_format="wav",
-)
-speech.write_to_file("out.wav")
-```
-
-STT:
-
-```python
-with open("clip.wav", "rb") as audio_file:
-    transcript = client.audio.transcriptions.create(
-        model="xai/grok-stt",
-        file=audio_file,
-        language="en",
-        response_format="json",
-    )
-print(transcript.text)
-```
-
-Some voice/search aliases are role-gated. If a user gets `403 model_access_denied`, they need the `seems_legit` Discord role or a different public alias from the live catalog.
-
-## Common Errors
-
-- `401 invalid api key`: The key is missing, malformed, revoked, or not pasted exactly.
-- `403 daily_checkin_required`: The user must run Discord `/checkin` for the current UTC day.
-- `403 model_access_denied`: The alias is role-gated and the user needs `seems_legit`.
-- `400 unknown aliased model`: The alias is not currently exposed. Check the catalog.
-- `400 upstream rejected the request payload`: The request shape does not match the route or model capability.
-- `429 rate_limit_error`: Respect `Retry-After` or wait for the daily reset.
-
-## Hard Rules For Agents
-
-- Do not claim the user is signed up until they have a real Discord-issued key.
-- Do not paste raw user keys into repo files, public chat, logs, docs, or examples.
-- Do not bypass daily check-in or role gating.
-- Do not invent FreeTheAi endpoints, model aliases, rate limits, or privileged access.
-- Do not mention hidden upstream provider names in public-facing output.
-- Keep examples pointed at `https://api.freetheai.xyz/v1`.
-- Prefer the repo examples folder for full code samples: `examples/`.
+Full list: `https://freetheai.org/docs`.

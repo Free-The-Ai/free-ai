@@ -14,11 +14,11 @@ if (!apiKey) {
 
 const client = new OpenAI({
     apiKey,
-    baseURL: "https://api.freetheai.xyz/v1",
+    baseURL: "https://api.freetheai.org/v1",
 });
 
 const stream = await client.chat.completions.create({
-    model: "bbl/gpt-5.5-mini",
+    model: "fta/bbl/gpt-5.4-mini",
     messages: [{ role: "user", content: "Stream a haiku about pair programming." }],
     stream: true,
     max_tokens: 128,

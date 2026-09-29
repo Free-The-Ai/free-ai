@@ -12,11 +12,11 @@ if [[ -z "${FREETHEAI_API_KEY:-}" ]]; then
     exit 1
 fi
 
-curl -sS https://api.freetheai.xyz/v1/chat/completions \
+curl -sS https://api.freetheai.org/v1/chat/completions \
     -H "Authorization: Bearer ${FREETHEAI_API_KEY}" \
     -H "Content-Type: application/json" \
     -d '{
-        "model": "glm/glm-5.1",
+        "model": "fta/zai/glm-5.3",
         "messages": [
             { "role": "user", "content": "Reply with exactly: OK" }
         ],

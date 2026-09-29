@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+# FreeTheAI now runs at https://freetheai.org

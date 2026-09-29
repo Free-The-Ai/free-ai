@@ -1,0 +1,21 @@
+# FreeTheAI
+
+> FreeTheAI moved to https://freetheai.org. The old API at api.freetheai.xyz is retired; old keys and Discord key signup no longer work.
+
+FreeTheAI is a free, OpenAI-compatible AI API with 50+ models under one account, plus a model marketplace (coming soon).
+
+## Use it
+
+- Sign up: https://freetheai.org/signup (confirm your email with the link we send)
+- Create an API key: https://freetheai.org/dashboard/api-keys
+- Daily check-in for free models: https://freetheai.org/checkin
+- Base URL: https://api.freetheai.org/v1 (Authorization: Bearer YOUR_KEY)
+- Model IDs look like fta/<tag>/<model>, for example fta/zai/glm-5.3
+- Docs: https://freetheai.org/docs
+- Models: https://freetheai.org/models
+- Status: https://freetheai.org/status
+
+## Community
+
+- Discord: https://discord.gg/secrets
+- GitHub: https://github.com/Free-The-Ai/free-ai

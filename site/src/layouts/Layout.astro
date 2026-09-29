@@ -1,0 +1,121 @@
+---
+interface Props {
+  title: string;
+  description: string;
+}
+const { title, description } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const shareImage = 'https://freetheai.org/static/assets/og-card.png';
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <meta name="theme-color" content="#1c1c1c" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="FreeTheAI" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={shareImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={shareImage} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --bg: oklch(0.168 0 0);
+    --surface: oklch(0.213 0 0);
+    --surface-strong: oklch(0.245 0 0);
+    --text: oklch(0.931 0 0);
+    --muted: oklch(0.72 0 0);
+    --accent: oklch(0.659 0.192 40.1);
+    --accent-text: oklch(0.827 0.113 55.9);
+    --accent-muted: oklch(0.659 0.192 40.1 / 0.12);
+    --border: oklch(1 0 0 / 0.08);
+    --border-strong: oklch(1 0 0 / 0.16);
+    --radius: 12px;
+    color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 16px/1.6 Inter, system-ui, -apple-system, "Segoe UI", sans-serif;
+  }
+  a { color: var(--accent-text); text-underline-offset: 3px; }
+  a:hover { color: var(--text); }
+  a:focus-visible, .button:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 6px; }
+  code, pre { font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace; }
+  code { font-size: 0.92em; background: var(--surface-strong); padding: 0.1em 0.35em; border-radius: 6px; overflow-wrap: anywhere; }
+  pre code { background: none; padding: 0; }
+  .top, main, footer { width: min(1080px, 100% - 32px); margin-inline: auto; }
+  .top { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 20px 0; }
+  .brand { display: flex; align-items: center; gap: 10px; color: var(--text); font-weight: 700; font-size: 18px; text-decoration: none; }
+  .top nav { display: flex; gap: 18px; }
+  .top nav a { color: var(--muted); text-decoration: none; font-weight: 500; }
+  .top nav a:hover { color: var(--text); }
+  section { padding: 40px 0; border-top: 1px solid var(--border); }
+  .hero { border-top: 0; padding-top: 48px; }
+  .eyebrow { color: var(--accent-text); font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; font-size: 13px; margin: 0 0 12px; }
+  h1 { font-size: clamp(32px, 6vw, 56px); line-height: 1.08; letter-spacing: -0.02em; margin: 0 0 16px; max-width: 18ch; }
+  h1 a { color: var(--accent-text); }
+  h2 { font-size: clamp(22px, 3vw, 28px); letter-spacing: -0.01em; margin: 0 0 20px; }
+  h3 { font-size: 17px; margin: 8px 0 6px; }
+  .lead { font-size: 18px; color: var(--muted); max-width: 62ch; margin: 0 0 24px; }
+  .muted { color: var(--muted); }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; }
+  .button { display: inline-flex; align-items: center; min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid var(--border-strong); color: var(--text); text-decoration: none; font-weight: 600; background: var(--surface); }
+  .button:hover { border-color: var(--accent); color: var(--text); }
+  .button.primary { background: var(--accent); border-color: var(--accent); color: oklch(0.15 0 0); }
+  .button.primary:hover { filter: brightness(1.08); }
+  .notice { display: grid; gap: 4px; padding: 14px 16px; border: 1px solid var(--accent-muted); background: var(--accent-muted); border-radius: var(--radius); max-width: 760px; }
+  .steps { list-style: none; padding: 0; margin: 0; display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); }
+  .steps li, .card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; }
+  .steps p, .card p { margin: 0 0 10px; color: var(--muted); }
+  .step-number { display: inline-grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: var(--accent-muted); color: var(--accent-text); font-weight: 700; font-size: 14px; }
+  .cards { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); margin-bottom: 16px; }
+  .card .big { font-size: 34px; font-weight: 700; color: var(--accent-text); margin: 0; line-height: 1.1; }
+  .card .card-title { color: var(--text); font-weight: 600; margin: 2px 0 8px; }
+  .facts { display: grid; gap: 10px; margin: 0 0 20px; }
+  .facts div { display: grid; grid-template-columns: 120px 1fr; gap: 12px; }
+  .facts dt { color: var(--muted); }
+  .facts dd { margin: 0; min-width: 0; }
+  .code-grid { display: grid; gap: 16px; grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr)); margin-bottom: 16px; }
+  figure { margin: 0; min-width: 0; }
+  figcaption { color: var(--muted); font-size: 14px; margin-bottom: 6px; }
+  pre { margin: 0; padding: 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); overflow-x: auto; font-size: 13.5px; line-height: 1.55; }
+  .links { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .links a { display: grid; gap: 2px; padding: 14px 16px; background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius); text-decoration: none; }
+  .links a:hover { border-color: var(--accent); }
+  .link-label { color: var(--text); font-weight: 600; }
+  .link-note { color: var(--muted); font-size: 14px; }
+  footer { padding: 32px 0 48px; border-top: 1px solid var(--border); color: var(--muted); font-size: 14px; }
+  @media (max-width: 560px) {
+    .top nav { gap: 12px; font-size: 15px; }
+    .facts div { grid-template-columns: 1fr; gap: 2px; }
+    section { padding: 32px 0; }
+  }
+</style>

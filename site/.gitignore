@@ -1,19 +1,5 @@
 node_modules
 dist
-.svelte-kit
-build
-src/lib/shared/config/highlighted.generated.ts
-.DS_Store
-npm-debug.log*
+.astro
 *.log
-preview.out.log
-preview.err.log
-http.out.log
-http.err.log
-
-# Lighthouse: keep REPORT.md + summary.csv, ignore bulky regenerable per-page reports
-lighthouse-reports/*.report.html
-lighthouse-reports/*.report.json
-lighthouse-reports/*.err
-lighthouse-reports/median/*.[0-9]
-lighthouse-reports/median/lh.err
+.DS_Store

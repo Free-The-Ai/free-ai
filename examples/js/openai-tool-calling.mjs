@@ -14,7 +14,7 @@ if (!apiKey) {
 
 const client = new OpenAI({
     apiKey,
-    baseURL: "https://api.freetheai.xyz/v1",
+    baseURL: "https://api.freetheai.org/v1",
 });
 
 const tools = [
@@ -42,7 +42,7 @@ function getWeather({ city, units = "metric" }) {
 const messages = [{ role: "user", content: "What is the weather in Boston in metric?" }];
 
 const first = await client.chat.completions.create({
-    model: "glm/glm-5.1",
+    model: "fta/zai/glm-5.3",
     messages,
     tools,
     tool_choice: "auto",
@@ -68,7 +68,7 @@ for (const call of choice.tool_calls) {
 }
 
 const final = await client.chat.completions.create({
-    model: "glm/glm-5.1",
+    model: "fta/zai/glm-5.3",
     messages,
     max_tokens: 256,
 });

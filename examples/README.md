@@ -1,16 +1,22 @@
-# FreeTheAi examples
+# FreeTheAI examples
 
-Drop-in code samples for the most common packages and clients. Every example
-loads the API key from the `FREETHEAI_API_KEY` environment variable, points at
-`https://api.freetheai.xyz/v1`, and uses real model aliases from the live
-catalog at [`https://freetheai.xyz/models`](https://freetheai.xyz/models).
+Drop-in code samples for common SDKs and clients. Every example reads the API
+key from the `FREETHEAI_API_KEY` environment variable and points at
+`https://api.freetheai.org/v1`.
 
-Get a key first by running `/signup` in the [FreeTheAi Discord](https://discord.gg/secrets),
-then unlock it for the day with `/checkin`.
+Get a key first:
+
+1. Create a free account at [freetheai.org/signup](https://freetheai.org/signup) and confirm your email.
+2. Create a key under [API keys](https://freetheai.org/dashboard/api-keys) in your dashboard.
+3. Do the daily [check-in](https://freetheai.org/checkin) to unlock free models until 00:00 UTC.
 
 ```bash
-export FREETHEAI_API_KEY=fta_...
+export FREETHEAI_API_KEY=your_key_here
 ```
+
+Model IDs look like `fta/<tag>/<model>`. The examples use `fta/zai/glm-5.3` and
+`fta/bbl/gpt-5.4-mini`; the full list is on the
+[models page](https://freetheai.org/models) or from `GET /v1/models`.
 
 ## Python (`examples/python`)
 
@@ -18,44 +24,27 @@ export FREETHEAI_API_KEY=fta_...
 | :--- | :--- |
 | [`openai_chat.py`](python/openai_chat.py) | One-shot chat with the OpenAI SDK |
 | [`openai_streaming.py`](python/openai_streaming.py) | Streaming completions to stdout |
-| [`openai_tool_calling.py`](python/openai_tool_calling.py) | Function/tool calling end-to-end |
-| [`openai_vision.py`](python/openai_vision.py) | Image-input vision call from a local file |
-| [`anthropic_messages.py`](python/anthropic_messages.py) | Anthropic SDK against `/v1/messages` |
-| [`litellm_basic.py`](python/litellm_basic.py) | LiteLLM with `openai/<alias>` routing |
-| [`langchain_chat.py`](python/langchain_chat.py) | LangChain `ChatOpenAI` integration |
-| [`llamaindex_chat.py`](python/llamaindex_chat.py) | LlamaIndex `OpenAILike` LLM |
-| [`audio_tts.py`](python/audio_tts.py) | Text-to-speech with `/v1/audio/speech` |
-| [`audio_stt.py`](python/audio_stt.py) | Speech-to-text with `/v1/audio/transcriptions` |
-| [`image_client.py`](image_client.py) | Standalone image generation CLI |
+| [`openai_tool_calling.py`](python/openai_tool_calling.py) | Function and tool calling end to end |
+| [`litellm_basic.py`](python/litellm_basic.py) | LiteLLM with `openai/<model id>` routing |
+| [`langchain_chat.py`](python/langchain_chat.py) | LangChain `ChatOpenAI` |
+| [`llamaindex_chat.py`](python/llamaindex_chat.py) | LlamaIndex `OpenAILike` |
 
-## JavaScript / TypeScript (`examples/js`)
+## JavaScript (`examples/js`)
 
 | File | What it shows |
 | :--- | :--- |
-| [`openai-chat.mjs`](js/openai-chat.mjs) | One-shot chat with the OpenAI Node SDK |
-| [`openai-streaming.mjs`](js/openai-streaming.mjs) | Streaming chat completions |
-| [`openai-tool-calling.mjs`](js/openai-tool-calling.mjs) | Tool-calling round trip |
-| [`anthropic-messages.mjs`](js/anthropic-messages.mjs) | Anthropic Node SDK against `/v1/messages` |
-| [`vercel-ai-sdk.mjs`](js/vercel-ai-sdk.mjs) | Vercel AI SDK with the OpenAI-compatible adapter |
-| [`langchain-chat.mjs`](js/langchain-chat.mjs) | LangChain.js `ChatOpenAI` integration |
-| [`openai-images.mjs`](js/openai-images.mjs) | Image generation, saved to disk |
-| [`audio-tts.mjs`](js/audio-tts.mjs) | Text-to-speech, saved to a `.wav` file |
-| [`audio-stt.mjs`](js/audio-stt.mjs) | Speech-to-text from a local audio file |
+| [`openai-chat.mjs`](js/openai-chat.mjs) | One-shot chat with the OpenAI SDK |
+| [`openai-streaming.mjs`](js/openai-streaming.mjs) | Streaming completions |
+| [`openai-tool-calling.mjs`](js/openai-tool-calling.mjs) | Function and tool calling |
+| [`langchain-chat.mjs`](js/langchain-chat.mjs) | LangChain.js `ChatOpenAI` |
+| [`vercel-ai-sdk.mjs`](js/vercel-ai-sdk.mjs) | Vercel AI SDK with an OpenAI-compatible provider |
 
-## Shell / curl (`examples/shell`)
+## Shell (`examples/shell`)
 
 | File | What it shows |
 | :--- | :--- |
-| [`chat-curl.sh`](shell/chat-curl.sh) | Chat completions, plain JSON response |
-| [`chat-stream-curl.sh`](shell/chat-stream-curl.sh) | Chat completions with SSE streaming |
-| [`messages-curl.sh`](shell/messages-curl.sh) | Anthropic Messages route |
-| [`responses-curl.sh`](shell/responses-curl.sh) | OpenAI Responses-style route |
-| [`images-curl.sh`](shell/images-curl.sh) | Image generation, JSON output |
-| [`audio-tts-curl.sh`](shell/audio-tts-curl.sh) | Text-to-speech, writes audio bytes |
-| [`audio-stt-curl.sh`](shell/audio-stt-curl.sh) | Speech-to-text via multipart upload |
+| [`chat-curl.sh`](shell/chat-curl.sh) | Chat completion with curl |
+| [`chat-stream-curl.sh`](shell/chat-stream-curl.sh) | Streaming chat with curl |
 
-## Notes
-
-- Some search and voice aliases are role-gated, currently `exa/`, `pplx/`, and `xai/`. Earn the `seems_legit` Discord role by being active in the server. Check `requires_seems_legit` on `/v1/models/full` to see which aliases need it.
-- For the latest setup guides for full apps (Cline, Cursor, Zed, OpenCode, SillyTavern, etc.), see [`https://freetheai.xyz/setup`](https://freetheai.xyz/setup).
-- Free tier stays free. If FreeTheAi saves you a subscription, you can [buy Vibhek a coffee](https://buymeacoffee.com/vibheksoni) to keep it running.
+Call the API directly from your app or device. Requests relayed through a
+Cloudflare Worker are refused.

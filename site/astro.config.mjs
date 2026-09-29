@@ -6,12 +6,16 @@ import { defineConfig } from 'astro/config';
 const org = 'https://freetheai.org';
 const docs = `${org}/docs`;
 
-// The old site's setup guides (one per app) all live in the new docs.
+// The old site's setup guides (one per app) moved to freetheai.org/setup
+// under the same slugs. Guides that were dropped (Roo Code is archived;
+// BoltAI and big-AGI were not carried over) go to the guide list.
+const setup = `${org}/setup`;
 const setupGuides = [
   'opencode', 'kilo-code', 'zed', 'sillytavern', 'janitor-ai', 'chub-ai', 'risuai', 'cline',
-  'roo-code', 'continue-dev', 'aider', 'claude-code', 'librechat', 'open-webui', 'lobechat',
-  'anythingllm', 'cherry-studio', 'typingmind', 'boltai', 'page-assist', 'chatbox', 'big-agi',
+  'continue-dev', 'aider', 'claude-code', 'librechat', 'open-webui', 'lobechat',
+  'anythingllm', 'cherry-studio', 'typingmind', 'page-assist', 'chatbox',
 ];
+const droppedGuides = ['roo-code', 'boltai', 'big-agi'];
 
 export default defineConfig({
   site: 'https://freetheai.xyz',
@@ -20,8 +24,9 @@ export default defineConfig({
     '/home': org,
     '/docs': docs,
     '/quickstart': docs,
-    '/setup': docs,
-    ...Object.fromEntries(setupGuides.map((slug) => [`/setup/${slug}`, docs])),
+    '/setup': setup,
+    ...Object.fromEntries(setupGuides.map((slug) => [`/setup/${slug}`, `${setup}/${slug}`])),
+    ...Object.fromEntries(droppedGuides.map((slug) => [`/setup/${slug}`, setup])),
     '/models': `${org}/models`,
     '/pricing': `${org}/plans`,
     '/status': `${org}/status`,

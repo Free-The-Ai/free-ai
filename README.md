@@ -15,7 +15,7 @@
 [![Models](https://img.shields.io/badge/models-50%2B-white?style=flat-square)](https://freetheai.org/models)
 [![Discord](https://img.shields.io/badge/Discord-join-5865F2?style=flat-square&logo=discord&logoColor=white)](https://discord.gg/secrets)
 
-[Website](https://freetheai.org) | [Docs](https://freetheai.org/docs) | [Models](https://freetheai.org/models) | [Check-in](https://freetheai.org/checkin) | [Status](https://freetheai.org/status) | [Stats](https://freetheai.org/stats) | [Discord](https://discord.gg/secrets) | [Support](https://buymeacoffee.com/vibheksoni)
+[Website](https://freetheai.org) | [Docs](https://freetheai.org/docs) | [Setup guides](https://freetheai.org/setup) | [Models](https://freetheai.org/models) | [Check-in](https://freetheai.org/checkin) | [Status](https://freetheai.org/status) | [Stats](https://freetheai.org/stats) | [Discord](https://discord.gg/secrets) | [Support](https://buymeacoffee.com/vibheksoni)
 
 </div>
 
@@ -29,7 +29,7 @@
 1. **Create an account** at [freetheai.org/signup](https://freetheai.org/signup) with a Gmail, Outlook, Yahoo, or iCloud address, pass the quick security check, then press **Send link** and confirm your email.
 2. **Make an API key** under [API keys](https://freetheai.org/dashboard/api-keys). A key can be limited to certain models or providers.
 3. **Check in once a day** at [freetheai.org/checkin](https://freetheai.org/checkin). The short security game unlocks free models until 00:00 UTC.
-4. **Point your app at the API** with the base URL below. Anything that speaks the OpenAI API works: SillyTavern, JanitorAI, chub.ai, RisuAI, Open WebUI, Cline, LibreChat, and more.
+4. **Point your app at the API** with the base URL below. Anything that speaks the OpenAI API works: SillyTavern, JanitorAI, chub.ai, RisuAI, Open WebUI, Cline, LibreChat, and more. Step-by-step guides for 24 apps are at [freetheai.org/setup](https://freetheai.org/setup).
 
 ## Free daily requests
 

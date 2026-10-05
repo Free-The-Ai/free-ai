@@ -97,7 +97,7 @@ FreeTheAI does not store prompts or replies. To run the service and stop abuse i
 
 ## Support the project
 
-FreeTheAI is built and maintained by [Vibhek Soni](https://github.com/vibheksoni). The free tier stays free. If it saves you a subscription, a small tip helps cover servers and proxies.
+FreeTheAI is built and maintained by [Vibhek Soni](https://vibheksoni.com/) ([@vibheksoni](https://github.com/vibheksoni)). The free tier stays free. If it saves you a subscription, a small tip helps cover servers and proxies.
 
 - Tip on [Buy Me a Coffee](https://buymeacoffee.com/vibheksoni)
 - Donate a spare API key on [freetheai.org](https://freetheai.org/dashboard/donate-keys) to raise your own daily limit

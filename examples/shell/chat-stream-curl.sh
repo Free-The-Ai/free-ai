@@ -16,7 +16,7 @@ curl -N -sS https://api.freetheai.org/v1/chat/completions \
     -H "Authorization: Bearer ${FREETHEAI_API_KEY}" \
     -H "Content-Type: application/json" \
     --data-raw '{
-        "model": "fta/bbl/gpt-5.4-mini",
+        "model": "glm-5.3",
         "stream": true,
         "messages": [
             { "role": "user", "content": "Stream a haiku about pair programming." }

@@ -6,16 +6,16 @@ key from the `FREETHEAI_API_KEY` environment variable and points at
 
 Get a key first:
 
-1. Create a free account at [freetheai.org/signup](https://freetheai.org/signup) and confirm your email.
+1. Create an account at [freetheai.org/signup](https://freetheai.org/signup) and confirm your email.
 2. Create a key under [API keys](https://freetheai.org/dashboard/api-keys) in your dashboard.
-3. Do the daily [check-in](https://freetheai.org/checkin) to unlock free models until 00:00 UTC.
+3. Add funds to your wallet (from $5, crypto or card) and follow a provider at [freetheai.org/providers](https://freetheai.org/providers). Requests bill the tokens they use at the listed price.
 
 ```bash
 export FREETHEAI_API_KEY=your_key_here
 ```
 
-Model IDs look like `fta/<tag>/<model>`. The examples use `fta/zai/glm-5.3` and
-`fta/bbl/gpt-5.4-mini`; the full list is on the
+A model ID is the model name; the examples use `glm-5.3`. Write
+`<provider>/<model>` to pick one provider. The full list, with prices, is on the
 [models page](https://freetheai.org/models) or from `GET /v1/models`.
 
 ## Python (`examples/python`)

@@ -73,7 +73,7 @@ def main() -> None:
     ]
 
     first = client.chat.completions.create(
-        model="fta/zai/glm-5.3",
+        model="glm-5.3",
         messages=messages,
         tools=TOOLS,
         tool_choice="auto",
@@ -98,7 +98,7 @@ def main() -> None:
             )
 
     final = client.chat.completions.create(
-        model="fta/zai/glm-5.3",
+        model="glm-5.3",
         messages=messages,
         max_tokens=256,
     )

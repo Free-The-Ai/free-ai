@@ -18,10 +18,10 @@ const steps = [
     label: 'API keys',
   },
   {
-    title: 'Check in once a day',
-    body: 'Free models unlock after a short daily check-in (a small security game). It lasts until 00:00 UTC.',
-    href: `${org}/checkin`,
-    label: 'Check in',
+    title: 'Add funds and follow a provider',
+    body: 'Add money to your wallet (from $5, crypto or card), then follow a provider on its page. A key uses the providers its account follows, and each request bills the tokens it used.',
+    href: `${org}/providers`,
+    label: 'Providers',
   },
   {
     title: 'Point your app at the new API',
@@ -34,12 +34,10 @@ const steps = [
 const links = [
   { label: 'Website', href: org, note: 'freetheai.org' },
   { label: 'Docs', href: `${org}/docs`, note: 'Endpoints, errors, examples' },
-  { label: 'Models', href: `${org}/models`, note: 'Every model and its limits' },
-  { label: 'Check-in', href: `${org}/checkin`, note: 'Unlock free models today' },
+  { label: 'Models', href: `${org}/models`, note: 'Every model, its providers, and prices' },
+  { label: 'Providers', href: `${org}/providers`, note: 'Follow the providers your key uses' },
   { label: 'Status', href: `${org}/status`, note: 'Live uptime and provider health' },
   { label: 'Stats', href: `${org}/stats`, note: 'Tokens and requests served' },
-  { label: 'Plans', href: `${org}/plans`, note: 'Paid plans, coming soon' },
-  { label: 'Donate a key', href: `${org}/dashboard/donate-keys`, note: 'Raise your daily limit' },
   { label: 'Discord', href: discord, note: 'Help, news, and the community' },
   { label: 'Support the project', href: 'https://buymeacoffee.com/vibheksoni', note: 'Buy Me a Coffee' },
   { label: 'GitHub', href: 'https://github.com/Free-The-Ai/free-ai', note: 'This page and the docs' },
@@ -49,7 +47,7 @@ const curl = `curl https://api.freetheai.org/v1/chat/completions \\
   -H "Authorization: Bearer YOUR_API_KEY" \\
   -H "Content-Type: application/json" \\
   -d '{
-    "model": "fta/zai/glm-5.3",
+    "model": "glm-5.3",
     "messages": [{"role": "user", "content": "Hello!"}]
   }'`;
 
@@ -60,7 +58,7 @@ client = OpenAI(
     api_key="YOUR_API_KEY",
 )
 reply = client.chat.completions.create(
-    model="fta/zai/glm-5.3",
+    model="glm-5.3",
     messages=[{"role": "user", "content": "Hello!"}],
 )
 print(reply.choices[0].message.content)`;
@@ -68,7 +66,7 @@ print(reply.choices[0].message.content)`;
 
 <Layout
   title="FreeTheAI has moved to freetheai.org"
-  description="FreeTheAI now runs at freetheai.org: a free, OpenAI-compatible AI API with 50+ models. Here is how the new setup works, how to get a key, and every new link."
+  description="FreeTheAI now runs at freetheai.org: an AI model marketplace with one OpenAI-compatible API, paid per token. Here is how the new setup works, how to get a key, and every new link."
 >
   <header class="top">
     <a class="brand" href={org}>
@@ -86,11 +84,11 @@ print(reply.choices[0].message.content)`;
       <p class="eyebrow">We moved</p>
       <h1>FreeTheAI now lives at <a href={org}>freetheai.org</a></h1>
       <p class="lead">
-        Same free, OpenAI-compatible API, rebuilt from scratch: one account, a proper dashboard, 50+ models, and a
-        daily free allowance you can raise.
+        An AI model marketplace with one OpenAI-compatible API: one account and one key reach models from many
+        providers, paid per token from one wallet.
       </p>
       <div class="actions">
-        <a class="button primary" href={`${org}/signup`}>Create a free account</a>
+        <a class="button primary" href={`${org}/signup`}>Create an account</a>
         <a class="button" href={`${org}/docs`}>Read the docs</a>
         <a class="button" href={discord}>Join the Discord</a>
       </div>
@@ -117,32 +115,17 @@ print(reply.choices[0].message.content)`;
       </ol>
     </section>
 
-    <section aria-labelledby="free">
-      <h2 id="free">Your free daily requests</h2>
-      <div class="cards">
-        <div class="card">
-          <p class="big">50</p>
-          <p class="card-title">free requests every day</p>
-          <p>On every FreeTheAI-hosted model. The count resets at 00:00 UTC, and requests that fail don't count.</p>
-        </div>
-        <div class="card">
-          <p class="big">+50</p>
-          <p class="card-title">for linking Discord</p>
-          <p>
-            In your dashboard, open Settings and press Link Discord. Linking also adds you to the FreeTheAI Discord
-            server, where help and news live.
-          </p>
-        </div>
-        <div class="card">
-          <p class="big">up to +150</p>
-          <p class="card-title">for donating an API key</p>
-          <p>
-            Donate a spare key from a supported provider on the Donate keys page. Most keys add 50 requests a day, up
-            to 150 extra in total.
-          </p>
-        </div>
-      </div>
-      <p class="muted">Paid plans and the model marketplace are coming soon. Free models stay free.</p>
+    <section aria-labelledby="pricing">
+      <h2 id="pricing">Paying for requests</h2>
+      <p>
+        Add funds to your FreeTheAI wallet, from $5, with crypto or a card. Each request bills the tokens it used at
+        the provider's listed price, with no subscription. Prices for every provider are on the
+        <a href={`${org}/models`}>models page</a>.
+      </p>
+      <p class="muted">
+        The free tier closed for most accounts on November 10, 2026.
+        <a href={`${org}/blog/free-tier-closing`}>Read why</a>.
+      </p>
     </section>
 
     <section aria-labelledby="start">
@@ -150,8 +133,8 @@ print(reply.choices[0].message.content)`;
       <dl class="facts">
         <div><dt>Base URL</dt><dd><code>https://api.freetheai.org/v1</code></dd></div>
         <div><dt>Auth</dt><dd><code>Authorization: Bearer YOUR_API_KEY</code></dd></div>
-        <div><dt>Model IDs</dt><dd><code>fta/&lt;tag&gt;/&lt;model&gt;</code>, for example <code>fta/zai/glm-5.3</code></dd></div>
-        <div><dt>Endpoints</dt><dd>Chat Completions (streaming and tool calling) and <code>GET /v1/models</code></dd></div>
+        <div><dt>Model IDs</dt><dd>The model name, for example <code>glm-5.3</code>; <code>&lt;provider&gt;/&lt;model&gt;</code> picks one provider</dd></div>
+        <div><dt>Endpoints</dt><dd>Chat Completions, Responses, and Anthropic Messages (streaming and tool calls), and <code>GET /v1/models</code></dd></div>
       </dl>
       <div class="code-grid">
         <figure>

@@ -1,11 +1,11 @@
 <p align="center">
-  <a href="https://freetheai.org"><img src=".github/banner.jpg" alt="FreeTheAI: free OpenAI-compatible AI API" width="100%"></a>
+  <a href="https://freetheai.org"><img src=".github/banner.jpg" alt="FreeTheAI: one OpenAI-compatible API for models from many providers, paid per token" width="100%"></a>
 </p>
 
 <p align="center">
   <a href="https://freetheai.org"><img src="https://img.shields.io/badge/website-freetheai.org-111111" alt="Website"></a>
   <a href="https://freetheai.org/docs"><img src="https://img.shields.io/badge/API-OpenAI--compatible-111111" alt="OpenAI-compatible"></a>
-  <a href="https://freetheai.org/models"><img src="https://img.shields.io/badge/models-50%2B-111111" alt="50+ models"></a>
+  <a href="https://freetheai.org/models"><img src="https://img.shields.io/badge/models-many_providers-111111" alt="Models from many providers"></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-111111" alt="MIT license"></a>
   <a href="https://discord.gg/secrets"><img src="https://img.shields.io/badge/Discord-join-5865F2?logo=discord&logoColor=white" alt="Discord"></a>
 </p>
@@ -14,14 +14,17 @@
   <b><a href="https://freetheai.org/docs">Docs</a></b> ·
   <a href="https://freetheai.org/setup">Setup guides</a> ·
   <a href="https://freetheai.org/models">Models</a> ·
-  <a href="https://freetheai.org/checkin">Daily check-in</a> ·
+  <a href="https://freetheai.org/providers">Providers</a> ·
   <a href="https://freetheai.org/status">Status</a> ·
   <a href="https://discord.gg/secrets">Discord</a>
 </p>
 
 # FreeTheAI
 
-FreeTheAI is a free, OpenAI-compatible AI API. One key and one base URL give you dozens of chat models with streaming, tool calling, web search with sourced answers, and image and video generation. Also searched as *Free The AI*, *Free The Ai*, and *FreeTheAi*.
+FreeTheAI is an AI model marketplace with one OpenAI-compatible API. One account and one API key reach models from many providers, including GPT, Claude, Gemini, Grok, GLM, Kimi, and MiniMax, paid per token from one wallet at each provider's listed price. Streaming, tool calling, and web search with sourced answers work across them. Also searched as *Free The AI*, *Free The Ai*, and *FreeTheAi*.
+
+> [!NOTE]
+> The free tier closed for most accounts on November 10, 2026. Read [why it closed](https://freetheai.org/blog/free-tier-closing). Requests are now paid from your wallet.
 
 > [!IMPORTANT]
 > FreeTheAI moved to [freetheai.org](https://freetheai.org). The old API at `api.freetheai.xyz`, its keys, and the old Discord `/signup` and `/checkin` commands no longer work. Use the base URL `https://api.freetheai.org/v1` with a key from freetheai.org. Old `freetheai.xyz` links forward to their new pages.
@@ -29,20 +32,21 @@ FreeTheAI is a free, OpenAI-compatible AI API. One key and one base URL give you
 ## Quick start
 
 1. Create an account at [freetheai.org](https://freetheai.org), confirm your email, and make a key under [API keys](https://freetheai.org/dashboard/api-keys).
-2. Do the [daily check-in](https://freetheai.org/checkin) once a day to unlock the free models until 00:00 UTC.
-3. Point your app at the base URL.
+2. Add funds to your wallet (from $5, crypto or card). Each request bills the tokens it used at the listed price; there is no subscription.
+3. Follow a provider on its page at [freetheai.org/providers](https://freetheai.org/providers). A key uses the providers its account follows.
+4. Point your app at the base URL.
 
 ```
 Base URL    https://api.freetheai.org/v1
 Auth        Authorization: Bearer YOUR_API_KEY
-Model IDs   fta/<provider>/<model>, for example fta/zai/glm-5.3
+Model IDs   the model name, for example glm-5.3; <provider>/<model> picks one provider
 ```
 
 ```bash
 curl https://api.freetheai.org/v1/chat/completions \
   -H "Authorization: Bearer $FREETHEAI_API_KEY" \
   -H "Content-Type: application/json" \
-  -d '{"model": "fta/zai/glm-5.3", "messages": [{"role": "user", "content": "Hello!"}]}'
+  -d '{"model": "glm-5.3", "messages": [{"role": "user", "content": "Hello!"}]}'
 ```
 
 ```python
@@ -50,13 +54,13 @@ from openai import OpenAI
 
 client = OpenAI(base_url="https://api.freetheai.org/v1", api_key="YOUR_API_KEY")
 reply = client.chat.completions.create(
-    model="fta/zai/glm-5.3",
+    model="glm-5.3",
     messages=[{"role": "user", "content": "Hello!"}],
 )
 print(reply.choices[0].message.content)
 ```
 
-Chat completions support streaming, tool calling, and the usual sampling settings. List the models your key can use with `GET /v1/models`. Every error carries an error ID (in the body and the `X-Error-ID` header); quote it when you ask for help.
+Chat Completions, Responses, and Anthropic Messages are supported, with streaming and tool calls. Claude Code and the Anthropic SDK use the base URL `https://api.freetheai.org`. List the models your key can use with `GET /v1/models`. Every error carries an error ID (in the body and the `X-Error-ID` header); quote it when you ask for help.
 
 ## SDKs and examples
 
@@ -69,22 +73,15 @@ Chat completions support streaming, tool calling, and the usual sampling setting
 
 Code you can copy is in [`examples/`](examples/README.md).
 
-## Free tier
+## Pricing
 
-- **50 requests a day** on the free models. The count resets at 00:00 UTC, and failed requests don't count.
-- Free models need the **daily check-in** at [freetheai.org/checkin](https://freetheai.org/checkin).
-- Paid plans are coming soon.
+- Add funds to one FreeTheAI wallet, from $5, with crypto or a card.
+- Each request bills the tokens it used at the provider's listed price. Prices for every provider are on the [models page](https://freetheai.org/models).
+- No subscription, and no daily limit to wait out.
 
 ## Models
 
-The live list, with context sizes, is at [freetheai.org/models](https://freetheai.org/models). Model IDs start with a short tag:
-
-| Prefix | What it holds |
-| :--- | :--- |
-| `fta/zai/*` | GLM models, including `glm-5.3` and `glm-5.3-flash` |
-| `fta/kimi/*` | Kimi K3 |
-| `fta/mmx/*` | MiniMax M3 |
-| `fta/bbl/*`, `fta/vbk/*`, `fta/olm/*`, `fta/olf/*`, `fta/kai/*`, `fta/ocz/*` | Chat, reasoning, and open-weight models, some with free tiers |
+The live list, with prices, context sizes, and every provider that serves each model, is at [freetheai.org/models](https://freetheai.org/models). A model ID is the model name, for example `glm-5.3`, and by default the request goes to the cheapest provider you follow. Write `<provider>/<model>` to pick one provider.
 
 ## Apps and setup guides
 

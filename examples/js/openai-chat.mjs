@@ -18,7 +18,7 @@ const client = new OpenAI({
 });
 
 const response = await client.chat.completions.create({
-    model: "fta/zai/glm-5.3",
+    model: "glm-5.3",
     messages: [
         { role: "system", content: "You are concise." },
         { role: "user", content: "Reply with exactly: OK" },

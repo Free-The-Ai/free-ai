@@ -14,7 +14,7 @@ if (!apiKey) {
 }
 
 const llm = new ChatOpenAI({
-    model: "fta/zai/glm-5.3",
+    model: "glm-5.3",
     apiKey,
     configuration: {
         baseURL: "https://api.freetheai.org/v1",

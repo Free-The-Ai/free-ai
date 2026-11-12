@@ -34,7 +34,7 @@ def main() -> None:
     """
     client = get_client()
     with client.chat.completions.stream(
-        model="fta/bbl/gpt-5.4-mini",
+        model="glm-5.3",
         messages=[
             {"role": "user", "content": "Stream a haiku about pair programming."},
         ],

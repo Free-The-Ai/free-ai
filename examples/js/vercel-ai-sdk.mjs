@@ -20,7 +20,7 @@ const freetheai = createOpenAICompatible({
 });
 
 const { text } = await generateText({
-    model: freetheai.chatModel("fta/zai/glm-5.3"),
+    model: freetheai.chatModel("glm-5.3"),
     prompt: "Reply with exactly: OK",
     maxOutputTokens: 64,
 });

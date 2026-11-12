@@ -32,7 +32,7 @@ def main() -> None:
     """
     client = get_client()
     response = client.chat.completions.create(
-        model="fta/zai/glm-5.3",
+        model="glm-5.3",
         messages=[
             {"role": "system", "content": "You are a concise developer assistant."},
             {"role": "user", "content": "Reply with exactly: OK"},
